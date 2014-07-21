@@ -38,7 +38,7 @@ public class LoginBO implements Serializable {
 
     //Verifica se o tempo da última licença já expirou
     public Boolean expirado() {
-        Boolean ok = true;
+        Boolean ok = false;
         //Consulta em uma persistênca a string de licença
         System.out.println("teste: "+chaveTeste);
         descriptografia = DesEncriptonator(chaveTeste);

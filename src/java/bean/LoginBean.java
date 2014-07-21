@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import util.Cookie;
 import util.EnviarEmail;
 import util.GeradorMD5;
 import util.ValidaCPF;
@@ -56,6 +57,7 @@ public class LoginBean implements Serializable {
         senha = GeradorMD5.generate(senha);
         if (usuario != null) {
             if (senha.equals(usuario.getSenha())) {
+                Cookie.addCookie("usuario", cpf, 36000);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
             } else {
                 mensagem = "loginFail";
