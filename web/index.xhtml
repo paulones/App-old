@@ -4,7 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="content">
-        <head>
+        <h:head>
             <meta charset="utf-8"/>
             <title>Home</title>
             <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -35,10 +35,10 @@
             <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
             <!-- END THEME STYLES -->
             <link rel="shortcut icon" href="favicon.ico"/>
-        </head>
+        </h:head>
         <!-- END HEAD -->
         <!-- BEGIN BODY -->
-        <body class="page-header-fixed page-quick-sidebar-over-content">
+        <h:body class="page-header-fixed page-quick-sidebar-over-content">
             <!-- BEGIN HEADER -->
             <div class="page-header navbar navbar-fixed-top">
                 <!-- BEGIN HEADER INNER -->
@@ -78,7 +78,7 @@
                             <!-- END USER LOGIN DROPDOWN -->
                             <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                             <li class="dropdown dropdown-quick-sidebar-toggler">
-                                <a href="login.xhtml" class="dropdown-toggle">
+                                <a href="login.xhtml" class="logout dropdown-toggle">
                                     <i class="icon-logout"></i>
                                 </a>
                             </li>
@@ -295,16 +295,12 @@
                     //Index.initMiniCharts();
                     //Index.initIntro();
                     //Tasks.initDashboardWidget();
-                    $('.block-screen').click(function() {
-                        $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: 1, path: '/'});
-                        window.location = "bloquear_tela.xhtml";
-                    });
                 });
 
 
             </script>
             <!-- END JAVASCRIPTS -->
-        </body>
+        </h:body>
         <!-- END BODY -->
     </ui:define>
 </ui:composition>

@@ -55,7 +55,6 @@ public class LoginBean implements Serializable {
     public void login() throws IOException {
         if (!loginBO.expirado()){
             usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
-            senha = GeradorMD5.generate(senha);
             if (usuario != null) {
                 if (senha.equals(usuario.getSenha())) {
                     Cookie.addCookie("usuario", cpf, 36000);
@@ -100,7 +99,7 @@ public class LoginBean implements Serializable {
             usuario.setCpf(cpf);
             usuario.setNome(nome);
             usuario.setEmail(email);
-            usuario.setSenha(GeradorMD5.generate(senha));
+            usuario.setSenha(senha);
             if (usuarioBO.findUsuario(cpf) == null) {
                 usuarioBO.create(usuario);
                 mensagem = "registerSuccess";
