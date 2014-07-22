@@ -79,6 +79,18 @@ body {
   font-style: normal;
 }
 
+.has-error .form-control{
+   color: #a94442;
+}
+
+.has-error .fa-lock{
+    color: #f3565d
+}
+
+.help-block{
+    color: #a94442 !important;
+}
+
 .page-lock .page-lock-info form {
   margin: 28px 0;
 }

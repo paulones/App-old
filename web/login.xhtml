@@ -52,6 +52,10 @@
         <div class="content">
             <!-- BEGIN LOGIN FORM -->
             <h:form prependId="false" class="login-form" id="login-form">
+                <!-- SOLVING BUG BROWSERS AUTOCOMPLETING -->
+                <input type="text" style="display:none"/>
+                <input type="password" style="display:none"/>
+                <!--  -->
                 <h3 class="form-title">Login</h3>
                 <h:panelGroup  layout="block" styleClass="alert alert-danger login-error" rendered="#{(loginBean.mensagem eq 'loginFail') or (loginBean.mensagem eq 'forgetFail')}">
                     <button class="close" data-close="alert"></button>
@@ -248,15 +252,6 @@
                 Metronic.init(); // init metronic core components
                 Layout.init(); // init current layout
                 Login.init();
-
-                if (navigator.userAgent.toLowerCase().indexOf('chrome') >= 0)
-                {
-                    document.getElementById('login-form').setAttribute('autocomplete', 'off');
-                    setTimeout(function() {
-                        document.getElementById('login-form').setAttribute('autocomplete', 'on');
-                    }, 1500);
-                }
-
             });
         </script>
         <!-- END JAVASCRIPTS -->

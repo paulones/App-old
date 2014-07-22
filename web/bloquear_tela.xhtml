@@ -9,7 +9,7 @@ and open the template in the editor.
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough" lang="en">
-    <head>
+    <h:head>
         <meta charset="utf-8"/>
         <title>Login - Bloqueio</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -37,10 +37,10 @@ and open the template in the editor.
         <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME STYLES -->
         <link rel="shortcut icon" href="favicon.ico"/>
-    </head>
+    </h:head>
     <!-- END HEAD -->
     <!-- BEGIN BODY -->
-    <body>
+    <h:body>
         <div class="page-lock">
             <div class="page-logo">
                 <h3 class="form-title login-title">App</h3>
@@ -53,11 +53,18 @@ and open the template in the editor.
                         #{bloquearTelaBean.usuario.email} </span>
                     <span class="locked">
                         Bloqueado </span>
-                    <h:form prependId="false" class="form-inline">
-                        <div class="input-group input-medium">
-                            <h:inputSecret styleClass="form-control" value="#{bloquearTelaBean.senha}" autocomplete="off" p:placeholder="Senha"/>
+                    <h:panelGroup layout="block" styleClass="alert alert-danger password-error" rendered="#{!bloquearTelaBean.senhaCorreta}">
+                        <button class="close" data-close="alert"></button>
+                        <span>
+                            Senha incorreta. </span>
+                    </h:panelGroup>
+                    <h:form prependId="false" class="form-inline login-form">
+                        <div class="form-group input-icon input-group input-medium">
+                            <i class="fa fa-lock"></i>
+                            <h:inputSecret styleClass="form-control input-secret" value="#{bloquearTelaBean.senha}" autocomplete="off" p:placeholder="Senha" id="password"/>
                             <span class="input-group-btn">
-                                <h:commandLink type="button" action="#{bloquearTelaBean.login()}" styleClass="btn blue icn-only"><i class="m-icon-swapright m-icon-white"></i></h:commandLink>
+                                <button class="btn blue icn-only"><i class="m-icon-swapright m-icon-white"></i></button>
+                                <h:commandLink styleClass="submit-login" action="#{bloquearTelaBean.login()}"/>
                             </span>
                         </div>
                         <!-- /input-group -->
@@ -91,6 +98,7 @@ and open the template in the editor.
         <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
         <script src="assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -106,6 +114,6 @@ and open the template in the editor.
             });
         </script>
         <!-- END JAVASCRIPTS -->
-    </body>
+    </h:body>
     <!-- END BODY -->
 </html>
