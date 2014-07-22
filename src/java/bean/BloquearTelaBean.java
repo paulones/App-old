@@ -45,7 +45,6 @@ public class BloquearTelaBean implements Serializable {
     }
 
     public void login() throws IOException {
-        senha = GeradorMD5.generate(senha);
         if (senha.equals(usuario.getSenha())) {
             Cookie.addCookie("usuario", cpf, 36000);
             if (pagina_anterior != null) {
