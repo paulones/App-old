@@ -25,6 +25,7 @@ var Lock = function() {
                 error.insertAfter(element.closest('.input-icon'));
             },
             submitHandler: function(form) {
+                $('#password').val(CryptoJS.MD5($('#password').val()));
                 $('.submit-login').click();
             }
         });
@@ -32,6 +33,7 @@ var Lock = function() {
         $('.login-form button').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.login-form').validate().form()) {
+                    $('#password').val(CryptoJS.MD5($('#password').val()));
                     $('.submit-login').click();
                     //$('.login-form').submit();
                 }
