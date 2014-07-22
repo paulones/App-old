@@ -104,11 +104,13 @@ var Login = function() {
 
         jQuery('#forget-password').click(function() {
             jQuery('.login-form').hide();
+            jQuery('.licensing-form').hide();
             jQuery('.forget-form').show();
         });
 
         jQuery('#back-btn').click(function() {
             jQuery('.login-form').show();
+            jQuery('.licensing-form').hide();
             jQuery('.forget-form').hide();
         });
     }
@@ -207,12 +209,23 @@ var Login = function() {
 
         jQuery('#register-btn').click(function() {
             jQuery('.login-form').hide();
+            jQuery('.licensing-form').hide();
             jQuery('.register-form').show();
         });
 
         jQuery('#register-back-btn').click(function() {
             jQuery('.login-form').show();
+            jQuery('.licensing-form').hide();
             jQuery('.register-form').hide();
+        });
+    }
+    
+    var handlerLicensing = function() {
+        $('.licensing-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: ""
         });
     }
 
@@ -223,13 +236,21 @@ var Login = function() {
             handleLogin();
             handleForgetPassword();
             handleRegister();
+            handlerLicensing();
 
             $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
             $('.cpf').attr("autocomplete","off");
             
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();
+                jQuery('.licensing-form').hide();
                 jQuery('.register-form').show();
+            }
+            
+            if ($('.licensing-error').length > 0) {
+                jQuery('.login-form').hide();
+                jQuery('.licensing-form').show();
+                jQuery('.register-form').hide();
             }
 
             $.backstretch([

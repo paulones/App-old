@@ -21,7 +21,7 @@ public class LoginBO implements Serializable {
         
     }
     
-    //Valida uma nova licença fornecida ao sistema
+    //Verifica a licença fornecida ao sistema
     public Boolean licenciado() {
         Boolean ok = false;
         try {
@@ -34,6 +34,11 @@ public class LoginBO implements Serializable {
             e.printStackTrace();
         }
         return ok;
+    }
+    
+    //Aplica um novo licenciamento ao software
+    public void licenciar(){
+        
     }
 
     //Verifica se o tempo da última licença já expirou
