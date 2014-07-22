@@ -14,7 +14,7 @@ and open the template in the editor.
     <script src="../assets/global/plugins/jquery.cookie.min.js" type="text/javascript"></script>
     <!-- END DEVELOPER CUSTOM SCRIPTS -->
     <script>
-        $.idleTimer(60000 * 20);
+        $.idleTimer(60000 * 10);
         $(document).bind("idle.idleTimer", function() {
             $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires:1, path: '/'});
             window.location = "bloquear_tela.xhtml";

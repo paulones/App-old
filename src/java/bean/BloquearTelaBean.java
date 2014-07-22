@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import util.Cookie;
@@ -26,6 +27,8 @@ public class BloquearTelaBean implements Serializable {
 
     private Usuario usuario;
     private String senha;
+    private String cpf;
+    private String pagina_anterior;
     private boolean senhaCorreta;
     private UsuarioBO usuarioBO;
 
@@ -34,16 +37,20 @@ public class BloquearTelaBean implements Serializable {
             usuarioBO = new UsuarioBO();
             senha = "";
             senhaCorreta = true;
-            Long cpf = Long.valueOf(Cookie.getCookie("usuario").replace(".", "").replace("-", ""));
-            usuario = usuarioBO.findUsuario(cpf);
+            cpf = Cookie.getCookie("usuario");
+            pagina_anterior = Cookie.getCookie("pagina_anterior");
+            usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
+            
         }
     }
 
     public void login() throws IOException {
         senha = GeradorMD5.generate(senha);
+        System.out.println(cpf);
         if (senha.equals(usuario.getSenha())) {
-            String pagina_anterior = Cookie.getCookie("pagina_anterior");
-            Cookie.eraseCookie("pagina_anterior");
+            System.out.println("entrou");
+            Cookie.addCookie("usuario", cpf, 36000);
+            Cookie.apagarCookie("pagina_anterior");
             FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);
         } else {
             senhaCorreta = false;
@@ -52,7 +59,7 @@ public class BloquearTelaBean implements Serializable {
     }
 
     public void voltarAoLogin() throws IOException {
-        Cookie.eraseCookie("usuario");
+        Cookie.apagarCookie("usuario");
         FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
     }
 
