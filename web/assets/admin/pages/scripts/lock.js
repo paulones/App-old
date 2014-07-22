@@ -46,6 +46,12 @@ var Lock = function() {
 
             handlePassword();
 
+            window.setInterval(function(){
+                if($.cookie('usuario') == null){
+                    window.location = "login.xhtml";
+                }
+            },3000);
+
             $.backstretch([
                 "../../assets/admin/pages/media/bg/1.jpg",
                 "../../assets/admin/pages/media/bg/2.jpg",

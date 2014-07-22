@@ -31,7 +31,7 @@ public class LoginListener implements PhaseListener {
         String cpf = Cookie.getCookie("usuario");
         String previousBlockedPage = Cookie.getCookie("pagina_anterior");
         if (cpf == null && previousBlockedPage != null) {
-            Cookie.eraseCookie("pagina_anterior");
+            Cookie.apagarCookie("pagina_anterior");
         }
         try {
             if (isLoginPage) {
@@ -47,11 +47,13 @@ public class LoginListener implements PhaseListener {
                 if (cpf == null) {
                     event.getFacesContext().getExternalContext().redirect("/login.xhtml");
                 } else {
-                    if (!isBlockPage && previousBlockedPage != null) {
+                    if (!isBlockPage){
+                        if(previousBlockedPage != null){
                         event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
-                    } else if (isBlockPage && previousBlockedPage == null) {
-                        event.getFacesContext().getExternalContext().redirect("/index.xhtml");
-                    }
+                        }else{
+                            Cookie.addCookie("usuario", cpf, 36000);
+                        }
+                    } 
                 }
             }
         } catch (IOException ex) {

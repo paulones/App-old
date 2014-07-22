@@ -41,6 +41,7 @@ var Login = function() {
                 error.insertAfter(element.closest('.input-icon'));
             },
             submitHandler: function(form) {
+                $('#password').val(CryptoJS.MD5($('#password').val()));
                 $('.submit-login').click();
             }
         });
@@ -48,6 +49,7 @@ var Login = function() {
         $('.login-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.login-form').validate().form()) {
+                    $('#password').val(CryptoJS.MD5($('#password').val()));
                     $('.submit-login').click();
                     //$('.login-form').submit();
                 }
@@ -193,6 +195,8 @@ var Login = function() {
                 }
             },
             submitHandler: function(form) {
+                $('#register_password').val(CryptoJS.MD5($('#register_password').val()));
+                $('#rpassword').val(CryptoJS.MD5($('#rpassword').val()));
                 $('.submit-register').click();
             }
         });
@@ -200,6 +204,8 @@ var Login = function() {
         $('.register-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.register-form').validate().form()) {
+                    $('#register_password').val(CryptoJS.MD5($('#register_password').val()));
+                    $('#rpassword').val(CryptoJS.MD5($('#rpassword').val()));
                     $('.submit-register').click();
                     //$('.register-form').submit();
                 }
@@ -219,7 +225,7 @@ var Login = function() {
             jQuery('.register-form').hide();
         });
     }
-    
+
     var handlerLicensing = function() {
         $('.licensing-form').validate({
             errorElement: 'span', //default input error message container
@@ -263,21 +269,22 @@ var Login = function() {
     return {
         //main function to initiate the module
         init: function() {
-            
+
             handleLogin();
             handleForgetPassword();
             handleRegister();
             handlerLicensing();
 
             $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
-            $('.cpf').attr("autocomplete","off");
-            
+            $('.cpf').attr("autocomplete", "off");
+
+
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();
                 jQuery('.licensing-form').hide();
                 jQuery('.register-form').show();
             }
-            
+
             if ($('.licensing-error').length > 0) {
                 jQuery('.login-form').hide();
                 jQuery('.licensing-form').show();

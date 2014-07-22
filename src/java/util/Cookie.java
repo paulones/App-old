@@ -33,7 +33,7 @@ public class Cookie {
         return value;
     }
 
-    public static void eraseCookies() {
+    public static void apagarCookies() {
         request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
@@ -47,7 +47,7 @@ public class Cookie {
         }
     }
 
-    public static void eraseCookie(String name) {
+    public static void apagarCookie(String name) {
         request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
