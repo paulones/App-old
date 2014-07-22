@@ -40,18 +40,20 @@ public class BloquearTelaBean implements Serializable {
             cpf = Cookie.getCookie("usuario");
             pagina_anterior = Cookie.getCookie("pagina_anterior");
             usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
-            
+
         }
     }
 
     public void login() throws IOException {
         senha = GeradorMD5.generate(senha);
-        System.out.println(cpf);
         if (senha.equals(usuario.getSenha())) {
-            System.out.println("entrou");
             Cookie.addCookie("usuario", cpf, 36000);
-            Cookie.apagarCookie("pagina_anterior");
-            FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);
+            if (pagina_anterior != null) {
+                Cookie.apagarCookie("pagina_anterior");
+                FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);
+            } else{
+                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            }
         } else {
             senhaCorreta = false;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha incorreta.", null));

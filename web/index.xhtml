@@ -296,10 +296,7 @@
                     //Index.initIntro();
                     //Tasks.initDashboardWidget();
                     $('.block-screen').click(function() {
-                        var date = new Date();
-                        var minutes = 0.1;
-                        date.setTime(date.getTime() + (minutes * 60 * 1000));
-                        $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: date, path: '/'});
+                        $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: 1, path: '/'});
                         window.location = "bloquear_tela.xhtml";
                     });
                 });

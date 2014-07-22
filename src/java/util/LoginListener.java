@@ -47,11 +47,13 @@ public class LoginListener implements PhaseListener {
                 if (cpf == null) {
                     event.getFacesContext().getExternalContext().redirect("/login.xhtml");
                 } else {
-                    if (!isBlockPage && previousBlockedPage != null) {
+                    if (!isBlockPage){
+                        if(previousBlockedPage != null){
                         event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
-                    } else if (isBlockPage && previousBlockedPage == null) {
-                        event.getFacesContext().getExternalContext().redirect("/index.xhtml");
-                    }
+                        }else{
+                            Cookie.addCookie("usuario", cpf, 36000);
+                        }
+                    } 
                 }
             }
         } catch (IOException ex) {
