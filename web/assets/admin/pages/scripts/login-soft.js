@@ -225,7 +225,38 @@ var Login = function() {
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
-            ignore: ""
+            ignore: "",
+            rules: {
+                licenca: {
+                    required: true
+                }
+            },
+            messages: {
+                licenca: {
+                    required: "Entre com chave válida."
+                }
+            }
+        });
+        
+        $('.licensing-form input').keypress(function(e) {
+            if (e.which == 13) {
+                if ($('.licensing-form').validate().form()) {
+                    $('.submit-licensing').click();
+                }
+                return false;
+            }
+        });
+        
+        jQuery('#licensing-submit-btn').click(function() {
+            jQuery('.login-form').hide();
+            jQuery('.licensing-form').hide();
+            jQuery('.register-form').show();
+        });
+
+        jQuery('#licensing-back-btn').click(function() {
+            jQuery('.login-form').show();
+            jQuery('.licensing-form').hide();
+            jQuery('.register-form').hide();
         });
     }
 

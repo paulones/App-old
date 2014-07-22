@@ -69,7 +69,7 @@ public class LoginBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não existe.", null));
             }
         } else {
-            mensagem = "loginFail";
+            mensagem = "licensingFail";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tempo da conta expirou, adquira outra licença!", null));
         }
     }
@@ -121,7 +121,11 @@ public class LoginBean implements Serializable {
     }
     
     public void Licenciar(){
-        loginBO.licenciar();
+        if (loginBO.licenciar(licenca)) {
+            
+        } else{
+            
+        }
     }
 
     public String getMensagem() {
@@ -170,6 +174,14 @@ public class LoginBean implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+    
+    public String getLicenca() {
+        return licenca;
+    }
+
+    public void setLicenca(String licenca) {
+        this.licenca = licenca;
     }
 
 }

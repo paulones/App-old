@@ -209,6 +209,29 @@
             <!-- BEGIN LICENSING FORM -->
             <h:form prependId="false" class="licensing-form">
                 <h3>Licenciamento</h3>
+                <h:panelGroup layout="block" styleClass="alert alert-danger licensing-error" rendered="#{loginBean.mensagem eq 'licensingFail'}">
+                    <button class="close" data-close="alert"></button>
+                    <span>
+                        <h:messages layout="table" /> </span>
+                </h:panelGroup>
+                <p>
+                    Entre com uma nova chave de licença abaixo:
+                </p>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Chave</label>
+                    <div class="input-icon">
+                        <i class="fa fa-key"></i>
+                        <h:inputText class="form-control placeholder-no-fix" value="#{loginBean.licenca}" p:placeholder="Licença" id="licenca"/>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button id="licensing-back-btn" type="button" class="btn">
+                        <i class="m-icon-swapleft"></i> Voltar </button>
+                    <button type="submit" id="licensing-submit-btn" class="btn blue pull-right">
+                        Licenciar <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                    <h:commandLink styleClass="submit-licensing" action="#{loginBean.licenciar()}"/>
+                </div>
             </h:form>
             <!-- END LICENSING FORM -->
         </div>

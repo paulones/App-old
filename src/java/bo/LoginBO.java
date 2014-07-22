@@ -17,37 +17,36 @@ public class LoginBO implements Serializable {
     private String chaveTeste = "JNOrQqmuzs6Fupeoo124QEZLWHKF6zLc";
     private String descriptografia = "";
 
-    public LoginBO (){
-        
+    public LoginBO() {
+
     }
-    
+
     //Verifica a licença fornecida ao sistema
-    public Boolean licenciado() {
+    public Boolean licenciar(String licenca) {
         Boolean ok = false;
         try {
             //Consulta em uma persistênca a string de licença
-            System.out.println("teste: "+chaveTeste);
-            descriptografia = DesEncriptonator(chaveTeste);
+            System.out.println("teste: " + chaveTeste);
+            descriptografia = DesEncriptonator(licenca);
             System.out.println("key: " + descriptografia);
-
+            if (licenca == null) {
+                ok = false;
+            } else {
+                ok = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ok;
-    }
-    
-    //Aplica um novo licenciamento ao software
-    public void licenciar(){
-        
     }
 
     //Verifica se o tempo da última licença já expirou
     public Boolean expirado() {
         Boolean ok = false;
         //Consulta em uma persistênca a string de licença
-        System.out.println("teste: "+chaveTeste);
+        System.out.println("teste: " + chaveTeste);
         descriptografia = DesEncriptonator(chaveTeste);
-        System.out.println("descriptografia: "+descriptografia);
+        System.out.println("descriptografia: " + descriptografia);
         return ok;
     }
 
