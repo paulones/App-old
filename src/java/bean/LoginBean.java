@@ -119,6 +119,10 @@ public class LoginBean implements Serializable {
             this.cpf = "";
         }
     }
+    
+    public void Licenciar(){
+        loginBO.licenciar();
+    }
 
     public String getMensagem() {
         return mensagem;
