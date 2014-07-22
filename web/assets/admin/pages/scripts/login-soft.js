@@ -225,6 +225,7 @@ var Login = function() {
             handleRegister();
 
             $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
+            $('.cpf').attr("autocomplete","off");
             
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();

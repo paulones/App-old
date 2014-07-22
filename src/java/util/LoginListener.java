@@ -31,7 +31,7 @@ public class LoginListener implements PhaseListener {
         String cpf = Cookie.getCookie("usuario");
         String previousBlockedPage = Cookie.getCookie("pagina_anterior");
         if (cpf == null && previousBlockedPage != null) {
-            Cookie.eraseCookie();
+            Cookie.eraseCookie("pagina_anterior");
         }
         try {
             if (isLoginPage) {

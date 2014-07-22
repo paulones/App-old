@@ -33,7 +33,7 @@ public class Cookie {
         return value;
     }
 
-    public static void eraseCookie() {
+    public static void eraseCookies() {
         request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
@@ -43,6 +43,22 @@ public class Cookie {
                 cookies[i].setPath("/");
                 cookies[i].setMaxAge(0);
                 response.addCookie(cookies[i]);
+            }
+        }
+    }
+
+    public static void eraseCookie(String name) {
+        request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        javax.servlet.http.Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals(name)) {
+                    cookies[i].setValue(null);
+                    cookies[i].setPath("/");
+                    cookies[i].setMaxAge(0);
+                    response.addCookie(cookies[i]);
+                }
             }
         }
     }

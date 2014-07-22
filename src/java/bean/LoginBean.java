@@ -15,6 +15,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import org.postgresql.util.PSQLException;
 import util.Cookie;
 import util.EnviarEmail;
 import util.GeradorMD5;
@@ -53,20 +54,20 @@ public class LoginBean implements Serializable {
 
     public void login() throws IOException {
         if (!loginBO.expirado()){
-        usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
-        senha = GeradorMD5.generate(senha);
-        if (usuario != null) {
-            if (senha.equals(usuario.getSenha())) {
-                Cookie.addCookie("usuario", cpf, 36000);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
+            usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
+            senha = GeradorMD5.generate(senha);
+            if (usuario != null) {
+                if (senha.equals(usuario.getSenha())) {
+                    Cookie.addCookie("usuario", cpf, 36000);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
+                } else {
+                    mensagem = "loginFail";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha incorreta.", null));
+                }
             } else {
                 mensagem = "loginFail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha incorreta.", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não existe.", null));
             }
-        } else {
-            mensagem = "loginFail";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não existe.", null));
-        }
         } else {
             mensagem = "loginFail";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tempo da conta expirou, adquira outra licença!", null));

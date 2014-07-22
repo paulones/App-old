@@ -16,7 +16,7 @@ and open the template in the editor.
     <script>
         $.idleTimer(10000);
         $(document).bind("idle.idleTimer", function() {
-            $.cookie("pagina_anterior", window.location, {expires:1, path: '/'});
+            $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires:1, path: '/'});
             window.location = "bloquear_tela.xhtml";
         });
     </script>
