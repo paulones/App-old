@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
@@ -18,6 +19,7 @@ import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -28,6 +30,10 @@ public class LoginListener implements PhaseListener {
     @Override
     public void afterPhase(PhaseEvent event) {
 
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        System.out.println(new Date(request.getSession().getCreationTime()) + " " + request.getSession().getCreationTime());
+        System.out.println(new Date(System.currentTimeMillis()) + " " + System.currentTimeMillis());
+        System.out.println(new Date(request.getSession().getLastAccessedTime()) + " " + request.getSession().getLastAccessedTime());
         // Obtém o contexto atual
         FacesContext context = event.getFacesContext();
         // Obtém a página que atualmente está interagindo com o ciclo

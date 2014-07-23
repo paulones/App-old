@@ -48,11 +48,15 @@ var Lock = function() {
 
             handlePassword();
 
-            window.setInterval(function(){
-                if($.cookie('usuario') == null){
+            window.setInterval(function() {
+                if ($.cookie('usuario') == null) {
                     window.location = "login.xhtml";
                 }
-            },3000);
+            }, 3000);
+
+            window.setInterval(function() {
+                window.location = "bloquear_tela.xhtml";
+            }, 3000);//1740000);
 
             $.backstretch([
                 "../../assets/admin/pages/media/bg/1.jpg",
