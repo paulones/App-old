@@ -6,12 +6,18 @@
 package util;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -21,6 +27,7 @@ public class LoginListener implements PhaseListener {
 
     @Override
     public void afterPhase(PhaseEvent event) {
+
         // Obtém o contexto atual
         FacesContext context = event.getFacesContext();
         // Obtém a página que atualmente está interagindo com o ciclo
@@ -47,13 +54,13 @@ public class LoginListener implements PhaseListener {
                 if (cpf == null) {
                     event.getFacesContext().getExternalContext().redirect("/login.xhtml");
                 } else {
-                    if (!isBlockPage){
-                        if(previousBlockedPage != null){
-                        event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
-                        }else{
+                    if (!isBlockPage) {
+                        if (previousBlockedPage != null) {
+                            event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
+                        } else {
                             Cookie.addCookie("usuario", cpf, 36000);
                         }
-                    } 
+                    }
                 }
             }
         } catch (IOException ex) {
