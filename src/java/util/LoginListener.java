@@ -47,7 +47,7 @@ public class LoginListener implements PhaseListener {
                 if (cpf != null) {
                     if (previousBlockedPage == null) {
                         Cookie.addCookie("usuario", cpf, 36000);
-                        event.getFacesContext().getExternalContext().redirect("/index.xhtml");
+                        event.getFacesContext().getExternalContext().redirect("/home.xhtml");
                     } else {
                         event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
                     }

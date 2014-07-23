@@ -15,9 +15,9 @@ import javax.faces.context.FacesContext;
  *
  * @author ipti004
  */
-@ManagedBean(name = "indexBean")
+@ManagedBean(name = "homeBean")
 @SessionScoped
-public class IndexBean implements Serializable{
+public class HomeBean implements Serializable{
     
     
     public void init(){

@@ -53,7 +53,7 @@ public class BloquearTelaBean implements Serializable {
                 Cookie.apagarCookie("pagina_anterior");
                 FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);
             } else {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
             }
         } else {
             senhaCorreta = false;
