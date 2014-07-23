@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">Página incorreta</ui:define>
+    <ui:define name="title">Página não encontrada</ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL STYLES -->
         <link href="../../assets/admin/pages/css/error.css" rel="stylesheet" type="text/css"/>
@@ -134,20 +134,12 @@
                         <div class="col-md-12">
                             <!-- BEGIN PAGE TITLE & BREADCRUMB-->
                             <h3 class="page-title">
-                                Erro 404 <small>Página não encontrada</small>
+                                404 <small>Página não encontrada</small>
                             </h3>
                             <ul class="page-breadcrumb breadcrumb">
                                 <li>
-                                    <i class="fa fa-home"></i>
-                                    <a href="index.html">Home</a>
-                                    <i class="fa fa-angle-right"></i>
-                                </li>
-                                <li>
-                                    <a href="#">Extra</a>
-                                    <i class="fa fa-angle-right"></i>
-                                </li>
-                                <li>
-                                    <a href="#">404 Page Option 1</a>
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                    <span>404</span>
                                 </li>
                             </ul>
                             <!-- END PAGE TITLE & BREADCRUMB-->
@@ -161,12 +153,11 @@
                                 404
                             </div>
                             <div class="details">
-                                <h3>Oops! You're lost.</h3>
+                                <h3>Oops!</h3>
                                 <p>
-                                    We can not find the page you're looking for.<br/>
-                                    <a href="index.html">
-                                        Return home </a>
-                                    or try the search bar below.
+                                    A página que você está procurando não foi encontrada.<br/>
+                                    <a href="index.xhtml">
+                                        Retorne ao home </a>
                                 </p>
                             </div>
                         </div>
