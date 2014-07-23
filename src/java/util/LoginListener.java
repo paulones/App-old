@@ -30,10 +30,6 @@ public class LoginListener implements PhaseListener {
     @Override
     public void afterPhase(PhaseEvent event) {
 
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        System.out.println(new Date(request.getSession().getCreationTime()) + " " + request.getSession().getCreationTime());
-        System.out.println(new Date(System.currentTimeMillis()) + " " + System.currentTimeMillis());
-        System.out.println(new Date(request.getSession().getLastAccessedTime()) + " " + request.getSession().getLastAccessedTime());
         // Obtém o contexto atual
         FacesContext context = event.getFacesContext();
         // Obtém a página que atualmente está interagindo com o ciclo

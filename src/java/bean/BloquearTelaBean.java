@@ -9,11 +9,13 @@ import bo.UsuarioBO;
 import entidade.Usuario;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
 import util.GeradorMD5;
 
@@ -31,6 +33,7 @@ public class BloquearTelaBean implements Serializable {
     private String pagina_anterior;
     private boolean senhaCorreta;
     private UsuarioBO usuarioBO;
+    private HttpServletRequest request;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -40,7 +43,6 @@ public class BloquearTelaBean implements Serializable {
             cpf = Cookie.getCookie("usuario");
             pagina_anterior = Cookie.getCookie("pagina_anterior");
             usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
-
         }
     }
 
@@ -50,7 +52,7 @@ public class BloquearTelaBean implements Serializable {
             if (pagina_anterior != null) {
                 Cookie.apagarCookie("pagina_anterior");
                 FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);
-            } else{
+            } else {
                 FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
             }
         } else {

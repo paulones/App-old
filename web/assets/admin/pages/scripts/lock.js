@@ -52,11 +52,11 @@ var Lock = function() {
                 if ($.cookie('usuario') == null) {
                     window.location = "login.xhtml";
                 }
-            }, 3000);
+            }, 10000);
 
             window.setInterval(function() {
-                window.location = "bloquear_tela.xhtml";
-            }, 3000);//1740000);
+                window.location.reload();
+            }, 1500000);
 
             $.backstretch([
                 "../../assets/admin/pages/media/bg/1.jpg",
