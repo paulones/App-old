@@ -58,7 +58,7 @@ public class LoginBean implements Serializable {
             if (usuario != null) {
                 if (senha.equals(usuario.getSenha())) {
                     Cookie.addCookie("usuario", cpf, 36000);
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("/index.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
                 } else {
                     mensagem = "loginFail";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha incorreta.", null));

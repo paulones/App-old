@@ -6,12 +6,20 @@
 package util;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -21,6 +29,7 @@ public class LoginListener implements PhaseListener {
 
     @Override
     public void afterPhase(PhaseEvent event) {
+
         // Obtém o contexto atual
         FacesContext context = event.getFacesContext();
         // Obtém a página que atualmente está interagindo com o ciclo
@@ -38,7 +47,7 @@ public class LoginListener implements PhaseListener {
                 if (cpf != null) {
                     if (previousBlockedPage == null) {
                         Cookie.addCookie("usuario", cpf, 36000);
-                        event.getFacesContext().getExternalContext().redirect("/index.xhtml");
+                        event.getFacesContext().getExternalContext().redirect("/home.xhtml");
                     } else {
                         event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
                     }
@@ -47,13 +56,13 @@ public class LoginListener implements PhaseListener {
                 if (cpf == null) {
                     event.getFacesContext().getExternalContext().redirect("/login.xhtml");
                 } else {
-                    if (!isBlockPage){
-                        if(previousBlockedPage != null){
-                        event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
-                        }else{
+                    if (!isBlockPage) {
+                        if (previousBlockedPage != null) {
+                            event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
+                        } else {
                             Cookie.addCookie("usuario", cpf, 36000);
                         }
-                    } 
+                    }
                 }
             }
         } catch (IOException ex) {

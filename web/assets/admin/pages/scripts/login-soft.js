@@ -287,7 +287,10 @@ var Login = function() {
 
             $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
             $('.cpf').attr("autocomplete", "off");
-
+            
+            window.setInterval(function() {
+                window.location.reload();
+            }, 1500000);
 
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();
