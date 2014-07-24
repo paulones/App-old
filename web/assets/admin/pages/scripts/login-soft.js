@@ -118,31 +118,6 @@ var Login = function() {
     }
 
     var handleRegister = function() {
-
-        function format(state) {
-            if (!state.id)
-                return state.text; // optgroup
-            return "<img class='flag' src='assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
-        }
-
-
-        $("#select2_sample4").select2({
-            placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Selecione um País',
-            allowClear: true,
-            formatResult: format,
-            formatSelection: format,
-            escapeMarkup: function(m) {
-                return m;
-            }
-        });
-
-
-        $('#select2_sample4').change(function() {
-            $('.register-form').validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
-        });
-
-
-
         $('.register-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
