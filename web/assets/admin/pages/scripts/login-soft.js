@@ -226,12 +226,11 @@ var Login = function() {
         });
     }
 
-    var handlerLicensing = function() {
+    var handleLicensing = function() {
         $('.licensing-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
             focusInvalid: false, // do not focus the last invalid input
-            ignore: "",
             rules: {
                 licenca: {
                     required: true
@@ -241,6 +240,17 @@ var Login = function() {
                 licenca: {
                     required: "Entre com chave válida."
                 }
+            },
+            invalidHandler: function(event, validator) { //display error alert on form submit   
+
+            },
+            highlight: function(element) { // hightlight error inputs
+                $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+            },
+            success: function(label) {
+                label.closest('.form-group').removeClass('has-error');
+                label.remove();
             }
         });
         
@@ -255,8 +265,8 @@ var Login = function() {
         
         jQuery('#licensing-submit-btn').click(function() {
             jQuery('.login-form').hide();
-            jQuery('.licensing-form').hide();
-            jQuery('.register-form').show();
+            jQuery('.licensing-form').show();
+            jQuery('.register-form').hide();
         });
 
         jQuery('#licensing-back-btn').click(function() {
@@ -273,7 +283,7 @@ var Login = function() {
             handleLogin();
             handleForgetPassword();
             handleRegister();
-            handlerLicensing();
+            handleLicensing();
 
             $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
             $('.cpf').attr("autocomplete", "off");

@@ -69,7 +69,7 @@ public class LoginBean implements Serializable {
             }
         } else {
             mensagem = "licensingFail";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tempo da conta expirou, adquira outra licença!", null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tempo da licença expirou, adquira outra!", null));
         }
     }
 
@@ -119,11 +119,14 @@ public class LoginBean implements Serializable {
         }
     }
     
-    public void Licenciar(){
+    public void licenciar(){
+        System.out.println("-------licenciando--------");
         if (loginBO.licenciar(licenca)) {
-            
+            mensagem = "licencingSuccess";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Licença registrada com sucesso!", null));
         } else{
-            
+            mensagem = "licensingFail";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Licença inserida invalida!", null));
         }
     }
 

@@ -62,7 +62,8 @@
                     <span>
                         <h:messages layout="table" /> </span>
                 </h:panelGroup>
-                <h:panelGroup layout="block" styleClass="alert alert-success login-success" rendered="#{loginBean.mensagem eq 'forgetSuccess' or loginBean.mensagem eq 'registerSuccess'}">
+                <h:panelGroup layout="block" styleClass="alert alert-success login-success" 
+                              rendered="#{loginBean.mensagem eq 'forgetSuccess' or loginBean.mensagem eq 'registerSuccess' or loginBean.mensagem eq 'licencingSuccess'}">
                     <button class="close" data-close="alert"></button>
                     <span>
                         <h:messages layout="table" /> </span>
@@ -230,8 +231,8 @@
                     <button type="submit" id="licensing-submit-btn" class="btn blue pull-right">
                         Licenciar <i class="m-icon-swapright m-icon-white"></i>
                     </button>
-                    <h:commandLink styleClass="submit-licensing" action="#{loginBean.licenciar()}"/>
                 </div>
+                <h:commandLink styleClass="submit-licensing" action="#{loginBean.licenciar()}"/>
             </h:form>
             <!-- END LICENSING FORM -->
         </div>
