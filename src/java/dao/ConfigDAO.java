@@ -27,11 +27,8 @@ import javax.transaction.UserTransaction;
 public class ConfigDAO implements Serializable {
 
     public ConfigDAO() {
-        this.utx = utx;
-        this.emf = emf;
     }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = JPAUtil.getEMF();
+    private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
@@ -40,13 +37,13 @@ public class ConfigDAO implements Serializable {
     public void create(Config config) throws PreexistingEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             em.persist(config);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -64,13 +61,13 @@ public class ConfigDAO implements Serializable {
     public void edit(Config config) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             config = em.merge(config);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -92,8 +89,8 @@ public class ConfigDAO implements Serializable {
     public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             Config config;
             try {
                 config = em.getReference(Config.class, id);
@@ -102,10 +99,10 @@ public class ConfigDAO implements Serializable {
                 throw new NonexistentEntityException("The config with id " + id + " no longer exists.", enfe);
             }
             em.remove(config);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

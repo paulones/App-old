@@ -47,7 +47,7 @@ public class LoginBO implements Serializable {
                 System.out.println("data atual: " + dataAtual.toString());
                 if (dataAtual.before(dataChave)) {
                     Config config = new Config();
-                    /*if (configDAO.getConfigCount() == 0){
+                    if (configDAO.getConfigCount() == 0){
                         config.setCnpj(cnpj);
                         config.setKey(crypt);
                         config.setLastLogin(null);
@@ -59,7 +59,7 @@ public class LoginBO implements Serializable {
                         config.setLastLogin(null);
                         System.out.println("edit config: "+config.getCnpj()+", "+config.getKey());
                         configDAO.edit(config);
-                    }*/
+                    }
                     ok = true;
                 }
             } else {

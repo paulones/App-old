@@ -251,6 +251,12 @@ var Login = function() {
             success: function(label) {
                 label.closest('.form-group').removeClass('has-error');
                 label.remove();
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element.closest('.input-icon'));
+            },
+            submitHandler: function(form) {
+                $(".submit-licensing").click();
             }
         });
         
@@ -261,12 +267,6 @@ var Login = function() {
                 }
                 return false;
             }
-        });
-        
-        jQuery('#licensing-submit-btn').click(function() {
-            jQuery('.login-form').hide();
-            jQuery('.licensing-form').show();
-            jQuery('.register-form').hide();
         });
 
         jQuery('#licensing-back-btn').click(function() {
