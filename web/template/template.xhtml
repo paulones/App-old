@@ -65,7 +65,7 @@ and open the template in the editor.
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="block-screen" href="bloquear_tela.xhtml">
+                                    <a class="block-screen" href="">
                                         <i class="icon-lock"></i> Bloquear tela </a>
                                 </li>
                             </ul>
@@ -73,7 +73,7 @@ and open the template in the editor.
                         <!-- END USER LOGIN DROPDOWN -->
                         <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                         <li class="dropdown dropdown-quick-sidebar-toggler">
-                            <a href="login.xhtml" class="logout dropdown-toggle">
+                            <a href="" class="logout dropdown-toggle">
                                 <i class="icon-logout"></i>
                             </a>
                         </li>
@@ -159,6 +159,15 @@ and open the template in the editor.
 
             $('.login').click(function() {
                 window.location = "login.xhtml";
+            });
+            
+            $('.block-screen').click(function() {
+                $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: 1, path: '/'});
+                window.location = "bloquear_tela.xhtml";
+            });
+            $('.logout').click(function() {
+                $.removeCookie('usuario', { path: '/' });
+                window.location = "login.xhtml"
             });
         </script>
 

@@ -1,4 +1,4 @@
-var Index = function() {
+var Home = function() {
 
     return {
         //main function
@@ -9,12 +9,6 @@ var Index = function() {
 //                    map.width(map.parent().width());
 //                });
 //            });
-            $('.block-screen').click(function() {
-                $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: 1, path: '/'});
-            });
-            $('.logout').click(function() {
-                $.removeCookie('usuario', { path: '/' });
-            });
         },
         initJQVMAP: function() {
 
