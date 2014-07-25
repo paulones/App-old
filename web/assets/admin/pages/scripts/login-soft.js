@@ -229,8 +229,8 @@ var Login = function() {
                 $(".submit-licensing").click();
             }
         });
-        
-        
+
+
         $('.licensing-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.licensing-form').validate().form()) {
@@ -246,7 +246,7 @@ var Login = function() {
             jQuery('.register-form').hide();
         });
     }
-    
+
     var handlePass = function() {
         $('.pass-form').validate({
             errorElement: 'span', //default input error message container
@@ -308,6 +308,10 @@ var Login = function() {
         //main function to initiate the module
         init: function() {
 
+            if (Modernizr.localstorage) {
+                localStorage.clear();
+            }
+
             handleLogin();
             handleForgetPassword();
             handleRegister();
@@ -315,7 +319,7 @@ var Login = function() {
             handlePass();
 
             $('.cpf').mask("999.999.999-99");
-            
+
             window.setInterval(function() {
                 window.location.reload();
             }, 1500000);
@@ -329,7 +333,7 @@ var Login = function() {
                 jQuery('.login-form').hide();
                 jQuery('.licensing-form').show();
             }
-            
+
             if ($('#pass').length > 0) {
                 jQuery('.login-form').hide();
                 jQuery('.pass-form').show();

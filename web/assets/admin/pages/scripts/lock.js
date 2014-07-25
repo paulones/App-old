@@ -48,9 +48,19 @@ var Lock = function() {
 
             handlePassword();
 
+            if (Modernizr.localstorage) {
+                window.localStorage["pagina_anterior"] = $.cookie('pagina_anterior');
+            }
+
+
             window.setInterval(function() {
                 if ($.cookie('usuario') == null) {
                     window.location = "login.xhtml";
+                }
+                if ($.cookie('pagina_anterior') == null && window.localStorage['pagina_anterior'] != null) {
+                    if (Modernizr.localstorage) {
+                        $.cookie("pagina_anterior", window.localStorage['pagina_anterior'], {expires: 1, path: '/'});
+                    }
                 }
             }, 10000);
 
