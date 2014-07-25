@@ -51,7 +51,6 @@ var Login = function() {
                 if ($('.login-form').validate().form()) {
                     $('#password').val(CryptoJS.MD5($('#password').val()));
                     $('.submit-login').click();
-                    //$('.login-form').submit();
                 }
                 return false;
             }
@@ -97,7 +96,6 @@ var Login = function() {
         $('.forget-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.forget-form').validate().form()) {
-                    //$('.forget-form').submit();
                     $(".submit-emailrecover").click();
                 }
                 return false;
@@ -182,7 +180,6 @@ var Login = function() {
                     $('#register_password').val(CryptoJS.MD5($('#register_password').val()));
                     $('#rpassword').val(CryptoJS.MD5($('#rpassword').val()));
                     $('.submit-register').click();
-                    //$('.register-form').submit();
                 }
                 return false;
             }
