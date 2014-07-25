@@ -51,7 +51,6 @@ var Login = function() {
                 if ($('.login-form').validate().form()) {
                     $('#password').val(CryptoJS.MD5($('#password').val()));
                     $('.submit-login').click();
-                    //$('.login-form').submit();
                 }
                 return false;
             }
@@ -97,7 +96,6 @@ var Login = function() {
         $('.forget-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.forget-form').validate().form()) {
-                    //$('.forget-form').submit();
                     $(".submit-emailrecover").click();
                 }
                 return false;
@@ -118,31 +116,6 @@ var Login = function() {
     }
 
     var handleRegister = function() {
-
-        function format(state) {
-            if (!state.id)
-                return state.text; // optgroup
-            return "<img class='flag' src='assets/global/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
-        }
-
-
-        $("#select2_sample4").select2({
-            placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Selecione um País',
-            allowClear: true,
-            formatResult: format,
-            formatSelection: format,
-            escapeMarkup: function(m) {
-                return m;
-            }
-        });
-
-
-        $('#select2_sample4').change(function() {
-            $('.register-form').validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
-        });
-
-
-
         $('.register-form').validate({
             errorElement: 'span', //default input error message container
             errorClass: 'help-block', // default input error message class
@@ -207,7 +180,6 @@ var Login = function() {
                     $('#register_password').val(CryptoJS.MD5($('#register_password').val()));
                     $('#rpassword').val(CryptoJS.MD5($('#rpassword').val()));
                     $('.submit-register').click();
-                    //$('.register-form').submit();
                 }
                 return false;
             }
@@ -285,8 +257,7 @@ var Login = function() {
             handleRegister();
             handleLicensing();
 
-            $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
-            $('.cpf').attr("autocomplete", "off");
+            $('.cpf').mask("999.999.999-99");
             
             window.setInterval(function() {
                 window.location.reload();
