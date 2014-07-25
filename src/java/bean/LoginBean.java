@@ -123,7 +123,6 @@ public class LoginBean implements Serializable {
     }
 
     public void registrar() {
-        System.out.println(nome);
         cpf = this.cpf.replace(".", "").replace("-", "");
         if (ValidaCPF.isCPF(cpf)) {
             Long cpf = Long.valueOf(this.cpf);
