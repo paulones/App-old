@@ -24,10 +24,10 @@ and open the template in the editor.
         <!-- END GLOBAL MANDATORY STYLES -->
         <ui:insert name="page-styles"></ui:insert>
         <!-- BEGIN THEME STYLES -->
-        <link href="../assets/global/css/components.css" rel="stylesheet" type="text/css"/>
-        <link href="../assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-        <link href="../assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
-        <link href="../assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+        <link href="../assets/global/css/components.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/admin/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/admin/layout/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color"/>
         <link href="../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME STYLES -->
         <link rel="shortcut icon" href="/assets/global/img/magnifying-glass.png"/>
@@ -141,7 +141,10 @@ and open the template in the editor.
         <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-idletimer/1.0.0/idle-timer.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
+        <script src="assets/global/scripts/metronic.min.js" type="text/javascript"></script>
+        <script src="assets/admin/layout/scripts/layout.min.js" type="text/javascript"></script>
         <ui:insert name="page-scripts"></ui:insert>
+        
 
         <script>
             $.idleTimer(60000 * 10);

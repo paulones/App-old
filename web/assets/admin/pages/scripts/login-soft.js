@@ -260,8 +260,7 @@ var Login = function() {
             handleRegister();
             handleLicensing();
 
-            $('.cpf').inputmask("999.999.999-99", {showMaskOnHover: false, showMaskOnFocus: false, });
-            $('.cpf').attr("autocomplete", "off");
+            $('.cpf').mask("999.999.999-99");
             
             window.setInterval(function() {
                 window.location.reload();
