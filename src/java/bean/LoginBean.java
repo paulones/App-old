@@ -120,7 +120,6 @@ public class LoginBean implements Serializable {
     }
     
     public void licenciar(){
-        System.out.println("-------licenciando--------");
         if (loginBO.licenciar(licenca)) {
             mensagem = "licencingSuccess";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Licença registrada com sucesso!", null));

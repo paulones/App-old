@@ -11,11 +11,13 @@ import dao.exceptions.PreexistingEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Config;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -160,4 +162,17 @@ public class ConfigDAO implements Serializable {
         }
     }
     
+    public Config findFirstConfig() {
+        EntityManager em = getEntityManager();
+        List<Config> config = new ArrayList<Config>();
+        try {
+            TypedQuery<Config> query = em.createNamedQuery("Config.findOneRow", Config.class);
+            config = query.setMaxResults(1).getResultList();
+        } catch (Exception e) {
+            System.out.println("findFirstConfig e:> " + e);
+        } finally {
+            em.close();
+            return config.get(0);
+        }
+    }
 }

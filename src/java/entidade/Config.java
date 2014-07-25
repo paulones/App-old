@@ -31,8 +31,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Config.findAll", query = "SELECT c FROM Config c"),
     @NamedQuery(name = "Config.findByCnpj", query = "SELECT c FROM Config c WHERE c.cnpj = :cnpj"),
-    @NamedQuery(name = "Config.findByKey", query = "SELECT c FROM Config c WHERE c.key = :key"),
-    @NamedQuery(name = "Config.findByLastLogin", query = "SELECT c FROM Config c WHERE c.lastLogin = :lastLogin")})
+    @NamedQuery(name = "Config.findByChave", query = "SELECT c FROM Config c WHERE c.chave = :chave"),
+    @NamedQuery(name = "Config.findByUltimoLogin", query = "SELECT c FROM Config c WHERE c.ultimoLogin = :ultimoLogin"),
+    @NamedQuery(name = "Config.findOneRow", query = "SELECT c FROM Config c ORDER BY c.cnpj")})
 public class Config implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,12 +45,11 @@ public class Config implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "key")
-    private String key;
-    @Basic(optional = false)
-    @Column(name = "lastLogin")
-    @Temporal(TemporalType.DATE)
-    private Date lastLogin;
+    @Column(name = "chave")
+    private String chave;
+    @Column(name = "ultimo_login")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ultimoLogin;
 
     public Config() {
     }
@@ -58,10 +58,9 @@ public class Config implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public Config(String cnpj, String key, Date lastLogin) {
+    public Config(String cnpj, String chave) {
         this.cnpj = cnpj;
-        this.key = key;
-        this.lastLogin = lastLogin;
+        this.chave = chave;
     }
 
     public String getCnpj() {
@@ -72,20 +71,20 @@ public class Config implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public String getKey() {
-        return key;
+    public String getChave() {
+        return chave;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setChave(String chave) {
+        this.chave = chave;
     }
 
-    public Date getLastLogin() {
-        return lastLogin;
+    public Date getUltimoLogin() {
+        return ultimoLogin;
     }
 
-    public void setLastLogin(Date lastLogin) {
-        this.lastLogin = lastLogin;
+    public void setUltimoLogin(Date ultimoLogin) {
+        this.ultimoLogin = ultimoLogin;
     }
 
     @Override
