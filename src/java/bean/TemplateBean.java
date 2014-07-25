@@ -18,9 +18,9 @@ import util.Cookie;
  *
  * @author ipti004
  */
-@ManagedBean(name = "homeBean")
+@ManagedBean(name = "templateBean")
 @SessionScoped
-public class HomeBean implements Serializable{
+public class TemplateBean implements Serializable{
     
     private Usuario usuario;
     private UsuarioBO usuarioBO;
@@ -39,6 +39,4 @@ public class HomeBean implements Serializable{
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
-    
 }

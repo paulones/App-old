@@ -42,7 +42,7 @@ public class BloquearTelaBean implements Serializable {
             senhaCorreta = true;
             cpf = Cookie.getCookie("usuario");
             pagina_anterior = Cookie.getCookie("pagina_anterior");
-            usuario = usuarioBO.findUsuario(Long.valueOf(cpf.replace(".", "").replace("-", "")));
+            usuario = usuarioBO.findUsuario(Long.valueOf(cpf));
         }
     }
 
