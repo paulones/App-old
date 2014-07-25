@@ -104,13 +104,11 @@ var Login = function() {
 
         jQuery('#forget-password').click(function() {
             jQuery('.login-form').hide();
-            jQuery('.licensing-form').hide();
             jQuery('.forget-form').show();
         });
 
         jQuery('#back-btn').click(function() {
             jQuery('.login-form').show();
-            jQuery('.licensing-form').hide();
             jQuery('.forget-form').hide();
         });
     }
@@ -232,6 +230,7 @@ var Login = function() {
             }
         });
         
+        
         $('.licensing-form input').keypress(function(e) {
             if (e.which == 13) {
                 if ($('.licensing-form').validate().form()) {
@@ -247,6 +246,63 @@ var Login = function() {
             jQuery('.register-form').hide();
         });
     }
+    
+    var handlePass = function() {
+        $('.pass-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
+                new_password: {
+                    required: true
+                },
+                rnew_password: {
+                    equalTo: "#new_password"
+                }
+            },
+            messages: {// custom messages for radio buttons and checkboxes
+            },
+            invalidHandler: function(event, validator) { //display error alert on form submit   
+            },
+            highlight: function(element) { // hightlight error inputs
+                $(element)
+                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+            },
+            success: function(label) {
+                label.closest('.form-group').removeClass('has-error');
+                label.remove();
+            },
+            errorPlacement: function(error, element) {
+                if (element.closest('.input-icon').size() === 1) {
+                    error.insertAfter(element.closest('.input-icon'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            submitHandler: function(form) {
+                $('#new_password').val(CryptoJS.MD5($('#new_password').val()));
+                $('#rnew_password').val(CryptoJS.MD5($('#rnew_password').val()));
+                $('.submit-pass').click();
+            }
+        });
+
+        $('.pass-form input').keypress(function(e) {
+            if (e.which == 13) {
+                if ($('.pass-form').validate().form()) {
+                    $('#new_password').val(CryptoJS.MD5($('#new_password').val()));
+                    $('#rnew_password').val(CryptoJS.MD5($('#rnew_password').val()));
+                    $('.submit-pass').click();
+                }
+                return false;
+            }
+        });
+
+        jQuery('#pass-back-btn').click(function() {
+            jQuery('.login-form').show();
+            jQuery('.pass-form').hide();
+        });
+    }
 
     return {
         //main function to initiate the module
@@ -256,6 +312,7 @@ var Login = function() {
             handleForgetPassword();
             handleRegister();
             handleLicensing();
+            handlePass();
 
             $('.cpf').mask("999.999.999-99");
             
@@ -265,14 +322,17 @@ var Login = function() {
 
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();
-                jQuery('.licensing-form').hide();
                 jQuery('.register-form').show();
             }
 
             if ($('.licensing-error').length > 0) {
                 jQuery('.login-form').hide();
                 jQuery('.licensing-form').show();
-                jQuery('.register-form').hide();
+            }
+            
+            if ($('#pass').length > 0) {
+                jQuery('.login-form').hide();
+                jQuery('.pass-form').show();
             }
 
             $.backstretch([

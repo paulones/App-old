@@ -15,10 +15,10 @@ import org.apache.commons.mail.SimpleEmail;
  */
 public class EnviarEmail {
     
-    private final static String userAuthentication = "noreply@prcc.com.br";
-    private final static String passwordUserAuthentication = "021089";
-    private final static String sender = "noreply@prcc.com.br";
-    private final static String smtp = "smtp.prcc.com.br";
+    private final static String userAuthentication = "paulones89@gmail.com";
+    private final static String passwordUserAuthentication = "";
+    private final static String sender = "paulones89@gmail.com";
+    private final static String smtp = "smtp.gmail.com";
     private final static int smtpPort = 587;
     private final static boolean authentication = false;
 

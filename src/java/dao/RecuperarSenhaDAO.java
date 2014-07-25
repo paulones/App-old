@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import dao.exceptions.IllegalOrphanException;
@@ -11,16 +10,17 @@ import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.PreexistingEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.RecuperarSenha;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.Usuario;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -31,7 +31,7 @@ public class RecuperarSenhaDAO implements Serializable {
 
     public RecuperarSenhaDAO() {
     }
-    
+
     private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
@@ -219,5 +219,17 @@ public class RecuperarSenhaDAO implements Serializable {
             em.close();
         }
     }
-    
+
+    public RecuperarSenha findRecuperarSenhaByCod(String cod) {
+        EntityManager em = getEntityManager();
+        try {
+            RecuperarSenha recuperarSenha = (RecuperarSenha) em.createNativeQuery("select * from recuperar_senha "
+                    + "where codigo = '" + cod + "'", RecuperarSenha.class).getSingleResult();
+            return recuperarSenha;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

@@ -52,13 +52,13 @@
                 <input type="password" style="display:none"/>
                 <!--  -->
                 <h3 class="form-title">Login</h3>
-                <h:panelGroup  layout="block" styleClass="alert alert-danger login-error" rendered="#{(loginBean.mensagem eq 'loginFail') or (loginBean.mensagem eq 'forgetFail')}">
+                <h:panelGroup  layout="block" styleClass="alert alert-danger login-error" rendered="#{(loginBean.mensagem eq 'loginFail')}">
                     <button class="close" data-close="alert"></button>
                     <span>
                         <h:messages layout="table" /> </span>
                 </h:panelGroup>
                 <h:panelGroup layout="block" styleClass="alert alert-success login-success" 
-                              rendered="#{loginBean.mensagem eq 'forgetSuccess' or loginBean.mensagem eq 'registerSuccess' or loginBean.mensagem eq 'licencingSuccess'}">
+                              rendered="#{loginBean.mensagem eq 'loginSuccess'}">
                     <button class="close" data-close="alert"></button>
                     <span>
                         <h:messages layout="table" /> </span>
@@ -228,6 +228,37 @@
                     </button>
                 </div>
                 <h:commandLink styleClass="submit-licensing" action="#{loginBean.licenciar()}"/>
+            </h:form>
+            <h:form prependId="false" class="pass-form">
+                <h3>Recuperação de senha</h3>
+                <h:inputHidden id="pass" rendered="#{loginBean.mensagem eq 'passChange'}"/>
+                <p>
+                    Digite sua nova senha
+                </p>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Senha</label>
+                    <div class="input-icon">
+                        <i class="fa fa-lock"></i>
+                        <h:inputSecret class="form-control placeholder-no-fix" value="#{loginBean.senha}" autocomplete="off" p:placeholder="Senha" id="new_password"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label visible-ie8 visible-ie9">Re-digite sua senha</label>
+                    <div class="controls">
+                        <div class="input-icon">
+                            <i class="fa fa-check"></i>
+                            <input class="form-control placeholder-no-fix"  type="password" autocomplete="off" placeholder="Re-digite sua senha" id="rnew_password" name="rnew_password"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button id="pass-back-btn" type="button" class="btn">
+                        <i class="m-icon-swapleft"></i> Voltar </button>
+                    <button type="submit" id="pass-submit-btn" class="btn blue pull-right">
+                        Alterar <i class="m-icon-swapright m-icon-white"></i>
+                    </button>
+                </div>
+                <h:commandLink styleClass="submit-pass" action="#{loginBean.alterarSenha()}"/>
             </h:form>
             <!-- END LICENSING FORM -->
         </div>

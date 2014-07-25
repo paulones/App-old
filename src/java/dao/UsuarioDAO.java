@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -210,6 +211,19 @@ public class UsuarioDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Usuario findUsuarioByEmail(String email){
+        EntityManager em = getEntityManager();
+        try {
+            Usuario usuario = (Usuario) em.createNativeQuery("select * from usuario "
+                    + "where email = '" + email + "'", Usuario.class).getSingleResult();
+            return usuario;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }
