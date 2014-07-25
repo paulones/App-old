@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.mail.EmailException;
 import org.postgresql.util.PSQLException;
 import util.Cookie;
 import util.EnviarEmail;
@@ -104,7 +105,7 @@ public class LoginBean implements Serializable {
             mensagem = "loginSuccess";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação enviada. Verifique seu e-mail.", null));
             //-------
-        } catch (Exception e) {
+        } catch (EmailException e) {
             e.printStackTrace();
             mensagem = "loginFail";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Ocorreu um erro ao tentar enviar e-mail de recuperação de senha. Tente novamente.", null));
