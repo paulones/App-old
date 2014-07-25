@@ -39,6 +39,15 @@ public class UsuarioBO implements Serializable {
         }
         return new Usuario();
     }
+    
+    public Usuario findUsuarioByEmail(String email) {
+        try { 
+            return usuarioDAO.findUsuarioByEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Usuario();
+    }
 
     public void edit(Usuario usuario) {
         try {
