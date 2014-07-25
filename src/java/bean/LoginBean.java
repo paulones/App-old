@@ -95,7 +95,7 @@ public class LoginBean implements Serializable {
             rpBO = new RecuperarSenhaBO();
             String accountActivation = "App - Ativar Conta";
             String mailtext = "Olá!\n\nObrigado pelo seu interesse em se registrar no App.\n\nPara concluir o processo, será preciso que você clique no link abaixo para ativar sua conta.\n\n";
-            mailtext += "http://localhost:8080/login.xhtml?cod=" + cod;
+            mailtext += "http://prcc.com.br/login.xhtml?cod=" + cod;
             mailtext += "\n\nAtenciosamente,\n\nPRCC - Gestão em TI e negócios.";
             EnviarEmail.enviar(mailtext, accountActivation, email);
             rp.setUsuarioFk(usuarioBO.findUsuarioByEmail(email).getCpf());
@@ -104,7 +104,6 @@ public class LoginBean implements Serializable {
             email = "";
             mensagem = "loginSuccess";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação enviada. Verifique seu e-mail.", null));
-            //-------
         } catch (EmailException e) {
             e.printStackTrace();
             mensagem = "loginFail";
