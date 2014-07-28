@@ -6,168 +6,46 @@
     <ui:define name="title">Página não encontrada</ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="../../assets/admin/pages/css/error.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/admin/pages/css/error.css" rel="stylesheet" type="text/css"/>
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN PAGE STYLES -->
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
-        <!-- BEGIN CONTAINER -->
-        <div class="page-container">
-            <!-- BEGIN SIDEBAR -->
-            <div class="page-sidebar-wrapper">
-                <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-                <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-                <div class="page-sidebar navbar-collapse collapse">
-                    <!-- BEGIN SIDEBAR MENU -->
-                    <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200">
-                        <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-                        <li class="sidebar-toggler-wrapper">
-                            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                            <div class="sidebar-toggler">
-                            </div>
-                            <!-- END SIDEBAR TOGGLER BUTTON -->
-                        </li>
-                        <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
-                        <li class="sidebar-search-wrapper hidden-xs">
-                            <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
-                            <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
-                            <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
-                            <form class="sidebar-search" action="extra_search.html" method="POST">
-                                <a href="javascript:;" class="remove">
-                                    <i class="icon-close"></i>
-                                </a>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="Procurar..."/>
-                                    <span class="input-group-btn">
-                                        <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
-                                    </span>
-                                </div>
-                            </form>
-                            <!-- END RESPONSIVE QUICK SEARCH FORM -->
-                        </li>
-                        <li class="start ">
-                            <a href="home.xhtml">
-                                <i class="icon-home"></i>
-                                <span class="title">Home</span>
-                                <span class="selected"></span>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- END SIDEBAR MENU -->
-                </div>
+        <!-- BEGIN PAGE HEADER-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <h3 class="page-title">
+                    404 <small>Página não encontrada</small>
+                </h3>
+                <ul class="page-breadcrumb breadcrumb">
+                    <li>
+                        <i class="fa fa-exclamation-triangle"></i>
+                        <span>404</span>
+                    </li>
+                </ul>
+                <!-- END PAGE TITLE & BREADCRUMB-->
             </div>
-            <!-- END SIDEBAR -->
-            <!-- BEGIN CONTENT -->
-            <div class="page-content-wrapper">
-                <div class="page-content">
-                    <!-- BEGIN STYLE CUSTOMIZER -->
-                    <div class="theme-panel hidden-xs hidden-sm">
-                        <div class="toggler">
-                        </div>
-                        <div class="toggler-close">
-                        </div>
-                        <div class="theme-options">
-                            <div class="theme-option theme-colors clearfix">
-                                <span>
-                                    COR DO TEMA </span>
-                                <ul>
-                                    <li class="color-default current tooltips" data-style="default" data-original-title="Padrão">
-                                    </li>
-                                    <li class="color-darkblue tooltips" data-style="darkblue" data-original-title="Azul Escuro">
-                                    </li>
-                                    <li class="color-blue tooltips" data-style="blue" data-original-title="Azul">
-                                    </li>
-                                    <li class="color-grey tooltips" data-style="grey" data-original-title="Cinza">
-                                    </li>
-                                    <li class="color-light tooltips" data-style="light" data-original-title="Claro">
-                                    </li>
-                                    <li class="color-light2 tooltips" data-style="light2" data-html="true" data-original-title="Claro 2">
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="theme-option display-hide">
-                                <span>
-                                    Layout </span>
-                                <select class="layout-option form-control input-small">
-                                    <option value="fluid" selected="selected">Fluid</option>
-                                    <option value="boxed">Boxed</option>
-                                </select>
-                            </div>
-                            <div class="theme-option display-hide">
-                                <span>
-                                    Header </span>
-                                <select class="page-header-option form-control input-small">
-                                    <option value="fixed" selected="selected">Fixed</option>
-                                    <option value="default">Default</option>
-                                </select>
-                            </div>
-                            <div class="theme-option display-hide">
-                                <span>
-                                    Sidebar </span>
-                                <select class="sidebar-option form-control input-small">
-                                    <option value="fixed" selected="selected">Fixed</option>
-                                    <option value="default">Default</option>
-                                </select>
-                            </div>
-                            <div class="theme-option display-hide">
-                                <span>
-                                    Sidebar Position </span>
-                                <select class="sidebar-pos-option form-control input-small">
-                                    <option value="left" selected="selected">Left</option>
-                                    <option value="right">Right</option>
-                                </select>
-                            </div>
-                            <div class="theme-option display-hide">
-                                <span>
-                                    Footer </span>
-                                <select class="page-footer-option form-control input-small">
-                                    <option value="fixed">Fixed</option>
-                                    <option value="default" selected="selected">Default</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END STYLE CUSTOMIZER -->
-                    <!-- BEGIN PAGE HEADER-->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-                            <h3 class="page-title">
-                                404 <small>Página não encontrada</small>
-                            </h3>
-                            <ul class="page-breadcrumb breadcrumb">
-                                <li>
-                                    <i class="fa fa-exclamation-triangle"></i>
-                                    <span>404</span>
-                                </li>
-                            </ul>
-                            <!-- END PAGE TITLE & BREADCRUMB-->
-                        </div>
-                    </div>
-                    <!-- END PAGE HEADER-->
-                    <!-- BEGIN PAGE CONTENT-->
-                    <div class="row">
-                        <div class="col-md-12 page-404">
-                            <div class="number">
-                                404
-                            </div>
-                            <div class="details">
-                                <h3>Oops!</h3>
-                                <p>
-                                    A página que você está procurando não foi encontrada.<br/>
-                                    <a href="home.xhtml">
-                                        Retorne ao home </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END PAGE CONTENT-->
-                </div>
-            </div>
-            <!-- END CONTENT -->
         </div>
-        <!-- END CONTAINER -->
+        <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <div class="row">
+            <div class="col-md-12 page-404">
+                <div class="number">
+                    404
+                </div>
+                <div class="details">
+                    <h3>Oops!</h3>
+                    <p>
+                        A página que você está procurando não foi encontrada.<br/>
+                        <a href="home.xhtml">
+                            Retorne ao home </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->

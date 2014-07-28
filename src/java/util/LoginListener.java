@@ -27,7 +27,7 @@ public class LoginListener implements PhaseListener {
         // Obtém a página que atualmente está interagindo com o ciclo
         // Se for a página houver o termo, seta a variável como true
         boolean isLoginPage = context.getViewRoot().getViewId().lastIndexOf("login") > -1;
-        boolean isBlockPage = context.getViewRoot().getViewId().lastIndexOf("bloquear_tela") > -1;
+        boolean isBlockPage = context.getViewRoot().getViewId().lastIndexOf("bloquear-tela") > -1;
 
         String cpf = Cookie.getCookie("usuario");
         String previousBlockedPage = Cookie.getCookie("pagina_anterior");
@@ -41,7 +41,7 @@ public class LoginListener implements PhaseListener {
                         Cookie.addCookie("usuario", cpf, 36000);
                         event.getFacesContext().getExternalContext().redirect("/home.xhtml");
                     } else {
-                        event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
+                        event.getFacesContext().getExternalContext().redirect("/bloquear-tela.xhtml");
                     }
                 }
             } else {
@@ -50,7 +50,7 @@ public class LoginListener implements PhaseListener {
                 } else {
                     if (!isBlockPage) {
                         if (previousBlockedPage != null) {
-                            event.getFacesContext().getExternalContext().redirect("/bloquear_tela.xhtml");
+                            event.getFacesContext().getExternalContext().redirect("/bloquear-tela.xhtml");
                         } else {
                             Cookie.addCookie("usuario", cpf, 36000);
                         }
