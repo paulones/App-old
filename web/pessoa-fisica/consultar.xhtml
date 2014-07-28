@@ -1,13 +1,15 @@
-<ui:composition template="/template/template.xhtml" 
+<ui:composition template="../template/template.xhtml" 
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">Página não encontrada</ui:define>
+    <ui:define name="title">Pessoa Física - Consulta</ui:define>
+    <ui:define name="metadata-components">
+        <f:event type="preRenderComponent" listener="#{homeBean.init()}"/>
+    </ui:define>
     <ui:define name="page-styles">
-        <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="../assets/admin/pages/css/error.css" rel="stylesheet" type="text/css"/>
-        <!-- END PAGE LEVEL STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+        <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -15,48 +17,37 @@
         <!-- BEGIN PAGE HEADER-->
         <div class="row">
             <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    404 <small>Página não encontrada</small>
+                    Pessoa Física <small>Consulta</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
-                        <i class="fa fa-exclamation-triangle"></i>
-                        <span>404</span>
+                        <i class="fa fa-user"></i>
+                        <a href="#">Pessoa Física</a>
+                        <i class="fa fa-angle-right"></i>
+                    </li>
+                    <li>
+                        <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
                     </li>
                 </ul>
-                <!-- END PAGE TITLE & BREADCRUMB-->
+                <!-- END PAGE TITLE e BREADCRUMB-->
             </div>
         </div>
         <!-- END PAGE HEADER-->
-        <!-- BEGIN PAGE CONTENT-->
-        <div class="row">
-            <div class="col-md-12 page-404">
-                <div class="number">
-                    404
-                </div>
-                <div class="details">
-                    <h3>Oops!</h3>
-                    <p>
-                        A página que você está procurando não foi encontrada.<br/>
-                        <a href="home.xhtml">
-                            Retorne ao home </a>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!-- END PAGE CONTENT-->
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="../assets/admin/pages/scripts/pf-consultar.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
             jQuery(document).ready(function() {
                 Metronic.init(); // init metronic core componets
                 Layout.init(); // init layout
+                PFCon.init();
             });
         </script>
     </ui:define>

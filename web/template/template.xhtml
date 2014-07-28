@@ -58,14 +58,14 @@
                         <!-- BEGIN USER LOGIN DROPDOWN -->
                         <li class="dropdown dropdown-user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="assets/admin/layout/img/avatar.png"/>
+                                <img alt="" class="img-circle" src="../assets/admin/layout/img/avatar.png"/>
                                 <span class="username">
                                     #{templateBean.usuario.nome.split(" ")[0]} </span>
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a class="block-screen" href="#">
+                                    <a class="block-screen" href="../bloquear-tela.xhtml">
                                         <i class="icon-lock"></i> Bloquear tela </a>
                                 </li>
                             </ul>
@@ -73,7 +73,7 @@
                         <!-- END USER LOGIN DROPDOWN -->
                         <!-- BEGIN QUICK SIDEBAR TOGGLER -->
                         <li class="dropdown dropdown-quick-sidebar-toggler">
-                            <a href="#" class="logout dropdown-toggle">
+                            <a href="../login.xhtml" class="logout dropdown-toggle">
                                 <i class="icon-logout"></i>
                             </a>
                         </li>
@@ -121,12 +121,57 @@
                             </form>
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
-                        <li class="start active ">
-                            <a href="home.xhtml">
+                        <li class="start menu-home">
+                            <a href="../home.xhtml">
                                 <i class="icon-home"></i>
                                 <span class="title">Home</span>
-                                <span class="selected"></span>
                             </a>
+                        </li>
+                        <li class="menu-proc-adm">
+                            <a href="../processos/processos-administrativos.xhtml">
+                                <i class="icon-folder-alt"></i>
+                                <span class="title">Processos Administrativos</span>
+                            </a>
+                        </li>
+                        <li class="menu-proc-jud">
+                            <a href="../processos/processos-judiciais.xhtml">
+                                <i class="icon-docs"></i>
+                                <span class="title">Processos Judiciais</span>
+                            </a>
+                        </li>
+                        <li class="menu-pf">
+                            <a href="javascript:;">
+                                <i class="icon-user"></i>
+                                <span class="title">Pessoa Física</span>
+                                <span class="arrow"/>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="sub-menu-pf-cad">
+                                    <a href="../pessoa-fisica/cadastrar.xhtml">
+                                        Cadastrar</a>
+                                </li>
+                                <li class="sub-menu-pf-con">
+                                    <a href="../pessoa-fisica/consultar.xhtml">
+                                        Consultar</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="last menu-pj">
+                            <a href="javascript:;">
+                                <i class="icon-briefcase"></i>
+                                <span class="title">Pessoa Jurídica</span>
+                                <span class="arrow"/>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="sub-menu-pj-cad">
+                                    <a href="../pessoa-juridica/cadastrar.xhtml">
+                                        Cadastrar</a>
+                                </li>
+                                <li class="sub-menu-pj-con">
+                                    <a href="../pessoa-juridica/consultar.xhtml">
+                                        Consultar</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                     <!-- END SIDEBAR MENU -->
@@ -272,8 +317,9 @@
             }
             $.idleTimer(60000 * 10);
             $(document).bind("idle.idleTimer", function() {
-                $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: 1, path: '/'});
-                window.location = "bloquear-tela.xhtml";
+                $.cookie.raw = true;
+                $.cookie("pagina_anterior", window.location.pathname, {expires: 1, path: '/'});
+                window.location = "../bloquear-tela.xhtml";
             });
 
             var interval = window.setInterval(function() {
@@ -283,16 +329,15 @@
                 }
             }, 10000);
             $('.login').click(function() {
-                window.location = "login.xhtml";
+                window.location = "../login.xhtml";
             });
 
             $('.block-screen').click(function() {
-                $.cookie("pagina_anterior", window.location.pathname.split('/')[1], {expires: 1, path: '/'});
-                window.location = "bloquear-tela.xhtml";
+                $.cookie.raw = true;
+                $.cookie("pagina_anterior", window.location.pathname, {expires: 1, path: '/'});
             });
             $('.logout').click(function() {
                 $.removeCookie('usuario', {path: '/'});
-                window.location = "login.xhtml"
             });
         </script>
 

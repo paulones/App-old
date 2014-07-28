@@ -6,11 +6,11 @@
     </context-param>
     <error-page>
         <error-code>404</error-code>
-        <location>/404.xhtml</location>
+        <location>/erros/404.xhtml</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/500.xhtml</location>
+        <location>/erros/500.xhtml</location>
     </error-page>
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>

@@ -39,18 +39,18 @@ public class LoginListener implements PhaseListener {
                 if (cpf != null) {
                     if (previousBlockedPage == null) {
                         Cookie.addCookie("usuario", cpf, 36000);
-                        event.getFacesContext().getExternalContext().redirect("/home.xhtml");
+                        event.getFacesContext().getExternalContext().redirect("../home.xhtml");
                     } else {
-                        event.getFacesContext().getExternalContext().redirect("/bloquear-tela.xhtml");
+                        event.getFacesContext().getExternalContext().redirect("../bloquear-tela.xhtml");
                     }
                 }
             } else {
                 if (cpf == null) {
-                    event.getFacesContext().getExternalContext().redirect("/login.xhtml");
+                    event.getFacesContext().getExternalContext().redirect("../login.xhtml");
                 } else {
                     if (!isBlockPage) {
                         if (previousBlockedPage != null) {
-                            event.getFacesContext().getExternalContext().redirect("/bloquear-tela.xhtml");
+                            event.getFacesContext().getExternalContext().redirect("../bloquear-tela.xhtml");
                         } else {
                             Cookie.addCookie("usuario", cpf, 36000);
                         }
