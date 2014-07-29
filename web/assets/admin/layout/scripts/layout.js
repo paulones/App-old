@@ -585,7 +585,7 @@ var Layout = function () {
                 $('.page-logo img').attr('src', layoutImgPath + 'logo.png');
             }
             if ($.cookie) {
-                $.cookie('style_color', color);
+                $.cookie('style_color', color, {path:'/'});
             }
         }
 
