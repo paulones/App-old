@@ -53,7 +53,7 @@ public class BloquearTelaBean implements Serializable {
                 Cookie.apagarCookie("pagina_anterior");
                 FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);
             } else {
-                FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+                FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
             }
         } else {
             senhaCorreta = false;
@@ -63,7 +63,7 @@ public class BloquearTelaBean implements Serializable {
 
     public void voltarAoLogin() throws IOException {
         Cookie.apagarCookie("usuario");
-        FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
     }
 
     public Usuario getUsuario() {

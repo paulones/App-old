@@ -59,7 +59,7 @@ public class LoginBean implements Serializable {
             cod = request.getParameter("cod");
             if (cod != null) {
                 if (rpBO.findRecuperarSenhaByCod(cod) == null) {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
                 } else {
                     mensagem = "passChange";
                 }
