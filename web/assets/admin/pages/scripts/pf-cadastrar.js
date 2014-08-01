@@ -116,6 +116,7 @@ var PFCad = function() {
 
             },
             success: function(label, element) {
+                alert($(element).val());
                 var icon = $(element).parent('.input-icon').children('i');
                 $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
                 icon.removeClass("fa-warning").addClass("fa-check");
@@ -127,16 +128,52 @@ var PFCad = function() {
             }
         });
     }
+    var handleTable = function () {
+
+
+        var table = $('#vinculations');
+
+        var oTable = table.dataTable({
+            paginate: false,
+            lengthMenu:false,
+            info:false,
+            filter:false,
+            // set the initial value
+            "pageLength": 10,
+
+            "language": {
+                "emptyTable": "Sem V&iacute;nculos."
+            },
+            "ordering":false
+        });
+
+        var tableWrapper = $("#vinculations_wrapper");
+
+        tableWrapper.find(".dataTables_length select").select2({
+            showSearchInput: false //hide search box with special css class
+        }); // initialize select2 dropdown
+
+
+        table.on('click', '.delete', function (e) {
+            e.preventDefault();
+
+            var nRow = $(this).parents('tr')[0];
+            oTable.fnDeleteRow(nRow);
+        });
+    }
 
     return {
         init: function() {
 
             handleValidation();
+            handleTable();
 
             $('#cpf').mask("999.999.999-99");
             $('#rg').mask("9.999.999-9");
             $('#elector').mask("999999999999");
             $('#cep').mask("99999-999");
+            $('.date').mask("99/99/9999");
+            $('.money').maskMoney({allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
             
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
