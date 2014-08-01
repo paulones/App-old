@@ -48,10 +48,8 @@ var TableEditable = function () {
         var table = $('#sample_editable_1');
 
         var oTable = table.dataTable({
-            "lengthMenu": [
-                [5, 15, 20, -1],
-                [5, 15, 20, "All"] // change per page values here
-            ],
+            paginate: false,
+            lengthMenu:false,
             // set the initial value
             "pageLength": 10,
 
