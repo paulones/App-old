@@ -208,7 +208,7 @@ var Login = function() {
             },
             messages: {
                 licenca: {
-                    required: "Entre com chave válida."
+                    required: "Digite uma chave v&aacute;lida."
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit   

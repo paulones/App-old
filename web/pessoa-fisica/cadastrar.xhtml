@@ -43,7 +43,7 @@
         <!-- BEGIN PAGE CONTENT -->
         <div class="tab-content">
             <div class="tab-pane active" id="tab_0">
-                <div class="portlet box red">
+                <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-edit"></i>Dados da Pessoa Física
@@ -109,96 +109,34 @@
                                                         Feminino </label>
                                                 </div>
                                                 <div id="form_gender_error">
-											</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Date of Birth</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" placeholder="dd/mm/yyyy"/>
+                                            <label class="control-label col-md-3">RG/Órgão Emissor/UF<span class="required">
+                                                    * </span>
+                                            </label>
+                                            <div class="col-md-4">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="rg" name="rg"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                </div>
-                                <!--/row-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Category</label>
-                                            <div class="col-md-9">
-                                                <select class="select2_category select2me form-control" data-placeholder="Choose a Category" tabindex="1">
-                                                    <option value="Category 1">Category 1</option>
-                                                    <option value="Category 2">Category 2</option>
-                                                    <option value="Category 3">Category 5</option>
-                                                    <option value="Category 4">Category 4</option>
-                                                </select>
+                                            <div class="col-md-3">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" maxlength="3" id="oe" name="oe"/>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                </div>
-                                <h3 class="form-section">Address</h3>
-                                <!--/row-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Address 1</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Address 2</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">City</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">State</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                </div>
-                                <!--/row-->
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Post Code</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Country</label>
-                                            <div class="col-md-9">
-                                                <select class="form-control">
-                                                    <option>Country 1</option>
-                                                    <option>Country 2</option>
+                                            <div class="col-md-2">
+                                                <select class="select2_category select2me form-control" name="rguf" tabindex="1">
+                                                    <option value="Category 1">SE</option>
+                                                    <option value="Category 2">PA</option>
+                                                    <option value="Category 3">BA</option>
+                                                    <option value="Category 4">AC</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -206,6 +144,182 @@
                                     <!--/span-->
                                 </div>
                                 <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Nome do Pai
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="fathername"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Título de Eleitor
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="elector" name="elector"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Nome da Mãe
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="mothername"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Naturalidade
+                                            </label>
+                                            <div class="col-md-2">
+                                                <select class="select2_category select2me form-control" name="natuf" tabindex="1">
+                                                    <option value="Category 1">SE</option>
+                                                    <option value="Category 2">PA</option>
+                                                    <option value="Category 3">BA</option>
+                                                    <option value="Category 4">AC</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <select class="select2_category select2me form-control" name="natcity" tabindex="1">
+                                                    <option value="Category 1">Aracaju</option>
+                                                    <option value="Category 2">Salvador</option>
+                                                    <option value="Category 3">Maceió</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="form-section">Endereço</h3>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Endereço</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="address"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Complemento</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="complement"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Número</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" onkeyup="this.value = this.value.replace(/[^\d]/, '')" name="number"/>
+                                                </div> </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Bairro</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="neighborhood"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">CEP</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="cep" name="cep"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Estado/Cidade
+                                            </label>
+                                            <div class="col-md-2">
+                                                <select class="select2_category select2me form-control" name="enduf" tabindex="1">
+                                                    <option value="Category 1">SE</option>
+                                                    <option value="Category 2">PA</option>
+                                                    <option value="Category 3">BA</option>
+                                                    <option value="Category 4">AC</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <select class="select2_category select2me form-control" name="endcity" tabindex="1">
+                                                    <option value="Category 1">Aracaju</option>
+                                                    <option value="Category 2">Salvador</option>
+                                                    <option value="Category 3">Maceió</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <h3 class="form-section">Vínculos empresariais</h3>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Endereço</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="address"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Complemento</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="complement"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-actions right">
                                 <div class="row">
@@ -213,7 +327,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn red">Cadastrar</button>
+                                            <button type="submit" class="btn blue-chambray">Cadastrar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -237,11 +351,11 @@
         <script src="../assets/admin/pages/scripts/pf-cadastrar.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
-            jQuery(document).ready(function() {
-                Metronic.init(); // init metronic core componets
-                Layout.init(); // init layout
-                PFCad.init();
-            });
+                                                        jQuery(document).ready(function() {
+                                                            Metronic.init(); // init metronic core componets
+                                                            Layout.init(); // init layout
+                                                            PFCad.init();
+                                                        });
         </script>
     </ui:define>
 </ui:composition>

@@ -24,6 +24,58 @@ var PFCad = function() {
                 },
                 gender: {
                     required: true
+                },
+                rg: {
+                    minlength: 11,
+                    required: true
+                },
+                oe: {
+                    minlength: 3,
+                    required: true
+                },
+                fathername: {
+                    minlength: 2,
+                    required: false
+                },
+                mothername: {
+                    minlength: 2,
+                    required: false
+                },
+                elector: {
+                    minlength: 12,
+                    required:false
+                },
+                natuf: {
+                    required:false
+                },
+                natcity: {
+                    required:false
+                },
+                address: {
+                    minlength: 3,
+                    required:false
+                },
+                complement: {
+                    minlength: 3,
+                    required:false
+                },
+                number: {
+                    number: true,
+                    required:false
+                },
+                neighborhood: {
+                    minlength: 1,
+                    required:false
+                },
+                cep: {
+                    minlength:9,
+                    required:false
+                },
+                enduf: {
+                    required:false
+                },
+                endcity: {
+                    required:false
                 }
             },
             messages: {
@@ -82,7 +134,10 @@ var PFCad = function() {
             handleValidation();
 
             $('#cpf').mask("999.999.999-99");
-
+            $('#rg').mask("9.999.999-9");
+            $('#elector').mask("999999999999");
+            $('#cep').mask("99999-999");
+            
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
             $('.menu-pf a .arrow').addClass('open');
