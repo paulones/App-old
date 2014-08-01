@@ -10,6 +10,7 @@ import entidade.Config;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import util.Base64Crypt;
 import util.Criptografia;
 
 /**
@@ -18,7 +19,8 @@ import util.Criptografia;
  */
 public class LoginBO implements Serializable {
 
-    private String chaveTeste = "l3Q3zmwpr2oRpzGH9pTcR+TDyYzj1264XX4keImFnHU=";
+    private String chaveTeste = "l3Q3zmwpr2pTOs4/3dwAqXd44Od8Gy3cGT/dfaMvJXY=";
+    private String cryptKey = "deadwood8986deadwood8986";
     ConfigDAO configDAO = new ConfigDAO();
 
     public LoginBO() {
@@ -31,11 +33,14 @@ public class LoginBO implements Serializable {
         try {
             //Consulta em uma persistênca a string de licença
             String licenca = DesEncriptonator(crypt);
-            if (licenca.length() == 31) {
+            System.out.println("chave: "+crypt);
+            System.out.println("licenca: "+licenca);
+            if (licenca.length() >= 31) {
                 String tipo = licenca.substring(0, 1);
                 String cnpj = licenca.substring(1, 15);
                 String iniData = licenca.substring(15, 23);
                 String endData = licenca.substring(23, 31);
+                System.out.println("string: "+tipo +" - "+ cnpj +" - "+ iniData +" - "+ endData);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Date dataChave = sdf.parse(endData);
                 Date dataAtual = new Date();
@@ -85,9 +90,14 @@ public class LoginBO implements Serializable {
         return ok;
     }
 
+    
     public String DesEncriptonator(String chave) {
-        Criptografia encrypter = new Criptografia("aabbccaa");
-        return encrypter.decrypt(chave);
+        /*
+         DesEncrypter encrypter = new DesEncrypter("aabbccaa");
+         return encrypter.decrypt(chave);
+         */
+        Base64Crypt td = new Base64Crypt(cryptKey);
+        return td.decrypt(chave);
     }
 
 }
