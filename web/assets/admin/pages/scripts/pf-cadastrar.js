@@ -109,14 +109,12 @@ var PFCad = function() {
 
             },
             highlight: function(element) { // hightlight error inputs
-                $(element)
-                        .closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                $(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
             },
             unhighlight: function(element) { // revert the change done by hightlight
 
             },
             success: function(label, element) {
-                alert($(element).val());
                 var icon = $(element).parent('.input-icon').children('i');
                 $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
                 icon.removeClass("fa-warning").addClass("fa-check");
@@ -179,6 +177,17 @@ var PFCad = function() {
             $('.menu-pf a').append('<span class="selected"></span>');
             $('.menu-pf a .arrow').addClass('open');
             $('.sub-menu-pf-cad').addClass('active');
+            
+            $('#form').submit(function(){
+                if($('#elector').val() == ""){
+                    $('#elector').closest('.form-group').removeClass("has-success").removeClass('has-error');
+                    $('#elector').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                }
+                if($('#cep').val() == ""){
+                    $('#cep').closest('.form-group').removeClass("has-success").removeClass('has-error');
+                    $('#cep').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                }
+            })
         }
     };
 }();
