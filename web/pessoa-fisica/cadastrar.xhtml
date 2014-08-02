@@ -362,10 +362,10 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control input-small date" placeholder="dd/mm/aaaa" value=""/>
+                                                        <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control input-small date" placeholder="dd/mm/aaaa" value=""/>
+                                                        <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
                                                     </td>
                                                     <td>
                                                         <a class="delete" href="javascript:;">
@@ -375,6 +375,14 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                </div>
+                                <div class="alert alert-warning final-date-error display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    Por favor, digite uma data de término superior à data de início.
+                                </div>
+                                <div class="alert alert-warning initial-date-error display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    Por favor, digite uma data de início inferior à data de término.
                                 </div>
                             </div>
                             <div class="form-actions right">
