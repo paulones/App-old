@@ -121,8 +121,8 @@ var PFCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                    success.show();
-                    error.hide();
+                success.show();
+                error.hide();
             }
         });
     }
@@ -156,20 +156,21 @@ var PFCad = function() {
             var finaldate = $(this).val();
             if (finaldate.match(reg)) {
                 var initialdate = $(this).closest('tr').children('td').children('.initial-date').val();
-                if (finaldate != "" && initialdate != "") {
+                if (initialdate != "" && finaldate != "") {
                     var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
                     var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
                     if (final < initial) {
                         $(this).val("");
-                        $('.final-date-error').show();
-                        $('.initial-date-error').hide();
+                        $('.date-error').html("Digite uma data de t&eacute;rmino superior &agrave; data de in&iacute;cio.");
+                        $('.date-error').show();
                     } else {
-                        $('.final-date-error').hide();
-                        $('.initial-date-error').hide();
+                        $('.date-error').hide();
                     }
                 }
-            } else {
+            } else if(finaldate != ""){
                 $(this).val("");
+                $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                $('.date-error').show();
             }
         });
         table.on('focusout', '.initial-date', function(e) {
@@ -182,15 +183,16 @@ var PFCad = function() {
                     var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
                     if (final < initial) {
                         $(this).val("");
-                        $('.initial-date-error').show();
-                        $('.final-date-error').hide();
+                        $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                        $('.date-error').show();
                     } else {
-                        $('.final-date-error').hide();
-                        $('.initial-date-error').hide();
+                        $('.date-error').hide();
                     }
                 }
-            } else {
+            } else if(initialdate != ""){
                 $(this).val("");
+                $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                $('.date-error').show();
             }
         });
 
