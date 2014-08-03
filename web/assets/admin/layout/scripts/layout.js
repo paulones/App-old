@@ -437,16 +437,13 @@ var Layout = function() {
             $('.layout-option', panel).val("fluid");
         }
 
-        $('.sidebar-option', panel).val("fixed");
+        $('.sidebar-option', panel).val("default");
         $('.page-header-option', panel).val("fixed");
         $('.page-footer-option', panel).val("default");
         if ($('.sidebar-pos-option').attr("disabled") === false) {
             $('.sidebar-pos-option', panel).val(Metronic.isRTL() ? 'right' : 'left');
         }
-        $("body").addClass("page-sidebar-fixed");
-        $("page-sidebar-menu").addClass("page-sidebar-menu-fixed");
-        $("page-sidebar-menu").removeClass("page-sidebar-menu-default");
-        _initFixedSidebarHoverEffect();
+        
 
         //handle theme layout
         var resetLayout = function() {
