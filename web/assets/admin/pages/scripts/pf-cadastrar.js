@@ -166,8 +166,10 @@ var PFCad = function() {
                     } else {
                         $('.date-error').hide();
                     }
+                } else if (finaldate != ""){
+                    $('.date-error').hide();
                 }
-            } else if(finaldate != ""){
+            } else if (finaldate != "") {
                 $(this).val("");
                 $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
                 $('.date-error').show();
@@ -188,8 +190,10 @@ var PFCad = function() {
                     } else {
                         $('.date-error').hide();
                     }
+                } else if (initialdate != ""){
+                    $('.date-error').hide();
                 }
-            } else if(initialdate != ""){
+            } else if (initialdate != "") {
                 $(this).val("");
                 $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
                 $('.date-error').show();
