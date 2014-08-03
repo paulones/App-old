@@ -18,6 +18,9 @@ var PFCad = function() {
                     minlength: 2,
                     required: true
                 },
+                alias: {
+                    required: false
+                },
                 cpf: {
                     minlength: 14,
                     required: false
@@ -41,6 +44,9 @@ var PFCad = function() {
                     minlength: 2,
                     required: false
                 },
+                nationality: {
+                    required: false,
+                },
                 elector: {
                     minlength: 12,
                     required: false
@@ -49,6 +55,17 @@ var PFCad = function() {
                     required: false
                 },
                 natcity: {
+                    required: false
+                },
+                natforeign: {
+                    required: false,
+                },
+                inss: {
+                    minlength: 14,
+                    required: false
+                },
+                obs: {
+                    minlength: 2,
                     required: false
                 },
                 address: {
@@ -161,7 +178,7 @@ var PFCad = function() {
                     } else {
                         $('.date-error').hide();
                     }
-                } else if (finaldate != ""){
+                } else if (finaldate != "") {
                     $('.date-error').hide();
                 }
             } else if (finaldate != "") {
@@ -185,7 +202,7 @@ var PFCad = function() {
                     } else {
                         $('.date-error').hide();
                     }
-                } else if (initialdate != ""){
+                } else if (initialdate != "") {
                     $('.date-error').hide();
                 }
             } else if (initialdate != "") {
@@ -214,6 +231,7 @@ var PFCad = function() {
             $('#rg').mask("9.999.999-9");
             $('#elector').mask("999999999999");
             $('#cep').mask("99999-999");
+            $('#inss').mask("999.99999.99-9");
             $('.date').mask("99/99/9999");
             $('.money').maskMoney({allowNegative: true, thousands: '.', decimal: ',', affixesStay: false});
 
@@ -222,28 +240,31 @@ var PFCad = function() {
             $('.menu-pf a .arrow').addClass('open');
             $('.sub-menu-pf-cad').addClass('active');
 
+            var masks = [$('#cpf'), $('#rg'), $('#elector'), $('#cep'), $('#oe'), $('#inss')];
             $('#form').submit(function() {
-                if ($('#elector').val() == "") {
-                    $('#elector').closest('.form-group').removeClass("has-success").removeClass('has-error');
-                    $('#elector').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                $.each(masks, function() {
+                    if ($(this).val() == "") {
+                        $(this).closest('.form-group').removeClass("has-success").removeClass('has-error');
+                        $(this).parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                    }
+                })
+            });
+            
+            nationality();
+            $('#nationality').change(nationality);
+            
+            function nationality() {
+                if ($('#nationality').val() == 3) {
+                    $('.natuf').hide();
+                    $('.natcity').hide();
+                    $('.natforeign').show();
+                } else {
+                    $('.natuf').show();
+                    $('.natcity').show();
+                    $('.natforeign').hide();
                 }
-                if ($('#cep').val() == "") {
-                    $('#cep').closest('.form-group').removeClass("has-success").removeClass('has-error');
-                    $('#cep').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
-                }
-                if ($('#cpf').val() == "") {
-                    $('#cpf').closest('.form-group').removeClass("has-success").removeClass('has-error');
-                    $('#cpf').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
-                }
-                if ($('#rg').val() == "") {
-                    $('#rg').closest('.form-group').removeClass("has-success").removeClass('has-error');
-                    $('#rg').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
-                }
-                if ($('#oe').val() == "") {
-                    $('#oe').closest('.form-group').removeClass("has-success").removeClass('has-error');
-                    $('#oe').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
-                }
-            })
+            }
+
         }
     };
 }();

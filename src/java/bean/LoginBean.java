@@ -69,7 +69,7 @@ public class LoginBean implements Serializable {
 
     public void login() throws IOException {
         cpf = this.cpf.replace(".", "").replace("-", "");
-        if (loginBO.expirado()) {
+        if (!loginBO.expirado()) {
             usuario = usuarioBO.findUsuario(Long.valueOf(cpf));
             if (usuario != null) {
                 if (senha.equals(usuario.getSenha())) {
