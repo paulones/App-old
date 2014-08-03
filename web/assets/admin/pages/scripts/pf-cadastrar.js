@@ -20,18 +20,18 @@ var PFCad = function() {
                 },
                 cpf: {
                     minlength: 14,
-                    required: true
+                    required: false
                 },
                 gender: {
-                    required: true
+                    required: false
                 },
                 rg: {
                     minlength: 11,
-                    required: true
+                    required: false
                 },
                 oe: {
-                    minlength: 3,
-                    required: true
+                    minlength: 2,
+                    required: false
                 },
                 fathername: {
                     minlength: 2,
@@ -77,11 +77,6 @@ var PFCad = function() {
                 endcity: {
                     required: false
                 }
-            },
-            messages: {
-                gender: {
-                    required: "Selecione um sexo."
-                },
             },
             invalidHandler: function(event, validator) { //display error alert on form submit              
                 success.hide();
@@ -235,6 +230,18 @@ var PFCad = function() {
                 if ($('#cep').val() == "") {
                     $('#cep').closest('.form-group').removeClass("has-success").removeClass('has-error');
                     $('#cep').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                }
+                if ($('#cpf').val() == "") {
+                    $('#cpf').closest('.form-group').removeClass("has-success").removeClass('has-error');
+                    $('#cpf').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                }
+                if ($('#rg').val() == "") {
+                    $('#rg').closest('.form-group').removeClass("has-success").removeClass('has-error');
+                    $('#rg').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
+                }
+                if ($('#oe').val() == "") {
+                    $('#oe').closest('.form-group').removeClass("has-success").removeClass('has-error');
+                    $('#oe').parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
                 }
             })
         }

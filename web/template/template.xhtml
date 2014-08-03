@@ -35,17 +35,17 @@
         <link rel="shortcut icon" href="../assets/global/img/magnifying-glass.png"/>
     </h:head>
     <!-- BEGIN BODY -->
-    <h:body class="page-header-fixed page-sidebar-fixed page-quick-sidebar-over-content">
+    <h:body class="page-header-fixed page-sidebar-fixed page-quick-sidebar-over-content ">
         <!-- BEGIN HEADER -->
         <div class="page-header navbar navbar-fixed-top">
             <!-- BEGIN HEADER INNER -->
             <div class="page-header-inner">
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
-                    <a href="home.xhtml">
-                        <h4 class="home-logo">App</h4>
+                    <a href="../home.xhtml">
+                        <img src="../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
                     </a>
-                    <div class="menu-toggler sidebar-toggler hide">
+                    <div class="menu-toggler sidebar-toggler ">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
                     </div>
                 </div>
@@ -99,18 +99,13 @@
                     <!-- BEGIN SIDEBAR MENU -->
                     <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200">
                         <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-                        <li class="sidebar-toggler-wrapper">
-                            <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                            <div class="sidebar-toggler">
-                            </div>
-                            <!-- END SIDEBAR TOGGLER BUTTON -->
-                        </li>
+                        
                         <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
                         <li class="sidebar-search-wrapper hidden-xs">
                             <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
                             <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
                             <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
-                            <form class="sidebar-search" action="extra_search.html" method="POST">
+                            <form class="sidebar-search sidebar-search-bordered sidebar-search-solid" action="extra_search.html" method="POST">
                                 <a href="javascript:;" class="remove">
                                     <i class="icon-close"></i>
                                 </a>
