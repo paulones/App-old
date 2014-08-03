@@ -64,9 +64,9 @@ var Lock = function() {
                 }
             }, 10000);
 
-            window.setInterval(function() {
-                window.location.reload();
-            }, 1500000);
+            window.setInterval(function(){
+                $.post("ping.html");
+            }, 1740000);
 
             $.backstretch([
                 "../../assets/admin/pages/media/bg/1.jpg",

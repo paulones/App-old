@@ -320,10 +320,10 @@ var Login = function() {
 
             $('.cpf').mask("999.999.999-99");
 
-            window.setInterval(function() {
-                window.location.reload();
-            }, 1500000);
-
+            window.setInterval(function(){
+                $.post("ping.html");
+            }, 1740000);
+            
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();
                 jQuery('.register-form').show();
