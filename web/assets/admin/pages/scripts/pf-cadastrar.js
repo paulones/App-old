@@ -19,6 +19,7 @@ var PFCad = function() {
                     required: true
                 },
                 alias: {
+                    minlength:1,
                     required: false
                 },
                 cpf: {
