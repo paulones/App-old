@@ -256,7 +256,7 @@ var Layout = function() {
                 body.removeClass("page-sidebar-closed");
                 sidebarMenu.removeClass("page-sidebar-menu-closed");
                 if ($.cookie) {
-                    $.cookie('sidebar_closed', '0');
+                    $.cookie('sidebar_closed', '0',{path:'/'});
                 }
             } else {
                 body.addClass("page-sidebar-closed");
@@ -265,7 +265,7 @@ var Layout = function() {
                     sidebarMenu.trigger("mouseleave");
                 }
                 if ($.cookie) {
-                    $.cookie('sidebar_closed', '1');
+                    $.cookie('sidebar_closed', '1',{path:'/'});
                 }
             }
 
