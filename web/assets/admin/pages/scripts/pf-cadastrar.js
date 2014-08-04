@@ -95,10 +95,13 @@ var PFCad = function() {
                     required: false
                 }
             },
-            invalidHandler: function(event, validator) { //display error alert on form submit              
-                success.hide();
-                error.show();
-                Metronic.scrollTo(error, -200);
+            invalidHandler: function(event, validator) { //display error alert on form submit 
+                if (checkDates()) {
+                    success.hide();
+                    error.show();
+                    Metronic.scrollTo(error, -200);
+                }
+
             },
             errorPlacement: function(error, element) { // render error placement for each input type
                 if (element.parent(".input-group").size() > 0) {
@@ -133,11 +136,54 @@ var PFCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                success.show();
-                error.hide();
+                if (checkDates()) {
+                    success.show();
+                    error.hide();
+                }
             }
         });
     }
+
+    var checkDates = function() {
+        var result;
+        var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+        $.each($('.initial-date'), function() {
+            var initialdate = $(this).val();
+            var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
+            if (initialdate.match(reg) && finaldate.match(reg)) {
+                if (finaldate != "" && initialdate != "") {
+                    var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
+                    var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
+                    if (final < initial) {
+                        $(this).closest('tr').children('td').children('.final-date').val("");
+                        $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                        $('.date-error').show();
+                        return result = false;
+                    } else {
+                        $('.date-error').hide();
+                        return result = true;
+                    }
+                } else if (initialdate != "") {
+                    $('.date-error').hide();
+                    return result = true;
+                }
+            } else if (initialdate != "" && !initialdate.match(reg)) {
+                $(this).val("");
+                $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                $('.date-error').show();
+                return result = false;
+            } else if (finaldate != "" && !finaldate.match(reg)) {
+                $(this).closest('tr').children('td').children('.final-date').val("");
+                $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                $('.date-error').show();
+                return result = false;
+            } else {
+                return result = true;
+            }
+        });
+        return result;
+    }
+
     var handleTable = function() {
 
 
@@ -162,56 +208,6 @@ var PFCad = function() {
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
 
-        var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
-        table.on('focusout', '.final-date', function(e) {
-            e.preventDefault();
-            var finaldate = $(this).val();
-            if (finaldate.match(reg)) {
-                var initialdate = $(this).closest('tr').children('td').children('.initial-date').val();
-                if (initialdate != "" && finaldate != "") {
-                    var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
-                    var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
-                    if (final < initial) {
-                        $(this).val("");
-                        $('.date-error').html("Digite uma data de t&eacute;rmino superior &agrave; data de in&iacute;cio.");
-                        $('.date-error').show();
-                    } else {
-                        $('.date-error').hide();
-                    }
-                } else if (finaldate != "") {
-                    $('.date-error').hide();
-                }
-            } else if (finaldate != "") {
-                $(this).val("");
-                $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
-                $('.date-error').show();
-            }
-        });
-        table.on('focusout', '.initial-date', function(e) {
-            e.preventDefault();
-            var initialdate = $(this).val();
-            var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
-            if (initialdate.match(reg)) {
-                if (finaldate != "" && initialdate != "") {
-                    var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
-                    var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
-                    if (final < initial) {
-                        $(this).val("");
-                        $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
-                        $('.date-error').show();
-                    } else {
-                        $('.date-error').hide();
-                    }
-                } else if (initialdate != "") {
-                    $('.date-error').hide();
-                }
-            } else if (initialdate != "") {
-                $(this).val("");
-                $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
-                $('.date-error').show();
-            }
-        });
-
         table.on('click', '.delete', function(e) {
             e.preventDefault();
             $('.final-date-error').hide();
@@ -226,7 +222,6 @@ var PFCad = function() {
 
             handleValidation();
             handleTable();
-
             $('#cpf').mask("999.999.999-99");
             $('#rg').mask("9.999.999-9");
             $('#elector').mask("999999999999");
@@ -247,12 +242,12 @@ var PFCad = function() {
                         $(this).closest('.form-group').removeClass("has-success").removeClass('has-error');
                         $(this).parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
                     }
-                })
+                });
             });
-            
+
             nationality();
             $('#nationality').change(nationality);
-            
+
             function nationality() {
                 if ($('#nationality').val() == 3) {
                     $('.natuf').hide();
