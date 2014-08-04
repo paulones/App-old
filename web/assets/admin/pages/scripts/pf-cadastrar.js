@@ -34,7 +34,7 @@ var PFCad = function() {
                     required: false
                 },
                 oe: {
-                    minlength: 2,
+                    minlength:3,
                     required: false
                 },
                 fathername: {
@@ -64,6 +64,10 @@ var PFCad = function() {
                 inss: {
                     minlength: 14,
                     required: false
+                },
+                conjuge: {
+                    minlength: 2,
+                    required:false,
                 },
                 obs: {
                     minlength: 2,
@@ -130,8 +134,8 @@ var PFCad = function() {
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');
-                $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                icon.removeClass("fa-warning").addClass("fa-check");
+                $(element).closest('.form-group').removeClass('has-error'); // set success class to the control group
+                icon.removeClass("fa-warning");
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
