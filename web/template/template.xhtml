@@ -32,7 +32,7 @@
         <link href="../assets/admin/layout/css/themes/default.min.css" rel="stylesheet" type="text/css" id="style_color"/>
         <link href="../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME STYLES -->
-        <link rel="shortcut icon" href="../assets/global/img/magnifying-glass.png"/>
+        <link rel="shortcut icon" href="../assets/global/img/favicon.ico"/>
     </h:head>
     <!-- BEGIN BODY -->
     <h:body class="page-header-fixed page-sidebar-fixed page-quick-sidebar-over-content ">
@@ -320,7 +320,7 @@
             if (Modernizr.localstorage) {
                 localStorage.clear();
             }
-            $.idleTimer(60000 * 10);
+            $.idleTimer(60000 * 15);
             $(document).bind("idle.idleTimer", function() {
                 $.cookie.raw = true;
                 $.cookie("pagina_anterior", window.location.pathname, {expires: 1, path: '/'});
