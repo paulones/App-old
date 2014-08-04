@@ -253,6 +253,10 @@ var PFCad = function() {
                     }
                 });
             });
+            
+            $('.vinculate').click(function(e){
+                e.preventDefault();
+            })
 
             nationality();
             $('#nationality').change(nationality);
