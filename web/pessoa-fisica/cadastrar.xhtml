@@ -54,7 +54,7 @@
                         <!-- BEGIN FORM-->
                         <h:form  id="form" class="form-horizontal">
                             <div class="form-body">
-                                <div class="alert alert-danger display-hide">
+                                <div class="alert alert-danger form-error display-hide">
                                     <button class="close" data-close="alert"></button>
                                     Há alguns erros no formulário. Digite os dados corretamente.
                                 </div>
@@ -377,7 +377,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <button  class="btn blue-chambray register"><i class="fa fa-plus-circle"></i> Vincular</button>
+                                        <button  class="btn blue-chambray vinculate"><i class="fa fa-plus-circle"></i> Vincular</button>
                                     </div>
                                 </div>
                                 <!--/row-->
@@ -438,11 +438,40 @@
                                                             <i class="glyphicon glyphicon-remove" style="color:red"/> </a>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td style="text-align:center">
+                                                        19.745.633/0001-57<br/>PRCC Gestão em TI e desenvolvimento de Sistemas                                             </td>
+                                                    <td>
+                                                        <select class="select2_category select2me form-control" tabindex="1">
+                                                            <option value="Category 1">Sócio-Administrativo</option>
+                                                            <option value="Category 2">Sócio</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control input-small money" placeholder="R$" value=""/>
+                                                    </td>
+                                                    <td>
+                                                        <select class="select2_category select2me form-control" tabindex="1">
+                                                            <option value="Category 1">Aberta</option>
+                                                            <option value="Category 2">Fechada</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
+                                                    </td>
+                                                    <td>
+                                                        <a class="delete" href="javascript:;">
+                                                            <i class="glyphicon glyphicon-remove" style="color:red"/> </a>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="alert alert-warning date-error display-hide">
+                                <div class="alert alert-danger date-error display-hide">
                                     <button class="close" data-close="alert"></button>
                                 </div>
                             </div>

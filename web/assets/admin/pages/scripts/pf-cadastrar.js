@@ -5,7 +5,7 @@ var PFCad = function() {
         // http://docs.jquery.com/Plugins/Validation
 
         var form = $('#form');
-        var error = $('.alert-danger', form);
+        var error = $('.form-error', form);
         var success = $('.alert-success', form);
 
         form.validate({
@@ -19,7 +19,7 @@ var PFCad = function() {
                     required: true
                 },
                 alias: {
-                    minlength:1,
+                    minlength: 1,
                     required: false
                 },
                 cpf: {
@@ -97,12 +97,10 @@ var PFCad = function() {
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit 
-                if (checkDates()) {
-                    success.hide();
-                    error.show();
-                    Metronic.scrollTo(error, -200);
-                }
-
+                $(".date-error").hide();
+                success.hide();
+                error.show();
+                Metronic.scrollTo(error, -200);
             },
             errorPlacement: function(error, element) { // render error placement for each input type
                 if (element.parent(".input-group").size() > 0) {
@@ -137,10 +135,9 @@ var PFCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                if (checkDates()) {
-                    success.show();
-                    error.hide();
-                }
+                $(".date-error").hide();
+                success.show();
+                error.hide();
             }
         });
     }
@@ -179,6 +176,7 @@ var PFCad = function() {
                 $('.date-error').show();
                 return result = false;
             } else {
+                $('.date-error').hide();
                 return result = true;
             }
         });
@@ -209,6 +207,16 @@ var PFCad = function() {
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
 
+        table.on('keyup', '.initial-date', function() {
+            if ($(this).val().length == 10) {
+                checkDates();
+            }
+        });
+        table.on('keyup', '.final-date', function() {
+            if ($(this).val().length == 10) {
+                checkDates();
+            }
+        });
         table.on('click', '.delete', function(e) {
             e.preventDefault();
             $('.final-date-error').hide();
@@ -245,6 +253,10 @@ var PFCad = function() {
                     }
                 });
             });
+            
+            $('.vinculate').click(function(e){
+                e.preventDefault();
+            })
 
             nationality();
             $('#nationality').change(nationality);
