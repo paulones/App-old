@@ -19,7 +19,7 @@ import util.Criptografia;
  */
 public class LoginBO implements Serializable {
 
-    private String chaveTeste = "l3Q3zmwpr2pTOs4/3dwAqXd44Od8Gy3cGT/dfaMvJXY=";
+    private String chaveTeste = "60ayZtoAY//D7Z+odXgniL4AZQk85UkqgudHVVhN+Vc=";
     private String cryptKey = "deadwood8986deadwood8986";
     ConfigDAO configDAO = new ConfigDAO();
 

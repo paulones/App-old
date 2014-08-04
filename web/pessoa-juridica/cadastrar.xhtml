@@ -9,6 +9,7 @@
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+        <link rel="stylesheet" type="text/css" href="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
         <!-- END PAGE STYLES -->
@@ -40,12 +41,116 @@
             </div>
         </div>
         <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_0">
+                <div class="portlet box blue-chambray">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-edit"></i>Dados da Pessoa Jurídica
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <!-- BEGIN FORM-->
+                        <h:form  id="form" class="form-horizontal">
+                            <div class="form-body">
+                                <div class="alert alert-danger display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    Há alguns erros no formulário. Digite os dados corretamente.
+                                </div>
+                                <div class="alert alert-success display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    Cadastro realizado com sucesso!
+                                </div>
+                                <span class="help-block">Campos com * são obrigatórios.</span>
+                                <h3 class="form-section">Informações Pessoais</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Nome: <span class="required"> * </span></label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="name"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">CNPJ <span class="required"> * </span></label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="cnpj" name="cnpj"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Nome Fantasia 
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="alias"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Inscrição Estadual <span class="required"> * </span>
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="state" name="state"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                            </div>
+                            <div class="form-actions right">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-check-circle"></i> Cadastrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                        <!-- END FORM-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PAGE CONTENT-->
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
+        <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/jquery.maskMoney.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/jquery.validate.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/localization/messages_pt_BR.js"></script>
         <script src="../assets/admin/pages/scripts/pj-cadastrar.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
