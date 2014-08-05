@@ -6,3 +6,6 @@
 .password-error{margin:10px 0 -10px 0}
 /*cadastroPF*/
 .obs{resize:none}
+#gender{margin-top:7px}
+#gender .radio{margin-right:4px}
+#gender label{margin-right:33px}
