@@ -23,7 +23,7 @@ var PFCad = function() {
                     required: false
                 },
                 cpf: {
-                    minlength: 14,
+                    cpf: true,
                     required: false
                 },
                 gender: {
@@ -34,7 +34,7 @@ var PFCad = function() {
                     required: false
                 },
                 oe: {
-                    minlength:3,
+                    minlength: 3,
                     required: false
                 },
                 fathername: {
@@ -49,7 +49,7 @@ var PFCad = function() {
                     required: false,
                 },
                 elector: {
-                    minlength: 12,
+                    elector: true,
                     required: false
                 },
                 natuf: {
@@ -67,7 +67,7 @@ var PFCad = function() {
                 },
                 conjuge: {
                     minlength: 2,
-                    required:false,
+                    required: false,
                 },
                 obs: {
                     minlength: 2,
@@ -98,6 +98,11 @@ var PFCad = function() {
                 },
                 endcity: {
                     required: false
+                }
+            },
+            messages: {
+                rg: {
+                    minlength: "Digite um RG v&aacute;lido."
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit 
@@ -233,8 +238,12 @@ var PFCad = function() {
     return {
         init: function() {
 
+            $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
+            $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
+
             handleValidation();
             handleTable();
+
             $('#cpf').mask("999.999.999-99");
             $('#rg').mask("9.999.999-9");
             $('#elector').mask("999999999999");
@@ -257,8 +266,8 @@ var PFCad = function() {
                     }
                 });
             });
-            
-            $('.vinculate').click(function(e){
+
+            $('.vinculate').click(function(e) {
                 e.preventDefault();
             })
 
@@ -276,10 +285,10 @@ var PFCad = function() {
                     $('.natforeign').hide();
                 }
             }
-            
+
             civil();
             $('#civil').change(civil);
-            function civil(){
+            function civil() {
                 if ($('#civil').val() == 1) {
                     $('.conjuge').hide();
                 } else {
@@ -287,6 +296,80 @@ var PFCad = function() {
                 }
             }
 
+            function validaCPF(value, element) {
+                value = value.replace(/\./g, "").replace(/-/g, "");
+                var Soma;
+                var Resto;
+                Soma = 0;
+                if (value == "")
+                    return true;
+                if (value == "00000000000")
+                    return false;
+                for (i = 1; i <= 9; i++)
+                    Soma = Soma + parseInt(value.substring(i - 1, i)) * (11 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))
+                    Resto = 0;
+                if (Resto != parseInt(value.substring(9, 10)))
+                    return false;
+                Soma = 0;
+                for (i = 1; i <= 10; i++)
+                    Soma = Soma + parseInt(value.substring(i - 1, i)) * (12 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))
+                    Resto = 0;
+                if (Resto != parseInt(value.substring(10, 11)))
+                    return false;
+                return true;
+            }
+
+            function validaTitulo(value, element) {
+                var dig1 = 0;
+                var dig2 = 0;
+                var tam = value.length;
+                var digitos = value.substr(tam - 2, 2);
+                var estado = value.substr(tam - 4, 2);
+                var titulo = value.substr(0, tam - 2);
+                var exce = (estado == '01') || (estado == '02');
+                dig1 = (titulo.charCodeAt(0) - 48) * 9 + (titulo.charCodeAt(1) - 48) * 8 +
+                        (titulo.charCodeAt(2) - 48) * 7 + (titulo.charCodeAt(3) - 48) * 6 +
+                        (titulo.charCodeAt(4) - 48) * 5 + (titulo.charCodeAt(5) - 48) * 4 +
+                        (titulo.charCodeAt(6) - 48) * 3 + (titulo.charCodeAt(7) - 48) * 2;
+                var resto = (dig1 % 11);
+                if (resto == 0) {
+                    if (exce) {
+                        dig1 = 1;
+                    } else {
+                        dig1 = 0;
+                    }
+                } else {
+                    if (resto == 1) {
+                        dig1 = 0;
+                    } else {
+                        dig1 = 11 - resto;
+                    }
+                }
+                dig2 = (titulo.charCodeAt(8) - 48) * 4 + (titulo.charCodeAt(9) - 48) * 3 + dig1 * 2;
+                resto = (dig2 % 11);
+                if (resto == 0) {
+                    if (exce) {
+                        dig2 = 1;
+                    } else {
+                        dig2 = 0;
+                    }
+                } else {
+                    if (resto == 1) {
+                        dig2 = 0;
+                    } else {
+                        dig2 = 11 - resto;
+                    }
+                }
+                if ((digitos.charCodeAt(0) - 48 == dig1) && (digitos.charCodeAt(1) - 48 == dig2)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
     };
 }();

@@ -7,6 +7,7 @@ var Login = function() {
             focusInvalid: false, // do not focus the last invalid input
             rules: {
                 cpf: {
+                    cpf:true,
                     required: true
                 },
                 password: {
@@ -128,6 +129,7 @@ var Login = function() {
                     email: true
                 },
                 register_cpf: {
+                    cpf: true,
                     required: true
                 },
                 register_password: {
@@ -312,6 +314,8 @@ var Login = function() {
                 localStorage.clear();
             }
 
+            $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
+
             handleLogin();
             handleForgetPassword();
             handleRegister();
@@ -320,10 +324,10 @@ var Login = function() {
 
             $('.cpf').mask("999.999.999-99");
 
-            window.setInterval(function(){
+            window.setInterval(function() {
                 $.post("ping.html");
             }, 1740000);
-            
+
             if ($('.register-error').length > 0) {
                 jQuery('.login-form').hide();
                 jQuery('.register-form').show();
@@ -338,7 +342,34 @@ var Login = function() {
                 jQuery('.login-form').hide();
                 jQuery('.pass-form').show();
             }
-
+            
+            function validaCPF(value, element) {
+                value = value.replace(/\./g, "").replace(/-/g, "");
+                var Soma;
+                var Resto;
+                Soma = 0;
+                if (value == "")
+                    return true;
+                if (value == "00000000000")
+                    return false;
+                for (i = 1; i <= 9; i++)
+                    Soma = Soma + parseInt(value.substring(i - 1, i)) * (11 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))
+                    Resto = 0;
+                if (Resto != parseInt(value.substring(9, 10)))
+                    return false;
+                Soma = 0;
+                for (i = 1; i <= 10; i++)
+                    Soma = Soma + parseInt(value.substring(i - 1, i)) * (12 - i);
+                Resto = (Soma * 10) % 11;
+                if ((Resto == 10) || (Resto == 11))
+                    Resto = 0;
+                if (Resto != parseInt(value.substring(10, 11)))
+                    return false;
+                return true;
+            }
+            
             $.backstretch([
                 "assets/admin/pages/media/bg/1.jpg",
                 "assets/admin/pages/media/bg/2.jpg",
