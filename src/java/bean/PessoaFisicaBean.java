@@ -11,10 +11,15 @@ import bo.EstadoCivilBO;
 import bo.NacionalidadeBO;
 import bo.PaisBO;
 import bo.PessoaFisicaBO;
+import entidade.Estado;
 import entidade.PessoaFisica;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -25,11 +30,14 @@ import javax.faces.bean.SessionScoped;
 public class PessoaFisicaBean implements Serializable {
 
     private PessoaFisica pessoaFisica;
-    
+
     private String cpf;
     private String rg;
     private String inss;
     private Long cep;
+    private boolean success;
+
+    private List<Estado> estadoList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private NacionalidadeBO nacionalidadeBO;
@@ -39,7 +47,29 @@ public class PessoaFisicaBean implements Serializable {
     private CidadeBO cidadeBO;
 
     public void init() {
-        pessoaFisica = new PessoaFisica();
+        if (!FacesContext.getCurrentInstance().isPostback()) {
+            pessoaFisica = new PessoaFisica();
+            success = false;
+
+            pessoaFisicaBO = new PessoaFisicaBO();
+            nacionalidadeBO = new NacionalidadeBO();
+            estadoCivilBO = new EstadoCivilBO();
+            paisBO = new PaisBO();
+            estadoBO = new EstadoBO();
+            cidadeBO = new CidadeBO();
+
+            estadoList = new ArrayList<>();
+
+            loadForm();
+        }
+    }
+
+    private void loadForm() {
+        estadoList = estadoBO.findAll();
+    }
+
+    public void cadastrar() {
+        success = true;
     }
 
     public PessoaFisica getPessoaFisica() {
@@ -81,6 +111,21 @@ public class PessoaFisicaBean implements Serializable {
     public void setCep(Long cep) {
         this.cep = cep;
     }
-    
-    
+
+    public List<Estado> getEstadoList() {
+        return estadoList;
+    }
+
+    public void setEstadoList(List<Estado> estadoList) {
+        this.estadoList = estadoList;
+    }
+
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
 }

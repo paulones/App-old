@@ -145,8 +145,8 @@ var PFCad = function() {
             },
             submitHandler: function(form) {
                 $(".date-error").hide();
-                success.show();
                 error.hide();
+                $(".register").click();
             }
         });
     }
@@ -324,6 +324,9 @@ var PFCad = function() {
             }
 
             function validaTitulo(value, element) {
+                if (value == ""){
+                    return true;
+                }
                 var dig1 = 0;
                 var dig2 = 0;
                 var tam = value.length;
