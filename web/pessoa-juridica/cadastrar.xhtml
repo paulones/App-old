@@ -63,7 +63,7 @@
                                     Cadastro realizado com sucesso!
                                 </div>
                                 <span class="help-block">Campos com * são obrigatórios.</span>
-                                <h3 class="form-section">Informações Pessoais</h3>
+                                <h3 class="form-section">Informações Empresariais</h3>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -199,6 +199,178 @@
                                     <div class="col-md-6">
                                     </div>
                                 </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Grupo economico
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="group"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">NIRE
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="nire" name="nire"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">CNAE
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="cnae" name="cnae"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row--><br/><br/>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">Atividade Principal
+                                            </label>
+                                            <div class="col-md-10">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <textarea class="form-control obs" rows="3" name="activity1"></textarea>
+                                                </div>
+                                                <span class="help-block">
+                                                    Informações gerais sobre a principal atividade da empresa</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/row--><br/><br/>
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">Atividades Secundarias
+                                            </label>
+                                            <div class="col-md-10">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <textarea class="form-control obs" rows="3" name="activity2"></textarea>
+                                                </div>
+                                                <span class="help-block">
+                                                    Informações gerais sobre atividades extras exercidas pela empresa</span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/row-->
+                                <h3 class="form-section">Endereço</h3>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Endereço</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="address"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Número</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" onkeyup="this.value = this.value.replace(/[^\d]/, '')" name="number"/>
+                                                </div> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Complemento</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="complement"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Bairro</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="neighborhood"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">CEP</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="cep" name="cep"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Estado/Cidade
+                                            </label>
+                                            <div class="col-md-3">
+                                                <select class="select2_category select2me form-control" placeholder="UF" name="enduf" tabindex="1">
+                                                    <option value=""></option>
+                                                    <option value="Category 1">SE</option>
+                                                    <option value="Category 2">PA</option>
+                                                    <option value="Category 3">BA</option>
+                                                    <option value="Category 4">AC</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="endcity" tabindex="1">
+                                                    <option value=""></option>
+                                                    <option value="Category 1">Aracaju</option>
+                                                    <option value="Category 2">Salvador</option>
+                                                    <option value="Category 3">Maceió</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <h3 class="form-section">Vínculos Empresariais</h3>
                                 <!--/row-->
                             </div>
                             <div class="form-actions right">

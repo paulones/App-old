@@ -33,6 +33,60 @@ var PJCad = function() {
                 province: {
                     maxlength: 30,
                     required: false
+                },
+                situacao: {
+                    required: false
+                },
+                iniDate: {
+                    required: false
+                },
+                inactive: {
+                    required: false
+                },
+                group: {
+                    required: false
+                },
+                nire: {
+                    maxlength: 11,
+                    required: false
+                },
+                cnae: {
+                    maxlength: 9,
+                    required: false
+                },
+                activity1: {
+                    minlength: 2,
+                    required: false
+                },
+                activity2: {
+                    minlength: 2,
+                    required: false
+                },
+                address: {
+                    minlength: 3,
+                    required: false
+                },
+                complement: {
+                    minlength: 3,
+                    required: false
+                },
+                number: {
+                    number: true,
+                    required: false
+                },
+                neighborhood: {
+                    minlength: 1,
+                    required: false
+                },
+                cep: {
+                    minlength: 9,
+                    required: false
+                },
+                enduf: {
+                    required: false
+                },
+                endcity: {
+                    required: false
                 }
             },
             messages: {
@@ -104,13 +158,15 @@ var PJCad = function() {
             $('#cnpj').mask("99.999.999/9999-99");
             $('#state').mask("999.999.999.999");
             $('.date').mask("99/99/9999");
+            $('#nire').mask("99999999999");
+            $('#cnae').mask("9999-9/99");
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
             $('.menu-pj a .arrow').addClass('open');
             $('.sub-menu-pj-cad').addClass('active');
 
-            var masks = [$('#cpf'), $('#state'), $('#date')];
+            var masks = [$('#cpf'), $('#state'), $('#date'), $('#nire'), $('#cnae')];
             $('#form').submit(function() {
                 $.each(masks, function() {
                     if ($(this).val() == "") {
