@@ -5,7 +5,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
     <ui:define name="title">Pessoa Física - Cadastro</ui:define>
     <ui:define name="metadata-components">
-        <f:event type="preRenderComponent" listener="#{homeBean.init()}"/>
+        <f:event type="preRenderComponent" listener="#{pessoaFisicaBean.init()}"/>
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -117,14 +117,12 @@
                                                     <input type="text" class="form-control" id="rg" name="rg"/>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" maxlength="3" id="oe" name="oe"/>
-                                                </div>
-                                            </div>
                                             <div class="col-md-2">
-                                                <select class="select2_category select2me form-control" name="rguf" tabindex="1">
+                                                    <input type="text" class="form-control" maxlength="3" id="oe" name="oe"/>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="select2_category select2me form-control" placeholder="UF" name="rguf" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="Category 1">SE</option>
                                                     <option value="Category 2">PA</option>
                                                     <option value="Category 3">BA</option>
@@ -188,7 +186,8 @@
                                             <label class="control-label col-md-3">Nacionalidade
                                             </label>
                                             <div class="col-md-9">
-                                                <select class="select2_category select2me form-control" name="nationality" id="nationality" tabindex="1">
+                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="nationality" id="nationality" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="1">Brasileiro Nato</option>
                                                     <option value="2">Brasileiro Naturalizado</option>
                                                     <option value="3">Estrangeiro</option>
@@ -216,23 +215,26 @@
                                         <div class="form-group nat">
                                             <label class="control-label col-md-3">Naturalidade
                                             </label>
-                                            <div class="col-md-2 natuf">
-                                                <select class="select2_category select2me form-control" name="natuf" tabindex="1">
+                                            <div class="col-md-3 natuf">
+                                                <select class="select2_category select2me form-control" placeholder="UF" name="natuf" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="Category 1">SE</option>
                                                     <option value="Category 2">PA</option>
                                                     <option value="Category 3">BA</option>
                                                     <option value="Category 4">AC</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-7 natcity">
-                                                <select class="select2_category select2me form-control" name="natcity" tabindex="1">
+                                            <div class="col-md-6 natcity">
+                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="natcity" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="Category 1">Aracaju</option>
                                                     <option value="Category 2">Salvador</option>
                                                     <option value="Category 3">Maceió</option>
                                                 </select>
                                             </div>
                                             <div class="col-md-9 natforeign display-hide">
-                                                <select class="select2_category select2me form-control" name="natforeign" id="natforeign" tabindex="1">
+                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="natforeign" id="natforeign" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="YE">Yemen</option>
                                                     <option value="ZM">Zambia</option>
                                                     <option value="ZW">Zimbabwe</option>
@@ -245,6 +247,20 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+                                            <label class="control-label col-md-3">Estado Civil
+                                            </label>
+                                            <div class="col-md-9 ">
+                                                <select class="select2_category select2me form-control" id="civil" placeholder="Selecione..." name="natuf" tabindex="1">
+                                                    <option value=""></option>
+                                                    <option value="1">Solteiro(a)</option>
+                                                    <option value="2">Casado(a)</option>
+                                                    <option value="3">Viúvo(a)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
                                             <label class="control-label col-md-3">INSS
                                             </label>
                                             <div class="col-md-9">
@@ -255,7 +271,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group conjuge">
+                                            <label class="control-label col-md-3">Nome do cônjuge
+                                            </label>
+                                            <div class="col-md-9 ">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="conjuge" id="conjuge"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
                                 </div>
                                 <!--/row--><br/><br/>
                                 <div class="row">
@@ -342,16 +373,18 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Estado/Cidade
                                             </label>
-                                            <div class="col-md-2">
-                                                <select class="select2_category select2me form-control" name="enduf" tabindex="1">
+                                            <div class="col-md-3">
+                                                <select class="select2_category select2me form-control" placeholder="UF" name="enduf" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="Category 1">SE</option>
                                                     <option value="Category 2">PA</option>
                                                     <option value="Category 3">BA</option>
                                                     <option value="Category 4">AC</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-7">
-                                                <select class="select2_category select2me form-control" name="endcity" tabindex="1">
+                                            <div class="col-md-6">
+                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="endcity" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="Category 1">Aracaju</option>
                                                     <option value="Category 2">Salvador</option>
                                                     <option value="Category 3">Maceió</option>
@@ -369,7 +402,8 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2">CNPJ</label>
                                             <div class="col-md-10">
-                                                <select class="select2_category select2me form-control" tabindex="1">
+                                                <select class="select2_category select2me form-control" placeholder="Selecione..." tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="Category 1">19.745.633/0001-57 - PRCC Gestão em TI</option>
                                                     <option value="Category 2">19.745.633/0001-58 - PRCC Gestão em TI e Desenvolvimento de Sistemas</option>
                                                 </select>
