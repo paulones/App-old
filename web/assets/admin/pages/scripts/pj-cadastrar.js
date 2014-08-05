@@ -81,8 +81,8 @@ var PJCad = function() {
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');
-                $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-                icon.removeClass("fa-warning").addClass("fa-check");
+                $(element).closest('.form-group').removeClass('has-error'); // set success class to the control group
+                icon.removeClass("fa-warning");
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
@@ -90,6 +90,10 @@ var PJCad = function() {
                 error.hide();
             }
         });
+    }
+    
+    var checkDates = function() {
+        
     }
 
     return {
@@ -99,13 +103,14 @@ var PJCad = function() {
 
             $('#cnpj').mask("99.999.999/9999-99");
             $('#state').mask("999.999.999.999");
+            $('.date').mask("99/99/9999");
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
             $('.menu-pj a .arrow').addClass('open');
             $('.sub-menu-pj-cad').addClass('active');
 
-            var masks = [$('#cpf'), $('#state')];
+            var masks = [$('#cpf'), $('#state'), $('#date')];
             $('#form').submit(function() {
                 $.each(masks, function() {
                     if ($(this).val() == "") {
@@ -114,6 +119,16 @@ var PJCad = function() {
                     }
                 });
             });
+            
+            situacao();
+            $('#situacao').change(situacao);
+            function situacao(){
+                if ($('#situacao').val() == 2) {
+                    $('.inactive').show();
+                } else {
+                    $('.inactive').hide();
+                }
+            }
         }
     };
 }();

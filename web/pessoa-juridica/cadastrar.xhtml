@@ -110,7 +110,8 @@
                                             <label class="control-label col-md-3">Tipicidade
                                             </label>
                                             <div class="col-md-9">
-                                                <select class="select2_category select2me form-control" name="tipicidade" id="tipicidade" tabindex="1">
+                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="tipicidade" id="tipicidade" tabindex="1">
+                                                    <option value=""></option>
                                                     <option value="1">Individual</option>
                                                     <option value="2">Eireli</option>
                                                     <option value="3">Sem fins lucrativos</option>
@@ -149,7 +150,56 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--/span-->
                                 </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Situação
+                                            </label>
+                                            <div class="col-md-9">
+                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="situacao" id="situacao" tabindex="1">
+                                                    <option value=""></option>
+                                                    <option value="1">Ativo</option>
+                                                    <option value="2">Inativo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Data de criação
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control input-small date" id="iniDate" name="iniDate" placeholder="dd/mm/aaaa"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group inactive">
+                                            <label class="control-label col-md-3">Motivo da desativação
+                                            </label>
+                                            <div class="col-md-9 ">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" name="inactive" id="inactive"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    </div>
+                                </div>
+                                <!--/row-->
                             </div>
                             <div class="form-actions right">
                                 <div class="row">
