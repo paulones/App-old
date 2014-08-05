@@ -23,9 +23,16 @@ var PJCad = function() {
                     minlength: 18,
                     required: true
                 },
+                tipicidade: {
+                    required: false
+                },
                 state: {
                     minlength: 15,
                     required: true
+                },
+                province: {
+                    maxlength: 30,
+                    required: false
                 }
             },
             messages: {
