@@ -276,6 +276,16 @@ var PFCad = function() {
                     $('.natforeign').hide();
                 }
             }
+            
+            civil();
+            $('#civil').change(civil);
+            function civil(){
+                if ($('#civil').val() == 1) {
+                    $('.conjuge').hide();
+                } else {
+                    $('.conjuge').show();
+                }
+            }
 
         }
     };
