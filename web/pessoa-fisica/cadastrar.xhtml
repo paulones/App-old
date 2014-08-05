@@ -74,7 +74,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="name" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                    <h:inputText class="form-control" id="name" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -122,7 +122,7 @@
                                                 <h:inputText  class="form-control" maxlength="3" id="oe" value="#{pessoaFisicaBean.pessoaFisica.rgOrgaoEmissor}"/>
                                             </div>
                                             <div class="col-md-3">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="rguf" tabindex="1" value="#{pessoaFisicaBean.pessoaFisica.estadoFk}">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="rguf" tabindex="1" value="#{pessoaFisicaBean.pessoaFisica.rgUfFk}">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
@@ -182,12 +182,10 @@
                                             <label class="control-label col-md-3">Nacionalidade
                                             </label>
                                             <div class="col-md-9">
-                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="nationality" id="nationality" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="1">Brasileiro Nato</option>
-                                                    <option value="2">Brasileiro Naturalizado</option>
-                                                    <option value="3">Estrangeiro</option>
-                                                </select>
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="nationality" value="#{pessoaFisicaBean.pessoaFisica.nacionalidadeFk}" tabindex="1">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.nacionalidadeList}" var="nacionalidade" itemLabel="#{nacionalidade.tipo}" itemValue="#{nacionalidade}"/>
+                                                </h:selectOneMenu>
                                             </div>
                                         </div>
                                     </div>
@@ -201,7 +199,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="mothername"/>
+                                                    <h:inputText styleClass="form-control" id="mothername" value="#{pessoaFisicaBean.pessoaFisica.nomeDaMae}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -212,22 +210,18 @@
                                             <label class="control-label col-md-3">Naturalidade
                                             </label>
                                             <div class="col-md-3 natuf">
-                                                <select class="select2_category select2me form-control" placeholder="UF" name="natuf" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">SE</option>
-                                                    <option value="Category 2">PA</option>
-                                                    <option value="Category 3">BA</option>
-                                                    <option value="Category 4">AC</option>
-                                                </select>
+                                                <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="natuf" value="#{pessoaFisicaBean.pessoaFisica.estadoFk}" tabindex="1" converter="entityConverter">
+                                                    <f:ajax event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city" onevent="renderSelect2"/>
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.nome}" itemValue="#{estado}"/>
+                                                </h:selectOneMenu>
                                             </div>
-                                            <div class="col-md-6 natcity">
-                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="natcity" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">Aracaju</option>
-                                                    <option value="Category 2">Salvador</option>
-                                                    <option value="Category 3">Maceió</option>
-                                                </select>
-                                            </div>
+                                            <h:panelGroup layout="block" class="col-md-6 natcity" id="city">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Cidade" id="natcity" value="#{pessoaFisicaBean.pessoaFisica.cidadeFk}" tabindex="1">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.cidadeList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
                                             <div class="col-md-9 natforeign display-hide">
                                                 <select class="select2_category select2me form-control" placeholder="Selecione..." name="natforeign" id="natforeign" tabindex="1">
                                                     <option value=""></option>
@@ -271,7 +265,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group conjuge">
-                                            <label class="control-label col-md-3">Nome do cônjuge
+                                            <label class="control-label col-md-3">Nome do Cônjuge
                                             </label>
                                             <div class="col-md-9 ">
                                                 <div class="input-icon right">
@@ -544,6 +538,10 @@
                                                             Layout.init(); // init layout
                                                             PFCad.init();
                                                         });
+                                                        function renderSelect2(data) {
+                                                            alert(data.status);
+                                                            $('#natcity').select2();
+                                                        }
         </script>
     </ui:define>
 </ui:composition>

@@ -271,6 +271,7 @@ var PFCad = function() {
                 e.preventDefault();
             })
 
+
             nationality();
             $('#nationality').change(nationality);
 
@@ -303,7 +304,16 @@ var PFCad = function() {
                 Soma = 0;
                 if (value == "")
                     return true;
-                if (value == "00000000000")
+                if (value == "00000000000" ||
+                        value == "11111111111" ||
+                        value == "22222222222" ||
+                        value == "33333333333" ||
+                        value == "44444444444" ||
+                        value == "55555555555" ||
+                        value == "66666666666" ||
+                        value == "77777777777" ||
+                        value == "88888888888" ||
+                        value == "99999999999")
                     return false;
                 for (i = 1; i <= 9; i++)
                     Soma = Soma + parseInt(value.substring(i - 1, i)) * (11 - i);
@@ -324,7 +334,7 @@ var PFCad = function() {
             }
 
             function validaTitulo(value, element) {
-                if (value == ""){
+                if (value == "") {
                     return true;
                 }
                 var dig1 = 0;

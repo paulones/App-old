@@ -7,4 +7,9 @@
     <lifecycle>
         <phase-listener>util.LoginListener</phase-listener>
     </lifecycle>
+    
+    <converter>
+        <converter-id>entityConverter</converter-id>
+        <converter-class>util.EntityConverter</converter-class>
+    </converter>  
 </faces-config>

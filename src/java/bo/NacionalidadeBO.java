@@ -6,7 +6,11 @@
 
 package bo;
 
+import dao.NacionalidadeDAO;
+import entidade.Nacionalidade;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,4 +18,18 @@ import java.io.Serializable;
  */
 public class NacionalidadeBO implements Serializable {
     
+    private NacionalidadeDAO nacionalidadeDAO;
+    
+    public NacionalidadeBO(){
+        nacionalidadeDAO = new NacionalidadeDAO();
+    }
+    
+    public List<Nacionalidade> findAll(){
+        try { 
+            return nacionalidadeDAO.findNacionalidadeEntities();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Nacionalidade>();
+    }
 }

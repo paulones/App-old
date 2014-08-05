@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -233,6 +234,19 @@ public class CidadeDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Cidade> getByStateId(Integer estadoId){
+        EntityManager em = getEntityManager();
+        try {
+            List<Cidade> cidadeList = (List<Cidade>) em.createNativeQuery("select * from cidade "
+                    + "where estado_fk = '" + estadoId + "'", Cidade.class).getResultList();
+            return cidadeList;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

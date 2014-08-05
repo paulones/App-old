@@ -11,7 +11,9 @@ import bo.EstadoCivilBO;
 import bo.NacionalidadeBO;
 import bo.PaisBO;
 import bo.PessoaFisicaBO;
+import entidade.Cidade;
 import entidade.Estado;
+import entidade.Nacionalidade;
 import entidade.PessoaFisica;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class PessoaFisicaBean implements Serializable {
     private boolean success;
 
     private List<Estado> estadoList;
+    private List<Cidade> cidadeList;
+    private List<Nacionalidade> nacionalidadeList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private NacionalidadeBO nacionalidadeBO;
@@ -59,6 +63,8 @@ public class PessoaFisicaBean implements Serializable {
             cidadeBO = new CidadeBO();
 
             estadoList = new ArrayList<>();
+            cidadeList = new ArrayList<>();
+            nacionalidadeList = new ArrayList<>();
 
             loadForm();
         }
@@ -66,6 +72,13 @@ public class PessoaFisicaBean implements Serializable {
 
     private void loadForm() {
         estadoList = estadoBO.findAll();
+        nacionalidadeList = nacionalidadeBO.findAll();
+    }
+
+    public void getCitiesByState() {
+        if (pessoaFisica.getEstadoFk() != null) {
+            cidadeList = cidadeBO.getByStateId(pessoaFisica.getEstadoFk().getId());
+        }
     }
 
     public void cadastrar() {
@@ -118,6 +131,22 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setEstadoList(List<Estado> estadoList) {
         this.estadoList = estadoList;
+    }
+
+    public List<Cidade> getCidadeList() {
+        return cidadeList;
+    }
+
+    public void setCidadeList(List<Cidade> cidadeList) {
+        this.cidadeList = cidadeList;
+    }
+
+    public List<Nacionalidade> getNacionalidadeList() {
+        return nacionalidadeList;
+    }
+
+    public void setNacionalidadeList(List<Nacionalidade> nacionalidadeList) {
+        this.nacionalidadeList = nacionalidadeList;
     }
 
     public boolean isSuccess() {
