@@ -2,7 +2,8 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="title">Pessoa Física - Cadastro</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaFisicaBean.init()}"/>
@@ -52,7 +53,7 @@
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <h:form  id="form" class="form-horizontal">
+                        <h:form  prependId="false" id="form" class="form-horizontal">
                             <div class="form-body">
                                 <div class="alert alert-danger form-error display-hide">
                                     <button class="close" data-close="alert"></button>
@@ -73,7 +74,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="name"/>
+                                                    <h:inputText class="form-control" id="name" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -85,7 +86,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="cpf" name="cpf"/>
+                                                    <h:inputText class="form-control" id="cpf" value="#{pessoaFisicaBean.cpf}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,7 +102,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="alias"/>
+                                                    <h:inputText class="form-control" id="alias" value="#{pessoaFisicaBean.pessoaFisica.apelido}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -114,20 +115,19 @@
                                             <div class="col-md-4">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="rg" name="rg"/>
+                                                    <h:inputText class="form-control" id="rg" value="#{pessoaFisicaBean.rg}"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                    <input type="text" class="form-control" maxlength="3" id="oe" name="oe"/>
+                                                <h:inputText  class="form-control" maxlength="3" id="oe" value="#{pessoaFisicaBean.pessoaFisica.rgOrgaoEmissor}"/>
                                             </div>
                                             <div class="col-md-3">
-                                                <select class="select2_category select2me form-control" placeholder="UF" name="rguf" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">SE</option>
-                                                    <option value="Category 2">PA</option>
-                                                    <option value="Category 3">BA</option>
-                                                    <option value="Category 4">AC</option>
-                                                </select>
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="rguf" tabindex="1">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItem itemLabel="SE" itemValue="Category 1"/>
+                                                    <f:selectItem itemLabel="BA" itemValue="Category 2"/>
+                                                    <f:selectItem itemLabel="AC" itemValue="Category 3"/>
+                                                </h:selectOneMenu>
                                             </div>
                                         </div>
                                     </div>
@@ -140,12 +140,10 @@
                                             <label class="control-label col-md-3">Sexo</label>
                                             <div class="col-md-9">
                                                 <div class="radio-list" data-error-container="#form_gender_error">
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="gender" value="option1" />
-                                                        Masculino </label>
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="gender" value="option2" />
-                                                        Feminino </label>
+                                                    <h:selectOneRadio id="gender" value="#{pessoaFisicaBean.pessoaFisica.sexo}">
+                                                        <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                                                        <f:selectItem itemLabel="Feminino" itemValue="F"/>
+                                                    </h:selectOneRadio>
                                                 </div>
                                                 <div id="form_gender_error">
                                                 </div>
