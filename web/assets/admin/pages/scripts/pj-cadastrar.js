@@ -38,6 +38,7 @@ var PJCad = function() {
                     required: false
                 },
                 iniDate: {
+                    iniDate: true,
                     required: false
                 },
                 inactive: {
@@ -94,11 +95,11 @@ var PJCad = function() {
                     required: "Entre com um nome."
                 },
                 cnpj: {
-                    minlength: "CNPJ invalido",
+                    minlength: "CNPJ inv&aacute;lido.",
                     required: "Informe o CNPJ."
                 },
                 state: {
-                    minlength: "Inscrição estatal invalida",
+                    minlength: "Inscri&ccedil;&atilde;o estatal inv&aacute;lida.",
                     required: "Informe a inscrição estatal."
                 }
             },
@@ -145,13 +146,54 @@ var PJCad = function() {
             }
         });
     }
-    
-    var checkDates = function() {
-        
+
+    var handleTable = function() {
+
+
+        var table = $('#vinculations');
+
+        var oTable = table.dataTable({
+            paginate: false,
+            lengthMenu: false,
+            info: false,
+            filter: false,
+            // set the initial value
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "Sem V&iacute;nculos."
+            },
+            "ordering": false
+        });
+
+        var tableWrapper = $("#vinculations_wrapper");
+
+        tableWrapper.find(".dataTables_length select").select2({
+            showSearchInput: false //hide search box with special css class
+        }); // initialize select2 dropdown
+
+        table.on('keyup', '.initial-date', function() {
+            if ($(this).val().length == 10) {
+                checkDates();
+            }
+        });
+        table.on('keyup', '.final-date', function() {
+            if ($(this).val().length == 10) {
+                checkDates();
+            }
+        });
+        table.on('click', '.delete', function(e) {
+            e.preventDefault();
+            $('.final-date-error').hide();
+            $('.initial-date-error').hide();
+            var nRow = $(this).parents('tr')[0];
+            oTable.fnDeleteRow(nRow);
+        });
     }
 
     return {
         init: function() {
+
+            $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
 
             handleValidation();
 
@@ -175,15 +217,25 @@ var PJCad = function() {
                     }
                 });
             });
-            
+
+            $('.vinculate').click(function(e) {
+                e.preventDefault();
+            })
+
             situacao();
-            $('#situacao').change(situacao);
-            function situacao(){
-                if ($('#situacao').val() == 2) {
+            $('#inativo').click(situacao);
+            $('#ativo').click(situacao);
+            function situacao() {
+                if ($('#inativo').is(":checked")) {
                     $('.inactive').show();
                 } else {
                     $('.inactive').hide();
                 }
+            }
+
+            function validaData(value, element) {
+                var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+                return value.match(reg) ? true : false;
             }
         }
     };

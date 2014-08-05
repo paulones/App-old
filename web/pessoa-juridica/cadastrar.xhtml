@@ -67,7 +67,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Nome: <span class="required"> * </span></label>
+                                            <label class="control-label col-md-3">Nome <span class="required"> * </span></label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -159,23 +159,26 @@
                                             <label class="control-label col-md-3">Situação
                                             </label>
                                             <div class="col-md-9">
-                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="situacao" id="situacao" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="1">Ativo</option>
-                                                    <option value="2">Inativo</option>
-                                                </select>
+                                                <div id="situacao" class="radio-list" data-error-container="#form_gender_error">
+                                                    <label class="radio-inline">
+                                                        <input id="ativo" type="radio" name="gender" value="option1" />
+                                                        Ativo </label>
+                                                    <label class="radio-inline">
+                                                        <input id="inativo" type="radio" name="gender" value="option2" />
+                                                        Inativo </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Data de criação
+                                            <label class="control-label col-md-3">Data de Criação
                                             </label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control input-small date" id="iniDate" name="iniDate" placeholder="dd/mm/aaaa"/>
+                                                    <input type="text" class="form-control date" id="iniDate" name="iniDate" placeholder="dd/mm/aaaa"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -186,7 +189,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group inactive">
-                                            <label class="control-label col-md-3">Motivo da desativação
+                                            <label class="control-label col-md-3">Motivo da Desativação
                                             </label>
                                             <div class="col-md-9 ">
                                                 <div class="input-icon right">
@@ -203,7 +206,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Grupo economico
+                                            <label class="control-label col-md-3">Grupo Econômico
                                             </label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
@@ -262,7 +265,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--/row--><br/><br/>
+                                <!--/row-->
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
@@ -282,6 +285,44 @@
                                 </div>
                                 <!--/row-->
                                 <h3 class="form-section">Endereço</h3>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">CEP</label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <input type="text" class="form-control" id="cep" name="cep"/></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Estado/Cidade
+                                            </label>
+                                            <div class="col-md-3">
+                                                <select class="select2_category select2me form-control" placeholder="UF" name="enduf" tabindex="1">
+                                                    <option value=""></option>
+                                                    <option value="Category 1">SE</option>
+                                                    <option value="Category 2">PA</option>
+                                                    <option value="Category 3">BA</option>
+                                                    <option value="Category 4">AC</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="endcity" tabindex="1">
+                                                    <option value=""></option>
+                                                    <option value="Category 1">Aracaju</option>
+                                                    <option value="Category 2">Salvador</option>
+                                                    <option value="Category 3">Maceió</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/span-->
+                                </div>
                                 <!--/row-->
                                 <div class="row">
                                     <div class="col-md-6">
@@ -332,46 +373,25 @@
                                     <!--/span-->
                                 </div>
                                 <!--/row-->
+                                <h3 class="form-section">Vínculos administrativos</h3>
+                                <!--/row-->
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-10">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">CEP</label>
-                                            <div class="col-md-9">
-                                                <div class="input-icon right">
-                                                    <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="cep" name="cep"/></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--/span-->
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Estado/Cidade
-                                            </label>
-                                            <div class="col-md-3">
-                                                <select class="select2_category select2me form-control" placeholder="UF" name="enduf" tabindex="1">
+                                            <label class="control-label col-md-2">CPF</label>
+                                            <div class="col-md-10">
+                                                <select class="select2_category select2me form-control" placeholder="Selecione..." tabindex="1">
                                                     <option value=""></option>
-                                                    <option value="Category 1">SE</option>
-                                                    <option value="Category 2">PA</option>
-                                                    <option value="Category 3">BA</option>
-                                                    <option value="Category 4">AC</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="endcity" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">Aracaju</option>
-                                                    <option value="Category 2">Salvador</option>
-                                                    <option value="Category 3">Maceió</option>
+                                                    <option value="Category 1">016.630.105-10 - Pedro Cardoso</option>
+                                                    <option value="Category 2">016.630.145-07 - Paulo Cardoso</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
-                                    <!--/span-->
+                                    <div class="col-md-2">
+                                        <button  class="btn blue-chambray vinculate"><i class="fa fa-plus-circle"></i> Vincular</button>
+                                    </div>
                                 </div>
-                                <!--/row-->
-                                <h3 class="form-section">Vínculos Empresariais</h3>
-                                <!--/row-->
                             </div>
                             <div class="form-actions right">
                                 <div class="row">
