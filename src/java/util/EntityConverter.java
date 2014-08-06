@@ -12,9 +12,11 @@ import java.util.List;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
+import javax.faces.convert.FacesConverter;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Id;
 
+@FacesConverter(value = "entityConverter")
 public class EntityConverter implements Converter {
 
     public Object getAsObject(FacesContext ctx, UIComponent component,

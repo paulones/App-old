@@ -33,7 +33,6 @@ public class BloquearTelaBean implements Serializable {
     private String pagina_anterior;
     private boolean senhaCorreta;
     private UsuarioBO usuarioBO;
-    private HttpServletRequest request;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {

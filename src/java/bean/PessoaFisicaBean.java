@@ -33,10 +33,6 @@ public class PessoaFisicaBean implements Serializable {
 
     private PessoaFisica pessoaFisica;
 
-    private String cpf;
-    private String rg;
-    private String inss;
-    private Long cep;
     private boolean success;
 
     private List<Estado> estadoList;
@@ -78,10 +74,14 @@ public class PessoaFisicaBean implements Serializable {
     public void getCitiesByState() {
         if (pessoaFisica.getEstadoFk() != null) {
             cidadeList = cidadeBO.getByStateId(pessoaFisica.getEstadoFk().getId());
+        } else{
+            cidadeList.clear();
         }
     }
 
     public void cadastrar() {
+        System.out.println(pessoaFisica.getCpf());
+        System.out.println(pessoaFisica.getRg());
         success = true;
     }
 
@@ -91,38 +91,6 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setPessoaFisica(PessoaFisica pessoaFisica) {
         this.pessoaFisica = pessoaFisica;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
-    public String getInss() {
-        return inss;
-    }
-
-    public void setInss(String inss) {
-        this.inss = inss;
-    }
-
-    public Long getCep() {
-        return cep;
-    }
-
-    public void setCep(Long cep) {
-        this.cep = cep;
     }
 
     public List<Estado> getEstadoList() {
