@@ -45,6 +45,7 @@ public class LoginBean implements Serializable {
             rpBO = new RecuperarSenhaBO();
             loginBO = new LoginBO();
             usuario = new Usuario();
+            cpf = "";
             mensagem = "";
             licenca = "";
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
