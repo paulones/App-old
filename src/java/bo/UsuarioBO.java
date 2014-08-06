@@ -30,10 +30,19 @@ public class UsuarioBO implements Serializable {
             e.printStackTrace();
         }
     }
-
-    public Usuario findUsuario(Long cpf) {
+    
+    public Usuario findUsuario(Integer id) {
         try { 
-            return usuarioDAO.findUsuario(cpf);
+            return usuarioDAO.findUsuario(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Usuario();
+    }
+
+    public Usuario findUsuarioByCPF(String cpf) {
+        try { 
+            return usuarioDAO.findUsuarioByCPF(cpf);
         } catch (Exception e) {
             e.printStackTrace();
         }

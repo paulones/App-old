@@ -32,7 +32,6 @@ public class PessoaFisicaDAO implements Serializable {
 
     public PessoaFisicaDAO() {
     }
-    
     private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
@@ -49,15 +48,15 @@ public class PessoaFisicaDAO implements Serializable {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
                 pessoaFisica.setCidadeFk(cidadeFk);
             }
-            Estado rgUfFk = pessoaFisica.getRgUfFk();
-            if (rgUfFk != null) {
-                rgUfFk = em.getReference(rgUfFk.getClass(), rgUfFk.getId());
-                pessoaFisica.setRgUfFk(rgUfFk);
-            }
             Estado estadoFk = pessoaFisica.getEstadoFk();
             if (estadoFk != null) {
                 estadoFk = em.getReference(estadoFk.getClass(), estadoFk.getId());
                 pessoaFisica.setEstadoFk(estadoFk);
+            }
+            Estado rgUfFk = pessoaFisica.getRgUfFk();
+            if (rgUfFk != null) {
+                rgUfFk = em.getReference(rgUfFk.getClass(), rgUfFk.getId());
+                pessoaFisica.setRgUfFk(rgUfFk);
             }
             EstadoCivil estadoCivilFk = pessoaFisica.getEstadoCivilFk();
             if (estadoCivilFk != null) {
@@ -79,13 +78,13 @@ public class PessoaFisicaDAO implements Serializable {
                 cidadeFk.getPessoaFisicaCollection().add(pessoaFisica);
                 cidadeFk = em.merge(cidadeFk);
             }
-            if (rgUfFk != null) {
-                rgUfFk.getPessoaFisicaCollection().add(pessoaFisica);
-                rgUfFk = em.merge(rgUfFk);
-            }
             if (estadoFk != null) {
                 estadoFk.getPessoaFisicaCollection().add(pessoaFisica);
                 estadoFk = em.merge(estadoFk);
+            }
+            if (rgUfFk != null) {
+                rgUfFk.getPessoaFisicaCollection().add(pessoaFisica);
+                rgUfFk = em.merge(rgUfFk);
             }
             if (estadoCivilFk != null) {
                 estadoCivilFk.getPessoaFisicaCollection().add(pessoaFisica);
@@ -122,10 +121,10 @@ public class PessoaFisicaDAO implements Serializable {
             PessoaFisica persistentPessoaFisica = em.find(PessoaFisica.class, pessoaFisica.getId());
             Cidade cidadeFkOld = persistentPessoaFisica.getCidadeFk();
             Cidade cidadeFkNew = pessoaFisica.getCidadeFk();
-            Estado rgUfFkOld = persistentPessoaFisica.getRgUfFk();
-            Estado rgUfFkNew = pessoaFisica.getRgUfFk();
             Estado estadoFkOld = persistentPessoaFisica.getEstadoFk();
             Estado estadoFkNew = pessoaFisica.getEstadoFk();
+            Estado rgUfFkOld = persistentPessoaFisica.getRgUfFk();
+            Estado rgUfFkNew = pessoaFisica.getRgUfFk();
             EstadoCivil estadoCivilFkOld = persistentPessoaFisica.getEstadoCivilFk();
             EstadoCivil estadoCivilFkNew = pessoaFisica.getEstadoCivilFk();
             Nacionalidade nacionalidadeFkOld = persistentPessoaFisica.getNacionalidadeFk();
@@ -136,13 +135,13 @@ public class PessoaFisicaDAO implements Serializable {
                 cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
                 pessoaFisica.setCidadeFk(cidadeFkNew);
             }
-            if (rgUfFkNew != null) {
-                rgUfFkNew = em.getReference(rgUfFkNew.getClass(), rgUfFkNew.getId());
-                pessoaFisica.setRgUfFk(rgUfFkNew);
-            }
             if (estadoFkNew != null) {
                 estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
                 pessoaFisica.setEstadoFk(estadoFkNew);
+            }
+            if (rgUfFkNew != null) {
+                rgUfFkNew = em.getReference(rgUfFkNew.getClass(), rgUfFkNew.getId());
+                pessoaFisica.setRgUfFk(rgUfFkNew);
             }
             if (estadoCivilFkNew != null) {
                 estadoCivilFkNew = em.getReference(estadoCivilFkNew.getClass(), estadoCivilFkNew.getId());
@@ -165,14 +164,6 @@ public class PessoaFisicaDAO implements Serializable {
                 cidadeFkNew.getPessoaFisicaCollection().add(pessoaFisica);
                 cidadeFkNew = em.merge(cidadeFkNew);
             }
-            if (rgUfFkOld != null && !rgUfFkOld.equals(rgUfFkNew)) {
-                rgUfFkOld.getPessoaFisicaCollection().remove(pessoaFisica);
-                rgUfFkOld = em.merge(rgUfFkOld);
-            }
-            if (rgUfFkNew != null && !rgUfFkNew.equals(rgUfFkOld)) {
-                rgUfFkNew.getPessoaFisicaCollection().add(pessoaFisica);
-                rgUfFkNew = em.merge(rgUfFkNew);
-            }
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getPessoaFisicaCollection().remove(pessoaFisica);
                 estadoFkOld = em.merge(estadoFkOld);
@@ -180,6 +171,14 @@ public class PessoaFisicaDAO implements Serializable {
             if (estadoFkNew != null && !estadoFkNew.equals(estadoFkOld)) {
                 estadoFkNew.getPessoaFisicaCollection().add(pessoaFisica);
                 estadoFkNew = em.merge(estadoFkNew);
+            }
+            if (rgUfFkOld != null && !rgUfFkOld.equals(rgUfFkNew)) {
+                rgUfFkOld.getPessoaFisicaCollection().remove(pessoaFisica);
+                rgUfFkOld = em.merge(rgUfFkOld);
+            }
+            if (rgUfFkNew != null && !rgUfFkNew.equals(rgUfFkOld)) {
+                rgUfFkNew.getPessoaFisicaCollection().add(pessoaFisica);
+                rgUfFkNew = em.merge(rgUfFkNew);
             }
             if (estadoCivilFkOld != null && !estadoCivilFkOld.equals(estadoCivilFkNew)) {
                 estadoCivilFkOld.getPessoaFisicaCollection().remove(pessoaFisica);
@@ -244,15 +243,15 @@ public class PessoaFisicaDAO implements Serializable {
                 cidadeFk.getPessoaFisicaCollection().remove(pessoaFisica);
                 cidadeFk = em.merge(cidadeFk);
             }
-            Estado rgUfFk = pessoaFisica.getRgUfFk();
-            if (rgUfFk != null) {
-                rgUfFk.getPessoaFisicaCollection().remove(pessoaFisica);
-                rgUfFk = em.merge(rgUfFk);
-            }
             Estado estadoFk = pessoaFisica.getEstadoFk();
             if (estadoFk != null) {
                 estadoFk.getPessoaFisicaCollection().remove(pessoaFisica);
                 estadoFk = em.merge(estadoFk);
+            }
+            Estado rgUfFk = pessoaFisica.getRgUfFk();
+            if (rgUfFk != null) {
+                rgUfFk.getPessoaFisicaCollection().remove(pessoaFisica);
+                rgUfFk = em.merge(rgUfFk);
             }
             EstadoCivil estadoCivilFk = pessoaFisica.getEstadoCivilFk();
             if (estadoCivilFk != null) {

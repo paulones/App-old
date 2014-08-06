@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -23,23 +25,27 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Pedro
+ * @author paulones
  */
 @Entity
 @Table(name = "config")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Config.findAll", query = "SELECT c FROM Config c"),
+    @NamedQuery(name = "Config.findById", query = "SELECT c FROM Config c WHERE c.id = :id"),
     @NamedQuery(name = "Config.findByCnpj", query = "SELECT c FROM Config c WHERE c.cnpj = :cnpj"),
     @NamedQuery(name = "Config.findByChave", query = "SELECT c FROM Config c WHERE c.chave = :chave"),
-    @NamedQuery(name = "Config.findByUltimoLogin", query = "SELECT c FROM Config c WHERE c.ultimoLogin = :ultimoLogin"),
-    @NamedQuery(name = "Config.findOneRow", query = "SELECT c FROM Config c ORDER BY c.cnpj")})
+    @NamedQuery(name = "Config.findByUltimoLogin", query = "SELECT c FROM Config c WHERE c.ultimoLogin = :ultimoLogin")})
 public class Config implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 14)
     @Column(name = "cnpj")
     private String cnpj;
     @Basic(optional = false)
@@ -54,13 +60,22 @@ public class Config implements Serializable {
     public Config() {
     }
 
-    public Config(String cnpj) {
-        this.cnpj = cnpj;
+    public Config(Integer id) {
+        this.id = id;
     }
 
-    public Config(String cnpj, String chave) {
+    public Config(Integer id, String cnpj, String chave) {
+        this.id = id;
         this.cnpj = cnpj;
         this.chave = chave;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCnpj() {
@@ -90,7 +105,7 @@ public class Config implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (cnpj != null ? cnpj.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -101,7 +116,7 @@ public class Config implements Serializable {
             return false;
         }
         Config other = (Config) object;
-        if ((this.cnpj == null && other.cnpj != null) || (this.cnpj != null && !this.cnpj.equals(other.cnpj))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -109,7 +124,7 @@ public class Config implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.Config[ cnpj=" + cnpj + " ]";
+        return "entidade.Config[ id=" + id + " ]";
     }
     
 }

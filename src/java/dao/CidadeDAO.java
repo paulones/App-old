@@ -3,25 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Cidade;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import entidade.Endereco;
 import entidade.Estado;
 import entidade.PessoaFisica;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -42,6 +42,9 @@ public class CidadeDAO implements Serializable {
         if (cidade.getPessoaFisicaCollection() == null) {
             cidade.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
         }
+        if (cidade.getEnderecoCollection() == null) {
+            cidade.setEnderecoCollection(new ArrayList<Endereco>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -57,6 +60,12 @@ public class CidadeDAO implements Serializable {
                 attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
             }
             cidade.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
+            Collection<Endereco> attachedEnderecoCollection = new ArrayList<Endereco>();
+            for (Endereco enderecoCollectionEnderecoToAttach : cidade.getEnderecoCollection()) {
+                enderecoCollectionEnderecoToAttach = em.getReference(enderecoCollectionEnderecoToAttach.getClass(), enderecoCollectionEnderecoToAttach.getId());
+                attachedEnderecoCollection.add(enderecoCollectionEnderecoToAttach);
+            }
+            cidade.setEnderecoCollection(attachedEnderecoCollection);
             em.persist(cidade);
             if (estadoFk != null) {
                 estadoFk.getCidadeCollection().add(cidade);
@@ -69,6 +78,15 @@ public class CidadeDAO implements Serializable {
                 if (oldCidadeFkOfPessoaFisicaCollectionPessoaFisica != null) {
                     oldCidadeFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
                     oldCidadeFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldCidadeFkOfPessoaFisicaCollectionPessoaFisica);
+                }
+            }
+            for (Endereco enderecoCollectionEndereco : cidade.getEnderecoCollection()) {
+                Cidade oldCidadeFkOfEnderecoCollectionEndereco = enderecoCollectionEndereco.getCidadeFk();
+                enderecoCollectionEndereco.setCidadeFk(cidade);
+                enderecoCollectionEndereco = em.merge(enderecoCollectionEndereco);
+                if (oldCidadeFkOfEnderecoCollectionEndereco != null) {
+                    oldCidadeFkOfEnderecoCollectionEndereco.getEnderecoCollection().remove(enderecoCollectionEndereco);
+                    oldCidadeFkOfEnderecoCollectionEndereco = em.merge(oldCidadeFkOfEnderecoCollectionEndereco);
                 }
             }
             em.getTransaction().commit();
@@ -96,6 +114,8 @@ public class CidadeDAO implements Serializable {
             Estado estadoFkNew = cidade.getEstadoFk();
             Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentCidade.getPessoaFisicaCollection();
             Collection<PessoaFisica> pessoaFisicaCollectionNew = cidade.getPessoaFisicaCollection();
+            Collection<Endereco> enderecoCollectionOld = persistentCidade.getEnderecoCollection();
+            Collection<Endereco> enderecoCollectionNew = cidade.getEnderecoCollection();
             if (estadoFkNew != null) {
                 estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
                 cidade.setEstadoFk(estadoFkNew);
@@ -107,6 +127,13 @@ public class CidadeDAO implements Serializable {
             }
             pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
             cidade.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
+            Collection<Endereco> attachedEnderecoCollectionNew = new ArrayList<Endereco>();
+            for (Endereco enderecoCollectionNewEnderecoToAttach : enderecoCollectionNew) {
+                enderecoCollectionNewEnderecoToAttach = em.getReference(enderecoCollectionNewEnderecoToAttach.getClass(), enderecoCollectionNewEnderecoToAttach.getId());
+                attachedEnderecoCollectionNew.add(enderecoCollectionNewEnderecoToAttach);
+            }
+            enderecoCollectionNew = attachedEnderecoCollectionNew;
+            cidade.setEnderecoCollection(enderecoCollectionNew);
             cidade = em.merge(cidade);
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getCidadeCollection().remove(cidade);
@@ -130,6 +157,23 @@ public class CidadeDAO implements Serializable {
                     if (oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica.equals(cidade)) {
                         oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
                         oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica);
+                    }
+                }
+            }
+            for (Endereco enderecoCollectionOldEndereco : enderecoCollectionOld) {
+                if (!enderecoCollectionNew.contains(enderecoCollectionOldEndereco)) {
+                    enderecoCollectionOldEndereco.setCidadeFk(null);
+                    enderecoCollectionOldEndereco = em.merge(enderecoCollectionOldEndereco);
+                }
+            }
+            for (Endereco enderecoCollectionNewEndereco : enderecoCollectionNew) {
+                if (!enderecoCollectionOld.contains(enderecoCollectionNewEndereco)) {
+                    Cidade oldCidadeFkOfEnderecoCollectionNewEndereco = enderecoCollectionNewEndereco.getCidadeFk();
+                    enderecoCollectionNewEndereco.setCidadeFk(cidade);
+                    enderecoCollectionNewEndereco = em.merge(enderecoCollectionNewEndereco);
+                    if (oldCidadeFkOfEnderecoCollectionNewEndereco != null && !oldCidadeFkOfEnderecoCollectionNewEndereco.equals(cidade)) {
+                        oldCidadeFkOfEnderecoCollectionNewEndereco.getEnderecoCollection().remove(enderecoCollectionNewEndereco);
+                        oldCidadeFkOfEnderecoCollectionNewEndereco = em.merge(oldCidadeFkOfEnderecoCollectionNewEndereco);
                     }
                 }
             }
@@ -176,6 +220,11 @@ public class CidadeDAO implements Serializable {
             for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
                 pessoaFisicaCollectionPessoaFisica.setCidadeFk(null);
                 pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
+            }
+            Collection<Endereco> enderecoCollection = cidade.getEnderecoCollection();
+            for (Endereco enderecoCollectionEndereco : enderecoCollection) {
+                enderecoCollectionEndereco.setCidadeFk(null);
+                enderecoCollectionEndereco = em.merge(enderecoCollectionEndereco);
             }
             em.remove(cidade);
             em.getTransaction().commit();
@@ -238,8 +287,8 @@ public class CidadeDAO implements Serializable {
             em.close();
         }
     }
-    
-    public List<Cidade> getByStateId(Integer estadoId){
+
+    public List<Cidade> getByStateId(Integer estadoId) {
         EntityManager em = getEntityManager();
         try {
             List<Cidade> cidadeList = (List<Cidade>) em.createNativeQuery("select * from cidade "
@@ -251,5 +300,5 @@ public class CidadeDAO implements Serializable {
             em.close();
         }
     }
-    
+
 }

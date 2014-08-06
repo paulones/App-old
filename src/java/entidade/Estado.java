@@ -39,8 +39,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estado.findByNome", query = "SELECT e FROM Estado e WHERE e.nome = :nome"),
     @NamedQuery(name = "Estado.findByUf", query = "SELECT e FROM Estado e WHERE e.uf = :uf")})
 public class Estado implements Serializable {
-    @OneToMany(mappedBy = "estadoFk")
-    private Collection<Endereco> enderecoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,10 +60,12 @@ public class Estado implements Serializable {
     @JoinColumn(name = "pais_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Pais paisFk;
-    @OneToMany(mappedBy = "rgUfFk")
-    private Collection<PessoaFisica> pessoaFisicaCollection;
     @OneToMany(mappedBy = "estadoFk")
+    private Collection<PessoaFisica> pessoaFisicaCollection;
+    @OneToMany(mappedBy = "rgUfFk")
     private Collection<PessoaFisica> pessoaFisicaCollection1;
+    @OneToMany(mappedBy = "estadoFk")
+    private Collection<Endereco> enderecoCollection;
 
     public Estado() {
     }
@@ -139,6 +139,15 @@ public class Estado implements Serializable {
         this.pessoaFisicaCollection1 = pessoaFisicaCollection1;
     }
 
+    @XmlTransient
+    public Collection<Endereco> getEnderecoCollection() {
+        return enderecoCollection;
+    }
+
+    public void setEnderecoCollection(Collection<Endereco> enderecoCollection) {
+        this.enderecoCollection = enderecoCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -162,15 +171,6 @@ public class Estado implements Serializable {
     @Override
     public String toString() {
         return "entidade.Estado[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Endereco> getEnderecoCollection() {
-        return enderecoCollection;
-    }
-
-    public void setEnderecoCollection(Collection<Endereco> enderecoCollection) {
-        this.enderecoCollection = enderecoCollection;
     }
     
 }

@@ -30,7 +30,6 @@ public class EstadoCivilDAO implements Serializable {
 
     public EstadoCivilDAO() {
     }
-    
     private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {

@@ -29,7 +29,6 @@ public class BloquearTelaBean implements Serializable {
 
     private Usuario usuario;
     private String senha;
-    private String cpf;
     private String pagina_anterior;
     private boolean senhaCorreta;
     private UsuarioBO usuarioBO;
@@ -39,15 +38,14 @@ public class BloquearTelaBean implements Serializable {
             usuarioBO = new UsuarioBO();
             senha = "";
             senhaCorreta = true;
-            cpf = Cookie.getCookie("usuario");
             pagina_anterior = Cookie.getCookie("pagina_anterior");
-            usuario = usuarioBO.findUsuario(Long.valueOf(cpf));
+            usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
         }
     }
 
     public void login() throws IOException {
         if (senha.equals(usuario.getSenha())) {
-            Cookie.addCookie("usuario", cpf, 36000);
+            Cookie.addCookie("usuario", usuario.getCpf(), 36000);
             if (pagina_anterior != null) {
                 Cookie.apagarCookie("pagina_anterior");
                 FacesContext.getCurrentInstance().getExternalContext().redirect(pagina_anterior);

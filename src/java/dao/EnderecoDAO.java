@@ -25,14 +25,11 @@ import javax.transaction.UserTransaction;
  *
  * @author paulones
  */
-public class EnderecoJpaController implements Serializable {
+public class EnderecoDAO implements Serializable {
 
-    public EnderecoJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
-        this.emf = emf;
+    public EnderecoDAO() {
     }
-    private UserTransaction utx = null;
-    private EntityManagerFactory emf = null;
+    private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
@@ -41,8 +38,8 @@ public class EnderecoJpaController implements Serializable {
     public void create(Endereco endereco) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             Cidade cidadeFk = endereco.getCidadeFk();
             if (cidadeFk != null) {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
@@ -62,10 +59,10 @@ public class EnderecoJpaController implements Serializable {
                 estadoFk.getEnderecoCollection().add(endereco);
                 estadoFk = em.merge(estadoFk);
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -80,8 +77,8 @@ public class EnderecoJpaController implements Serializable {
     public void edit(Endereco endereco) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             Endereco persistentEndereco = em.find(Endereco.class, endereco.getId());
             Cidade cidadeFkOld = persistentEndereco.getCidadeFk();
             Cidade cidadeFkNew = endereco.getCidadeFk();
@@ -112,10 +109,10 @@ public class EnderecoJpaController implements Serializable {
                 estadoFkNew.getEnderecoCollection().add(endereco);
                 estadoFkNew = em.merge(estadoFkNew);
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -137,8 +134,8 @@ public class EnderecoJpaController implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            utx.begin();
             em = getEntityManager();
+            em.getTransaction().begin();
             Endereco endereco;
             try {
                 endereco = em.getReference(Endereco.class, id);
@@ -157,10 +154,10 @@ public class EnderecoJpaController implements Serializable {
                 estadoFk = em.merge(estadoFk);
             }
             em.remove(endereco);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

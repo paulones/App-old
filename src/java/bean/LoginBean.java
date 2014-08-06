@@ -30,7 +30,6 @@ import util.GeradorMD5;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    private String cpf;
     private String mensagem;
     private Usuario usuario;
     private UsuarioBO usuarioBO;
@@ -45,7 +44,6 @@ public class LoginBean implements Serializable {
             rpBO = new RecuperarSenhaBO();
             loginBO = new LoginBO();
             usuario = new Usuario();
-            cpf = "";
             mensagem = "";
             licenca = "";
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -61,24 +59,23 @@ public class LoginBean implements Serializable {
     }
 
     public void login() throws IOException {
-        cpf = this.cpf.replace(".", "").replace("-", "");
-        if (!loginBO.expirado()) {
-            Usuario usuarioBD = usuarioBO.findUsuario(Long.valueOf(cpf));
-            if (usuarioBD != null) {
-                if (usuarioBD.getSenha().equals(usuario.getSenha())) {
-                    Cookie.addCookie("usuario", cpf, 36000);
+        Usuario usuarioBD = usuarioBO.findUsuarioByCPF(usuario.getCpf());
+        if (usuarioBD != null) {
+            if (usuarioBD.getSenha().equals(usuario.getSenha())) {
+                if (!loginBO.expirado()) {
+                    Cookie.addCookie("usuario", usuario.getCpf(), 36000);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
                 } else {
-                    mensagem = "loginFail";
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha incorreta.", null));
+                    mensagem = "licensingFail";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tempo da licença expirou, adquira outra!", null));
                 }
             } else {
                 mensagem = "loginFail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não existe.", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha incorreta.", null));
             }
         } else {
-            mensagem = "licensingFail";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Tempo da licença expirou, adquira outra!", null));
+            mensagem = "loginFail";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não existe.", null));
         }
     }
 
@@ -92,7 +89,7 @@ public class LoginBean implements Serializable {
             mailtext += "http://prcc.com.br/login.xhtml?cod=" + cod;
             mailtext += "\n\nAtenciosamente,\n\nPRCC - Gestão em TI e negócios.";
             EnviarEmail.enviar(mailtext, accountActivation, usuario.getEmail());
-            rp.setUsuarioFk(usuarioBO.findUsuarioByEmail(usuario.getEmail()).getCpf());
+            rp.setId(usuarioBO.findUsuarioByEmail(usuario.getEmail()).getId());
             rp.setCodigo(cod);
             rpBO.create(rp);
             usuario.setEmail(null);
@@ -108,7 +105,7 @@ public class LoginBean implements Serializable {
     public void alterarSenha() {
         String senha = usuario.getSenha();
         RecuperarSenha rp = rpBO.findRecuperarSenhaByCod(cod);
-        usuario = usuarioBO.findUsuario(rp.getUsuarioFk());
+        usuario = usuarioBO.findUsuario(rp.getUsuario().getId());
         usuario.setSenha(senha);
         usuarioBO.edit(usuario);
         rpBO.destroy(rp);
@@ -117,15 +114,14 @@ public class LoginBean implements Serializable {
     }
 
     public void registrar() {
-        usuario.setCpf(Long.valueOf(cpf.replace(".", "").replace("-", "")));
-        if (usuarioBO.findUsuario(usuario.getCpf()) == null) {
+        if (usuarioBO.findUsuarioByCPF(usuario.getCpf()) == null) {
             if (usuarioBO.findUsuarioByEmail(usuario.getEmail()) == null) {
                 usuarioBO.create(usuario);
                 mensagem = "loginSuccess";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário registrado com sucesso!", null));
                 usuario.setNome(null);
                 usuario.setEmail(null);
-                cpf = "";
+                usuario.setCpf(null);
             } else {
                 mensagem = "registerFail";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Já existe um usuário com o e-mail \"" + usuario.getEmail() + "\" cadastrado.", null));
@@ -133,8 +129,9 @@ public class LoginBean implements Serializable {
             }
         } else {
             mensagem = "registerFail";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um usuário com o CPF \"" + cpf + "\" cadastrado.", null));
-            cpf = "";
+            String cpf = String.format("%s.%s.%s-%s",usuario.getCpf().substring(0, 3),usuario.getCpf().substring(3, 6),usuario.getCpf().substring(6, 9),usuario.getCpf().substring(9));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um usuário com o CPF \"" +cpf+ "\" cadastrado.", null));
+            usuario.setCpf(null);
         }
     }
 
@@ -171,13 +168,4 @@ public class LoginBean implements Serializable {
     public void setLicenca(String licenca) {
         this.licenca = licenca;
     }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
 }

@@ -28,7 +28,7 @@ public class TemplateBean implements Serializable{
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
             usuarioBO = new UsuarioBO();
-            usuario = usuarioBO.findUsuario(Long.valueOf(Cookie.getCookie("usuario")));
+            usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
         }
     }
 

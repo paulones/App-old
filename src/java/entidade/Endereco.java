@@ -7,7 +7,6 @@
 package entidade;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,8 +66,9 @@ public class Endereco implements Serializable {
     @Size(max = 50)
     @Column(name = "bairro")
     private String bairro;
+    @Size(max = 9)
     @Column(name = "cep")
-    private BigInteger cep;
+    private String cep;
     @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
     @ManyToOne
     private Cidade cidadeFk;
@@ -145,11 +145,11 @@ public class Endereco implements Serializable {
         this.bairro = bairro;
     }
 
-    public BigInteger getCep() {
+    public String getCep() {
         return cep;
     }
 
-    public void setCep(BigInteger cep) {
+    public void setCep(String cep) {
         this.cep = cep;
     }
 

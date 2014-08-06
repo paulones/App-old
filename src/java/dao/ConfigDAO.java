@@ -7,7 +7,6 @@
 package dao;
 
 import dao.exceptions.NonexistentEntityException;
-import dao.exceptions.PreexistingEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Config;
 import java.io.Serializable;
@@ -15,8 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -24,7 +24,7 @@ import javax.transaction.UserTransaction;
 
 /**
  *
- * @author Pedro
+ * @author paulones
  */
 public class ConfigDAO implements Serializable {
 
@@ -36,7 +36,7 @@ public class ConfigDAO implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Config config) throws PreexistingEntityException, RollbackFailureException, Exception {
+    public void create(Config config) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -48,9 +48,6 @@ public class ConfigDAO implements Serializable {
                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
-            }
-            if (findConfig(config.getCnpj()) != null) {
-                throw new PreexistingEntityException("Config " + config + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -75,7 +72,7 @@ public class ConfigDAO implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                String id = config.getCnpj();
+                Integer id = config.getId();
                 if (findConfig(id) == null) {
                     throw new NonexistentEntityException("The config with id " + id + " no longer exists.");
                 }
@@ -88,7 +85,7 @@ public class ConfigDAO implements Serializable {
         }
     }
 
-    public void destroy(String id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -96,7 +93,7 @@ public class ConfigDAO implements Serializable {
             Config config;
             try {
                 config = em.getReference(Config.class, id);
-                config.getCnpj();
+                config.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The config with id " + id + " no longer exists.", enfe);
             }
@@ -140,7 +137,7 @@ public class ConfigDAO implements Serializable {
         }
     }
 
-    public Config findConfig(String id) {
+    public Config findConfig(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(Config.class, id);
@@ -175,4 +172,18 @@ public class ConfigDAO implements Serializable {
             return config.get(0);
         }
     }
+    
+    public Config findConfigByCNPJ(String cnpj){
+        EntityManager em = getEntityManager();
+        try {
+            Config config = (Config) em.createNativeQuery("select * from config "
+                    + "where cnpj = '" + cnpj + "'", Config.class).getSingleResult();
+            return config;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
 }

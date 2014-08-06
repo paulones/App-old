@@ -7,7 +7,6 @@
 package entidade;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,17 +61,21 @@ public class PessoaFisica implements Serializable {
     private String apelido;
     @Column(name = "sexo")
     private Character sexo;
+    @Size(max = 11)
     @Column(name = "cpf")
-    private BigInteger cpf;
+    private String cpf;
+    @Size(max = 15)
     @Column(name = "rg")
-    private BigInteger rg;
-    @Size(max = 5)
+    private String rg;
+    @Size(max = 4)
     @Column(name = "rg_orgao_emissor")
     private String rgOrgaoEmissor;
+    @Size(max = 13)
     @Column(name = "titulo_de_eleitor")
-    private BigInteger tituloDeEleitor;
+    private String tituloDeEleitor;
+    @Size(max = 15)
     @Column(name = "inss")
-    private BigInteger inss;
+    private String inss;
     @Size(max = 50)
     @Column(name = "nome_do_pai")
     private String nomeDoPai;
@@ -88,12 +91,12 @@ public class PessoaFisica implements Serializable {
     @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
     @ManyToOne
     private Cidade cidadeFk;
-    @JoinColumn(name = "rg_uf_fk", referencedColumnName = "id")
-    @ManyToOne
-    private Estado rgUfFk;
     @JoinColumn(name = "estado_fk", referencedColumnName = "id")
     @ManyToOne
     private Estado estadoFk;
+    @JoinColumn(name = "rg_uf_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Estado rgUfFk;
     @JoinColumn(name = "estado_civil_fk", referencedColumnName = "id")
     @ManyToOne
     private EstadoCivil estadoCivilFk;
@@ -148,19 +151,19 @@ public class PessoaFisica implements Serializable {
         this.sexo = sexo;
     }
 
-    public BigInteger getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(BigInteger cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
-    public BigInteger getRg() {
+    public String getRg() {
         return rg;
     }
 
-    public void setRg(BigInteger rg) {
+    public void setRg(String rg) {
         this.rg = rg;
     }
 
@@ -172,19 +175,19 @@ public class PessoaFisica implements Serializable {
         this.rgOrgaoEmissor = rgOrgaoEmissor;
     }
 
-    public BigInteger getTituloDeEleitor() {
+    public String getTituloDeEleitor() {
         return tituloDeEleitor;
     }
 
-    public void setTituloDeEleitor(BigInteger tituloDeEleitor) {
+    public void setTituloDeEleitor(String tituloDeEleitor) {
         this.tituloDeEleitor = tituloDeEleitor;
     }
 
-    public BigInteger getInss() {
+    public String getInss() {
         return inss;
     }
 
-    public void setInss(BigInteger inss) {
+    public void setInss(String inss) {
         this.inss = inss;
     }
 
@@ -228,20 +231,20 @@ public class PessoaFisica implements Serializable {
         this.cidadeFk = cidadeFk;
     }
 
-    public Estado getRgUfFk() {
-        return rgUfFk;
-    }
-
-    public void setRgUfFk(Estado rgUfFk) {
-        this.rgUfFk = rgUfFk;
-    }
-
     public Estado getEstadoFk() {
         return estadoFk;
     }
 
     public void setEstadoFk(Estado estadoFk) {
         this.estadoFk = estadoFk;
+    }
+
+    public Estado getRgUfFk() {
+        return rgUfFk;
+    }
+
+    public void setRgUfFk(Estado rgUfFk) {
+        this.rgUfFk = rgUfFk;
     }
 
     public EstadoCivil getEstadoCivilFk() {

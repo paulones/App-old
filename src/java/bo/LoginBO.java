@@ -20,6 +20,7 @@ import util.Criptografia;
 public class LoginBO implements Serializable {
 
     private String chaveTeste = "60ayZtoAY//D7Z+odXgniL4AZQk85UkqgudHVVhN+Vc=";
+    private String cnpj = "12345678901111";
     private String cryptKey = "deadwood8986deadwood8986";
     ConfigDAO configDAO = new ConfigDAO();
 
@@ -52,7 +53,7 @@ public class LoginBO implements Serializable {
                         config.setUltimoLogin(dataAtual);
                         configDAO.create(config);
                     } else {
-                        config = configDAO.findConfig(cnpj);
+                        config = configDAO.findConfigByCNPJ(cnpj);
                         config.setChave(crypt);
                         config.setUltimoLogin(dataAtual);
                         configDAO.edit(config);
@@ -72,7 +73,7 @@ public class LoginBO implements Serializable {
         Config config = new Config();
         //Consulta em uma persistênca a string de licença
         try {
-            config = configDAO.findFirstConfig();
+            config = configDAO.findConfigByCNPJ(cnpj);
             String descriptografia;
             //System.out.println("config: "+config.getChave()+", "+config.getCnpj()+", "+config.getUltimoLogin().toString());
             if (!config.getChave().isEmpty()) {

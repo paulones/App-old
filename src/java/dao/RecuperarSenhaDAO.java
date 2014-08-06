@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package dao;
 
 import dao.exceptions.IllegalOrphanException;
@@ -10,28 +11,27 @@ import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.PreexistingEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.RecuperarSenha;
-import entidade.Usuario;
 import java.io.Serializable;
+import javax.persistence.Query;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import entidade.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
  *
- * @author PRCC
+ * @author paulones
  */
 public class RecuperarSenhaDAO implements Serializable {
 
     public RecuperarSenhaDAO() {
     }
-
     private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
@@ -59,7 +59,7 @@ public class RecuperarSenhaDAO implements Serializable {
             em.getTransaction().begin();
             Usuario usuario = recuperarSenha.getUsuario();
             if (usuario != null) {
-                usuario = em.getReference(usuario.getClass(), usuario.getCpf());
+                usuario = em.getReference(usuario.getClass(), usuario.getId());
                 recuperarSenha.setUsuario(usuario);
             }
             em.persist(recuperarSenha);
@@ -74,7 +74,7 @@ public class RecuperarSenhaDAO implements Serializable {
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
-            if (findRecuperarSenha(recuperarSenha.getUsuarioFk()) != null) {
+            if (findRecuperarSenha(recuperarSenha.getId()) != null) {
                 throw new PreexistingEntityException("RecuperarSenha " + recuperarSenha + " already exists.", ex);
             }
             throw ex;
@@ -90,7 +90,7 @@ public class RecuperarSenhaDAO implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            RecuperarSenha persistentRecuperarSenha = em.find(RecuperarSenha.class, recuperarSenha.getUsuarioFk());
+            RecuperarSenha persistentRecuperarSenha = em.find(RecuperarSenha.class, recuperarSenha.getId());
             Usuario usuarioOld = persistentRecuperarSenha.getUsuario();
             Usuario usuarioNew = recuperarSenha.getUsuario();
             List<String> illegalOrphanMessages = null;
@@ -107,7 +107,7 @@ public class RecuperarSenhaDAO implements Serializable {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
             if (usuarioNew != null) {
-                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getCpf());
+                usuarioNew = em.getReference(usuarioNew.getClass(), usuarioNew.getId());
                 recuperarSenha.setUsuario(usuarioNew);
             }
             recuperarSenha = em.merge(recuperarSenha);
@@ -128,7 +128,7 @@ public class RecuperarSenhaDAO implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Long id = recuperarSenha.getUsuarioFk();
+                Integer id = recuperarSenha.getId();
                 if (findRecuperarSenha(id) == null) {
                     throw new NonexistentEntityException("The recuperarSenha with id " + id + " no longer exists.");
                 }
@@ -141,7 +141,7 @@ public class RecuperarSenhaDAO implements Serializable {
         }
     }
 
-    public void destroy(Long id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -149,7 +149,7 @@ public class RecuperarSenhaDAO implements Serializable {
             RecuperarSenha recuperarSenha;
             try {
                 recuperarSenha = em.getReference(RecuperarSenha.class, id);
-                recuperarSenha.getUsuarioFk();
+                recuperarSenha.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The recuperarSenha with id " + id + " no longer exists.", enfe);
             }
@@ -198,7 +198,7 @@ public class RecuperarSenhaDAO implements Serializable {
         }
     }
 
-    public RecuperarSenha findRecuperarSenha(Long id) {
+    public RecuperarSenha findRecuperarSenha(Integer id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(RecuperarSenha.class, id);
@@ -219,7 +219,7 @@ public class RecuperarSenhaDAO implements Serializable {
             em.close();
         }
     }
-
+    
     public RecuperarSenha findRecuperarSenhaByCod(String cod) {
         EntityManager em = getEntityManager();
         try {
@@ -232,4 +232,5 @@ public class RecuperarSenhaDAO implements Serializable {
             em.close();
         }
     }
+    
 }

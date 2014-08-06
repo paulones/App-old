@@ -22,49 +22,49 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Paulo
+ * @author paulones
  */
 @Entity
 @Table(name = "recuperar_senha")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RecuperarSenha.findAll", query = "SELECT r FROM RecuperarSenha r"),
-    @NamedQuery(name = "RecuperarSenha.findByUsuarioFk", query = "SELECT r FROM RecuperarSenha r WHERE r.usuarioFk = :usuarioFk"),
+    @NamedQuery(name = "RecuperarSenha.findById", query = "SELECT r FROM RecuperarSenha r WHERE r.id = :id"),
     @NamedQuery(name = "RecuperarSenha.findByCodigo", query = "SELECT r FROM RecuperarSenha r WHERE r.codigo = :codigo")})
 public class RecuperarSenha implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "usuario_fk")
-    private Long usuarioFk;
+    @Column(name = "id")
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 32)
     @Column(name = "codigo")
     private String codigo;
-    @JoinColumn(name = "usuario_fk", referencedColumnName = "cpf", insertable = false, updatable = false)
+    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
     @OneToOne(optional = false)
     private Usuario usuario;
 
     public RecuperarSenha() {
     }
 
-    public RecuperarSenha(Long usuarioFk) {
-        this.usuarioFk = usuarioFk;
+    public RecuperarSenha(Integer id) {
+        this.id = id;
     }
 
-    public RecuperarSenha(Long usuarioFk, String codigo) {
-        this.usuarioFk = usuarioFk;
+    public RecuperarSenha(Integer id, String codigo) {
+        this.id = id;
         this.codigo = codigo;
     }
 
-    public Long getUsuarioFk() {
-        return usuarioFk;
+    public Integer getId() {
+        return id;
     }
 
-    public void setUsuarioFk(Long usuarioFk) {
-        this.usuarioFk = usuarioFk;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCodigo() {
@@ -86,7 +86,7 @@ public class RecuperarSenha implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (usuarioFk != null ? usuarioFk.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -97,7 +97,7 @@ public class RecuperarSenha implements Serializable {
             return false;
         }
         RecuperarSenha other = (RecuperarSenha) object;
-        if ((this.usuarioFk == null && other.usuarioFk != null) || (this.usuarioFk != null && !this.usuarioFk.equals(other.usuarioFk))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -105,7 +105,7 @@ public class RecuperarSenha implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.RecuperarSenha[ usuarioFk=" + usuarioFk + " ]";
+        return "entidade.RecuperarSenha[ id=" + id + " ]";
     }
     
 }

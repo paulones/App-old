@@ -101,21 +101,21 @@ public class EstadoDAO implements Serializable {
                 }
             }
             for (PessoaFisica pessoaFisicaCollectionPessoaFisica : estado.getPessoaFisicaCollection()) {
-                Estado oldRgUfFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getRgUfFk();
-                pessoaFisicaCollectionPessoaFisica.setRgUfFk(estado);
+                Estado oldEstadoFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getEstadoFk();
+                pessoaFisicaCollectionPessoaFisica.setEstadoFk(estado);
                 pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
-                if (oldRgUfFkOfPessoaFisicaCollectionPessoaFisica != null) {
-                    oldRgUfFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
-                    oldRgUfFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldRgUfFkOfPessoaFisicaCollectionPessoaFisica);
+                if (oldEstadoFkOfPessoaFisicaCollectionPessoaFisica != null) {
+                    oldEstadoFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
+                    oldEstadoFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldEstadoFkOfPessoaFisicaCollectionPessoaFisica);
                 }
             }
             for (PessoaFisica pessoaFisicaCollection1PessoaFisica : estado.getPessoaFisicaCollection1()) {
-                Estado oldEstadoFkOfPessoaFisicaCollection1PessoaFisica = pessoaFisicaCollection1PessoaFisica.getEstadoFk();
-                pessoaFisicaCollection1PessoaFisica.setEstadoFk(estado);
+                Estado oldRgUfFkOfPessoaFisicaCollection1PessoaFisica = pessoaFisicaCollection1PessoaFisica.getRgUfFk();
+                pessoaFisicaCollection1PessoaFisica.setRgUfFk(estado);
                 pessoaFisicaCollection1PessoaFisica = em.merge(pessoaFisicaCollection1PessoaFisica);
-                if (oldEstadoFkOfPessoaFisicaCollection1PessoaFisica != null) {
-                    oldEstadoFkOfPessoaFisicaCollection1PessoaFisica.getPessoaFisicaCollection1().remove(pessoaFisicaCollection1PessoaFisica);
-                    oldEstadoFkOfPessoaFisicaCollection1PessoaFisica = em.merge(oldEstadoFkOfPessoaFisicaCollection1PessoaFisica);
+                if (oldRgUfFkOfPessoaFisicaCollection1PessoaFisica != null) {
+                    oldRgUfFkOfPessoaFisicaCollection1PessoaFisica.getPessoaFisicaCollection1().remove(pessoaFisicaCollection1PessoaFisica);
+                    oldRgUfFkOfPessoaFisicaCollection1PessoaFisica = em.merge(oldRgUfFkOfPessoaFisicaCollection1PessoaFisica);
                 }
             }
             for (Endereco enderecoCollectionEndereco : estado.getEnderecoCollection()) {
@@ -224,35 +224,35 @@ public class EstadoDAO implements Serializable {
             }
             for (PessoaFisica pessoaFisicaCollectionOldPessoaFisica : pessoaFisicaCollectionOld) {
                 if (!pessoaFisicaCollectionNew.contains(pessoaFisicaCollectionOldPessoaFisica)) {
-                    pessoaFisicaCollectionOldPessoaFisica.setRgUfFk(null);
+                    pessoaFisicaCollectionOldPessoaFisica.setEstadoFk(null);
                     pessoaFisicaCollectionOldPessoaFisica = em.merge(pessoaFisicaCollectionOldPessoaFisica);
                 }
             }
             for (PessoaFisica pessoaFisicaCollectionNewPessoaFisica : pessoaFisicaCollectionNew) {
                 if (!pessoaFisicaCollectionOld.contains(pessoaFisicaCollectionNewPessoaFisica)) {
-                    Estado oldRgUfFkOfPessoaFisicaCollectionNewPessoaFisica = pessoaFisicaCollectionNewPessoaFisica.getRgUfFk();
-                    pessoaFisicaCollectionNewPessoaFisica.setRgUfFk(estado);
+                    Estado oldEstadoFkOfPessoaFisicaCollectionNewPessoaFisica = pessoaFisicaCollectionNewPessoaFisica.getEstadoFk();
+                    pessoaFisicaCollectionNewPessoaFisica.setEstadoFk(estado);
                     pessoaFisicaCollectionNewPessoaFisica = em.merge(pessoaFisicaCollectionNewPessoaFisica);
-                    if (oldRgUfFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldRgUfFkOfPessoaFisicaCollectionNewPessoaFisica.equals(estado)) {
-                        oldRgUfFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
-                        oldRgUfFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldRgUfFkOfPessoaFisicaCollectionNewPessoaFisica);
+                    if (oldEstadoFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldEstadoFkOfPessoaFisicaCollectionNewPessoaFisica.equals(estado)) {
+                        oldEstadoFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
+                        oldEstadoFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldEstadoFkOfPessoaFisicaCollectionNewPessoaFisica);
                     }
                 }
             }
             for (PessoaFisica pessoaFisicaCollection1OldPessoaFisica : pessoaFisicaCollection1Old) {
                 if (!pessoaFisicaCollection1New.contains(pessoaFisicaCollection1OldPessoaFisica)) {
-                    pessoaFisicaCollection1OldPessoaFisica.setEstadoFk(null);
+                    pessoaFisicaCollection1OldPessoaFisica.setRgUfFk(null);
                     pessoaFisicaCollection1OldPessoaFisica = em.merge(pessoaFisicaCollection1OldPessoaFisica);
                 }
             }
             for (PessoaFisica pessoaFisicaCollection1NewPessoaFisica : pessoaFisicaCollection1New) {
                 if (!pessoaFisicaCollection1Old.contains(pessoaFisicaCollection1NewPessoaFisica)) {
-                    Estado oldEstadoFkOfPessoaFisicaCollection1NewPessoaFisica = pessoaFisicaCollection1NewPessoaFisica.getEstadoFk();
-                    pessoaFisicaCollection1NewPessoaFisica.setEstadoFk(estado);
+                    Estado oldRgUfFkOfPessoaFisicaCollection1NewPessoaFisica = pessoaFisicaCollection1NewPessoaFisica.getRgUfFk();
+                    pessoaFisicaCollection1NewPessoaFisica.setRgUfFk(estado);
                     pessoaFisicaCollection1NewPessoaFisica = em.merge(pessoaFisicaCollection1NewPessoaFisica);
-                    if (oldEstadoFkOfPessoaFisicaCollection1NewPessoaFisica != null && !oldEstadoFkOfPessoaFisicaCollection1NewPessoaFisica.equals(estado)) {
-                        oldEstadoFkOfPessoaFisicaCollection1NewPessoaFisica.getPessoaFisicaCollection1().remove(pessoaFisicaCollection1NewPessoaFisica);
-                        oldEstadoFkOfPessoaFisicaCollection1NewPessoaFisica = em.merge(oldEstadoFkOfPessoaFisicaCollection1NewPessoaFisica);
+                    if (oldRgUfFkOfPessoaFisicaCollection1NewPessoaFisica != null && !oldRgUfFkOfPessoaFisicaCollection1NewPessoaFisica.equals(estado)) {
+                        oldRgUfFkOfPessoaFisicaCollection1NewPessoaFisica.getPessoaFisicaCollection1().remove(pessoaFisicaCollection1NewPessoaFisica);
+                        oldRgUfFkOfPessoaFisicaCollection1NewPessoaFisica = em.merge(oldRgUfFkOfPessoaFisicaCollection1NewPessoaFisica);
                     }
                 }
             }
@@ -325,12 +325,12 @@ public class EstadoDAO implements Serializable {
             }
             Collection<PessoaFisica> pessoaFisicaCollection = estado.getPessoaFisicaCollection();
             for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
-                pessoaFisicaCollectionPessoaFisica.setRgUfFk(null);
+                pessoaFisicaCollectionPessoaFisica.setEstadoFk(null);
                 pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
             Collection<PessoaFisica> pessoaFisicaCollection1 = estado.getPessoaFisicaCollection1();
             for (PessoaFisica pessoaFisicaCollection1PessoaFisica : pessoaFisicaCollection1) {
-                pessoaFisicaCollection1PessoaFisica.setEstadoFk(null);
+                pessoaFisicaCollection1PessoaFisica.setRgUfFk(null);
                 pessoaFisicaCollection1PessoaFisica = em.merge(pessoaFisicaCollection1PessoaFisica);
             }
             Collection<Endereco> enderecoCollection = estado.getEnderecoCollection();

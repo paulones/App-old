@@ -30,7 +30,6 @@ public class NacionalidadeDAO implements Serializable {
 
     public NacionalidadeDAO() {
     }
-    
     private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {

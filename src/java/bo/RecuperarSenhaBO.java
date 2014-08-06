@@ -49,7 +49,7 @@ public class RecuperarSenhaBO implements Serializable{
     
     public void destroy(RecuperarSenha recuperarSenha) {
         try {
-            recuperarSenhaDAO.destroy(recuperarSenha.getUsuarioFk());
+            recuperarSenhaDAO.destroy(recuperarSenha.getUsuario().getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

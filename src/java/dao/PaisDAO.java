@@ -32,7 +32,6 @@ public class PaisDAO implements Serializable {
 
     public PaisDAO() {
     }
-    
     private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
