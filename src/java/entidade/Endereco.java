@@ -66,7 +66,7 @@ public class Endereco implements Serializable {
     @Size(max = 50)
     @Column(name = "bairro")
     private String bairro;
-    @Size(max = 9)
+    @Size(max = 8)
     @Column(name = "cep")
     private String cep;
     @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
