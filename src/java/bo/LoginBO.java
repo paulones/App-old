@@ -11,7 +11,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import util.Base64Crypt;
-import util.Criptografia;
 
 /**
  *

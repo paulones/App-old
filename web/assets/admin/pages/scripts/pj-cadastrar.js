@@ -146,9 +146,49 @@ var PJCad = function() {
             }
         });
     }
+    
+    var checkDates = function() {
+        var result;
+        var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+        $.each($('.initial-date'), function() {
+            var initialdate = $(this).val();
+            var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
+            if (initialdate.match(reg) && finaldate.match(reg)) {
+                if (finaldate != "" && initialdate != "") {
+                    var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
+                    var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
+                    if (final < initial) {
+                        $(this).closest('tr').children('td').children('.final-date').val("");
+                        $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                        $('.date-error').show();
+                        return result = false;
+                    } else {
+                        $('.date-error').hide();
+                        return result = true;
+                    }
+                } else if (initialdate != "") {
+                    $('.date-error').hide();
+                    return result = true;
+                }
+            } else if (initialdate != "" && !initialdate.match(reg)) {
+                $(this).val("");
+                $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                $('.date-error').show();
+                return result = false;
+            } else if (finaldate != "" && !finaldate.match(reg)) {
+                $(this).closest('tr').children('td').children('.final-date').val("");
+                $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                $('.date-error').show();
+                return result = false;
+            } else {
+                $('.date-error').hide();
+                return result = true;
+            }
+        });
+        return result;
+    }
 
     var handleTable = function() {
-
 
         var table = $('#vinculations');
 
@@ -196,12 +236,14 @@ var PJCad = function() {
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
 
             handleValidation();
+            handleTable();
 
             $('#cnpj').mask("99.999.999/9999-99");
             $('#state').mask("999.999.999.999");
             $('.date').mask("99/99/9999");
             $('#nire').mask("99999999999");
             $('#cnae').mask("9999-9/99");
+            $('.money').maskMoney({allowNegative: true, thousands: '.', decimal: ',', affixesStay: false});
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
