@@ -236,7 +236,7 @@ var PFCad = function() {
         });
 
         table.on('keyup', '.capital', checkCapital);
-    }
+    };
 
     return {
         init: function() {
@@ -270,17 +270,28 @@ var PFCad = function() {
                 });
             });
 
+            $('#vinculate').click(function(e) {
+                e.preventDefault();
+                if ($('#pessoajuridica').val() !== "") {
+                    $('.vinculate').click();
+                }
+            });
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
                         $('.endcity').select2();
                     } else if ($(data.source).attr("id") === "natuf") {
                         $('.natcity').select2();
-                    } else if ($(data.source).attr("id") === "vinculate" || $(data.source).attr("class") === "delete") {
+                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
                         $('.capital').keyup(checkCapital);
                         $('.initial-date,.final-date').keyup(checkDates);
+                        $('.date-error').hide();
+                        if ($('.rows').children().length == 0){
+                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        }
                     }
                 }
             });

@@ -6,8 +6,10 @@
 package bean;
 
 import bo.CidadeBO;
+import bo.EnderecoBO;
 import bo.EstadoBO;
 import bo.EstadoCivilBO;
+import bo.FuncaoBO;
 import bo.NacionalidadeBO;
 import bo.PaisBO;
 import bo.PessoaFisicaBO;
@@ -17,6 +19,7 @@ import entidade.Cidade;
 import entidade.Endereco;
 import entidade.Estado;
 import entidade.EstadoCivil;
+import entidade.Funcao;
 import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
@@ -53,12 +56,15 @@ public class PessoaFisicaBean implements Serializable {
     private List<EstadoCivil> estadoCivilList;
     private List<PessoaJuridica> pessoaJuridicaList;
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
+    private List<Funcao> funcaoList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
     private PessoaFisicaJuridicaBO pessoaFisicaJuridicaBO;
     private NacionalidadeBO nacionalidadeBO;
     private EstadoCivilBO estadoCivilBO;
+    private FuncaoBO funcaoBO;
+    private EnderecoBO enderecoBO;
     private PaisBO paisBO;
     private EstadoBO estadoBO;
     private CidadeBO cidadeBO;
@@ -76,9 +82,11 @@ public class PessoaFisicaBean implements Serializable {
             pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
             nacionalidadeBO = new NacionalidadeBO();
             estadoCivilBO = new EstadoCivilBO();
+            enderecoBO = new EnderecoBO();
             paisBO = new PaisBO();
             estadoBO = new EstadoBO();
             cidadeBO = new CidadeBO();
+            funcaoBO = new FuncaoBO();
 
             cidadeNatList = new ArrayList<>();
             cidadeEndList = new ArrayList<>();
@@ -94,6 +102,7 @@ public class PessoaFisicaBean implements Serializable {
         nacionalidadeList = nacionalidadeBO.findAll();
         estadoCivilList = estadoCivilBO.findAll();
         pessoaJuridicaList = pessoaJuridicaBO.findAll();
+        funcaoList = funcaoBO.findAll();
     }
 
     public void getCitiesByState() {
@@ -110,6 +119,17 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void cadastrar() {
+        if (pessoaFisica.getEstadoFk() != null){
+            pessoaFisica.setPaisFk(paisBO.findBrasil());
+        }
+        pessoaFisicaBO.create(pessoaFisica);
+        endereco.setTipo("PF");
+        endereco.setIdFk(pessoaFisica.getId());
+        enderecoBO.create(endereco);
+        for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList){
+            pfj.setPessoaFisicaFk(pessoaFisica);
+            pessoaFisicaJuridicaBO.create(pfj);
+        }
         success = true;
     }
 
@@ -118,18 +138,16 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
-        if (pessoaJuridica != null) {
-            pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
-            boolean exists = false;
-            for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                if (pfj.getPessoaJuridicaFk().getCnpj().equals(pessoaJuridica.getCnpj())) {
-                    exists = true;
-                }
+        pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
+        boolean exists = false;
+        for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+            if (pfj.getPessoaJuridicaFk().getCnpj().equals(pessoaJuridica.getCnpj())) {
+                exists = true;
             }
-            if (!exists) {
-                pessoaFisicaJuridicaList.add(pessoaFisicaJuridica);
-                pessoaFisicaJuridica = new PessoaFisicaJuridica();
-            }
+        }
+        if (!exists) {
+            pessoaFisicaJuridicaList.add(pessoaFisicaJuridica);
+            pessoaFisicaJuridica = new PessoaFisicaJuridica();
         }
     }
 
@@ -199,6 +217,14 @@ public class PessoaFisicaBean implements Serializable {
 
     public List<PessoaFisicaJuridica> getPessoaFisicaJuridicaList() {
         return pessoaFisicaJuridicaList;
+    }
+
+    public List<Funcao> getFuncaoList() {
+        return funcaoList;
+    }
+
+    public void setFuncaoList(List<Funcao> funcaoList) {
+        this.funcaoList = funcaoList;
     }
 
     public void setPessoaFisicaJuridicaList(List<PessoaFisicaJuridica> pessoaFisicaJuridicaList) {
