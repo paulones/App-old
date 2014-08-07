@@ -211,13 +211,13 @@
                                             </label>
                                             <div class="col-md-3 natuf">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="natuf" value="#{pessoaFisicaBean.pessoaFisica.estadoFk}" tabindex="1" converter="entityConverter">
-                                                    <f:ajax event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city" onevent="function(data){renderSelect2(data,'natcity')}"/>
+                                                    <f:ajax execute="@this" event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city" />
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
                                             </div>
-                                            <h:panelGroup layout="block" class="col-md-6 natcity" id="city">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Cidade" id="natcity" value="#{pessoaFisicaBean.pessoaFisica.cidadeFk}" tabindex="1" converter="entityConverter">
+                                            <h:panelGroup layout="block" class="col-md-6" id="city">
+                                                <h:selectOneMenu class="select2_category select2me form-control natcity" p:placeholder="Cidade" id="natcity" value="#{pessoaFisicaBean.pessoaFisica.cidadeFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.cidadeNatList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
                                                 </h:selectOneMenu>
@@ -312,13 +312,13 @@
                                             </label>
                                             <div class="col-md-3">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="enduf" value="#{pessoaFisicaBean.endereco.estadoFk}" tabindex="1" converter="entityConverter">
-                                                    <f:ajax event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city2" onevent="function(data){renderSelect2(data,'endcity')}"/>
+                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city2" />
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
                                             </div>
-                                            <h:panelGroup layout="block" class="col-md-6 endcity" id="city2">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Cidade" id="endcity" value="#{pessoaFisicaBean.endereco.cidadeFk}" tabindex="1" converter="entityConverter">
+                                            <h:panelGroup layout="block" class="col-md-6" id="city2">
+                                                <h:selectOneMenu class="select2_category select2me form-control endcity" p:placeholder="Cidade" id="endcity" value="#{pessoaFisicaBean.endereco.cidadeFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.cidadeEndList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
                                                 </h:selectOneMenu>
@@ -385,109 +385,79 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2">CNPJ</label>
                                             <div class="col-md-10">
-                                                <select class="select2_category select2me form-control" placeholder="Selecione..." tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">19.745.633/0001-57 - PRCC Gestão em TI</option>
-                                                    <option value="Category 2">19.745.633/0001-58 - PRCC Gestão em TI e Desenvolvimento de Sistemas</option>
-                                                </select>
+                                                <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="pessoajuridica" value="#{pessoaFisicaBean.pessoaJuridica}" tabindex="1" converter="entityConverter">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica}"/>
+                                                </h:selectOneMenu>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <button  class="btn blue-chambray vinculate"><i class="fa fa-plus-circle"></i> Vincular</button>
+                                        <h:commandLink  class="btn blue-chambray vinculate" id="vinculate">
+                                            <f:ajax event="click" execute="pessoajuridica" listener="#{pessoaFisicaBean.vincularPessoaJuridica}" render="pessoaFisicaJuridica"/>
+                                            <i class="fa fa-plus-circle"></i> Vincular</h:commandLink>
                                     </div>
                                 </div>
                                 <!--/row-->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <table class="table table-striped table-hover table-bordered" id="vinculations">
-                                            <thead>
-                                                <tr>
-                                                    <th>
-                                                        CNPJ
-                                                    </th>
-                                                    <th>
-                                                        Função
-                                                    </th>
-                                                    <th>
-                                                        Capital de Participação
-                                                    </th>
-                                                    <th>
-                                                        Condição
-                                                    </th>
-                                                    <th>
-                                                        Data de Início
-                                                    </th>
-                                                    <th>
-                                                        Data de Término
-                                                    </th>
-                                                    <th>
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="text-align:center">
-                                                        19.745.633/0001-57<br/>PRCC Gestão em TI e desenvolvimento de Sistemas                                             </td>
-                                                    <td>
-                                                        <select class="select2_category select2me form-control" tabindex="1">
-                                                            <option value="Category 1">Sócio-Administrativo</option>
-                                                            <option value="Category 2">Sócio</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control input-small capital" placeholder="%" maxlength="3" value=""/>
-                                                    </td>
-                                                    <td>
-                                                        <select class="select2_category select2me form-control" tabindex="1">
-                                                            <option value="Category 1">Aberta</option>
-                                                            <option value="Category 2">Fechada</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
-                                                    </td>
-                                                    <td>
-                                                        <a class="delete" href="javascript:;">
-                                                            <i class="glyphicon glyphicon-remove" style="color:red"/> </a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align:center">
-                                                        19.745.633/0001-57<br/>PRCC Gestão em TI e desenvolvimento de Sistemas                                             </td>
-                                                    <td>
-                                                        <select class="select2_category select2me form-control" tabindex="1">
-                                                            <option value="Category 1">Sócio-Administrativo</option>
-                                                            <option value="Category 2">Sócio</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control input-small capital" placeholder="%" maxlength="3" value=""/>
-                                                    </td>
-                                                    <td>
-                                                        <select class="select2_category select2me form-control" tabindex="1">
-                                                            <option value="Category 1">Aberta</option>
-                                                            <option value="Category 2">Fechada</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
-                                                    </td>
-                                                    <td>
-                                                        <a class="delete" href="javascript:;">
-                                                            <i class="glyphicon glyphicon-remove" style="color:red"/> </a>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                <h:panelGroup id="pessoaFisicaJuridica">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover table-bordered" id="vinculations">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            CNPJ
+                                                        </th>
+                                                        <th>
+                                                            Função
+                                                        </th>
+                                                        <th>
+                                                            Capital de Participação
+                                                        </th>
+                                                        <th>
+                                                            Data de Início
+                                                        </th>
+                                                        <th>
+                                                            Data de Término
+                                                        </th>
+                                                        <th>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <ui:repeat value="#{pessoaFisicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
+                                                        <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                        <tr>
+                                                                <td style="text-align:center">
+                                                                    #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</td>
+                                                                <td>
+                                                                    <select class="select2_category select2me form-control funcao" tabindex="1">
+                                                                        <option value="Category 1">Sócio-Administrativo</option>
+                                                                        <option value="Category 2">Sócio</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control input-small capital" placeholder="%" maxlength="3" value=""/>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
+                                                                </td>
+                                                                <td>
+                                                                    <h:commandLink class="delete">
+                                                                        <f:ajax listener="#{pessoaFisicaBean.removerVinculo(status.index)}" render=":form:pessoaFisicaJuridica"/>
+                                                                        <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                                </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
+                                </h:panelGroup>
                                 <div class="alert alert-danger date-error display-hide">
                                     <button class="close" data-close="alert"></button>
                                 </div>
@@ -525,16 +495,11 @@
         <script src="../assets/admin/pages/scripts/pf-cadastrar.js"  type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
-                                                        jQuery(document).ready(function() {
+            jQuery(document).ready(function() {
                                                             Metronic.init(); // init metronic core componets
-                                                            Layout.init(); // init layout
-                                                            PFCad.init();
-                                                        });
-                                                        function renderSelect2(data, value) {
-                                                            if (data.status === 'success') {
-                                                                $('#' + value).select2();
-                                                            }
-                                                        }
+                                                        Layout.init(); // init layout
+                PFCad.init();
+            });
         </script>
     </ui:define>
 </ui:composition>

@@ -6,6 +6,8 @@
 
 package bo;
 
+import dao.PessoaFisicaDAO;
+import entidade.PessoaFisica;
 import java.io.Serializable;
 
 /**
@@ -14,4 +16,17 @@ import java.io.Serializable;
  */
 public class PessoaFisicaBO implements Serializable {
     
+    private PessoaFisicaDAO pessoaFisicaDAO;
+    
+    public PessoaFisicaBO(){
+        pessoaFisicaDAO = new PessoaFisicaDAO();
+    }
+    
+    public void create(PessoaFisica pessoaFisica){
+        try {
+            pessoaFisicaDAO.create(pessoaFisica);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
