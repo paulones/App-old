@@ -226,6 +226,7 @@ var PFCad = function() {
                 checkDates();
             }
         });
+
         table.on('click', '.delete', function(e) {
             e.preventDefault();
             $('.final-date-error').hide();
@@ -248,9 +249,9 @@ var PFCad = function() {
             $('#rg').mask("999999999999999");
             $('#elector').mask("9999999999999");
             $('#cep').mask("99999-999");
+            $('.capital').mask("999");
             $('#inss').mask("999999999999999");
             $('.date').mask("99/99/9999");
-            $('.money').maskMoney({allowNegative: true, thousands: '.', decimal: ',', affixesStay: false});
 
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
@@ -269,7 +270,23 @@ var PFCad = function() {
 
             $('.vinculate').click(function(e) {
                 e.preventDefault();
-            })
+            });
+            
+            $('.capital').keyup(function() {
+                var soma = 0;
+                $.each($('.capital'), function() {
+                    soma += Number($(this).val());
+                });
+                if (soma > 100) {
+                    $('.date-error').html("A soma dos percentuais de participa&ccedil;&atilde;o dos s&oacute;cios n&atilde;o pode exceder 100%.");
+                    $('.date-error').show();
+                    $(this).val("");
+                    return false;
+                } else {
+                    $('.date-error').hide();
+                }
+            });
+
 
 
             nationality();
@@ -278,16 +295,16 @@ var PFCad = function() {
             function nationality() {
                 if ($('#nationality').find(":selected").text() === "Estrangeiro") {
                     $('.natuf').hide();
-                    $('#natuf').select2('data',null);
+                    $('#natuf').select2('data', null);
                     $('.natcity').hide();
-                    $('#natcity').select2('data',null);
+                    $('#natcity').select2('data', null);
                     $('#natcity').val("");
                     $('.natforeign').show();
                 } else {
                     $('.natuf').show();
                     $('.natcity').show();
                     $('.natforeign').hide();
-                    $('#natforeign').select2('data',null);
+                    $('#natforeign').select2('data', null);
                 }
             }
 
