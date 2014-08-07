@@ -321,7 +321,7 @@
             if (Modernizr.localstorage) {
                 localStorage.clear();
             }
-            $.idleTimer(60000 * 15);
+            $.idleTimer(60000 * 30);
             $(document).bind("idle.idleTimer", function() {
                 $.cookie.raw = true;
                 $.cookie("pagina_anterior", window.location.pathname, {expires: 1, path: '/'});

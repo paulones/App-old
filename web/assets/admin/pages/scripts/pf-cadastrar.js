@@ -30,7 +30,7 @@ var PFCad = function() {
                     required: false
                 },
                 rg: {
-                    minlength: 11,
+                    minlength: 7,
                     required: false
                 },
                 oe: {
@@ -62,7 +62,7 @@ var PFCad = function() {
                     required: false,
                 },
                 inss: {
-                    minlength: 14,
+                    minlength: 9,
                     required: false
                 },
                 conjuge: {
@@ -245,10 +245,10 @@ var PFCad = function() {
             handleTable();
 
             $('#cpf').mask("999.999.999-99");
-            $('#rg').mask("9.999.999-9");
-            $('#elector').mask("999999999999");
+            $('#rg').mask("999999999999999");
+            $('#elector').mask("9999999999999");
             $('#cep').mask("99999-999");
-            $('#inss').mask("999.99999.99-9");
+            $('#inss').mask("999999999999999");
             $('.date').mask("99/99/9999");
             $('.money').maskMoney({allowNegative: true, thousands: '.', decimal: ',', affixesStay: false});
 
@@ -276,14 +276,18 @@ var PFCad = function() {
             $('#nationality').change(nationality);
 
             function nationality() {
-                if ($('#nationality').val() == 3) {
+                if ($('#nationality').find(":selected").text() === "Estrangeiro") {
                     $('.natuf').hide();
+                    $('#natuf').select2('data',null);
                     $('.natcity').hide();
+                    $('#natcity').select2('data',null);
+                    $('#natcity').val("");
                     $('.natforeign').show();
                 } else {
                     $('.natuf').show();
                     $('.natcity').show();
                     $('.natforeign').hide();
+                    $('#natforeign').select2('data',null);
                 }
             }
 

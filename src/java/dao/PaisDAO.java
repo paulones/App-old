@@ -9,19 +9,19 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.Estado;
 import entidade.Pais;
+import entidade.PessoaFisica;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import entidade.PessoaFisica;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -239,6 +239,8 @@ public class PaisDAO implements Serializable {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Pais.class));
+            Root<Pais> from = cq.from(Pais.class);
+            cq.orderBy(em.getCriteriaBuilder().asc(from.get("nome")));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
