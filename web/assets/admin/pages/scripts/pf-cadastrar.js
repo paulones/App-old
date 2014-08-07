@@ -19,7 +19,7 @@ var PFCad = function() {
                     required: true
                 },
                 alias: {
-                    minlength: 1,
+                    minlength_optional: 1,
                     required: false
                 },
                 cpf: {
@@ -38,11 +38,11 @@ var PFCad = function() {
                     required: false
                 },
                 fathername: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false
                 },
                 mothername: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false
                 },
                 nationality: {
@@ -61,24 +61,27 @@ var PFCad = function() {
                 natforeign: {
                     required: false,
                 },
+                natest: {
+                    required: false,
+                },
                 inss: {
                     minlength: 9,
                     required: false
                 },
                 conjuge: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false,
                 },
                 obs: {
-                    minlength: 2,
-                    required: false
+                    required: false,
+                    minlength_optional: 2,
                 },
                 address: {
-                    minlength: 3,
+                    minlength_optional: 3,
                     required: false
                 },
                 complement: {
-                    minlength: 3,
+                    minlength_optional: 3,
                     required: false
                 },
                 number: {
@@ -241,6 +244,7 @@ var PFCad = function() {
 
             $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
             $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
+            $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
 
             handleValidation();
             handleTable();
@@ -271,7 +275,7 @@ var PFCad = function() {
             $('.vinculate').click(function(e) {
                 e.preventDefault();
             });
-            
+
             $('.capital').keyup(function() {
                 var soma = 0;
                 $.each($('.capital'), function() {
@@ -316,6 +320,11 @@ var PFCad = function() {
                 } else {
                     $('.conjuge').show();
                 }
+            }
+
+            function validaMinLength(value, element, param) {
+                var length = $.isArray(value) ? value.length : this.getLength($.trim(value), element);
+                return length >= param || length === 0;
             }
 
             function validaCPF(value, element) {

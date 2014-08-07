@@ -6,7 +6,11 @@
 
 package bo;
 
+import dao.EstadoCivilDAO;
+import entidade.EstadoCivil;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,4 +18,18 @@ import java.io.Serializable;
  */
 public class EstadoCivilBO implements Serializable {
     
+    private EstadoCivilDAO estadoCivilDAO;
+    
+    public EstadoCivilBO(){
+        estadoCivilDAO = new EstadoCivilDAO();
+    }
+    
+    public List<EstadoCivil> findAll(){
+        try { 
+            return estadoCivilDAO.findEstadoCivilEntities();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<EstadoCivil>();
+    }
 }

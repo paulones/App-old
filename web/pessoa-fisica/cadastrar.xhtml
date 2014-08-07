@@ -115,14 +115,14 @@
                                             <div class="col-md-4">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="rg" value="#{pessoaFisicaBean.pessoaFisica.rg}" converter="maskConverter"/>
+                                                    <h:inputText class="form-control" id="rg" value="#{pessoaFisicaBean.pessoaFisica.rg}"/>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
                                                 <h:inputText  class="form-control" maxlength="4" id="oe" value="#{pessoaFisicaBean.pessoaFisica.rgOrgaoEmissor}"/>
                                             </div>
                                             <div class="col-md-3">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="rguf" tabindex="1" value="#{pessoaFisicaBean.pessoaFisica.rgUfFk}">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="rguf" tabindex="1" value="#{pessoaFisicaBean.pessoaFisica.rgUfFk}" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
@@ -182,7 +182,7 @@
                                             <label class="control-label col-md-3">Nacionalidade
                                             </label>
                                             <div class="col-md-9">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="nationality" value="#{pessoaFisicaBean.pessoaFisica.nacionalidadeFk}" tabindex="1">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="nationality" value="#{pessoaFisicaBean.pessoaFisica.nacionalidadeFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.nacionalidadeList}" var="nacionalidade" itemLabel="#{nacionalidade.tipo}" itemValue="#{nacionalidade}"/>
                                                 </h:selectOneMenu>
@@ -217,13 +217,13 @@
                                                 </h:selectOneMenu>
                                             </div>
                                             <h:panelGroup layout="block" class="col-md-6 natcity" id="city">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Cidade" id="natcity" value="#{pessoaFisicaBean.pessoaFisica.cidadeFk}" tabindex="1">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Cidade" id="natcity" value="#{pessoaFisicaBean.pessoaFisica.cidadeFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
-                                                    <f:selectItems value="#{pessoaFisicaBean.cidadeList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.cidadeNatList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
                                                 </h:selectOneMenu>
                                             </h:panelGroup>
                                             <div class="col-md-9 natforeign display-hide">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="País" id="natforeign" value="#{pessoaFisicaBean.pessoaFisica.paisFk}" tabindex="1">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="País" id="natforeign" value="#{pessoaFisicaBean.pessoaFisica.paisFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.paisList}" var="pais" itemLabel="#{pais.nome}" itemValue="#{pais}"/>
                                                 </h:selectOneMenu>
@@ -238,12 +238,10 @@
                                             <label class="control-label col-md-3">Estado Civil
                                             </label>
                                             <div class="col-md-9 ">
-                                                <select class="select2_category select2me form-control" id="civil" placeholder="Selecione..." name="natuf" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="1">Solteiro(a)</option>
-                                                    <option value="2">Casado(a)</option>
-                                                    <option value="3">Viúvo(a)</option>
-                                                </select>
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="natest" value="#{pessoaFisicaBean.pessoaFisica.estadoCivilFk}" tabindex="1" converter="entityConverter">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.estadoCivilList}" var="estadoCivil" itemLabel="#{estadoCivil.situacao}" itemValue="#{estadoCivil}"/>
+                                                </h:selectOneMenu>
                                             </div>
                                         </div>
                                     </div>
@@ -254,7 +252,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="inss" id="inss"/>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.inss}" id="inss"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -268,7 +266,7 @@
                                             <div class="col-md-9 ">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="conjuge" id="conjuge"/>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.nomeDoConjuge}" id="conjuge"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -285,7 +283,7 @@
                                             <div class="col-md-10">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <textarea class="form-control obs" rows="3" name="obs"></textarea>
+                                                    <h:inputTextarea class="form-control obs" rows="3" id="obs" value="#{pessoaFisicaBean.pessoaFisica.observacoes}"/>
                                                 </div>
                                                 <span class="help-block">
                                                     Informações gerais e/ou documentos importantes. Ex: Passaporte, Carteira da OAB, etc.</span>
@@ -303,7 +301,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="cep" name="cep"/></div>
+                                                    <h:inputText class="form-control" id="cep" value="#{pessoaFisicaBean.endereco.cep}" converter="maskConverter"/></div>
                                             </div>
                                         </div>
                                     </div>
@@ -313,22 +311,18 @@
                                             <label class="control-label col-md-3">Estado/Cidade
                                             </label>
                                             <div class="col-md-3">
-                                                <select class="select2_category select2me form-control" placeholder="UF" name="enduf" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">SE</option>
-                                                    <option value="Category 2">PA</option>
-                                                    <option value="Category 3">BA</option>
-                                                    <option value="Category 4">AC</option>
-                                                </select>
+                                                <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="enduf" value="#{pessoaFisicaBean.endereco.estadoFk}" tabindex="1" converter="entityConverter">
+                                                    <f:ajax event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city2" onevent="function(data){renderSelect2(data,'endcity')}"/>
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
+                                                </h:selectOneMenu>
                                             </div>
-                                            <div class="col-md-6">
-                                                <select class="select2_category select2me form-control" placeholder="Cidade" name="endcity" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">Aracaju</option>
-                                                    <option value="Category 2">Salvador</option>
-                                                    <option value="Category 3">Maceió</option>
-                                                </select>
-                                            </div>
+                                            <h:panelGroup layout="block" class="col-md-6 endcity" id="city2">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Cidade" id="endcity" value="#{pessoaFisicaBean.endereco.cidadeFk}" tabindex="1" converter="entityConverter">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.cidadeEndList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
                                         </div>
                                     </div>
                                     <!--/span-->
@@ -341,7 +335,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="address"/>
+                                                    <h:inputText class="form-control" id="address" value="#{pessoaFisicaBean.endereco.endereco}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -352,7 +346,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" onkeyup="this.value = this.value.replace(/[^\d]/, '')" name="number"/>
+                                                    <h:inputText class="form-control" onkeyup="this.value = this.value.replace(/[^\d]/, '')" value="#{pessoaFisicaBean.endereco.numero}" id="number"/>
                                                 </div> </div>
                                         </div>
                                     </div>
@@ -365,7 +359,8 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="complement"/></div>
+                                                    <h:inputText class="form-control" id="complement" value="#{pessoaFisicaBean.endereco.complemento}"/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -376,7 +371,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="neighborhood"/></div>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.endereco.bairro}" id="neighborhood"/></div>
                                             </div>
                                         </div>
                                     </div>
@@ -530,16 +525,16 @@
         <script src="../assets/admin/pages/scripts/pf-cadastrar.js"  type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
-            jQuery(document).ready(function() {
-                Metronic.init(); // init metronic core componets
-                Layout.init(); // init layout
-                PFCad.init();
-            });
-            function renderSelect2(data, value) {
-                if (data.status === 'success') {
-                    $('#' + value).select2();
-                }
-            }
+                                                        jQuery(document).ready(function() {
+                                                            Metronic.init(); // init metronic core componets
+                                                            Layout.init(); // init layout
+                                                            PFCad.init();
+                                                        });
+                                                        function renderSelect2(data, value) {
+                                                            if (data.status === 'success') {
+                                                                $('#' + value).select2();
+                                                            }
+                                                        }
         </script>
     </ui:define>
 </ui:composition>
