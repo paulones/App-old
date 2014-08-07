@@ -6,6 +6,7 @@
 
 package dao;
 
+import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import java.io.Serializable;
@@ -19,6 +20,9 @@ import entidade.EstadoCivil;
 import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaJuridica;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,6 +43,9 @@ public class PessoaFisicaDAO implements Serializable {
     }
 
     public void create(PessoaFisica pessoaFisica) throws RollbackFailureException, Exception {
+        if (pessoaFisica.getPessoaFisicaJuridicaCollection() == null) {
+            pessoaFisica.setPessoaFisicaJuridicaCollection(new ArrayList<PessoaFisicaJuridica>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -73,6 +80,12 @@ public class PessoaFisicaDAO implements Serializable {
                 paisFk = em.getReference(paisFk.getClass(), paisFk.getId());
                 pessoaFisica.setPaisFk(paisFk);
             }
+            Collection<PessoaFisicaJuridica> attachedPessoaFisicaJuridicaCollection = new ArrayList<PessoaFisicaJuridica>();
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach : pessoaFisica.getPessoaFisicaJuridicaCollection()) {
+                pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach = em.getReference(pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach.getClass(), pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach.getId());
+                attachedPessoaFisicaJuridicaCollection.add(pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach);
+            }
+            pessoaFisica.setPessoaFisicaJuridicaCollection(attachedPessoaFisicaJuridicaCollection);
             em.persist(pessoaFisica);
             if (cidadeFk != null) {
                 cidadeFk.getPessoaFisicaCollection().add(pessoaFisica);
@@ -98,6 +111,15 @@ public class PessoaFisicaDAO implements Serializable {
                 paisFk.getPessoaFisicaCollection().add(pessoaFisica);
                 paisFk = em.merge(paisFk);
             }
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionPessoaFisicaJuridica : pessoaFisica.getPessoaFisicaJuridicaCollection()) {
+                PessoaFisica oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica = pessoaFisicaJuridicaCollectionPessoaFisicaJuridica.getPessoaFisicaFk();
+                pessoaFisicaJuridicaCollectionPessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
+                pessoaFisicaJuridicaCollectionPessoaFisicaJuridica = em.merge(pessoaFisicaJuridicaCollectionPessoaFisicaJuridica);
+                if (oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica != null) {
+                    oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica.getPessoaFisicaJuridicaCollection().remove(pessoaFisicaJuridicaCollectionPessoaFisicaJuridica);
+                    oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica = em.merge(oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -113,7 +135,7 @@ public class PessoaFisicaDAO implements Serializable {
         }
     }
 
-    public void edit(PessoaFisica pessoaFisica) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(PessoaFisica pessoaFisica) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -131,6 +153,20 @@ public class PessoaFisicaDAO implements Serializable {
             Nacionalidade nacionalidadeFkNew = pessoaFisica.getNacionalidadeFk();
             Pais paisFkOld = persistentPessoaFisica.getPaisFk();
             Pais paisFkNew = pessoaFisica.getPaisFk();
+            Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionOld = persistentPessoaFisica.getPessoaFisicaJuridicaCollection();
+            Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionNew = pessoaFisica.getPessoaFisicaJuridicaCollection();
+            List<String> illegalOrphanMessages = null;
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionOldPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionOld) {
+                if (!pessoaFisicaJuridicaCollectionNew.contains(pessoaFisicaJuridicaCollectionOldPessoaFisicaJuridica)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaFisicaJuridica " + pessoaFisicaJuridicaCollectionOldPessoaFisicaJuridica + " since its pessoaFisicaFk field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (cidadeFkNew != null) {
                 cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
                 pessoaFisica.setCidadeFk(cidadeFkNew);
@@ -155,6 +191,13 @@ public class PessoaFisicaDAO implements Serializable {
                 paisFkNew = em.getReference(paisFkNew.getClass(), paisFkNew.getId());
                 pessoaFisica.setPaisFk(paisFkNew);
             }
+            Collection<PessoaFisicaJuridica> attachedPessoaFisicaJuridicaCollectionNew = new ArrayList<PessoaFisicaJuridica>();
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach : pessoaFisicaJuridicaCollectionNew) {
+                pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach = em.getReference(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach.getClass(), pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach.getId());
+                attachedPessoaFisicaJuridicaCollectionNew.add(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach);
+            }
+            pessoaFisicaJuridicaCollectionNew = attachedPessoaFisicaJuridicaCollectionNew;
+            pessoaFisica.setPessoaFisicaJuridicaCollection(pessoaFisicaJuridicaCollectionNew);
             pessoaFisica = em.merge(pessoaFisica);
             if (cidadeFkOld != null && !cidadeFkOld.equals(cidadeFkNew)) {
                 cidadeFkOld.getPessoaFisicaCollection().remove(pessoaFisica);
@@ -204,6 +247,17 @@ public class PessoaFisicaDAO implements Serializable {
                 paisFkNew.getPessoaFisicaCollection().add(pessoaFisica);
                 paisFkNew = em.merge(paisFkNew);
             }
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionNew) {
+                if (!pessoaFisicaJuridicaCollectionOld.contains(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica)) {
+                    PessoaFisica oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.getPessoaFisicaFk();
+                    pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
+                    pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = em.merge(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
+                    if (oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica != null && !oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.equals(pessoaFisica)) {
+                        oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.getPessoaFisicaJuridicaCollection().remove(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
+                        oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = em.merge(oldPessoaFisicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -226,7 +280,7 @@ public class PessoaFisicaDAO implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -237,6 +291,17 @@ public class PessoaFisicaDAO implements Serializable {
                 pessoaFisica.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pessoaFisica with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionOrphanCheck = pessoaFisica.getPessoaFisicaJuridicaCollection();
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionOrphanCheckPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaJuridica " + pessoaFisicaJuridicaCollectionOrphanCheckPessoaFisicaJuridica + " in its pessoaFisicaJuridicaCollection field has a non-nullable pessoaFisicaFk field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Cidade cidadeFk = pessoaFisica.getCidadeFk();
             if (cidadeFk != null) {
