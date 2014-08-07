@@ -429,28 +429,28 @@
                                                     <ui:repeat value="#{pessoaFisicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                         <tr>
-                                                                <td style="text-align:center">
-                                                                    #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</td>
-                                                                <td>
-                                                                    <select class="select2_category select2me form-control funcao" tabindex="1">
-                                                                        <option value="Category 1">Sócio-Administrativo</option>
-                                                                        <option value="Category 2">Sócio</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" class="form-control input-small capital" placeholder="%" maxlength="3" value=""/>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
-                                                                </td>
-                                                                <td>
-                                                                    <h:commandLink class="delete">
-                                                                        <f:ajax listener="#{pessoaFisicaBean.removerVinculo(status.index)}" render=":form:pessoaFisicaJuridica"/>
-                                                                        <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
-                                                                </td>
+                                                            <td style="text-align:center">
+                                                                #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</td>
+                                                            <td>
+                                                                <select class="select2_category select2me form-control funcao" tabindex="1">
+                                                                    <option value="Category 1">Sócio-Administrativo</option>
+                                                                    <option value="Category 2">Sócio</option>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control input-small capital" placeholder="%" maxlength="3" value=""/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control input-small date initial-date" placeholder="dd/mm/aaaa" value=""/>
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" class="form-control input-small date final-date" placeholder="dd/mm/aaaa" value=""/>
+                                                            </td>
+                                                            <td>
+                                                                <h:commandLink class="delete">
+                                                                    <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerVinculo(status.index)}" render=":form:pessoaFisicaJuridica"/>
+                                                                    <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                            </td>
                                                         </tr>
                                                     </ui:repeat>
                                                 </tbody>
@@ -495,11 +495,11 @@
         <script src="../assets/admin/pages/scripts/pf-cadastrar.js"  type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
-            jQuery(document).ready(function() {
+                                                        jQuery(document).ready(function() {
                                                             Metronic.init(); // init metronic core componets
-                                                        Layout.init(); // init layout
-                PFCad.init();
-            });
+                                                            Layout.init(); // init layout
+                                                            PFCad.init();
+                                                        });
         </script>
     </ui:define>
 </ui:composition>

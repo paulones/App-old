@@ -276,7 +276,7 @@ var PFCad = function() {
                         $('.endcity').select2();
                     } else if ($(data.source).attr("id") === "natuf") {
                         $('.natcity').select2();
-                    } else if ($(data.source).attr("id") === "vinculate") {
+                    } else if ($(data.source).attr("id") === "vinculate" || $(data.source).attr("class") === "delete") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
                         $('.capital').keyup(checkCapital);
