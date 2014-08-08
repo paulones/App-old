@@ -19,7 +19,7 @@ var PFCad = function() {
                     required: true
                 },
                 alias: {
-                    minlength: 1,
+                    minlength_optional: 1,
                     required: false
                 },
                 cpf: {
@@ -38,11 +38,11 @@ var PFCad = function() {
                     required: false
                 },
                 fathername: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false
                 },
                 mothername: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false
                 },
                 nationality: {
@@ -61,24 +61,27 @@ var PFCad = function() {
                 natforeign: {
                     required: false,
                 },
+                estcivil: {
+                    required: false,
+                },
                 inss: {
                     minlength: 9,
                     required: false
                 },
                 conjuge: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false,
                 },
                 obs: {
-                    minlength: 2,
-                    required: false
+                    required: false,
+                    minlength_optional: 2,
                 },
                 address: {
-                    minlength: 3,
+                    minlength_optional: 3,
                     required: false
                 },
                 complement: {
-                    minlength: 3,
+                    minlength_optional: 3,
                     required: false
                 },
                 number: {
@@ -152,44 +155,56 @@ var PFCad = function() {
     }
 
     var checkDates = function() {
-        var result;
-        var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
-        $.each($('.initial-date'), function() {
-            var initialdate = $(this).val();
-            var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
-            if (initialdate.match(reg) && finaldate.match(reg)) {
-                if (finaldate != "" && initialdate != "") {
-                    var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
-                    var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
-                    if (final < initial) {
-                        $(this).closest('tr').children('td').children('.final-date').val("");
-                        $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
-                        $('.date-error').show();
-                        return result = false;
-                    } else {
+        if ($(this).val().length == 10) {
+            var result;
+            var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+            $.each($('.initial-date'), function() {
+                var initialdate = $(this).val();
+                var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
+                if (initialdate.match(reg) && finaldate.match(reg)) {
+                    if (finaldate != "" && initialdate != "") {
+                        var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
+                        var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
+                        if (final < initial) {
+                            $(this).closest('tr').children('td').children('.final-date').val("");
+                            $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                            $('.date-error').show();
+                            return result = false;
+                        } else {
+                            $('.date-error').hide();
+                            return result = true;
+                        }
+                    } else if (initialdate != "") {
                         $('.date-error').hide();
                         return result = true;
                     }
-                } else if (initialdate != "") {
+                } else if (initialdate != "" && !initialdate.match(reg)) {
+                    $(this).val("");
+                    $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                    $('.date-error').show();
+                    return result = false;
+                } else if (finaldate != "" && !finaldate.match(reg)) {
+                    $(this).closest('tr').children('td').children('.final-date').val("");
+                    $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                    $('.date-error').show();
+                    return result = false;
+                } else {
                     $('.date-error').hide();
                     return result = true;
                 }
-            } else if (initialdate != "" && !initialdate.match(reg)) {
-                $(this).val("");
-                $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
-                $('.date-error').show();
-                return result = false;
-            } else if (finaldate != "" && !finaldate.match(reg)) {
-                $(this).closest('tr').children('td').children('.final-date').val("");
-                $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
-                $('.date-error').show();
-                return result = false;
-            } else {
-                $('.date-error').hide();
-                return result = true;
-            }
-        });
-        return result;
+            });
+            return result;
+        }
+    };
+
+    var checkCapital = function() {
+        if ($(this).val() > 100) {
+            $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+            $('.date-error').show();
+            $(this).val("");
+        } else {
+            $('.date-error').hide();
+        }
     }
 
     var handleTable = function() {
@@ -216,31 +231,19 @@ var PFCad = function() {
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
 
-        table.on('keyup', '.initial-date', function() {
-            if ($(this).val().length == 10) {
-                checkDates();
-            }
-        });
-        table.on('keyup', '.final-date', function() {
-            if ($(this).val().length == 10) {
-                checkDates();
-            }
+        table.on('keyup', '.initial-date, .final-date', function() {
+            checkDates();
         });
 
-        table.on('click', '.delete', function(e) {
-            e.preventDefault();
-            $('.final-date-error').hide();
-            $('.initial-date-error').hide();
-            var nRow = $(this).parents('tr')[0];
-            oTable.fnDeleteRow(nRow);
-        });
-    }
+        table.on('keyup', '.capital', checkCapital);
+    };
 
     return {
         init: function() {
 
             $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
             $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
+            $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
 
             handleValidation();
             handleTable();
@@ -249,7 +252,6 @@ var PFCad = function() {
             $('#rg').mask("999999999999999");
             $('#elector').mask("9999999999999");
             $('#cep').mask("99999-999");
-            $('.capital').mask("999");
             $('#inss').mask("999999999999999");
             $('.date').mask("99/99/9999");
 
@@ -268,25 +270,31 @@ var PFCad = function() {
                 });
             });
 
-            $('.vinculate').click(function(e) {
+            $('#vinculate').click(function(e) {
                 e.preventDefault();
-            });
-            
-            $('.capital').keyup(function() {
-                var soma = 0;
-                $.each($('.capital'), function() {
-                    soma += Number($(this).val());
-                });
-                if (soma > 100) {
-                    $('.date-error').html("A soma dos percentuais de participa&ccedil;&atilde;o dos s&oacute;cios n&atilde;o pode exceder 100%.");
-                    $('.date-error').show();
-                    $(this).val("");
-                    return false;
-                } else {
-                    $('.date-error').hide();
+                if ($('#pessoajuridica').val() !== "") {
+                    $('.vinculate').click();
                 }
             });
 
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr("id") === "enduf") {
+                        $('.endcity').select2();
+                    } else if ($(data.source).attr("id") === "natuf") {
+                        $('.natcity').select2();
+                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
+                        $('.date').mask("99/99/9999");
+                        $('.funcao').select2();
+                        $('.capital').keyup(checkCapital);
+                        $('.initial-date,.final-date').keyup(checkDates);
+                        $('.date-error').hide();
+                        if ($('.rows').children().length == 0){
+                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        }
+                    }
+                }
+            });
 
 
             nationality();
@@ -309,13 +317,18 @@ var PFCad = function() {
             }
 
             civil();
-            $('#civil').change(civil);
+            $('.estcivil').change(civil);
             function civil() {
-                if ($('#civil').val() == 1) {
+                if ($('.estcivil').find(':selected').text() === "Solteiro(a)") {
                     $('.conjuge').hide();
                 } else {
                     $('.conjuge').show();
                 }
+            }
+
+            function validaMinLength(value, element, param) {
+                var length = $.isArray(value) ? value.length : this.getLength($.trim(value), element);
+                return length >= param || length === 0;
             }
 
             function validaCPF(value, element) {

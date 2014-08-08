@@ -65,6 +65,7 @@ public class PessoaJuridica implements Serializable {
     @Column(name = "nome_fantasia")
     private String nomeFantasia;
     @Size(max = 14)
+    @NotNull
     @Column(name = "cnpj")
     private String cnpj;
     @Size(max = 12)

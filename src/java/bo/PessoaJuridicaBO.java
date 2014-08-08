@@ -6,8 +6,8 @@
 
 package bo;
 
-import dao.EstadoCivilDAO;
-import entidade.EstadoCivil;
+import dao.PessoaJuridicaDAO;
+import entidade.PessoaJuridica;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +16,20 @@ import java.util.List;
  *
  * @author paulones
  */
-public class EstadoCivilBO implements Serializable {
+public class PessoaJuridicaBO implements Serializable{
     
-    private EstadoCivilDAO estadoCivilDAO;
+    private PessoaJuridicaDAO pessoaJuridicaDAO;
     
-    public EstadoCivilBO(){
-        estadoCivilDAO = new EstadoCivilDAO();
+    public PessoaJuridicaBO(){
+        pessoaJuridicaDAO = new PessoaJuridicaDAO();
     }
     
-    public List<EstadoCivil> findAll(){
+    public List<PessoaJuridica> findAll(){
         try { 
-            return estadoCivilDAO.findEstadoCivilEntities();
+            return pessoaJuridicaDAO.findPessoaJuridicaEntities();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ArrayList<EstadoCivil>();
+        return new ArrayList<PessoaJuridica>();
     }
 }

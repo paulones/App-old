@@ -32,4 +32,13 @@ public class PaisBO implements Serializable {
         }
         return new ArrayList<Pais>();
     }
+    
+    public Pais findBrasil(){
+        try { 
+            return paisDAO.findBrasil();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Pais();
+    }
 }

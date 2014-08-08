@@ -19,6 +19,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -269,6 +270,19 @@ public class PaisDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Pais findBrasil(){
+        EntityManager em = getEntityManager();
+        try {
+            Pais pais = (Pais) em.createNativeQuery("select * from pais "
+                    + "where nome = 'Brasil'", Pais.class).getSingleResult();
+            return pais;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

@@ -6,6 +6,8 @@
 
 package bo;
 
+import dao.EnderecoDAO;
+import entidade.Endereco;
 import java.io.Serializable;
 
 /**
@@ -13,5 +15,18 @@ import java.io.Serializable;
  * @author paulones
  */
 public class EnderecoBO implements Serializable{
+
+    private EnderecoDAO enderecoDAO;
     
+    public EnderecoBO(){
+        enderecoDAO = new EnderecoDAO();
+    }
+    
+    public void create(Endereco endereco){
+        try {
+            enderecoDAO.create(endereco);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
