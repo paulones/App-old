@@ -7,4 +7,9 @@
     <lifecycle>
         <phase-listener>util.LoginListener</phase-listener>
     </lifecycle>
+    <application>
+        <el-resolver>
+            util.NullStringHandler
+        </el-resolver>
+    </application>
 </faces-config>
