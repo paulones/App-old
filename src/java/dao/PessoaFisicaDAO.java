@@ -396,16 +396,14 @@ public class PessoaFisicaDAO implements Serializable {
         }
     }
     
-    public boolean findDuplicates(PessoaFisica pessoaFisica){
+    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica){
         EntityManager em = getEntityManager();
         try {
             PessoaFisica pf = (PessoaFisica) em.createNativeQuery("select * from pessoa_fisica "
-                    + "where (cpf = '" + pessoaFisica.getCpf() + "' and nome = '"+pessoaFisica.getNome()+"') "
-                    + "or (cpf = '"+pessoaFisica.getCpf()+"' and rg = '"+pessoaFisica.getRg()+"') "
-                    + "or (nome = '"+pessoaFisica.getNome()+"' and rg = '"+pessoaFisica.getRg()+"')", PessoaFisica.class).getSingleResult();
-            return pf != null;
+                    + "where cpf = '" + pessoaFisica.getCpf() + "'", PessoaFisica.class).getSingleResult();
+            return pf;
         } catch (NoResultException e) {
-            return false;
+            return null;
         } finally {
             em.close();
         }

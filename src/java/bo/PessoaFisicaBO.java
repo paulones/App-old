@@ -30,12 +30,12 @@ public class PessoaFisicaBO implements Serializable {
         }
     }
     
-    public boolean findDuplicates(PessoaFisica pessoaFisica){
+    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica){
         try {
             return pessoaFisicaDAO.findDuplicates(pessoaFisica);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }
