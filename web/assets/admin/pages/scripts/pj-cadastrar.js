@@ -146,7 +146,7 @@ var PJCad = function() {
             }
         });
     }
-    
+
     var checkDates = function() {
         var result;
         var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
@@ -187,7 +187,17 @@ var PJCad = function() {
         });
         return result;
     }
-
+    
+    var checkCapital = function() {
+        if ($(this).val() > 100) {
+            $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+            $('.date-error').show();
+            $(this).val("");
+        } else {
+            $('.date-error').hide();
+        }
+    }
+    
     var handleTable = function() {
 
         var table = $('#vinculations');
@@ -211,23 +221,11 @@ var PJCad = function() {
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
 
-        table.on('keyup', '.initial-date', function() {
-            if ($(this).val().length == 10) {
-                checkDates();
-            }
+        table.on('keyup', '.initial-date, .final-date', function() {
+            checkDates();
         });
-        table.on('keyup', '.final-date', function() {
-            if ($(this).val().length == 10) {
-                checkDates();
-            }
-        });
-        table.on('click', '.delete', function(e) {
-            e.preventDefault();
-            $('.final-date-error').hide();
-            $('.initial-date-error').hide();
-            var nRow = $(this).parents('tr')[0];
-            oTable.fnDeleteRow(nRow);
-        });
+
+        table.on('keyup', '.capital', checkCapital);
     }
 
     return {
@@ -258,6 +256,23 @@ var PJCad = function() {
                         $(this).parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
                     }
                 });
+            });
+
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr("id") === "enduf") {
+                        $('.endcity').select2();
+                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
+                        $('.date').mask("99/99/9999");
+                        $('.funcao').select2();
+                        $('.capital').keyup(checkCapital);
+                        $('.initial-date,.final-date').keyup(checkDates);
+                        $('.date-error').hide();
+                        if ($('.rows').children().length == 0) {
+                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        }
+                    }
+                }
             });
 
             $('.vinculate').click(function(e) {

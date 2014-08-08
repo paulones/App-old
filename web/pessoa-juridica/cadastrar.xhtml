@@ -53,7 +53,7 @@
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN FORM-->
-                        <h:form  id="form" class="form-horizontal">
+                        <h:form prependId="false" id="form" class="form-horizontal">
                             <div class="form-body">
                                 <div class="alert alert-danger display-hide">
                                     <button class="close" data-close="alert"></button>
@@ -376,7 +376,7 @@
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="pessoafisica" value="#{pessoaJuridicaBean.pessoaFisica}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <ui:param value="#{pessoafisica.cpf.substring(0,2)}.#{pessoafisica.cpf.substring(2,5)}.#{pessoafisica.cpf.substring(5,8)}-#{pessoafisica.cpf.substring(8)}" name="cpf"/>
-                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoaJuridica" itemLabel="#{cpf} - #{pessoafisica.nome}" itemValue="#{pessoafisica}"/>
+                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoafisica" itemLabel="#{cpf} - #{pessoafisica.nome}" itemValue="#{pessoafisica}"/>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>

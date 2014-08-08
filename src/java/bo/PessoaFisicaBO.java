@@ -40,4 +40,13 @@ public class PessoaFisicaBO implements Serializable {
         }
         return null;
     }
+    
+    public List<PessoaFisica> findAll(){
+        try { 
+            return pessoaFisicaDAO.findPessoaFisicaEntities();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaFisica>();
+    }
 }
