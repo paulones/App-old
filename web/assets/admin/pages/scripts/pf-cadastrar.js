@@ -61,7 +61,7 @@ var PFCad = function() {
                 natforeign: {
                     required: false,
                 },
-                natest: {
+                estcivil: {
                     required: false,
                 },
                 inss: {
@@ -317,9 +317,9 @@ var PFCad = function() {
             }
 
             civil();
-            $('#civil').change(civil);
+            $('.estcivil').change(civil);
             function civil() {
-                if ($('#civil').val() == 1) {
+                if ($('.estcivil').find(':selected').text() === "Solteiro(a)") {
                     $('.conjuge').hide();
                 } else {
                     $('.conjuge').show();

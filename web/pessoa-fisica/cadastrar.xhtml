@@ -59,7 +59,11 @@
                                     <button class="close" data-close="alert"></button>
                                     Há alguns erros no formulário. Digite os dados corretamente.
                                 </div>
-                                <h:panelGroup layout="block" class="alert alert-success" rendered="#{pessoaFisicaBean.success}">
+                                <h:panelGroup layout="block" class="alert alert-danger" rendered="#{pessoaFisicaBean.register eq 'fail'}">
+                                    <button class="close" data-close="alert"></button>
+                                    <h:messages layout="table" class="pf-error"/> 
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" class="alert alert-success" rendered="#{pessoaFisicaBean.register eq 'success'}">
                                     <button class="close" data-close="alert"></button>
                                     Cadastro realizado com sucesso!
                                 </h:panelGroup>
@@ -238,7 +242,7 @@
                                             <label class="control-label col-md-3">Estado Civil
                                             </label>
                                             <div class="col-md-9 ">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="natest" value="#{pessoaFisicaBean.pessoaFisica.estadoCivilFk}" tabindex="1" converter="entityConverter">
+                                                <h:selectOneMenu class="select2_category select2me form-control estcivil" p:placeholder="Selecione..." id="estcivil" value="#{pessoaFisicaBean.pessoaFisica.estadoCivilFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoCivilList}" var="estadoCivil" itemLabel="#{estadoCivil.situacao}" itemValue="#{estadoCivil}"/>
                                                 </h:selectOneMenu>

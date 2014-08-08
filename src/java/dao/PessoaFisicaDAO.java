@@ -9,11 +9,6 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.Cidade;
 import entidade.Estado;
 import entidade.EstadoCivil;
@@ -21,11 +16,17 @@ import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -390,6 +391,21 @@ public class PessoaFisicaDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public boolean findDuplicates(PessoaFisica pessoaFisica){
+        EntityManager em = getEntityManager();
+        try {
+            PessoaFisica pf = (PessoaFisica) em.createNativeQuery("select * from pessoa_fisica "
+                    + "where (cpf = '" + pessoaFisica.getCpf() + "' and nome = '"+pessoaFisica.getNome()+"') "
+                    + "or (cpf = '"+pessoaFisica.getCpf()+"' and rg = '"+pessoaFisica.getRg()+"') "
+                    + "or (nome = '"+pessoaFisica.getNome()+"' and rg = '"+pessoaFisica.getRg()+"')", PessoaFisica.class).getSingleResult();
+            return pf != null;
+        } catch (NoResultException e) {
+            return false;
         } finally {
             em.close();
         }

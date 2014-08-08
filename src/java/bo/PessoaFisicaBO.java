@@ -29,4 +29,13 @@ public class PessoaFisicaBO implements Serializable {
             e.printStackTrace();
         }
     }
+    
+    public boolean findDuplicates(PessoaFisica pessoaFisica){
+        try {
+            return pessoaFisicaDAO.findDuplicates(pessoaFisica);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

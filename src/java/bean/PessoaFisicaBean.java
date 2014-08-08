@@ -46,7 +46,7 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaJuridica pessoaJuridica;
     private PessoaFisicaJuridica pessoaFisicaJuridica;
 
-    private boolean success;
+    private String register;
 
     private List<Pais> paisList;
     private List<Estado> estadoList;
@@ -75,7 +75,7 @@ public class PessoaFisicaBean implements Serializable {
             endereco = new Endereco();
             pessoaJuridica = new PessoaJuridica();
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
-            success = false;
+            register = "";
 
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
@@ -119,18 +119,34 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void cadastrar() {
-        if (pessoaFisica.getEstadoFk() != null){
-            pessoaFisica.setPaisFk(paisBO.findBrasil());
+        if (!pessoaFisicaBO.findDuplicates(pessoaFisica)) {
+            if (pessoaFisica.getRgOrgaoEmissor() != null) {
+                pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
+            }
+            if (pessoaFisica.getEstadoFk() != null) {
+                pessoaFisica.setPaisFk(paisBO.findBrasil());
+            }
+            pessoaFisicaBO.create(pessoaFisica);
+            endereco.setTipo("PF");
+            endereco.setIdFk(pessoaFisica.getId());
+            enderecoBO.create(endereco);
+            for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                pfj.setPessoaFisicaFk(pessoaFisica);
+                pessoaFisicaJuridicaBO.create(pfj);
+            }
+            register = "success";
+            pessoaFisica = new PessoaFisica();
+            endereco = new Endereco();
+            pessoaFisicaJuridicaList = new ArrayList<>();
+        }else{
+            register = "fail";
+            String message = "Já existe usuário cadastrado com esses campos.";
+            String cpf = pessoaFisica.getCpf().substring(0,3)+"."+pessoaFisica.getCpf().substring(3,6)+"."+pessoaFisica.getCpf().substring(6,9)+"-"+pessoaFisica.getCpf().substring(9);
+            message += pessoaFisica.getNome()!= null ? "\nNome: " + pessoaFisica.getNome():""; 
+            message += pessoaFisica.getCpf() != null ? "\nCPF: " + cpf:"";
+            message += pessoaFisica.getRg() != null ? "\nRG: " + pessoaFisica.getRg():""; 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
-        pessoaFisicaBO.create(pessoaFisica);
-        endereco.setTipo("PF");
-        endereco.setIdFk(pessoaFisica.getId());
-        enderecoBO.create(endereco);
-        for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList){
-            pfj.setPessoaFisicaFk(pessoaFisica);
-            pessoaFisicaJuridicaBO.create(pfj);
-        }
-        success = true;
     }
 
     public void removerVinculo(int index) {
@@ -191,12 +207,12 @@ public class PessoaFisicaBean implements Serializable {
         this.nacionalidadeList = nacionalidadeList;
     }
 
-    public boolean isSuccess() {
-        return success;
+    public String getRegister() {
+        return register;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setRegister(String register) {
+        this.register = register;
     }
 
     public List<Pais> getPaisList() {
