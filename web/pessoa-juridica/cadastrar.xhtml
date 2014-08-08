@@ -2,10 +2,11 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="title">Pessoa Jurídica - Cadastro</ui:define>
     <ui:define name="metadata-components">
-        <f:event type="preRenderComponent" listener="#{homeBean.init()}"/>
+        <f:event type="preRenderComponent" listener="#{pessoaJuridicaBean.init()}"/>
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
@@ -71,7 +72,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="name"/>
+                                                    <h:inputText class="form-control" id="name" autocomplete="off" value="#{pessoaJuridicaBean.pessoaJuridica.nome}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -83,7 +84,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="cnpj" name="cnpj"/>
+                                                    <h:inputText class="form-control" id="cnpj" value="#{pessoaJuridicaBean.pessoaJuridica.cnpj}" converter="maskConverter"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -100,6 +101,7 @@
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
                                                     <input type="text" class="form-control" name="alias"/>
+                                                    <h:inputText class="form-control" id="alias" value="#{pessoaJuridicaBean.pessoaJuridica.nomeFantasia}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -107,17 +109,13 @@
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Tipicidade
+                                            <label class="control-label col-md-3">Tipo Empresarial
                                             </label>
                                             <div class="col-md-9">
-                                                <select class="select2_category select2me form-control" placeholder="Selecione..." name="tipicidade" id="tipicidade" tabindex="1">
-                                                    <option value=""></option>
-                                                    <option value="1">Individual</option>
-                                                    <option value="2">Eireli</option>
-                                                    <option value="3">Sem fins lucrativos</option>
-                                                    <option value="3">Anônima</option>
-                                                    <option value="1">Ltda</option>
-                                                </select>
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="tipicidade" tabindex="1" value="#{pessoaJuridicaBean.pessoaJuridica.tipoEmpresarialFk}">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaJuridicaBean.tipoEmpresarialList}" var="tipoEmpresarial" itemLabel="#{tipoEmpresarial.tipo}" itemValue="#{tipoEmpresarial}"/>
+                                                </h:selectOneMenu>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +130,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="state" name="state"/>
+                                                    <h:inputText class="form-control" id="state" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoEstadual}" converter="maskConverter"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,7 +143,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="province" name="province"/>
+                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,12 +158,10 @@
                                             </label>
                                             <div class="col-md-9">
                                                 <div id="situacao" class="radio-list" data-error-container="#form_gender_error">
-                                                    <label class="radio-inline">
-                                                        <input id="ativo" type="radio" name="gender" value="option1" />
-                                                        Ativo </label>
-                                                    <label class="radio-inline">
-                                                        <input id="inativo" type="radio" name="gender" value="option2" />
-                                                        Inativo </label>
+                                                    <h:selectOneRadio value="#{pessoaJuridicaBean.pessoaJuridica.situacao}">
+                                                        <f:selectItem id="ativo" itemLabel="Ativo" itemValue="T"/>
+                                                        <f:selectItem id="inativo" itemLabel="Inativo" itemValue="F"/>
+                                                    </h:selectOneRadio>
                                                 </div>
                                             </div>
                                         </div>
@@ -179,7 +175,7 @@
                                             <div class="col-md-9 ">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="inactive" id="inactive"/>
+                                                    <h:inputText class="form-control" id="inactive" value="#{pessoaJuridicaBean.pessoaJuridica.motivoDaDesativacao}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -197,7 +193,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control date" id="iniDate" name="iniDate" placeholder="dd/mm/aaaa"/>
+                                                    <h:inputText class="form-control" id="iniDate" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaBean.pessoaJuridica.dataDeCriacao}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -210,7 +206,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="group"/>
+                                                    <h:inputText class="form-control" id="group" value="#{pessoaJuridicaBean.pessoaJuridica.grupoEconomico}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -226,7 +222,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="cnae" name="cnae"/>
+                                                    <h:inputText class="form-control" id="cnae" value="#{pessoaJuridicaBean.pessoaJuridica.cnae}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -239,7 +235,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" id="nire" name="nire"/>
+                                                    <h:inputText class="form-control" id="nire" value="#{pessoaJuridicaBean.pessoaJuridica.nire}"/>
                                                 </div>
                                             </div>
                                         </div>

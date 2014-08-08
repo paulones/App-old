@@ -240,7 +240,7 @@ var PJCad = function() {
 
             $('#cnpj').mask("99.999.999/9999-99");
             $('#state').mask("999.999.999.999");
-            $('.date').mask("99/99/9999");
+            $('#iniDate').mask("99/99/9999");
             $('#nire').mask("99999999999");
             $('#cnae').mask("9999-9/99");
             $('.money').maskMoney({allowNegative: true, thousands: '.', decimal: ',', affixesStay: false});
