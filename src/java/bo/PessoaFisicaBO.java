@@ -32,21 +32,12 @@ public class PessoaFisicaBO implements Serializable {
         }
     }
     
-    public boolean findDuplicates(PessoaFisica pessoaFisica){
+    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica){
         try {
             return pessoaFisicaDAO.findDuplicates(pessoaFisica);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
-    }
-    
-    public List<PessoaFisica> findAll(){
-        try { 
-            return pessoaFisicaDAO.findPessoaFisicaEntities();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<PessoaFisica>();
+        return null;
     }
 }
