@@ -319,7 +319,7 @@ var PFCad = function() {
             civil();
             $('.estcivil').change(civil);
             function civil() {
-                if ($('.estcivil').find(':selected').text() === "Solteiro(a)") {
+                if ($('.estcivil').find(':selected').text() === "Solteiro(a)" || $('.estcivil').find(':selected').text() === "") {
                     $('.conjuge').hide();
                 } else {
                     $('.conjuge').show();

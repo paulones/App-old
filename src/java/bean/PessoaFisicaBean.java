@@ -98,6 +98,7 @@ public class PessoaFisicaBean implements Serializable {
 
     private void loadForm() {
         paisList = paisBO.findAll();
+        paisList.remove(paisBO.findBrasil());
         estadoList = estadoBO.findAll();
         nacionalidadeList = nacionalidadeBO.findAll();
         estadoCivilList = estadoCivilBO.findAll();
