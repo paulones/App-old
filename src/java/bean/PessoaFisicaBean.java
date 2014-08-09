@@ -17,6 +17,7 @@ import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaJuridicaBO;
 import entidade.Cidade;
 import entidade.Endereco;
+import entidade.EnderecoPessoa;
 import entidade.Estado;
 import entidade.EstadoCivil;
 import entidade.Funcao;
@@ -54,9 +55,12 @@ public class PessoaFisicaBean implements Serializable {
     private List<Cidade> cidadeEndList;
     private List<Nacionalidade> nacionalidadeList;
     private List<EstadoCivil> estadoCivilList;
+    private List<PessoaFisica> pessoaFisicaList;
+    private List<Endereco> enderecoList;
     private List<PessoaJuridica> pessoaJuridicaList;
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
     private List<Funcao> funcaoList;
+    private List<EnderecoPessoa> enderecoPessoaList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -72,21 +76,22 @@ public class PessoaFisicaBean implements Serializable {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
-            boolean isViewPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
+            boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
             boolean isEditPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("alterar") > -1;
-            if (isRegisterPage) {
+            
+            pessoaFisicaBO = new PessoaFisicaBO();
+            enderecoBO = new EnderecoBO();
+            if (isRegisterPage) { //Tela de cadastro
                 pessoaFisica = new PessoaFisica();
                 endereco = new Endereco();
                 pessoaJuridica = new PessoaJuridica();
                 pessoaFisicaJuridica = new PessoaFisicaJuridica();
                 register = "";
-
-                pessoaFisicaBO = new PessoaFisicaBO();
                 pessoaJuridicaBO = new PessoaJuridicaBO();
                 pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
                 nacionalidadeBO = new NacionalidadeBO();
                 estadoCivilBO = new EstadoCivilBO();
-                enderecoBO = new EnderecoBO();
+                
                 paisBO = new PaisBO();
                 estadoBO = new EstadoBO();
                 cidadeBO = new CidadeBO();
@@ -96,13 +101,25 @@ public class PessoaFisicaBean implements Serializable {
                 cidadeEndList = new ArrayList<>();
                 pessoaFisicaJuridicaList = new ArrayList<>();
 
-                loadForm();
-            } else if (isViewPage) {
+                loadRegisterForm();
+            } else if (isSearchPage) { //Tela de consulta
+                pessoaFisicaList = pessoaFisicaBO.findAll();
+                enderecoList = enderecoBO.findAllPFAddress();
+                enderecoPessoaList = new ArrayList<>();
+                for(PessoaFisica pf : pessoaFisicaList){
+                    for(Endereco end : enderecoList){
+                        if (pf.getId().equals(end.getIdFk())){
+                            EnderecoPessoa enderecoPessoa = new EnderecoPessoa(pf, end);
+                            enderecoPessoaList.add(enderecoPessoa);
+                        }
+                        
+                    }
+                }
             }
         }
     }
 
-    private void loadForm() {
+    private void loadRegisterForm() {
         paisList = paisBO.findAll();
         paisList.remove(paisBO.findBrasil());
         estadoList = estadoBO.findAll();
@@ -173,7 +190,6 @@ public class PessoaFisicaBean implements Serializable {
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
         }
     }
-
     public PessoaFisica getPessoaFisica() {
         return pessoaFisica;
     }
@@ -260,6 +276,14 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setEstadoCivilList(List<EstadoCivil> estadoCivilList) {
         this.estadoCivilList = estadoCivilList;
+    }
+
+    public List<EnderecoPessoa> getEnderecoPessoaList() {
+        return enderecoPessoaList;
+    }
+
+    public void setEnderecoPessoaList(List<EnderecoPessoa> enderecoPessoaList) {
+        this.enderecoPessoaList = enderecoPessoaList;
     }
 
     public Endereco getEndereco() {

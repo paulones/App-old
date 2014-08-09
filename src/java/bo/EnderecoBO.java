@@ -9,6 +9,8 @@ package bo;
 import dao.EnderecoDAO;
 import entidade.Endereco;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -28,5 +30,14 @@ public class EnderecoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<Endereco> findAllPFAddress(){
+        try { 
+            return enderecoDAO.findAllPFAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Endereco>();
     }
 }

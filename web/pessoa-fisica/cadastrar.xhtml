@@ -435,7 +435,7 @@
                                                     <ui:repeat value="#{pessoaFisicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                         <tr>
-                                                            <td style="text-align:center">
+                                                            <td>
                                                                 #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</td>
                                                             <td>
                                                                 <h:selectOneMenu styleClass="select2_category select2me form-control funcao" p:placeholder="Selecione..." value="#{pessoaFisicaJuridica.funcaoFk}" tabindex="1" converter="entityConverter">

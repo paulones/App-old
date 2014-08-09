@@ -1,46 +1,29 @@
 var PFCon = function() {
 
-    var initTable = function () {
+    var initTable = function() {
         var table = $('#table');
+        var tableDetails = $('.vinculations');
 
-        /* Formatting function for row details */
-        function fnFormatDetails(oTable, nTr) {
-            var aData = oTable.fnGetData(nTr);
-            var sOut = '<table>';
-            sOut += '<tr><td>Platform(s):</td><td>' + aData[2] + '</td></tr>';
-            sOut += '<tr><td>Engine version:</td><td>' + aData[3] + '</td></tr>';
-            sOut += '<tr><td>CSS grade:</td><td>' + aData[4] + '</td></tr>';
-            sOut += '<tr><td>Others:</td><td>Could provide a link here</td></tr>';
-            sOut += '</table>';
-
-            return sOut;
-        }
-
-        /*
-         * Insert a 'details' column to the table
-         */
-        var nCloneTh = document.createElement('th');
-        nCloneTh.className = "table-checkbox";
-
-        var nCloneTd = document.createElement('td');
-        nCloneTd.innerHTML = '<span class="row-details row-details-close"></span>';
-
-        table.find('thead tr').each(function () {
-            this.insertBefore(nCloneTh, this.childNodes[0]);
+        var oTable2 = tableDetails.dataTable({
+            paginate: false,
+            lengthMenu: false,
+            info: false,
+            filter: false,
+            // set the initial value
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "Sem V&iacute;nculos."
+            },
+            "ordering": false
         });
-
-        table.find('tbody tr').each(function () {
-            this.insertBefore(nCloneTd.cloneNode(true), this.childNodes[0]);
-        });
-
         /*
          * Initialize DataTables, with no sorting on the 'details' column
          */
         var oTable = table.dataTable({
             "columnDefs": [{
-                "orderable": false,
-                "targets": [0]
-            }],
+                    "orderable": false,
+                    "targets": [0]
+                }],
             "order": [
                 [1, 'asc']
             ],
@@ -68,29 +51,40 @@ var PFCon = function() {
          * Note that the indicator for showing which row is open is not controlled by DataTables,
          * rather it is done here
          */
-        table.on('click', ' tbody td .row-details', function () {
-            var nTr = $(this).parents('tr')[0];
-            if (oTable.fnIsOpen(nTr)) {
+        table.on('click', ' tbody td .row-details', function() {
+            if ($(this).hasClass('row-details-open')) {
                 /* This row is already open - close it */
                 $(this).addClass("row-details-close").removeClass("row-details-open");
-                oTable.fnClose(nTr);
+                $(this).parent().parent().append($(this).parent().parent().next().children());
+                $(this).parent().parent().next().remove();
+                $(this).parent().parent().children(".detail").hide();
             } else {
                 /* Open this row */
                 $(this).addClass("row-details-open").removeClass("row-details-close");
-                oTable.fnOpen(nTr, fnFormatDetails(oTable, nTr), 'details');
+                $('<tr>').insertAfter($(this).parent().parent());
+                $(this).parent().parent().children(".detail").appendTo($(this).parent().parent().next());
+                $(this).parent().parent().next().children(".detail").show();
             }
         });
     }
-    
+
     return {
         init: function() {
-            
-            if (!jQuery().dataTable) {
-                return;
-            }
-            
+
+
             initTable();
-            
+
+            $('#table_filter label input').keypress(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                        $(this).parent().parent().append($(this).parent().parent().next().children());
+                        $(this).parent().parent().next().remove();
+                        $(this).parent().parent().children(".detail").hide();
+                    }
+                });
+            });
+
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
             $('.menu-pf a .arrow').addClass('open');
