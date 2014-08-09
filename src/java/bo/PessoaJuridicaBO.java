@@ -24,6 +24,23 @@ public class PessoaJuridicaBO implements Serializable{
         pessoaJuridicaDAO = new PessoaJuridicaDAO();
     }
     
+    public void create(PessoaJuridica pessoaJuridica){
+        try {
+            pessoaJuridicaDAO.create(pessoaJuridica);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public PessoaJuridica findDuplicates(PessoaJuridica pessoaJuridica){
+        try {
+            return pessoaJuridicaDAO.findDuplicates(pessoaJuridica);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<PessoaJuridica> findAll(){
         try { 
             return pessoaJuridicaDAO.findPessoaJuridicaEntities();

@@ -9,19 +9,20 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
 import entidade.TipoEmpresarial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import entidade.PessoaFisicaJuridica;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -323,6 +324,19 @@ public class PessoaJuridicaDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public PessoaJuridica findDuplicates(PessoaJuridica pessoaJuridica){
+        EntityManager em = getEntityManager();
+        try {
+            PessoaJuridica pj = (PessoaJuridica) em.createNativeQuery("select * from pessoa_juridica "
+                    + "where cnpj = '" + pessoaJuridica.getCnpj()+ "'", PessoaJuridica.class).getSingleResult();
+            return pj;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

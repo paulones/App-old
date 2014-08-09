@@ -2,7 +2,7 @@ var PJCad = function() {
 
     var handleValidation = function() {
         var form = $('#form');
-        var error = $('.alert-danger', form);
+        var error = $('.form-error', form);
         var success = $('.alert-success', form);
 
         form.validate({
@@ -103,7 +103,8 @@ var PJCad = function() {
                     required: "Informe a inscrição estatal."
                 }
             },
-            invalidHandler: function(event, validator) { //display error alert on form submit 
+            invalidHandler: function(event, validator) { //display error alert on form submit
+                $(".date-error").hide();
                 success.hide();
                 error.show();
                 Metronic.scrollTo(error, -200);
@@ -141,52 +142,55 @@ var PJCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                success.show();
+                $(".date-error").hide();
                 error.hide();
+                $(".register").click();
             }
         });
     }
 
     var checkDates = function() {
-        var result;
-        var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
-        $.each($('.initial-date'), function() {
-            var initialdate = $(this).val();
-            var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
-            if (initialdate.match(reg) && finaldate.match(reg)) {
-                if (finaldate != "" && initialdate != "") {
-                    var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
-                    var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
-                    if (final < initial) {
-                        $(this).closest('tr').children('td').children('.final-date').val("");
-                        $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
-                        $('.date-error').show();
-                        return result = false;
-                    } else {
+        if ($(this).val().length == 10) {
+            var result;
+            var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+            $.each($('.initial-date'), function() {
+                var initialdate = $(this).val();
+                var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
+                if (initialdate.match(reg) && finaldate.match(reg)) {
+                    if (finaldate != "" && initialdate != "") {
+                        var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
+                        var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
+                        if (final < initial) {
+                            $(this).closest('tr').children('td').children('.final-date').val("");
+                            $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                            $('.date-error').show();
+                            return result = false;
+                        } else {
+                            $('.date-error').hide();
+                            return result = true;
+                        }
+                    } else if (initialdate != "") {
                         $('.date-error').hide();
                         return result = true;
                     }
-                } else if (initialdate != "") {
+                } else if (initialdate != "" && !initialdate.match(reg)) {
+                    $(this).val("");
+                    $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                    $('.date-error').show();
+                    return result = false;
+                } else if (finaldate != "" && !finaldate.match(reg)) {
+                    $(this).closest('tr').children('td').children('.final-date').val("");
+                    $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                    $('.date-error').show();
+                    return result = false;
+                } else {
                     $('.date-error').hide();
                     return result = true;
                 }
-            } else if (initialdate != "" && !initialdate.match(reg)) {
-                $(this).val("");
-                $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
-                $('.date-error').show();
-                return result = false;
-            } else if (finaldate != "" && !finaldate.match(reg)) {
-                $(this).closest('tr').children('td').children('.final-date').val("");
-                $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
-                $('.date-error').show();
-                return result = false;
-            } else {
-                $('.date-error').hide();
-                return result = true;
-            }
-        });
-        return result;
-    }
+            });
+            return result;
+        }
+    };
     
     var checkCapital = function() {
         if ($(this).val() > 100) {
@@ -241,7 +245,7 @@ var PJCad = function() {
             $('#iniDate').mask("99/99/9999");
             $('#nire').mask("99999999999");
             $('#cnae').mask("9999-9/99");
-            $('.money').maskMoney({allowNegative: true, thousands: '.', decimal: ',', affixesStay: false});
+            $('.date').mask("99/99/9999");
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
@@ -275,9 +279,12 @@ var PJCad = function() {
                 }
             });
 
-            $('.vinculate').click(function(e) {
+            $('#vinculate').click(function(e) {
                 e.preventDefault();
-            })
+                if ($('#pessoafisica').val() !== "") {
+                    $('.vinculate').click();
+                }
+            });
 
             situacao();
             $('#inativo').click(situacao);

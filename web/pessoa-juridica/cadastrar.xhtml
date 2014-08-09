@@ -55,14 +55,18 @@
                         <!-- BEGIN FORM-->
                         <h:form prependId="false" id="form" class="form-horizontal">
                             <div class="form-body">
-                                <div class="alert alert-danger display-hide">
+                                <div class="alert alert-danger form-error display-hide">
                                     <button class="close" data-close="alert"></button>
                                     Há alguns erros no formulário. Digite os dados corretamente.
                                 </div>
-                                <div class="alert alert-success display-hide">
+                                <h:panelGroup layout="block" class="alert alert-info" rendered="#{pessoaJuridicaBean.register eq 'fail'}">
+                                    <button class="close" data-close="alert"></button>
+                                    <h:messages layout="table" class="pf-error"/> 
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" class="alert alert-success" rendered="#{pessoaJuridicaBean.register eq 'success'}">
                                     <button class="close" data-close="alert"></button>
                                     Cadastro realizado com sucesso!
-                                </div>
+                                </h:panelGroup>
                                 <span class="help-block">Campos com * são obrigatórios.</span>
                                 <h3 class="form-section">Informações Empresariais</h3>
                                 <div class="row">
@@ -100,7 +104,6 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <input type="text" class="form-control" name="alias"/>
                                                     <h:inputText class="form-control" id="alias" value="#{pessoaJuridicaBean.pessoaJuridica.nomeFantasia}"/>
                                                 </div>
                                             </div>
@@ -375,69 +378,80 @@
                                             <div class="col-md-10">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="pessoafisica" value="#{pessoaJuridicaBean.pessoaFisica}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
-                                                    <ui:param value="#{pessoafisica.cpf.substring(0,2)}.#{pessoafisica.cpf.substring(2,5)}.#{pessoafisica.cpf.substring(5,8)}-#{pessoafisica.cpf.substring(8)}" name="cpf"/>
-                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoafisica" itemLabel="#{cpf} - #{pessoafisica.nome}" itemValue="#{pessoafisica}"/>
+                                                    <ui:param value="#{pessoaFisica.cpf.substring(0,2)}.#{pessoaFisica.cpf.substring(2,5)}.#{pessoaFisica.cpf.substring(5,8)}-#{pessoaFisica.cpf.substring(8)}" name="cpf"/>
+                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica}"/>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <button  class="btn blue-chambray vinculate"><i class="fa fa-plus-circle"></i> Vincular</button>
+                                        <button  class="btn blue-chambray" id="vinculate">
+                                            <i class="fa fa-plus-circle"></i> Vincular</button>
+                                        <h:commandLink styleClass="vinculate">
+                                            <f:ajax event="click" execute="pessoafisica" listener="#{pessoaJuridicaBean.vincularPessoaFisica}" render="pessoaFisicaJuridica"/>
+                                        </h:commandLink>
                                     </div>
                                 </div>
                                 <!--/row-->
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <table class="table table-striped table-hover table-bordered" id="vinculations">
-                                            <thead>
-                                                <tr>
-                                                    <th style="width:20%">
-                                                        CPF
-                                                    </th>
-                                                    <th style="width:20%">
-                                                        Função
-                                                    </th>
-                                                    <th style="width:20%">
-                                                        Capital de Participação
-                                                    </th>
-                                                    <th style="width:18%">
-                                                        Data de Início
-                                                    </th>
-                                                    <th style="width:18%">
-                                                        Data de Término
-                                                    </th>
-                                                    <th style="width:4%">
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody class="rows">
-                                                <ui:repeat value="#{pessoaJuridicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
-                                                    <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
+                                <h:panelGroup id="pessoaFisicaJuridica">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover table-bordered" id="vinculations">
+                                                <thead>
                                                     <tr>
-                                                        <td style="text-align:center">
-                                                            #{cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
-                                                        </td>
-                                                        <td>
-                                                            <h:selectOneMenu styleClass="select2_category select2me form-control funcao" p:placeholder="Selecione..." value="#{pessoaFisicaJuridica.funcaoFk}" tabindex="1" converter="entityConverter">
-                                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                                <f:selectItems value="#{pessoaJuridicaBean.funcaoList}" var="funcao" itemLabel="#{funcao.funcao}" itemValue="#{funcao}"/>
-                                                            </h:selectOneMenu>
-                                                        </td>
-                                                        <td>
-                                                            <h:inputText class="form-control input-small capital" value="#{pessoaFisicaJuridica.capitalDeParticipacao}" p:placeholder="%" maxlength="3"/>
-                                                        </td>
-                                                        <td>
-                                                            <h:inputText class="form-control input-small date initial-date" value="#{pessoaFisicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
-                                                        </td>
-                                                        <td>
-                                                            <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaFisicaJuridica.dataDeTermino}"/>
-                                                        </td>
+                                                        <th style="width:20%">
+                                                            CPF
+                                                        </th>
+                                                        <th style="width:20%">
+                                                            Função
+                                                        </th>
+                                                        <th style="width:20%">
+                                                            Capital de Participação
+                                                        </th>
+                                                        <th style="width:18%">
+                                                            Data de Início
+                                                        </th>
+                                                        <th style="width:18%">
+                                                            Data de Término
+                                                        </th>
+                                                        <th style="width:4%">
+                                                        </th>
                                                     </tr>
-                                                </ui:repeat>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody class="rows">
+                                                    <ui:repeat value="#{pessoaJuridicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
+                                                        <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
+                                                        <tr>
+                                                            <td style="text-align:center">
+                                                                #{cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
+                                                            </td>
+                                                            <td>
+                                                                <h:selectOneMenu styleClass="select2_category select2me form-control funcao" p:placeholder="Selecione..." value="#{pessoaFisicaJuridica.funcaoFk}" tabindex="1" converter="entityConverter">
+                                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                                    <f:selectItems value="#{pessoaJuridicaBean.funcaoList}" var="funcao" itemLabel="#{funcao.funcao}" itemValue="#{funcao}"/>
+                                                                </h:selectOneMenu>
+                                                            </td>
+                                                            <td>
+                                                                <h:inputText class="form-control input-small capital" value="#{pessoaFisicaJuridica.capitalDeParticipacao}" p:placeholder="%" maxlength="3"/>
+                                                            </td>
+                                                            <td>
+                                                                <h:inputText class="form-control input-small date initial-date" value="#{pessoaFisicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
+                                                            </td>
+                                                            <td>
+                                                                <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaFisicaJuridica.dataDeTermino}"/>
+                                                            </td>
+                                                            <td>
+                                                                <h:commandLink class="delete">
+                                                                    <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculo(status.index)}" render=":form:pessoaFisicaJuridica"/>
+                                                                    <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                            </td>
+                                                        </tr>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
+                                </h:panelGroup>
                                 <div class="alert alert-danger date-error display-hide">
                                     <button class="close" data-close="alert"></button>
                                 </div>
@@ -450,6 +464,7 @@
                                         <div class="col-md-offset-3 col-md-9">
                                             <button type="submit" class="btn blue-chambray"><i class="fa fa-check-circle"></i> Cadastrar</button>
                                         </div>
+                                        <h:commandLink styleClass="register" action="#{pessoaJuridicaBean.cadastrar}"/>
                                     </div>
                                 </div>
                             </div>

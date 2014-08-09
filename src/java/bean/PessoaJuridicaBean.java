@@ -7,9 +7,12 @@
 package bean;
 
 import bo.CidadeBO;
+import bo.EnderecoBO;
 import bo.EstadoBO;
 import bo.FuncaoBO;
 import bo.PessoaFisicaBO;
+import bo.PessoaFisicaJuridicaBO;
+import bo.PessoaJuridicaBO;
 import bo.TipoEmpresarialBO;
 import entidade.Cidade;
 import entidade.Endereco;
@@ -22,6 +25,7 @@ import entidade.TipoEmpresarial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,12 +41,18 @@ public class PessoaJuridicaBean implements Serializable{
     private PessoaJuridica pessoaJuridica;
     private Endereco endereco;
     private PessoaFisica pessoaFisica;
+    private PessoaFisicaJuridica pessoaFisicaJuridica;
+    
+    private String register;
     
     private TipoEmpresarialBO tipoEmpresarialBO;
     private PessoaFisicaBO pessoaFisicaBO;
+    private PessoaJuridicaBO pessoaJuridicaBO;
+    private PessoaFisicaJuridicaBO pessoaFisicaJuridicaBO;
     private EstadoBO estadoBO;
     private CidadeBO cidadeBO;
     private FuncaoBO funcaoBO;
+    private EnderecoBO enderecoBO;
     
     private List<TipoEmpresarial> tipoEmpresarialList;
     private List<Estado> estadoList;
@@ -56,12 +66,18 @@ public class PessoaJuridicaBean implements Serializable{
             pessoaJuridica = new PessoaJuridica();
             endereco = new Endereco();
             pessoaFisica = new PessoaFisica();
+            pessoaFisicaJuridica = new PessoaFisicaJuridica();
+            
+            register = "";
             
             tipoEmpresarialBO = new TipoEmpresarialBO();
             pessoaFisicaBO = new PessoaFisicaBO();
+            pessoaJuridicaBO = new PessoaJuridicaBO();
+            pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
             estadoBO = new EstadoBO();
             cidadeBO = new CidadeBO();
             funcaoBO = new FuncaoBO();
+            enderecoBO = new EnderecoBO();
             
             tipoEmpresarialList = new ArrayList<>();
             cidadeEndList = new ArrayList<>();
@@ -83,6 +99,48 @@ public class PessoaJuridicaBean implements Serializable{
             cidadeEndList = cidadeBO.getByStateId(endereco.getEstadoFk().getId());
         } else {
             cidadeEndList.clear();
+        }
+    }
+    
+    public void vincularPessoaFisica() {
+        pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
+        boolean exists = false;
+        for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+            if (pfj.getPessoaFisicaFk().getCpf().equals(pessoaFisica.getCpf())) {
+                exists = true;
+            }
+        }
+        if (!exists) {
+            pessoaFisicaJuridicaList.add(pessoaFisicaJuridica);
+            pessoaFisicaJuridica = new PessoaFisicaJuridica();
+        }
+    }
+    
+    public void removerVinculo(int index) {
+        pessoaFisicaJuridicaList.remove(index);
+    }
+    
+    public void cadastrar() {
+        PessoaJuridica pjDB = pessoaJuridicaBO.findDuplicates(pessoaJuridica);
+        if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) {
+            pessoaJuridicaBO.create(pessoaJuridica);
+            endereco.setTipo("PF");
+            endereco.setIdFk(pessoaJuridica.getId());
+            enderecoBO.create(endereco);
+            for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                pfj.setPessoaJuridicaFk(pessoaJuridica);
+                pessoaFisicaJuridicaBO.create(pfj);
+            }
+            register = "success";
+            pessoaJuridica = new PessoaJuridica();
+            endereco = new Endereco();
+            pessoaFisicaJuridicaList = new ArrayList<>();
+        }else{
+            register = "fail";
+            String cnpj = pjDB.getCnpj().substring(0,3)+"."+pjDB.getCnpj().substring(3,6)+"."+pjDB.getCnpj().substring(6,9)+"/"+pjDB.getCnpj().substring(9,13)+"-"+pjDB.getCnpj().substring(13);
+            String message = "Já existe empresa cadastrada com o CNPJ "+cnpj;
+            message += pjDB.getNome()!= null ? "\nNome: " + pjDB.getNome():"";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
     }
 
@@ -156,6 +214,22 @@ public class PessoaJuridicaBean implements Serializable{
 
     public void setPessoaFisicaList(List<PessoaFisica> pessoaFisicaList) {
         this.pessoaFisicaList = pessoaFisicaList;
+    }
+
+    public PessoaFisicaJuridica getPessoaFisicaJuridica() {
+        return pessoaFisicaJuridica;
+    }
+
+    public void setPessoaFisicaJuridica(PessoaFisicaJuridica pessoaFisicaJuridica) {
+        this.pessoaFisicaJuridica = pessoaFisicaJuridica;
+    }
+
+    public String getRegister() {
+        return register;
+    }
+
+    public void setRegister(String register) {
+        this.register = register;
     }
     
 }
