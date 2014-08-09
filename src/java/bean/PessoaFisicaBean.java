@@ -71,28 +71,34 @@ public class PessoaFisicaBean implements Serializable {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            pessoaFisica = new PessoaFisica();
-            endereco = new Endereco();
-            pessoaJuridica = new PessoaJuridica();
-            pessoaFisicaJuridica = new PessoaFisicaJuridica();
-            register = "";
+            boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
+            boolean isViewPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
+            boolean isEditPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("alterar") > -1;
+            if (isRegisterPage) {
+                pessoaFisica = new PessoaFisica();
+                endereco = new Endereco();
+                pessoaJuridica = new PessoaJuridica();
+                pessoaFisicaJuridica = new PessoaFisicaJuridica();
+                register = "";
 
-            pessoaFisicaBO = new PessoaFisicaBO();
-            pessoaJuridicaBO = new PessoaJuridicaBO();
-            pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
-            nacionalidadeBO = new NacionalidadeBO();
-            estadoCivilBO = new EstadoCivilBO();
-            enderecoBO = new EnderecoBO();
-            paisBO = new PaisBO();
-            estadoBO = new EstadoBO();
-            cidadeBO = new CidadeBO();
-            funcaoBO = new FuncaoBO();
+                pessoaFisicaBO = new PessoaFisicaBO();
+                pessoaJuridicaBO = new PessoaJuridicaBO();
+                pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
+                nacionalidadeBO = new NacionalidadeBO();
+                estadoCivilBO = new EstadoCivilBO();
+                enderecoBO = new EnderecoBO();
+                paisBO = new PaisBO();
+                estadoBO = new EstadoBO();
+                cidadeBO = new CidadeBO();
+                funcaoBO = new FuncaoBO();
 
-            cidadeNatList = new ArrayList<>();
-            cidadeEndList = new ArrayList<>();
-            pessoaFisicaJuridicaList = new ArrayList<>();
+                cidadeNatList = new ArrayList<>();
+                cidadeEndList = new ArrayList<>();
+                pessoaFisicaJuridicaList = new ArrayList<>();
 
-            loadForm();
+                loadForm();
+            } else if (isViewPage) {
+            }
         }
     }
 
@@ -140,12 +146,12 @@ public class PessoaFisicaBean implements Serializable {
             pessoaFisica = new PessoaFisica();
             endereco = new Endereco();
             pessoaFisicaJuridicaList = new ArrayList<>();
-        }else{
+        } else {
             register = "fail";
-            String cpf = pfDB.getCpf().substring(0,3)+"."+pfDB.getCpf().substring(3,6)+"."+pfDB.getCpf().substring(6,9)+"-"+pfDB.getCpf().substring(9);
-            String message = "Já existe usuário cadastrado com o CPF "+cpf;
-            message += pfDB.getNome()!= null ? "\nNome: " + pfDB.getNome():""; 
-            message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg():""; 
+            String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
+            String message = "Já existe usuário cadastrado com o CPF " + cpf;
+            message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
+            message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
     }
