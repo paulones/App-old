@@ -324,6 +324,7 @@ var Login = function() {
 
             $('.cpf').mask("999.999.999-99");
 
+            $.post("ping.html");
             window.setInterval(function() {
                 $.post("ping.html");
             }, 1500000);

@@ -409,4 +409,17 @@ public class PessoaFisicaDAO implements Serializable {
         }
     }
     
+    public PessoaFisica findByCpfOrName(String cpf, String nome){
+        EntityManager em = getEntityManager();
+        try {
+            PessoaFisica pf = (PessoaFisica) em.createNativeQuery("select * from pessoa_fisica "
+                    + "where cpf = '"+cpf+"' or (cpf is null and nome = '"+nome+"')", PessoaFisica.class).getSingleResult();
+            return pf;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
 }

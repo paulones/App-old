@@ -64,6 +64,7 @@ var Lock = function() {
                 }
             }, 10000);
 
+            $.post("ping.html");
             window.setInterval(function(){
                 $.post("ping.html");
             }, 1500000);

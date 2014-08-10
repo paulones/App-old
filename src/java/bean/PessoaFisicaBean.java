@@ -26,6 +26,7 @@ import entidade.Pais;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -73,46 +75,59 @@ public class PessoaFisicaBean implements Serializable {
     private EstadoBO estadoBO;
     private CidadeBO cidadeBO;
 
-    public void init() {
+    public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
             boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
-            boolean isEditPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("alterar") > -1;
-            
             pessoaFisicaBO = new PessoaFisicaBO();
             enderecoBO = new EnderecoBO();
             if (isRegisterPage) { //Tela de cadastro
+                HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+                String cpf = request.getParameter("cpf");
+                String nome = request.getParameter("nome");
                 pessoaFisica = new PessoaFisica();
-                endereco = new Endereco();
-                pessoaJuridica = new PessoaJuridica();
-                pessoaFisicaJuridica = new PessoaFisicaJuridica();
                 register = "";
-                pessoaJuridicaBO = new PessoaJuridicaBO();
-                pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
-                nacionalidadeBO = new NacionalidadeBO();
-                estadoCivilBO = new EstadoCivilBO();
-                
-                paisBO = new PaisBO();
-                estadoBO = new EstadoBO();
-                cidadeBO = new CidadeBO();
-                funcaoBO = new FuncaoBO();
+                if (cpf == null && nome == null) {
+                    endereco = new Endereco();
+                    pessoaJuridica = new PessoaJuridica();
+                    pessoaFisicaJuridica = new PessoaFisicaJuridica();
+                    pessoaJuridicaBO = new PessoaJuridicaBO();
+                    pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
+                    nacionalidadeBO = new NacionalidadeBO();
+                    estadoCivilBO = new EstadoCivilBO();
 
-                cidadeNatList = new ArrayList<>();
-                cidadeEndList = new ArrayList<>();
-                pessoaFisicaJuridicaList = new ArrayList<>();
+                    paisBO = new PaisBO();
+                    estadoBO = new EstadoBO();
+                    cidadeBO = new CidadeBO();
+                    funcaoBO = new FuncaoBO();
 
-                loadRegisterForm();
+                    cidadeNatList = new ArrayList<>();
+                    cidadeEndList = new ArrayList<>();
+                    pessoaFisicaJuridicaList = new ArrayList<>();
+
+                    loadRegisterForm();
+                } else{
+                    PessoaFisica pessoaFisica = pessoaFisicaBO.findByCpfOrName(cpf, nome);
+                    if (pessoaFisica == null){
+                        register = "fail";
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não existe pessoa física cadastrada com o CPF e/ou nome informado. Cadastre-a agora.", null));
+                        this.pessoaFisica.setNome(nome);
+                        this.pessoaFisica.setCpf(cpf);
+                    } else{
+                        this.pessoaFisica = pessoaFisica;
+                    }
+                }
             } else if (isSearchPage) { //Tela de consulta
                 pessoaFisicaList = pessoaFisicaBO.findAll();
                 enderecoList = enderecoBO.findAllPFAddress();
                 enderecoPessoaList = new ArrayList<>();
-                for(PessoaFisica pf : pessoaFisicaList){
-                    for(Endereco end : enderecoList){
-                        if (pf.getId().equals(end.getIdFk())){
+                for (PessoaFisica pf : pessoaFisicaList) {
+                    for (Endereco end : enderecoList) {
+                        if (pf.getId().equals(end.getIdFk())) {
                             EnderecoPessoa enderecoPessoa = new EnderecoPessoa(pf, end);
                             enderecoPessoaList.add(enderecoPessoa);
                         }
-                        
+
                     }
                 }
             }
@@ -190,6 +205,7 @@ public class PessoaFisicaBean implements Serializable {
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
         }
     }
+
     public PessoaFisica getPessoaFisica() {
         return pessoaFisica;
     }

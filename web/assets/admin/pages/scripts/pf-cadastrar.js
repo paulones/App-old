@@ -240,6 +240,11 @@ var PFCad = function() {
 
     return {
         init: function() {
+            
+            $('.menu-pf').addClass('active open');
+            $('.menu-pf a').append('<span class="selected"></span>');
+            $('.menu-pf a .arrow').addClass('open');
+            $('.sub-menu-pf-cad').addClass('active');
 
             $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
             $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
@@ -254,11 +259,6 @@ var PFCad = function() {
             $('#cep').mask("99999-999");
             $('#inss').mask("999999999999999");
             $('.date').mask("99/99/9999");
-
-            $('.menu-pf').addClass('active open');
-            $('.menu-pf a').append('<span class="selected"></span>');
-            $('.menu-pf a .arrow').addClass('open');
-            $('.sub-menu-pf-cad').addClass('active');
 
             var masks = [$('#cpf'), $('#rg'), $('#elector'), $('#cep'), $('#oe'), $('#inss')];
             $('#form').submit(function() {
