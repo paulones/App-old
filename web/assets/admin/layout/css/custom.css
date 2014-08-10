@@ -10,3 +10,5 @@
 #gender .radio{margin-right:4px}
 #gender label{margin-right:33px}
 .pf-error td{white-space:pre-line}
+/*consultaPF*/
+.expand-example{margin-top: 3px;display: inline-block;cursor: pointer;width: 14px;height: 14px;background:url('../../../global/img/datatable-row-openclose.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
