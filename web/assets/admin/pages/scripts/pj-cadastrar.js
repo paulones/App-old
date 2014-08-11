@@ -290,10 +290,11 @@ var PJCad = function() {
             $('#inativo').click(situacao);
             $('#ativo').click(situacao);
             function situacao() {
+                alert('click');
                 if ($('#inativo').is(":checked")) {
-                    $('.inactive').show();
+                    $('.reason').show();
                 } else {
-                    $('.inactive').hide();
+                    $('.reason').hide();
                 }
             }
 

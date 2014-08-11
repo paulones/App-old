@@ -157,10 +157,9 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Situação
-                                            </label>
-                                            <div class="col-md-9">
-                                                <div id="situacao" class="radio-list" data-error-container="#form_gender_error">
+                                            <label class="control-label col-md-3">Situação</label>
+                                            <div id="situacao" class="col-md-9">
+                                                <div class="radio-list" data-error-container="#form_gender_error">
                                                     <h:selectOneRadio value="#{pessoaJuridicaBean.pessoaJuridica.situacao}">
                                                         <f:selectItem id="ativo" itemLabel="Ativo" itemValue="T"/>
                                                         <f:selectItem id="inativo" itemLabel="Inativo" itemValue="F"/>
@@ -172,13 +171,13 @@
                                     <!--/span-->
                                     <!--/row-->
                                     <div class="col-md-6">
-                                        <div class="form-group inactive">
+                                        <div class="form-group reason">
                                             <label class="control-label col-md-3">Motivo da Desativação
                                             </label>
                                             <div class="col-md-9 ">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="inactive" value="#{pessoaJuridicaBean.pessoaJuridica.motivoDaDesativacao}"/>
+                                                    <h:inputText class="form-control" id="reason" value="#{pessoaJuridicaBean.pessoaJuridica.motivoDaDesativacao}"/>
                                                 </div>
                                             </div>
                                         </div>
