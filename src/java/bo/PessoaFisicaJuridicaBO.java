@@ -40,6 +40,23 @@ public class PessoaFisicaJuridicaBO implements Serializable{
         }
     }
     
+    public void destroyByPF(Integer idPf){
+        try {
+            pessoaFisicaJuridicaDAO.destroyByPF(idPf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public PessoaFisicaJuridica findByPFAndPJ(Integer idPf, Integer idPj){
+        try { 
+            return pessoaFisicaJuridicaDAO.findByPFAndPJ(idPf, idPj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<PessoaFisicaJuridica> findAllByPF(Integer id){
         try { 
             return pessoaFisicaJuridicaDAO.findAllByPF(id);

@@ -230,11 +230,8 @@ var PFCad = function() {
         tableWrapper.find(".dataTables_length select").select2({
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
-
-        table.on('keyup', '.initial-date, .final-date', function() {
-            checkDates();
-        });
-
+        
+        
         table.on('keyup', '.capital', checkCapital);
     };
 
@@ -273,7 +270,6 @@ var PFCad = function() {
                     }
                 });
             });
-
             $('#vinculate').click(function(e) {
                 e.preventDefault();
                 if ($('#pessoajuridica').val() !== "") {
@@ -299,7 +295,8 @@ var PFCad = function() {
                     }
                 }
             });
-
+            
+            $('.initial-date,.final-date').keyup(checkDates);
 
             nationality();
             $('#nationality').change(nationality);
