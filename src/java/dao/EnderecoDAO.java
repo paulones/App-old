@@ -216,6 +216,19 @@ public class EnderecoDAO implements Serializable {
         }
     }
     
+    public Endereco findPFAddress(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            Endereco endereco = (Endereco) em.createNativeQuery("select * from endereco "
+                        + "where tipo = 'PF' and id_fk = '"+id+"'", Endereco.class).getSingleResult();
+            return endereco;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
     public List<Endereco> findAllPFAddress(){
         EntityManager em = getEntityManager();
         try {

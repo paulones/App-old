@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import dao.exceptions.IllegalOrphanException;
@@ -395,8 +394,8 @@ public class PessoaFisicaDAO implements Serializable {
             em.close();
         }
     }
-    
-    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica){
+
+    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica) {
         EntityManager em = getEntityManager();
         try {
             PessoaFisica pf = (PessoaFisica) em.createNativeQuery("select * from pessoa_fisica "
@@ -408,18 +407,4 @@ public class PessoaFisicaDAO implements Serializable {
             em.close();
         }
     }
-    
-    public PessoaFisica findByCpfOrName(String cpf, String nome){
-        EntityManager em = getEntityManager();
-        try {
-            PessoaFisica pf = (PessoaFisica) em.createNativeQuery("select * from pessoa_fisica "
-                    + "where cpf = '"+cpf+"' or (cpf is null and nome = '"+nome+"')", PessoaFisica.class).getSingleResult();
-            return pf;
-        } catch (NoResultException e) {
-            return null;
-        } finally {
-            em.close();
-        }
-    }
-    
 }

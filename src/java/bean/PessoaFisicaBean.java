@@ -83,11 +83,8 @@ public class PessoaFisicaBean implements Serializable {
             enderecoBO = new EnderecoBO();
             if (isRegisterPage) { //Tela de cadastro
                 HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-                String cpf = request.getParameter("cpf");
-                String nome = request.getParameter("nome");
                 pessoaFisica = new PessoaFisica();
-                register = "";
-                if (cpf == null && nome == null) {
+                if (request.getParameter("id") == null) {
                     endereco = new Endereco();
                     pessoaJuridica = new PessoaJuridica();
                     pessoaFisicaJuridica = new PessoaFisicaJuridica();
@@ -95,7 +92,8 @@ public class PessoaFisicaBean implements Serializable {
                     pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
                     nacionalidadeBO = new NacionalidadeBO();
                     estadoCivilBO = new EstadoCivilBO();
-
+                    register = "";
+                    
                     paisBO = new PaisBO();
                     estadoBO = new EstadoBO();
                     cidadeBO = new CidadeBO();
@@ -107,14 +105,14 @@ public class PessoaFisicaBean implements Serializable {
 
                     loadRegisterForm();
                 } else{
-                    PessoaFisica pessoaFisica = pessoaFisicaBO.findByCpfOrName(cpf, nome);
+                    Integer id = Integer.valueOf(request.getParameter("id"));
+                    PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
+                    Endereco endereco = enderecoBO.findPFAddress(id);
                     if (pessoaFisica == null){
-                        register = "fail";
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Não existe pessoa física cadastrada com o CPF e/ou nome informado. Cadastre-a agora.", null));
-                        this.pessoaFisica.setNome(nome);
-                        this.pessoaFisica.setCpf(cpf);
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                     } else{
                         this.pessoaFisica = pessoaFisica;
+                        this.endereco = endereco;
                     }
                 }
             } else if (isSearchPage) { //Tela de consulta

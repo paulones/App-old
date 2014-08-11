@@ -240,11 +240,15 @@ var PFCad = function() {
 
     return {
         init: function() {
-            
+
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
             $('.menu-pf a .arrow').addClass('open');
-            $('.sub-menu-pf-cad').addClass('active');
+            if (window.location.search == "") {
+                $('.sub-menu-pf-cad').addClass('active');
+            }else{
+                $('.sub-menu-pf-con').addClass('active');
+            }
 
             $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
             $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
@@ -289,7 +293,7 @@ var PFCad = function() {
                         $('.capital').keyup(checkCapital);
                         $('.initial-date,.final-date').keyup(checkDates);
                         $('.date-error').hide();
-                        if ($('.rows').children().length == 0){
+                        if ($('.rows').children().length == 0) {
                             $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                         }
                     }
@@ -420,4 +424,4 @@ var PFCad = function() {
         }
     };
 }();
-    
+
