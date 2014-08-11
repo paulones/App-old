@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    Pessoa Física <small>Cadastro</small>
+                    Pessoa Física <small>#{pessoaFisicaBean.edit ? 'Alteração' :'Cadastro'}</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -35,7 +35,7 @@
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
-                        <a href="../pessoa-fisica/cadastrar.xhtml">Cadastrar</a>
+                        <a href="../pessoa-fisica/cadastrar.xhtml#{pessoaFisicaBean.edit ? '?id=' :''}#{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.id : ''}">#{pessoaFisicaBean.edit ? 'Alterar' : 'Cadastrar'}</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->
@@ -48,7 +48,7 @@
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-edit"></i>Dados da Pessoa Física
+                            <i class="fa fa-edit"></i>Dados #{pessoaFisicaBean.edit ? 'de ' :'da '} #{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.nome : 'Pessoa Física'}
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -65,7 +65,7 @@
                                 </h:panelGroup>
                                 <h:panelGroup layout="block" class="alert alert-success" rendered="#{pessoaFisicaBean.register eq 'success'}">
                                     <button class="close" data-close="alert"></button>
-                                    Cadastro realizado com sucesso!
+                                    <h:messages layout="table" /> 
                                 </h:panelGroup>
                                 <span class="help-block">Campos com * são obrigatórios.</span>
                                 <h3 class="form-section">Informações Pessoais</h3>
@@ -474,7 +474,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-check-circle"></i> Cadastrar</button>
+                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-check-circle"></i> #{pessoaFisicaBean.edit ? 'Alterar' :'Cadastrar'}</button>
                                         </div>
                                         <h:commandLink styleClass="register" action="#{pessoaFisicaBean.cadastrar}"/>
                                     </div>

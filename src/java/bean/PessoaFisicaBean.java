@@ -50,6 +50,7 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaFisicaJuridica pessoaFisicaJuridica;
 
     private String register;
+    private boolean edit;
 
     private List<Pais> paisList;
     private List<Estado> estadoList;
@@ -79,40 +80,50 @@ public class PessoaFisicaBean implements Serializable {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
             boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
+
             pessoaFisicaBO = new PessoaFisicaBO();
             enderecoBO = new EnderecoBO();
+            paisBO = new PaisBO();
+            estadoBO = new EstadoBO();
+            cidadeBO = new CidadeBO();
+            funcaoBO = new FuncaoBO();
+            pessoaJuridicaBO = new PessoaJuridicaBO();
+            pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
+            nacionalidadeBO = new NacionalidadeBO();
+            estadoCivilBO = new EstadoCivilBO();
+
+            endereco = new Endereco();
+            pessoaJuridica = new PessoaJuridica();
+            pessoaFisicaJuridica = new PessoaFisicaJuridica();
+
+            edit = false;
+            register = "";
+
+            cidadeNatList = new ArrayList<>();
+            cidadeEndList = new ArrayList<>();
+            pessoaFisicaJuridicaList = new ArrayList<>();
+
             if (isRegisterPage) { //Tela de cadastro
                 HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
                 pessoaFisica = new PessoaFisica();
                 if (request.getParameter("id") == null) {
-                    endereco = new Endereco();
-                    pessoaJuridica = new PessoaJuridica();
-                    pessoaFisicaJuridica = new PessoaFisicaJuridica();
-                    pessoaJuridicaBO = new PessoaJuridicaBO();
-                    pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
-                    nacionalidadeBO = new NacionalidadeBO();
-                    estadoCivilBO = new EstadoCivilBO();
-                    register = "";
-                    
-                    paisBO = new PaisBO();
-                    estadoBO = new EstadoBO();
-                    cidadeBO = new CidadeBO();
-                    funcaoBO = new FuncaoBO();
-
-                    cidadeNatList = new ArrayList<>();
-                    cidadeEndList = new ArrayList<>();
-                    pessoaFisicaJuridicaList = new ArrayList<>();
-
+                    edit = false;
                     loadRegisterForm();
-                } else{
+                } else {
                     Integer id = Integer.valueOf(request.getParameter("id"));
                     PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
-                    Endereco endereco = enderecoBO.findPFAddress(id);
-                    if (pessoaFisica == null){
+                    if (pessoaFisica == null) {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
-                    } else{
+                    } else {
+                        edit = true;
+                        Endereco endereco = enderecoBO.findPFAddress(id);
+                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+
                         this.pessoaFisica = pessoaFisica;
                         this.endereco = endereco;
+
+                        loadRegisterForm();
+                        getCitiesByState();
                     }
                 }
             } else if (isSearchPage) { //Tela de consulta
@@ -155,34 +166,53 @@ public class PessoaFisicaBean implements Serializable {
         }
     }
 
-    public void cadastrar() {
-        PessoaFisica pfDB = pessoaFisicaBO.findDuplicates(pessoaFisica);
-        if (pfDB == null || pessoaFisica.getCpf().isEmpty()) {
+    public void cadastrar() throws IOException {
+        if (!edit) {
+            PessoaFisica pfDB = pessoaFisicaBO.findDuplicates(pessoaFisica);
+            if (pfDB == null || pessoaFisica.getCpf().isEmpty()) {
+                if (pessoaFisica.getRgOrgaoEmissor() != null) {
+                    pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
+                }
+                if (pessoaFisica.getEstadoFk() != null) {
+                    pessoaFisica.setPaisFk(paisBO.findBrasil());
+                }
+                pessoaFisicaBO.create(pessoaFisica);
+                endereco.setTipo("PF");
+                endereco.setIdFk(pessoaFisica.getId());
+                enderecoBO.create(endereco);
+                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                    pfj.setPessoaFisicaFk(pessoaFisica);
+                    pessoaFisicaJuridicaBO.create(pfj);
+                }
+                register = "success";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro realizado com sucesso!", null));
+                pessoaFisica = new PessoaFisica();
+                endereco = new Endereco();
+                pessoaFisicaJuridicaList = new ArrayList<>();
+            } else {
+                register = "fail";
+                String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
+                String message = "Já existe usuário cadastrado com o CPF " + cpf;
+                message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
+                message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+            }
+        } else {
             if (pessoaFisica.getRgOrgaoEmissor() != null) {
                 pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
             }
             if (pessoaFisica.getEstadoFk() != null) {
                 pessoaFisica.setPaisFk(paisBO.findBrasil());
             }
-            pessoaFisicaBO.create(pessoaFisica);
-            endereco.setTipo("PF");
-            endereco.setIdFk(pessoaFisica.getId());
-            enderecoBO.create(endereco);
+            pessoaFisicaBO.edit(pessoaFisica);
+            enderecoBO.edit(endereco);
             for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
                 pfj.setPessoaFisicaFk(pessoaFisica);
-                pessoaFisicaJuridicaBO.create(pfj);
+                pessoaFisicaJuridicaBO.edit(pfj);
             }
             register = "success";
-            pessoaFisica = new PessoaFisica();
-            endereco = new Endereco();
-            pessoaFisicaJuridicaList = new ArrayList<>();
-        } else {
-            register = "fail";
-            String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
-            String message = "Já existe usuário cadastrado com o CPF " + cpf;
-            message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
-            message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro alterado com sucesso!", null));
+            FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
         }
     }
 
@@ -322,6 +352,14 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setPessoaFisicaJuridica(PessoaFisicaJuridica pessoaFisicaJuridica) {
         this.pessoaFisicaJuridica = pessoaFisicaJuridica;
+    }
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
     }
 
 }

@@ -32,6 +32,14 @@ public class EnderecoBO implements Serializable{
         }
     }
     
+    public void edit(Endereco endereco){
+        try {
+            enderecoDAO.edit(endereco);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public List<Endereco> findAllPFAddress(){
         try { 
             return enderecoDAO.findAllPFAddress();

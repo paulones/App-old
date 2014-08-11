@@ -53,6 +53,10 @@
                             </div>
                         </div>
                         <div class="portlet-body">
+                            <h:panelGroup layout="block" class="alert alert-success" rendered="#{pessoaFisicaBean.register eq 'success'}">
+                                <button class="close" data-close="alert"></button>
+                                <h:messages layout="table" /> 
+                            </h:panelGroup>
                             <span class="help-block">Para alterar os dados de uma Pessoa Física, clique no <span class="expand-example"></span> e, em seguida, clique no botão de alterar.</span>
                             <br/>
                             <table class="table table-striped table-bordered table-hover" id="table">

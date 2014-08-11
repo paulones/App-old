@@ -9,6 +9,8 @@ package bo;
 import dao.PessoaFisicaJuridicaDAO;
 import entidade.PessoaFisicaJuridica;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -29,4 +31,22 @@ public class PessoaFisicaJuridicaBO implements Serializable{
             e.printStackTrace();
         }
     }
+    
+    public void edit(PessoaFisicaJuridica pessoaFisicaJuridica){
+        try {
+            pessoaFisicaJuridicaDAO.edit(pessoaFisicaJuridica);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<PessoaFisicaJuridica> findAllByPF(Integer id){
+        try { 
+            return pessoaFisicaJuridicaDAO.findAllByPF(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaFisicaJuridica>();
+    }
+    
 }
