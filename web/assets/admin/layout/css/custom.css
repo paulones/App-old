@@ -9,6 +9,7 @@
 #gender{margin-top:7px}
 #gender .radio{margin-right:4px}
 #gender label{margin-right:33px}
+#gender input{margin-left:-9px}
 .pf-error td{white-space:pre-line}
 /*consultaPF*/
 .expand-example{margin-top: 3px;display: inline-block;cursor: pointer;width: 14px;height: 14px;background:url('../../../global/img/datatable-row-openclose.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
@@ -16,3 +17,4 @@
 #situacao{margin-top:3px}
 #situacao .radio{margin-right:4px}
 #situacao label{margin-right:33px}
+#situacao input{margin-left:-9px}
