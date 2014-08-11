@@ -158,11 +158,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Situação</label>
-                                            <div id="situacao" class="col-md-9">
-                                                <div class="radio-list" data-error-container="#form_gender_error">
-                                                    <h:selectOneRadio value="#{pessoaJuridicaBean.pessoaJuridica.situacao}">
-                                                        <f:selectItem id="ativo" itemLabel="Ativo" itemValue="T"/>
-                                                        <f:selectItem id="inativo" itemLabel="Inativo" itemValue="F"/>
+                                            <div class="col-md-9">
+                                                <div class="radio-list">
+                                                    <h:selectOneRadio id="situacao" value="#{pessoaJuridicaBean.pessoaJuridica.situacao}">
+                                                        <f:selectItem id="ativo" itemLabel="Ativo" itemValue="A"/>
+                                                        <f:selectItem id="inativo" itemLabel="Inativo" itemValue="I"/>
                                                     </h:selectOneRadio>
                                                 </div>
                                             </div>
