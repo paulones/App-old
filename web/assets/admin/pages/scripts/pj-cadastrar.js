@@ -287,8 +287,7 @@ var PJCad = function() {
             });
 
             situacao();
-            $('#inativo').click(situacao);
-            $('#ativo').click(situacao);
+            $('#situacao').change(situacao);
             function situacao() {
                 if ($('#inativo').is(":checked")) {
                     $('.inactive').show();
