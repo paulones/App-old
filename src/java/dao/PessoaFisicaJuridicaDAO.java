@@ -258,4 +258,30 @@ public class PessoaFisicaJuridicaDAO implements Serializable {
         }
     }
     
+    public PessoaFisicaJuridica findByPFAndPJ(Integer idPf, Integer idPj){
+        EntityManager em = getEntityManager();
+        try {
+            PessoaFisicaJuridica pessoaFisicaJuridica = (PessoaFisicaJuridica) em.createNativeQuery("select * from pessoa_fisica_juridica "
+                    + "where pessoa_fisica_fk = '" + idPf + "' and pessoa_juridica_fk = '" + idPj + "'", PessoaFisicaJuridica.class).getSingleResult();
+            return pessoaFisicaJuridica;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void destroyByPF(Integer idPf){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from pessoa_fisica_juridica "
+                    + "where pessoa_fisica_fk = '" + idPf + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
+    
 }

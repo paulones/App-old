@@ -206,9 +206,10 @@ public class PessoaFisicaBean implements Serializable {
             }
             pessoaFisicaBO.edit(pessoaFisica);
             enderecoBO.edit(endereco);
+            pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
             for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
                 pfj.setPessoaFisicaFk(pessoaFisica);
-                pessoaFisicaJuridicaBO.edit(pfj);
+                pessoaFisicaJuridicaBO.create(pfj);
             }
             register = "success";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro alterado com sucesso!", null));
