@@ -35,6 +35,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import util.Cookie;
 
 /**
  *
@@ -50,6 +51,7 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaFisicaJuridica pessoaFisicaJuridica;
 
     private String register;
+    private String redirect;
     private boolean edit;
 
     private List<Pais> paisList;
@@ -98,6 +100,8 @@ public class PessoaFisicaBean implements Serializable {
 
             edit = false;
             register = "";
+            redirect = Cookie.getCookie("FacesMessage");
+            Cookie.apagarCookie("FacesMessage");
 
             cidadeNatList = new ArrayList<>();
             cidadeEndList = new ArrayList<>();
@@ -185,7 +189,6 @@ public class PessoaFisicaBean implements Serializable {
                     pessoaFisicaJuridicaBO.create(pfj);
                 }
                 register = "success";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro realizado com sucesso!", null));
                 pessoaFisica = new PessoaFisica();
                 endereco = new Endereco();
                 pessoaFisicaJuridicaList = new ArrayList<>();
@@ -212,7 +215,7 @@ public class PessoaFisicaBean implements Serializable {
                 pessoaFisicaJuridicaBO.create(pfj);
             }
             register = "success";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro alterado com sucesso!", null));
+            Cookie.addCookie("FacesMessage", "success", 10);
             FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
         }
     }
@@ -361,6 +364,14 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setEdit(boolean edit) {
         this.edit = edit;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
     }
 
 }

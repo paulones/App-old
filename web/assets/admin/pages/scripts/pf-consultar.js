@@ -84,7 +84,7 @@ var PFCon = function() {
                     }
                 });
             });
-
+            
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
             $('.menu-pf a .arrow').addClass('open');
