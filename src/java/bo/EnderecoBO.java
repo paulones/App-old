@@ -40,6 +40,14 @@ public class EnderecoBO implements Serializable{
         }
     }
     
+    public void destroy(Endereco endereco){
+        try {
+            enderecoDAO.destroy(endereco.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public List<Endereco> findAllPFAddress(){
         try { 
             return enderecoDAO.findAllPFAddress();

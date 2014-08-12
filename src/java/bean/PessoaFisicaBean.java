@@ -223,6 +223,15 @@ public class PessoaFisicaBean implements Serializable {
     public void removerVinculo(int index) {
         pessoaFisicaJuridicaList.remove(index);
     }
+    
+    public void removerPessoaFisica(int index) {
+        PessoaFisica pessoaFisica = (PessoaFisica) enderecoPessoaList.get(index).getPessoa();
+        enderecoBO.destroy(enderecoPessoaList.get(index).getEndereco());
+        pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
+        pessoaFisicaBO.destroy(pessoaFisica);
+        enderecoPessoaList.remove(index);
+        register = "success";
+    }
 
     public void vincularPessoaJuridica() {
         pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);

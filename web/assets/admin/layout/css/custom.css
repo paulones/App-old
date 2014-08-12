@@ -12,7 +12,7 @@
 #gender input{margin-left:-9px}
 .pf-error td{white-space:pre-line}
 /*consultaPF*/
-.expand-example{margin-top: 3px;display: inline-block;cursor: pointer;width: 14px;height: 14px;background:url('../../../global/img/datatable-row-openclose.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
+.expand-example{margin-top: 3px;display: inline-block;cursor: auto;width: 14px;height: 14px;background:url('../../../global/img/datatable-row-openclose.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0)}
 /*cadastroPJ*/
 #situacao{margin-top:3px}
 #situacao .radio{margin-right:4px}

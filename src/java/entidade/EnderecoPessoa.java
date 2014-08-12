@@ -6,11 +6,13 @@
 
 package entidade;
 
+import java.io.Serializable;
+
 /**
  *
  * @author paulones
  */
-public class EnderecoPessoa {
+public class EnderecoPessoa implements Serializable{
     
     private Object pessoa;
     private Endereco endereco;

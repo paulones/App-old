@@ -20,9 +20,10 @@ var PFCon = function() {
          * Initialize DataTables, with no sorting on the 'details' column
          */
         var oTable = table.dataTable({
+            "destroy": true,
             "columnDefs": [{
                     "orderable": false,
-                    "targets": [0]
+                    "targets": [0,5]
                 }],
             "order": [
                 [1, 'asc']
@@ -84,7 +85,29 @@ var PFCon = function() {
                     }
                 });
             });
-            
+
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr("class") === "delete") {
+                        $('#table').dataTable().fnDestroy()();
+                        initTable();
+                    }
+                }
+            });
+            var index;
+            $('.button-delete').click(function(e) {
+                e.preventDefault();
+                index = $('.button-delete').index(this);
+                $('.delete-modal-activator').click();
+            });
+            $('.cancel').click(function(e) {
+                e.preventDefault();
+            });
+            $('.remove').click(function(e) {
+                e.preventDefault();
+                $('.delete').get(index).click();
+            });
+
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
             $('.menu-pf a .arrow').addClass('open');

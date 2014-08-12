@@ -40,6 +40,14 @@ public class PessoaFisicaBO implements Serializable {
         }
     }
     
+    public void destroy(PessoaFisica pessoaFisica){
+        try {
+            pessoaFisicaDAO.destroy(pessoaFisica.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public PessoaFisica findDuplicates(PessoaFisica pessoaFisica){
         try {
             return pessoaFisicaDAO.findDuplicates(pessoaFisica);
