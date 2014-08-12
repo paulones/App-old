@@ -198,12 +198,19 @@ var PFCad = function() {
     };
 
     var checkCapital = function() {
-        if ($(this).val() > 100) {
-            $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+        $(this).val($(this).val().replace(/,/g, "."));
+        if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
+            if ($(this).val() > 100) {
+                $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+                $('.date-error').show();
+                $(this).val("");
+            } else {
+                $('.date-error').hide();
+            }
+        } else {
+            $('.date-error').html("Digite um percentual v&aacute;lido.");
             $('.date-error').show();
             $(this).val("");
-        } else {
-            $('.date-error').hide();
         }
     }
 
@@ -230,8 +237,8 @@ var PFCad = function() {
         tableWrapper.find(".dataTables_length select").select2({
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
-        
-        
+
+
         table.on('keyup', '.capital', checkCapital);
     };
 
@@ -243,7 +250,7 @@ var PFCad = function() {
             $('.menu-pf a .arrow').addClass('open');
             if (window.location.search == "") {
                 $('.sub-menu-pf-cad').addClass('active');
-            }else{
+            } else {
                 $('.sub-menu-pf-con').addClass('active');
             }
 
@@ -295,7 +302,7 @@ var PFCad = function() {
                     }
                 }
             });
-            
+
             $('.initial-date,.final-date').keyup(checkDates);
 
             nationality();

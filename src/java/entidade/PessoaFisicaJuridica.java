@@ -35,15 +35,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaFisicaJuridica.findByDataDeInicio", query = "SELECT p FROM PessoaFisicaJuridica p WHERE p.dataDeInicio = :dataDeInicio"),
     @NamedQuery(name = "PessoaFisicaJuridica.findByDataDeTermino", query = "SELECT p FROM PessoaFisicaJuridica p WHERE p.dataDeTermino = :dataDeTermino")})
 public class PessoaFisicaJuridica implements Serializable {
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "capital_de_participacao")
+    private Float capitalDeParticipacao;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 3)
-    @Column(name = "capital_de_participacao")
-    private String capitalDeParticipacao;
     @Size(max = 10)
     @Column(name = "data_de_inicio")
     private String dataDeInicio;
@@ -73,14 +73,6 @@ public class PessoaFisicaJuridica implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getCapitalDeParticipacao() {
-        return capitalDeParticipacao;
-    }
-
-    public void setCapitalDeParticipacao(String capitalDeParticipacao) {
-        this.capitalDeParticipacao = capitalDeParticipacao;
     }
 
     public String getDataDeInicio() {
@@ -146,6 +138,14 @@ public class PessoaFisicaJuridica implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaFisicaJuridica[ id=" + id + " ]";
+    }
+
+    public Float getCapitalDeParticipacao() {
+        return capitalDeParticipacao;
+    }
+
+    public void setCapitalDeParticipacao(Float capitalDeParticipacao) {
+        this.capitalDeParticipacao = capitalDeParticipacao;
     }
     
 }
