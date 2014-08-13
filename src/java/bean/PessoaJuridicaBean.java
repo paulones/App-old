@@ -123,8 +123,9 @@ public class PessoaJuridicaBean implements Serializable{
     public void cadastrar() {
         PessoaJuridica pjDB = pessoaJuridicaBO.findDuplicates(pessoaJuridica);
         if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) {
+            pessoaJuridica.setStatus('A');
             pessoaJuridicaBO.create(pessoaJuridica);
-            endereco.setTipo("PF");
+            endereco.setTipo("PJ");
             endereco.setIdFk(pessoaJuridica.getId());
             enderecoBO.create(endereco);
             for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {

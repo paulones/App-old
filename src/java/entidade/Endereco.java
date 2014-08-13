@@ -7,6 +7,9 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -188,6 +191,41 @@ public class Endereco implements Serializable {
         }
         return true;
     }
+    
+    public List<String> changedValues(Object obj) {
+        List<String> list = new ArrayList<>();
+        final Endereco other = (Endereco) obj;
+        if (this.idFk != other.idFk) {
+            list.add("idFk");
+        }
+        if (!Objects.equals(this.tipo, other.tipo)) {
+            list.add("tipo");
+        }
+        if (!Objects.equals(this.endereco, other.endereco)) {
+            list.add("endereco");
+        }
+        if (!Objects.equals(this.numero, other.numero)) {
+            list.add("numero");
+        }
+        if (!Objects.equals(this.complemento, other.complemento)) {
+            list.add("complemento");
+        }
+        if (!Objects.equals(this.bairro, other.bairro)) {
+            list.add("bairro");
+        }
+        if (!Objects.equals(this.cep, other.cep)) {
+            list.add("cep");
+        }
+        if (!Objects.equals(this.cidadeFk, other.cidadeFk)) {
+            list.add("cidadeFk");
+        }
+        if (!Objects.equals(this.estadoFk, other.estadoFk)) {
+            list.add("estadoFk");
+        }
+        return list;
+    }
+
+    
 
     @Override
     public String toString() {

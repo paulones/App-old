@@ -7,7 +7,10 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -339,6 +342,67 @@ public class PessoaFisica implements Serializable {
         }
         return true;
     }
+    
+    public List<String> changedValues(Object obj) {
+        List<String> list = new ArrayList<>();
+        final PessoaFisica other = (PessoaFisica) obj;
+        if (!Objects.equals(this.nome, other.nome)) {
+            list.add("nome");
+        }
+        if (!Objects.equals(this.apelido, other.apelido)) {
+            list.add("apelido");
+        }
+        if (!Objects.equals(this.sexo, other.sexo)) {
+            list.add("sexo");
+        }
+        if (!Objects.equals(this.cpf, other.cpf)) {
+            list.add("cpf");
+        }
+        if (!Objects.equals(this.rg, other.rg)) {
+            list.add("rg");
+        }
+        if (!Objects.equals(this.rgOrgaoEmissor, other.rgOrgaoEmissor)) {
+            list.add("rgOrgaoEmissor");
+        }
+        if (!Objects.equals(this.tituloDeEleitor, other.tituloDeEleitor)) {
+            list.add("tituloDeEleitor");
+        }
+        if (!Objects.equals(this.inss, other.inss)) {
+            list.add("inss");
+        }
+        if (!Objects.equals(this.nomeDoPai, other.nomeDoPai)) {
+            list.add("nomeDoPai");
+        }
+        if (!Objects.equals(this.nomeDaMae, other.nomeDaMae)) {
+            list.add("nomeDaMae");
+        }
+        if (!Objects.equals(this.nomeDoConjuge, other.nomeDoConjuge)) {
+            list.add("nomeDoConjuge");
+        }
+        if (!Objects.equals(this.observacoes, other.observacoes)) {
+            list.add("observcoes");
+        }
+        if (!Objects.equals(this.cidadeFk, other.cidadeFk)) {
+            list.add("cidadeFk");
+        }
+        if (!Objects.equals(this.estadoFk, other.estadoFk)) {
+            list.add("estadoFk");
+        }
+        if (!Objects.equals(this.rgUfFk, other.rgUfFk)) {
+            list.add("rgUfFk");
+        }
+        if (!Objects.equals(this.estadoCivilFk, other.estadoCivilFk)) {
+            list.add("estadoCivilFk");
+        }
+        if (!Objects.equals(this.nacionalidadeFk, other.nacionalidadeFk)) {
+            list.add("nacionalidadeFk");
+        }
+        if (!Objects.equals(this.paisFk, other.paisFk)) {
+            list.add("paisFk");
+        }
+        return list;
+    }
+    
 
     @Override
     public String toString() {

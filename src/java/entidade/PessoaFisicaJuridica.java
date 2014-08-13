@@ -7,6 +7,9 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -142,7 +145,32 @@ public class PessoaFisicaJuridica implements Serializable {
         }
         return true;
     }
+    
+    public List<String> changedValues(Object obj) {
+        List<String> list = new ArrayList<>();
+        final PessoaFisicaJuridica other = (PessoaFisicaJuridica) obj;
+        if (!Objects.equals(this.capitalDeParticipacao, other.capitalDeParticipacao)) {
+            list.add("capitalDeParticipacao");
+        }
+        if (!Objects.equals(this.dataDeInicio, other.dataDeInicio)) {
+            list.add("dataDeInicio");
+        }
+        if (!Objects.equals(this.dataDeTermino, other.dataDeTermino)) {
+            list.add("dataDeTermino");
+        }
+        if (!Objects.equals(this.funcaoFk, other.funcaoFk)) {
+            list.add("funcaoFk");
+        }
+        if (!Objects.equals(this.pessoaFisicaFk, other.pessoaFisicaFk)) {
+            list.add("pessoaFisicaFk");
+        }
+        if (!Objects.equals(this.pessoaJuridicaFk, other.pessoaJuridicaFk)) {
+            list.add("pessoaJuridicaFk");
+        }
+        return list;
+    }
 
+    
     @Override
     public String toString() {
         return "entidade.PessoaFisicaJuridica[ id=" + id + " ]";

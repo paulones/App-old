@@ -7,7 +7,10 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -331,6 +334,58 @@ public class PessoaJuridica implements Serializable {
         }
         return true;
     }
+    
+    public List<String> changedValues(Object obj) {
+        List<String> list = new ArrayList<>();
+        final PessoaJuridica other = (PessoaJuridica) obj;
+        if (!Objects.equals(this.nome, other.nome)) {
+            list.add("nome");
+        }
+        if (!Objects.equals(this.nomeFantasia, other.nomeFantasia)) {
+            list.add("nomeFantasia");
+        }
+        if (!Objects.equals(this.cnpj, other.cnpj)) {
+            list.add("cnpj");
+        }
+        if (!Objects.equals(this.incricaoEstadual, other.incricaoEstadual)) {
+            list.add("incricaoEstadual");
+        }
+        if (!Objects.equals(this.incricaoMunicipal, other.incricaoMunicipal)) {
+            list.add("incricaoMunicipal");
+        }
+        if (!Objects.equals(this.situacao, other.situacao)) {
+            list.add("situacao");
+        }
+        if (!Objects.equals(this.motivoDaDesativacao, other.motivoDaDesativacao)) {
+            list.add("motivoDaDesativacao");
+        }
+        if (!Objects.equals(this.dataDeCriacao, other.dataDeCriacao)) {
+            list.add("dataDeCriacao");
+        }
+        if (!Objects.equals(this.grupoEconomico, other.grupoEconomico)) {
+            list.add("grupoEconomico");
+        }
+        if (!Objects.equals(this.cnae, other.cnae)) {
+            list.add("cnae");
+        }
+        if (!Objects.equals(this.nire, other.nire)) {
+            list.add("nire");
+        }
+        if (!Objects.equals(this.atividadePrincipal, other.atividadePrincipal)) {
+            list.add("atividadePrincipal");
+        }
+        if (!Objects.equals(this.atividadeSecundaria, other.atividadeSecundaria)) {
+            list.add("atividadeSecundaria");
+        }
+        if (!Objects.equals(this.sucessaoFk, other.sucessaoFk)) {
+            list.add("sucessaoFk");
+        }
+        if (!Objects.equals(this.tipoEmpresarialFk, other.tipoEmpresarialFk)) {
+            list.add("tipoEmpresarialFk");
+        }
+        return list;
+    }
+    
 
     @Override
     public String toString() {
