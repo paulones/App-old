@@ -46,8 +46,7 @@ public class FuncaoDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Collection<PessoaFisicaJuridica> attachedPessoaFisicaJuridicaCollection = new ArrayList<PessoaFisicaJuridica>();
             for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach : funcao.getPessoaFisicaJuridicaCollection()) {
                 pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach = em.getReference(pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach.getClass(), pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach.getId());
@@ -97,8 +96,7 @@ public class FuncaoDAO implements Serializable {
     public void edit(Funcao funcao) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Funcao persistentFuncao = em.find(Funcao.class, funcao.getId());
             Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionOld = persistentFuncao.getPessoaFisicaJuridicaCollection();
             Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionNew = funcao.getPessoaFisicaJuridicaCollection();
@@ -178,8 +176,7 @@ public class FuncaoDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Funcao funcao;
             try {
                 funcao = em.getReference(Funcao.class, id);

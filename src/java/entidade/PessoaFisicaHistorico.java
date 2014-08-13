@@ -93,6 +93,7 @@ public class PessoaFisicaHistorico implements Serializable {
     @Column(name = "observacoes")
     private String observacoes;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "data_de_modificacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataDeModificacao;

@@ -47,37 +47,19 @@ public class EnderecoHistoricoDAO implements Serializable {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
                 enderecoHistorico.setCidadeFk(cidadeFk);
             }
-            Endereco enderecoFk = enderecoHistorico.getEnderecoFk();
-            if (enderecoFk != null) {
-                enderecoFk = em.getReference(enderecoFk.getClass(), enderecoFk.getId());
-                enderecoHistorico.setEnderecoFk(enderecoFk);
-            }
             Estado estadoFk = enderecoHistorico.getEstadoFk();
             if (estadoFk != null) {
                 estadoFk = em.getReference(estadoFk.getClass(), estadoFk.getId());
                 enderecoHistorico.setEstadoFk(estadoFk);
-            }
-            Usuario usuarioFk = enderecoHistorico.getUsuarioFk();
-            if (usuarioFk != null) {
-                usuarioFk = em.getReference(usuarioFk.getClass(), usuarioFk.getId());
-                enderecoHistorico.setUsuarioFk(usuarioFk);
             }
             em.persist(enderecoHistorico);
             if (cidadeFk != null) {
                 cidadeFk.getEnderecoHistoricoCollection().add(enderecoHistorico);
                 cidadeFk = em.merge(cidadeFk);
             }
-            if (enderecoFk != null) {
-                enderecoFk.getEnderecoHistoricoCollection().add(enderecoHistorico);
-                enderecoFk = em.merge(enderecoFk);
-            }
             if (estadoFk != null) {
                 estadoFk.getEnderecoHistoricoCollection().add(enderecoHistorico);
                 estadoFk = em.merge(estadoFk);
-            }
-            if (usuarioFk != null) {
-                usuarioFk.getEnderecoHistoricoCollection().add(enderecoHistorico);
-                usuarioFk = em.merge(usuarioFk);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -102,27 +84,15 @@ public class EnderecoHistoricoDAO implements Serializable {
             EnderecoHistorico persistentEnderecoHistorico = em.find(EnderecoHistorico.class, enderecoHistorico.getId());
             Cidade cidadeFkOld = persistentEnderecoHistorico.getCidadeFk();
             Cidade cidadeFkNew = enderecoHistorico.getCidadeFk();
-            Endereco enderecoFkOld = persistentEnderecoHistorico.getEnderecoFk();
-            Endereco enderecoFkNew = enderecoHistorico.getEnderecoFk();
             Estado estadoFkOld = persistentEnderecoHistorico.getEstadoFk();
             Estado estadoFkNew = enderecoHistorico.getEstadoFk();
-            Usuario usuarioFkOld = persistentEnderecoHistorico.getUsuarioFk();
-            Usuario usuarioFkNew = enderecoHistorico.getUsuarioFk();
             if (cidadeFkNew != null) {
                 cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
                 enderecoHistorico.setCidadeFk(cidadeFkNew);
             }
-            if (enderecoFkNew != null) {
-                enderecoFkNew = em.getReference(enderecoFkNew.getClass(), enderecoFkNew.getId());
-                enderecoHistorico.setEnderecoFk(enderecoFkNew);
-            }
             if (estadoFkNew != null) {
                 estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
                 enderecoHistorico.setEstadoFk(estadoFkNew);
-            }
-            if (usuarioFkNew != null) {
-                usuarioFkNew = em.getReference(usuarioFkNew.getClass(), usuarioFkNew.getId());
-                enderecoHistorico.setUsuarioFk(usuarioFkNew);
             }
             enderecoHistorico = em.merge(enderecoHistorico);
             if (cidadeFkOld != null && !cidadeFkOld.equals(cidadeFkNew)) {
@@ -133,14 +103,6 @@ public class EnderecoHistoricoDAO implements Serializable {
                 cidadeFkNew.getEnderecoHistoricoCollection().add(enderecoHistorico);
                 cidadeFkNew = em.merge(cidadeFkNew);
             }
-            if (enderecoFkOld != null && !enderecoFkOld.equals(enderecoFkNew)) {
-                enderecoFkOld.getEnderecoHistoricoCollection().remove(enderecoHistorico);
-                enderecoFkOld = em.merge(enderecoFkOld);
-            }
-            if (enderecoFkNew != null && !enderecoFkNew.equals(enderecoFkOld)) {
-                enderecoFkNew.getEnderecoHistoricoCollection().add(enderecoHistorico);
-                enderecoFkNew = em.merge(enderecoFkNew);
-            }
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getEnderecoHistoricoCollection().remove(enderecoHistorico);
                 estadoFkOld = em.merge(estadoFkOld);
@@ -148,14 +110,6 @@ public class EnderecoHistoricoDAO implements Serializable {
             if (estadoFkNew != null && !estadoFkNew.equals(estadoFkOld)) {
                 estadoFkNew.getEnderecoHistoricoCollection().add(enderecoHistorico);
                 estadoFkNew = em.merge(estadoFkNew);
-            }
-            if (usuarioFkOld != null && !usuarioFkOld.equals(usuarioFkNew)) {
-                usuarioFkOld.getEnderecoHistoricoCollection().remove(enderecoHistorico);
-                usuarioFkOld = em.merge(usuarioFkOld);
-            }
-            if (usuarioFkNew != null && !usuarioFkNew.equals(usuarioFkOld)) {
-                usuarioFkNew.getEnderecoHistoricoCollection().add(enderecoHistorico);
-                usuarioFkNew = em.merge(usuarioFkNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -196,20 +150,10 @@ public class EnderecoHistoricoDAO implements Serializable {
                 cidadeFk.getEnderecoHistoricoCollection().remove(enderecoHistorico);
                 cidadeFk = em.merge(cidadeFk);
             }
-            Endereco enderecoFk = enderecoHistorico.getEnderecoFk();
-            if (enderecoFk != null) {
-                enderecoFk.getEnderecoHistoricoCollection().remove(enderecoHistorico);
-                enderecoFk = em.merge(enderecoFk);
-            }
             Estado estadoFk = enderecoHistorico.getEstadoFk();
             if (estadoFk != null) {
                 estadoFk.getEnderecoHistoricoCollection().remove(enderecoHistorico);
                 estadoFk = em.merge(estadoFk);
-            }
-            Usuario usuarioFk = enderecoHistorico.getUsuarioFk();
-            if (usuarioFk != null) {
-                usuarioFk.getEnderecoHistoricoCollection().remove(enderecoHistorico);
-                usuarioFk = em.merge(usuarioFk);
             }
             em.remove(enderecoHistorico);
             em.getTransaction().commit();

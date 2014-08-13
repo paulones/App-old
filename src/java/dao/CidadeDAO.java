@@ -41,14 +41,14 @@ public class CidadeDAO implements Serializable {
     }
 
     public void create(Cidade cidade) throws RollbackFailureException, Exception {
-        if (cidade.getPessoaFisicaCollection() == null) {
-            cidade.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
+        if (cidade.getPessoaFisicaHistoricoCollection() == null) {
+            cidade.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
         }
         if (cidade.getEnderecoCollection() == null) {
             cidade.setEnderecoCollection(new ArrayList<Endereco>());
         }
-        if (cidade.getPessoaFisicaHistoricoCollection() == null) {
-            cidade.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
+        if (cidade.getPessoaFisicaCollection() == null) {
+            cidade.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
         }
         if (cidade.getEnderecoHistoricoCollection() == null) {
             cidade.setEnderecoHistoricoCollection(new ArrayList<EnderecoHistorico>());
@@ -62,24 +62,24 @@ public class CidadeDAO implements Serializable {
                 estadoFk = em.getReference(estadoFk.getClass(), estadoFk.getId());
                 cidade.setEstadoFk(estadoFk);
             }
-            Collection<PessoaFisica> attachedPessoaFisicaCollection = new ArrayList<PessoaFisica>();
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisicaToAttach : cidade.getPessoaFisicaCollection()) {
-                pessoaFisicaCollectionPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionPessoaFisicaToAttach.getId());
-                attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
-            }
-            cidade.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
-            Collection<Endereco> attachedEnderecoCollection = new ArrayList<Endereco>();
-            for (Endereco enderecoCollectionEnderecoToAttach : cidade.getEnderecoCollection()) {
-                enderecoCollectionEnderecoToAttach = em.getReference(enderecoCollectionEnderecoToAttach.getClass(), enderecoCollectionEnderecoToAttach.getId());
-                attachedEnderecoCollection.add(enderecoCollectionEnderecoToAttach);
-            }
-            cidade.setEnderecoCollection(attachedEnderecoCollection);
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : cidade.getPessoaFisicaHistoricoCollection()) {
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
                 attachedPessoaFisicaHistoricoCollection.add(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach);
             }
             cidade.setPessoaFisicaHistoricoCollection(attachedPessoaFisicaHistoricoCollection);
+            Collection<Endereco> attachedEnderecoCollection = new ArrayList<Endereco>();
+            for (Endereco enderecoCollectionEnderecoToAttach : cidade.getEnderecoCollection()) {
+                enderecoCollectionEnderecoToAttach = em.getReference(enderecoCollectionEnderecoToAttach.getClass(), enderecoCollectionEnderecoToAttach.getId());
+                attachedEnderecoCollection.add(enderecoCollectionEnderecoToAttach);
+            }
+            cidade.setEnderecoCollection(attachedEnderecoCollection);
+            Collection<PessoaFisica> attachedPessoaFisicaCollection = new ArrayList<PessoaFisica>();
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisicaToAttach : cidade.getPessoaFisicaCollection()) {
+                pessoaFisicaCollectionPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionPessoaFisicaToAttach.getId());
+                attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
+            }
+            cidade.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
             Collection<EnderecoHistorico> attachedEnderecoHistoricoCollection = new ArrayList<EnderecoHistorico>();
             for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistoricoToAttach : cidade.getEnderecoHistoricoCollection()) {
                 enderecoHistoricoCollectionEnderecoHistoricoToAttach = em.getReference(enderecoHistoricoCollectionEnderecoHistoricoToAttach.getClass(), enderecoHistoricoCollectionEnderecoHistoricoToAttach.getId());
@@ -91,13 +91,13 @@ public class CidadeDAO implements Serializable {
                 estadoFk.getCidadeCollection().add(cidade);
                 estadoFk = em.merge(estadoFk);
             }
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : cidade.getPessoaFisicaCollection()) {
-                Cidade oldCidadeFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getCidadeFk();
-                pessoaFisicaCollectionPessoaFisica.setCidadeFk(cidade);
-                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
-                if (oldCidadeFkOfPessoaFisicaCollectionPessoaFisica != null) {
-                    oldCidadeFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
-                    oldCidadeFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldCidadeFkOfPessoaFisicaCollectionPessoaFisica);
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : cidade.getPessoaFisicaHistoricoCollection()) {
+                Cidade oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getCidadeFk();
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setCidadeFk(cidade);
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                if (oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
+                    oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                    oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
                 }
             }
             for (Endereco enderecoCollectionEndereco : cidade.getEnderecoCollection()) {
@@ -109,13 +109,13 @@ public class CidadeDAO implements Serializable {
                     oldCidadeFkOfEnderecoCollectionEndereco = em.merge(oldCidadeFkOfEnderecoCollectionEndereco);
                 }
             }
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : cidade.getPessoaFisicaHistoricoCollection()) {
-                Cidade oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getCidadeFk();
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setCidadeFk(cidade);
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
-                if (oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
-                    oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
-                    oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldCidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : cidade.getPessoaFisicaCollection()) {
+                Cidade oldCidadeFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getCidadeFk();
+                pessoaFisicaCollectionPessoaFisica.setCidadeFk(cidade);
+                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
+                if (oldCidadeFkOfPessoaFisicaCollectionPessoaFisica != null) {
+                    oldCidadeFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
+                    oldCidadeFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldCidadeFkOfPessoaFisicaCollectionPessoaFisica);
                 }
             }
             for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistorico : cidade.getEnderecoHistoricoCollection()) {
@@ -150,32 +150,18 @@ public class CidadeDAO implements Serializable {
             Cidade persistentCidade = em.find(Cidade.class, cidade.getId());
             Estado estadoFkOld = persistentCidade.getEstadoFk();
             Estado estadoFkNew = cidade.getEstadoFk();
-            Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentCidade.getPessoaFisicaCollection();
-            Collection<PessoaFisica> pessoaFisicaCollectionNew = cidade.getPessoaFisicaCollection();
-            Collection<Endereco> enderecoCollectionOld = persistentCidade.getEnderecoCollection();
-            Collection<Endereco> enderecoCollectionNew = cidade.getEnderecoCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentCidade.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = cidade.getPessoaFisicaHistoricoCollection();
+            Collection<Endereco> enderecoCollectionOld = persistentCidade.getEnderecoCollection();
+            Collection<Endereco> enderecoCollectionNew = cidade.getEnderecoCollection();
+            Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentCidade.getPessoaFisicaCollection();
+            Collection<PessoaFisica> pessoaFisicaCollectionNew = cidade.getPessoaFisicaCollection();
             Collection<EnderecoHistorico> enderecoHistoricoCollectionOld = persistentCidade.getEnderecoHistoricoCollection();
             Collection<EnderecoHistorico> enderecoHistoricoCollectionNew = cidade.getEnderecoHistoricoCollection();
             if (estadoFkNew != null) {
                 estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
                 cidade.setEstadoFk(estadoFkNew);
             }
-            Collection<PessoaFisica> attachedPessoaFisicaCollectionNew = new ArrayList<PessoaFisica>();
-            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisicaToAttach : pessoaFisicaCollectionNew) {
-                pessoaFisicaCollectionNewPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionNewPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionNewPessoaFisicaToAttach.getId());
-                attachedPessoaFisicaCollectionNew.add(pessoaFisicaCollectionNewPessoaFisicaToAttach);
-            }
-            pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
-            cidade.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
-            Collection<Endereco> attachedEnderecoCollectionNew = new ArrayList<Endereco>();
-            for (Endereco enderecoCollectionNewEnderecoToAttach : enderecoCollectionNew) {
-                enderecoCollectionNewEnderecoToAttach = em.getReference(enderecoCollectionNewEnderecoToAttach.getClass(), enderecoCollectionNewEnderecoToAttach.getId());
-                attachedEnderecoCollectionNew.add(enderecoCollectionNewEnderecoToAttach);
-            }
-            enderecoCollectionNew = attachedEnderecoCollectionNew;
-            cidade.setEnderecoCollection(enderecoCollectionNew);
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
                 pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
@@ -183,6 +169,20 @@ public class CidadeDAO implements Serializable {
             }
             pessoaFisicaHistoricoCollectionNew = attachedPessoaFisicaHistoricoCollectionNew;
             cidade.setPessoaFisicaHistoricoCollection(pessoaFisicaHistoricoCollectionNew);
+            Collection<Endereco> attachedEnderecoCollectionNew = new ArrayList<Endereco>();
+            for (Endereco enderecoCollectionNewEnderecoToAttach : enderecoCollectionNew) {
+                enderecoCollectionNewEnderecoToAttach = em.getReference(enderecoCollectionNewEnderecoToAttach.getClass(), enderecoCollectionNewEnderecoToAttach.getId());
+                attachedEnderecoCollectionNew.add(enderecoCollectionNewEnderecoToAttach);
+            }
+            enderecoCollectionNew = attachedEnderecoCollectionNew;
+            cidade.setEnderecoCollection(enderecoCollectionNew);
+            Collection<PessoaFisica> attachedPessoaFisicaCollectionNew = new ArrayList<PessoaFisica>();
+            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisicaToAttach : pessoaFisicaCollectionNew) {
+                pessoaFisicaCollectionNewPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionNewPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionNewPessoaFisicaToAttach.getId());
+                attachedPessoaFisicaCollectionNew.add(pessoaFisicaCollectionNewPessoaFisicaToAttach);
+            }
+            pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
+            cidade.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
             Collection<EnderecoHistorico> attachedEnderecoHistoricoCollectionNew = new ArrayList<EnderecoHistorico>();
             for (EnderecoHistorico enderecoHistoricoCollectionNewEnderecoHistoricoToAttach : enderecoHistoricoCollectionNew) {
                 enderecoHistoricoCollectionNewEnderecoHistoricoToAttach = em.getReference(enderecoHistoricoCollectionNewEnderecoHistoricoToAttach.getClass(), enderecoHistoricoCollectionNewEnderecoHistoricoToAttach.getId());
@@ -199,20 +199,20 @@ public class CidadeDAO implements Serializable {
                 estadoFkNew.getCidadeCollection().add(cidade);
                 estadoFkNew = em.merge(estadoFkNew);
             }
-            for (PessoaFisica pessoaFisicaCollectionOldPessoaFisica : pessoaFisicaCollectionOld) {
-                if (!pessoaFisicaCollectionNew.contains(pessoaFisicaCollectionOldPessoaFisica)) {
-                    pessoaFisicaCollectionOldPessoaFisica.setCidadeFk(null);
-                    pessoaFisicaCollectionOldPessoaFisica = em.merge(pessoaFisicaCollectionOldPessoaFisica);
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
+                if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
+                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico.setCidadeFk(null);
+                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico);
                 }
             }
-            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisica : pessoaFisicaCollectionNew) {
-                if (!pessoaFisicaCollectionOld.contains(pessoaFisicaCollectionNewPessoaFisica)) {
-                    Cidade oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica = pessoaFisicaCollectionNewPessoaFisica.getCidadeFk();
-                    pessoaFisicaCollectionNewPessoaFisica.setCidadeFk(cidade);
-                    pessoaFisicaCollectionNewPessoaFisica = em.merge(pessoaFisicaCollectionNewPessoaFisica);
-                    if (oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica.equals(cidade)) {
-                        oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
-                        oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica);
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
+                if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
+                    Cidade oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getCidadeFk();
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.setCidadeFk(cidade);
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    if (oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(cidade)) {
+                        oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                        oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
                     }
                 }
             }
@@ -233,20 +233,20 @@ public class CidadeDAO implements Serializable {
                     }
                 }
             }
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
-                if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
-                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico.setCidadeFk(null);
-                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico);
+            for (PessoaFisica pessoaFisicaCollectionOldPessoaFisica : pessoaFisicaCollectionOld) {
+                if (!pessoaFisicaCollectionNew.contains(pessoaFisicaCollectionOldPessoaFisica)) {
+                    pessoaFisicaCollectionOldPessoaFisica.setCidadeFk(null);
+                    pessoaFisicaCollectionOldPessoaFisica = em.merge(pessoaFisicaCollectionOldPessoaFisica);
                 }
             }
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
-                if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
-                    Cidade oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getCidadeFk();
-                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.setCidadeFk(cidade);
-                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
-                    if (oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(cidade)) {
-                        oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
-                        oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldCidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisica : pessoaFisicaCollectionNew) {
+                if (!pessoaFisicaCollectionOld.contains(pessoaFisicaCollectionNewPessoaFisica)) {
+                    Cidade oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica = pessoaFisicaCollectionNewPessoaFisica.getCidadeFk();
+                    pessoaFisicaCollectionNewPessoaFisica.setCidadeFk(cidade);
+                    pessoaFisicaCollectionNewPessoaFisica = em.merge(pessoaFisicaCollectionNewPessoaFisica);
+                    if (oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica.equals(cidade)) {
+                        oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
+                        oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldCidadeFkOfPessoaFisicaCollectionNewPessoaFisica);
                     }
                 }
             }
@@ -306,20 +306,20 @@ public class CidadeDAO implements Serializable {
                 estadoFk.getCidadeCollection().remove(cidade);
                 estadoFk = em.merge(estadoFk);
             }
-            Collection<PessoaFisica> pessoaFisicaCollection = cidade.getPessoaFisicaCollection();
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
-                pessoaFisicaCollectionPessoaFisica.setCidadeFk(null);
-                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection = cidade.getPessoaFisicaHistoricoCollection();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pessoaFisicaHistoricoCollection) {
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setCidadeFk(null);
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
             }
             Collection<Endereco> enderecoCollection = cidade.getEnderecoCollection();
             for (Endereco enderecoCollectionEndereco : enderecoCollection) {
                 enderecoCollectionEndereco.setCidadeFk(null);
                 enderecoCollectionEndereco = em.merge(enderecoCollectionEndereco);
             }
-            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection = cidade.getPessoaFisicaHistoricoCollection();
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pessoaFisicaHistoricoCollection) {
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setCidadeFk(null);
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+            Collection<PessoaFisica> pessoaFisicaCollection = cidade.getPessoaFisicaCollection();
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
+                pessoaFisicaCollectionPessoaFisica.setCidadeFk(null);
+                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
             Collection<EnderecoHistorico> enderecoHistoricoCollection = cidade.getEnderecoHistoricoCollection();
             for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistorico : enderecoHistoricoCollection) {
@@ -341,7 +341,7 @@ public class CidadeDAO implements Serializable {
             }
         }
     }
-
+    
     public List<Cidade> findCidadeEntities() {
         return findCidadeEntities(true, -1, -1);
     }

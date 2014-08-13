@@ -40,14 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome"),
     @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha")})
 public class Usuario implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
-    private Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
-    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
-    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
-    private Collection<EnderecoHistorico> enderecoHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,6 +67,10 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 32)
     @Column(name = "senha")
     private String senha;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "usuario")
     private RecuperarSenha recuperarSenha;
 
@@ -133,6 +129,24 @@ public class Usuario implements Serializable {
         this.senha = senha;
     }
 
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaHistorico> getPessoaJuridicaHistoricoCollection() {
+        return pessoaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaJuridicaHistoricoCollection(Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection) {
+        this.pessoaJuridicaHistoricoCollection = pessoaJuridicaHistoricoCollection;
+    }
+
     public RecuperarSenha getRecuperarSenha() {
         return recuperarSenha;
     }
@@ -164,42 +178,6 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "entidade.Usuario[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
-        return pessoaFisicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
-        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
-        return pessoaFisicaJuridicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
-        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<EnderecoHistorico> getEnderecoHistoricoCollection() {
-        return enderecoHistoricoCollection;
-    }
-
-    public void setEnderecoHistoricoCollection(Collection<EnderecoHistorico> enderecoHistoricoCollection) {
-        this.enderecoHistoricoCollection = enderecoHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<PessoaJuridicaHistorico> getPessoaJuridicaHistoricoCollection() {
-        return pessoaJuridicaHistoricoCollection;
-    }
-
-    public void setPessoaJuridicaHistoricoCollection(Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection) {
-        this.pessoaJuridicaHistoricoCollection = pessoaJuridicaHistoricoCollection;
     }
     
 }

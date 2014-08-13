@@ -7,7 +7,6 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,8 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "EnderecoHistorico.findByNumero", query = "SELECT e FROM EnderecoHistorico e WHERE e.numero = :numero"),
     @NamedQuery(name = "EnderecoHistorico.findByComplemento", query = "SELECT e FROM EnderecoHistorico e WHERE e.complemento = :complemento"),
     @NamedQuery(name = "EnderecoHistorico.findByBairro", query = "SELECT e FROM EnderecoHistorico e WHERE e.bairro = :bairro"),
-    @NamedQuery(name = "EnderecoHistorico.findByCep", query = "SELECT e FROM EnderecoHistorico e WHERE e.cep = :cep"),
-    @NamedQuery(name = "EnderecoHistorico.findByDataDeModificacao", query = "SELECT e FROM EnderecoHistorico e WHERE e.dataDeModificacao = :dataDeModificacao")})
+    @NamedQuery(name = "EnderecoHistorico.findByCep", query = "SELECT e FROM EnderecoHistorico e WHERE e.cep = :cep")})
 public class EnderecoHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -73,22 +69,12 @@ public class EnderecoHistorico implements Serializable {
     @Size(max = 8)
     @Column(name = "cep")
     private String cep;
-    @Basic(optional = false)
-    @Column(name = "data_de_modificacao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataDeModificacao;
     @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
     @ManyToOne
     private Cidade cidadeFk;
-    @JoinColumn(name = "endereco_fk", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Endereco enderecoFk;
     @JoinColumn(name = "estado_fk", referencedColumnName = "id")
     @ManyToOne
     private Estado estadoFk;
-    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuario usuarioFk;
 
     public EnderecoHistorico() {
     }
@@ -97,11 +83,10 @@ public class EnderecoHistorico implements Serializable {
         this.id = id;
     }
 
-    public EnderecoHistorico(Integer id, int idFk, String tipo, Date dataDeModificacao) {
+    public EnderecoHistorico(Integer id, int idFk, String tipo) {
         this.id = id;
         this.idFk = idFk;
         this.tipo = tipo;
-        this.dataDeModificacao = dataDeModificacao;
     }
 
     public Integer getId() {
@@ -168,14 +153,6 @@ public class EnderecoHistorico implements Serializable {
         this.cep = cep;
     }
 
-    public Date getDataDeModificacao() {
-        return dataDeModificacao;
-    }
-
-    public void setDataDeModificacao(Date dataDeModificacao) {
-        this.dataDeModificacao = dataDeModificacao;
-    }
-
     public Cidade getCidadeFk() {
         return cidadeFk;
     }
@@ -184,28 +161,12 @@ public class EnderecoHistorico implements Serializable {
         this.cidadeFk = cidadeFk;
     }
 
-    public Endereco getEnderecoFk() {
-        return enderecoFk;
-    }
-
-    public void setEnderecoFk(Endereco enderecoFk) {
-        this.enderecoFk = enderecoFk;
-    }
-
     public Estado getEstadoFk() {
         return estadoFk;
     }
 
     public void setEstadoFk(Estado estadoFk) {
         this.estadoFk = estadoFk;
-    }
-
-    public Usuario getUsuarioFk() {
-        return usuarioFk;
-    }
-
-    public void setUsuarioFk(Usuario usuarioFk) {
-        this.usuarioFk = usuarioFk;
     }
 
     @Override

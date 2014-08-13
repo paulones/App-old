@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "EstadoCivil.findById", query = "SELECT e FROM EstadoCivil e WHERE e.id = :id"),
     @NamedQuery(name = "EstadoCivil.findBySituacao", query = "SELECT e FROM EstadoCivil e WHERE e.situacao = :situacao")})
 public class EstadoCivil implements Serializable {
-    @OneToMany(mappedBy = "estadoCivilFk")
-    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +46,8 @@ public class EstadoCivil implements Serializable {
     @Size(min = 1, max = 15)
     @Column(name = "situacao")
     private String situacao;
+    @OneToMany(mappedBy = "estadoCivilFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
     @OneToMany(mappedBy = "estadoCivilFk")
     private Collection<PessoaFisica> pessoaFisicaCollection;
 
@@ -77,6 +77,15 @@ public class EstadoCivil implements Serializable {
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
     }
 
     @XmlTransient
@@ -111,15 +120,6 @@ public class EstadoCivil implements Serializable {
     @Override
     public String toString() {
         return "entidade.EstadoCivil[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
-        return pessoaFisicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
-        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
     }
     
 }

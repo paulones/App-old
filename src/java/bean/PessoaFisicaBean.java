@@ -62,9 +62,9 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaJuridica pessoaJuridica;
     private PessoaFisicaJuridica pessoaFisicaJuridica;
     
-    private PessoaFisicaHistorico oldPessoaFisica;
-    private EnderecoHistorico oldEndereco;
-    private List<PessoaFisicaJuridicaHistorico> oldPessoaFisicaJuridicaList;
+    private PessoaFisicaHistorico pessoaFisicaHistorico;
+    private EnderecoHistorico EnderecoHistorico;
+    private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
 
     private String register;
     private String redirect;
@@ -146,14 +146,14 @@ public class PessoaFisicaBean implements Serializable {
                         this.pessoaFisica = pessoaFisica;
                         this.endereco = endereco;
                         
-                        prepareHistory(pessoaFisica, endereco, pessoaFisicaJuridicaList);
+                        prepararHistorico(pessoaFisica, endereco, pessoaFisicaJuridicaList);
 
                         loadRegisterForm();
-                        getCitiesByState();
+                        getCidadesPeloEstado();
                     }
                 }
             } else if (isSearchPage) { //Tela de consulta
-                pessoaFisicaList = pessoaFisicaBO.findAll();
+                pessoaFisicaList = pessoaFisicaBO.findAllActive();
                 enderecoList = enderecoBO.findAllPFAddress();
                 enderecoPessoaList = new ArrayList<>();
                 for (PessoaFisica pf : pessoaFisicaList) {
@@ -179,7 +179,7 @@ public class PessoaFisicaBean implements Serializable {
         funcaoList = funcaoBO.findAll();
     }
 
-    public void getCitiesByState() {
+    public void getCidadesPeloEstado() {
         if (pessoaFisica.getEstadoFk() != null) {
             cidadeNatList = cidadeBO.getByStateId(pessoaFisica.getEstadoFk().getId());
         } else {
@@ -202,6 +202,7 @@ public class PessoaFisicaBean implements Serializable {
                 if (pessoaFisica.getEstadoFk() != null) {
                     pessoaFisica.setPaisFk(paisBO.findBrasil());
                 }
+                pessoaFisica.setStatus('A');
                 pessoaFisicaBO.create(pessoaFisica);
                 endereco.setTipo("PF");
                 endereco.setIdFk(pessoaFisica.getId());
@@ -235,18 +236,19 @@ public class PessoaFisicaBean implements Serializable {
             UtilBO utilBO = new UtilBO();
             Timestamp timestamp = utilBO.findServerTime();
             pessoaFisicaBO.edit(pessoaFisica);
-            oldPessoaFisica.setDataDeModificacao(timestamp);
-            pessoaFisicaHistoricoBO.create(oldPessoaFisica);
+            pessoaFisicaHistorico.setDataDeModificacao(timestamp);
+            pessoaFisicaHistoricoBO.create(pessoaFisicaHistorico);
             enderecoBO.edit(endereco);
-            oldEndereco.setDataDeModificacao(timestamp);
-            enderecoHistoricoBO.create(oldEndereco);
+            EnderecoHistorico.setIdFk(pessoaFisicaHistorico.getId());
+            enderecoHistoricoBO.create(EnderecoHistorico);
             pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
             for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
                 pfj.setPessoaFisicaFk(pessoaFisica);
                 pessoaFisicaJuridicaBO.create(pfj);
             }
-            for (PessoaFisicaJuridicaHistorico pfjh : oldPessoaFisicaJuridicaList){
-                pfjh.setDataDeModificacao(timestamp);
+            for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList){
+                pfjh.setTipo("PF");
+                pfjh.setIdFk(pessoaFisicaHistorico.getId());
                 pessoaFisicaJuridicaHistoricoBO.create(pfjh);
             }
             register = "success";
@@ -261,9 +263,8 @@ public class PessoaFisicaBean implements Serializable {
     
     public void removerPessoaFisica(int index) {
         PessoaFisica pessoaFisica = (PessoaFisica) enderecoPessoaList.get(index).getPessoa();
-        enderecoBO.destroy(enderecoPessoaList.get(index).getEndereco());
-        pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
-        pessoaFisicaBO.destroy(pessoaFisica);
+        pessoaFisica.setStatus('I');
+        pessoaFisicaBO.edit(pessoaFisica);
         enderecoPessoaList.remove(index);
         register = "success";
     }
@@ -282,45 +283,42 @@ public class PessoaFisicaBean implements Serializable {
         }
     }
     
-    public void prepareHistory(PessoaFisica pessoaFisica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList){
+    public void prepararHistorico(PessoaFisica pessoaFisica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList){
         usuarioBO = new UsuarioBO();
         Usuario usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
-        oldPessoaFisica = new PessoaFisicaHistorico();
-        oldEndereco = new EnderecoHistorico();
-        oldPessoaFisicaJuridicaList = new ArrayList<>();
+        pessoaFisicaHistorico = new PessoaFisicaHistorico();
+        EnderecoHistorico = new EnderecoHistorico();
+        pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
         
-        oldPessoaFisica.setApelido(pessoaFisica.getApelido());
-        oldPessoaFisica.setCidadeFk(pessoaFisica.getCidadeFk());
-        oldPessoaFisica.setCpf(pessoaFisica.getCpf());
-        oldPessoaFisica.setEstadoCivilFk(pessoaFisica.getEstadoCivilFk());
-        oldPessoaFisica.setEstadoFk(pessoaFisica.getEstadoFk());
-        oldPessoaFisica.setInss(pessoaFisica.getInss());
-        oldPessoaFisica.setNacionalidadeFk(pessoaFisica.getNacionalidadeFk());
-        oldPessoaFisica.setNome(pessoaFisica.getNome());
-        oldPessoaFisica.setNomeDaMae(pessoaFisica.getNomeDaMae());
-        oldPessoaFisica.setNomeDoConjuge(pessoaFisica.getNomeDoConjuge());
-        oldPessoaFisica.setNomeDoPai(pessoaFisica.getNomeDoPai());
-        oldPessoaFisica.setObservacoes(pessoaFisica.getObservacoes());
-        oldPessoaFisica.setPaisFk(pessoaFisica.getPaisFk());
-        oldPessoaFisica.setPessoaFisicaFk(pessoaFisica);
-        oldPessoaFisica.setRg(pessoaFisica.getRg());
-        oldPessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor());
-        oldPessoaFisica.setRgUfFk(pessoaFisica.getRgUfFk());
-        oldPessoaFisica.setSexo(pessoaFisica.getSexo());
-        oldPessoaFisica.setTituloDeEleitor(pessoaFisica.getTituloDeEleitor());
-        oldPessoaFisica.setUsuarioFk(usuario);
+        pessoaFisicaHistorico.setApelido(pessoaFisica.getApelido());
+        pessoaFisicaHistorico.setCidadeFk(pessoaFisica.getCidadeFk());
+        pessoaFisicaHistorico.setCpf(pessoaFisica.getCpf());
+        pessoaFisicaHistorico.setEstadoCivilFk(pessoaFisica.getEstadoCivilFk());
+        pessoaFisicaHistorico.setEstadoFk(pessoaFisica.getEstadoFk());
+        pessoaFisicaHistorico.setInss(pessoaFisica.getInss());
+        pessoaFisicaHistorico.setNacionalidadeFk(pessoaFisica.getNacionalidadeFk());
+        pessoaFisicaHistorico.setNome(pessoaFisica.getNome());
+        pessoaFisicaHistorico.setNomeDaMae(pessoaFisica.getNomeDaMae());
+        pessoaFisicaHistorico.setNomeDoConjuge(pessoaFisica.getNomeDoConjuge());
+        pessoaFisicaHistorico.setNomeDoPai(pessoaFisica.getNomeDoPai());
+        pessoaFisicaHistorico.setObservacoes(pessoaFisica.getObservacoes());
+        pessoaFisicaHistorico.setPaisFk(pessoaFisica.getPaisFk());
+        pessoaFisicaHistorico.setPessoaFisicaFk(pessoaFisica);
+        pessoaFisicaHistorico.setRg(pessoaFisica.getRg());
+        pessoaFisicaHistorico.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor());
+        pessoaFisicaHistorico.setRgUfFk(pessoaFisica.getRgUfFk());
+        pessoaFisicaHistorico.setSexo(pessoaFisica.getSexo());
+        pessoaFisicaHistorico.setTituloDeEleitor(pessoaFisica.getTituloDeEleitor());
+        pessoaFisicaHistorico.setUsuarioFk(usuario);
         
-        oldEndereco.setBairro(endereco.getBairro());
-        oldEndereco.setCep(endereco.getCep());
-        oldEndereco.setCidadeFk(endereco.getCidadeFk());
-        oldEndereco.setComplemento(endereco.getComplemento());
-        oldEndereco.setEndereco(endereco.getEndereco());
-        oldEndereco.setEnderecoFk(endereco);
-        oldEndereco.setEstadoFk(endereco.getEstadoFk());
-        oldEndereco.setIdFk(endereco.getIdFk());
-        oldEndereco.setNumero(endereco.getNumero());
-        oldEndereco.setTipo(endereco.getTipo());
-        oldEndereco.setUsuarioFk(usuario);
+        EnderecoHistorico.setBairro(endereco.getBairro());
+        EnderecoHistorico.setCep(endereco.getCep());
+        EnderecoHistorico.setCidadeFk(endereco.getCidadeFk());
+        EnderecoHistorico.setComplemento(endereco.getComplemento());
+        EnderecoHistorico.setEndereco(endereco.getEndereco());
+        EnderecoHistorico.setEstadoFk(endereco.getEstadoFk());
+        EnderecoHistorico.setNumero(endereco.getNumero());
+        EnderecoHistorico.setTipo(endereco.getTipo());
         
         for (PessoaFisicaJuridica pfj: pessoaFisicaJuridicaList){
             PessoaFisicaJuridicaHistorico pfjh = new PessoaFisicaJuridicaHistorico();
@@ -329,10 +327,8 @@ public class PessoaFisicaBean implements Serializable {
             pfjh.setDataDeTermino(pfj.getDataDeTermino());
             pfjh.setFuncaoFk(pfj.getFuncaoFk());
             pfjh.setPessoaFisicaFk(pfj.getPessoaFisicaFk());
-            pfjh.setPessoaFisicaJuridicaFk(pfj);
             pfjh.setPessoaJuridicaFk(pfj.getPessoaJuridicaFk());
-            pfjh.setUsuarioFk(usuario);
-            oldPessoaFisicaJuridicaList.add(pfjh);
+            pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
     }
 

@@ -47,14 +47,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaFisica.findByNomeDoPai", query = "SELECT p FROM PessoaFisica p WHERE p.nomeDoPai = :nomeDoPai"),
     @NamedQuery(name = "PessoaFisica.findByNomeDaMae", query = "SELECT p FROM PessoaFisica p WHERE p.nomeDaMae = :nomeDaMae"),
     @NamedQuery(name = "PessoaFisica.findByNomeDoConjuge", query = "SELECT p FROM PessoaFisica p WHERE p.nomeDoConjuge = :nomeDoConjuge"),
-    @NamedQuery(name = "PessoaFisica.findByObservacoes", query = "SELECT p FROM PessoaFisica p WHERE p.observacoes = :observacoes")})
+    @NamedQuery(name = "PessoaFisica.findByObservacoes", query = "SELECT p FROM PessoaFisica p WHERE p.observacoes = :observacoes"),
+    @NamedQuery(name = "PessoaFisica.findByStatus", query = "SELECT p FROM PessoaFisica p WHERE p.status = :status")})
 public class PessoaFisica implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaFk")
-    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaFk")
-    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaFk")
-    private Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,6 +93,13 @@ public class PessoaFisica implements Serializable {
     @Size(max = 300)
     @Column(name = "observacoes")
     private String observacoes;
+    @Column(name = "status")
+    @NotNull
+    private Character status;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaFk")
+    private Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection;
     @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
     @ManyToOne
     private Cidade cidadeFk;
@@ -116,6 +118,8 @@ public class PessoaFisica implements Serializable {
     @JoinColumn(name = "pais_fk", referencedColumnName = "id")
     @ManyToOne
     private Pais paisFk;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaFk")
+    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
 
     public PessoaFisica() {
     }
@@ -233,6 +237,32 @@ public class PessoaFisica implements Serializable {
         this.observacoes = observacoes;
     }
 
+    public Character getStatus() {
+        return status;
+    }
+
+    public void setStatus(Character status) {
+        this.status = status;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaJuridica> getPessoaFisicaJuridicaCollection() {
+        return pessoaFisicaJuridicaCollection;
+    }
+
+    public void setPessoaFisicaJuridicaCollection(Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection) {
+        this.pessoaFisicaJuridicaCollection = pessoaFisicaJuridicaCollection;
+    }
+
     public Cidade getCidadeFk() {
         return cidadeFk;
     }
@@ -281,6 +311,15 @@ public class PessoaFisica implements Serializable {
         this.paisFk = paisFk;
     }
 
+    @XmlTransient
+    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
+        return pessoaFisicaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
+        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -304,33 +343,6 @@ public class PessoaFisica implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaFisica[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaJuridica> getPessoaFisicaJuridicaCollection() {
-        return pessoaFisicaJuridicaCollection;
-    }
-
-    public void setPessoaFisicaJuridicaCollection(Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection) {
-        this.pessoaFisicaJuridicaCollection = pessoaFisicaJuridicaCollection;
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
-        return pessoaFisicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
-        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
-        return pessoaFisicaJuridicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
-        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
     }
     
 }

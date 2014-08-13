@@ -43,8 +43,7 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     public void create(PessoaFisicaHistorico pessoaFisicaHistorico) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Cidade cidadeFk = pessoaFisicaHistorico.getCidadeFk();
             if (cidadeFk != null) {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
@@ -136,8 +135,7 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     public void edit(PessoaFisicaHistorico pessoaFisicaHistorico) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             PessoaFisicaHistorico persistentPessoaFisicaHistorico = em.find(PessoaFisicaHistorico.class, pessoaFisicaHistorico.getId());
             Cidade cidadeFkOld = persistentPessoaFisicaHistorico.getCidadeFk();
             Cidade cidadeFkNew = pessoaFisicaHistorico.getCidadeFk();
@@ -277,8 +275,7 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             PessoaFisicaHistorico pessoaFisicaHistorico;
             try {
                 pessoaFisicaHistorico = em.getReference(PessoaFisicaHistorico.class, id);

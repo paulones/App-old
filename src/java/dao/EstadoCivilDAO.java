@@ -38,38 +38,28 @@ public class EstadoCivilDAO implements Serializable {
     }
 
     public void create(EstadoCivil estadoCivil) throws RollbackFailureException, Exception {
-        if (estadoCivil.getPessoaFisicaCollection() == null) {
-            estadoCivil.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
-        }
         if (estadoCivil.getPessoaFisicaHistoricoCollection() == null) {
             estadoCivil.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
         }
+        if (estadoCivil.getPessoaFisicaCollection() == null) {
+            estadoCivil.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
+        }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
-            Collection<PessoaFisica> attachedPessoaFisicaCollection = new ArrayList<PessoaFisica>();
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisicaToAttach : estadoCivil.getPessoaFisicaCollection()) {
-                pessoaFisicaCollectionPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionPessoaFisicaToAttach.getId());
-                attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
-            }
-            estadoCivil.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
+            em = getEntityManager();em.getTransaction().begin();
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : estadoCivil.getPessoaFisicaHistoricoCollection()) {
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
                 attachedPessoaFisicaHistoricoCollection.add(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach);
             }
             estadoCivil.setPessoaFisicaHistoricoCollection(attachedPessoaFisicaHistoricoCollection);
-            em.persist(estadoCivil);
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : estadoCivil.getPessoaFisicaCollection()) {
-                EstadoCivil oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getEstadoCivilFk();
-                pessoaFisicaCollectionPessoaFisica.setEstadoCivilFk(estadoCivil);
-                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
-                if (oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica != null) {
-                    oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
-                    oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica);
-                }
+            Collection<PessoaFisica> attachedPessoaFisicaCollection = new ArrayList<PessoaFisica>();
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisicaToAttach : estadoCivil.getPessoaFisicaCollection()) {
+                pessoaFisicaCollectionPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionPessoaFisicaToAttach.getId());
+                attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
             }
+            estadoCivil.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
+            em.persist(estadoCivil);
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : estadoCivil.getPessoaFisicaHistoricoCollection()) {
                 EstadoCivil oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getEstadoCivilFk();
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setEstadoCivilFk(estadoCivil);
@@ -77,6 +67,15 @@ public class EstadoCivilDAO implements Serializable {
                 if (oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
                     oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
                     oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                }
+            }
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : estadoCivil.getPessoaFisicaCollection()) {
+                EstadoCivil oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getEstadoCivilFk();
+                pessoaFisicaCollectionPessoaFisica.setEstadoCivilFk(estadoCivil);
+                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
+                if (oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica != null) {
+                    oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
+                    oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldEstadoCivilFkOfPessoaFisicaCollectionPessoaFisica);
                 }
             }
             em.getTransaction().commit();
@@ -97,20 +96,12 @@ public class EstadoCivilDAO implements Serializable {
     public void edit(EstadoCivil estadoCivil) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             EstadoCivil persistentEstadoCivil = em.find(EstadoCivil.class, estadoCivil.getId());
-            Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentEstadoCivil.getPessoaFisicaCollection();
-            Collection<PessoaFisica> pessoaFisicaCollectionNew = estadoCivil.getPessoaFisicaCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentEstadoCivil.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = estadoCivil.getPessoaFisicaHistoricoCollection();
-            Collection<PessoaFisica> attachedPessoaFisicaCollectionNew = new ArrayList<PessoaFisica>();
-            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisicaToAttach : pessoaFisicaCollectionNew) {
-                pessoaFisicaCollectionNewPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionNewPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionNewPessoaFisicaToAttach.getId());
-                attachedPessoaFisicaCollectionNew.add(pessoaFisicaCollectionNewPessoaFisicaToAttach);
-            }
-            pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
-            estadoCivil.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
+            Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentEstadoCivil.getPessoaFisicaCollection();
+            Collection<PessoaFisica> pessoaFisicaCollectionNew = estadoCivil.getPessoaFisicaCollection();
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
                 pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
@@ -118,24 +109,14 @@ public class EstadoCivilDAO implements Serializable {
             }
             pessoaFisicaHistoricoCollectionNew = attachedPessoaFisicaHistoricoCollectionNew;
             estadoCivil.setPessoaFisicaHistoricoCollection(pessoaFisicaHistoricoCollectionNew);
+            Collection<PessoaFisica> attachedPessoaFisicaCollectionNew = new ArrayList<PessoaFisica>();
+            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisicaToAttach : pessoaFisicaCollectionNew) {
+                pessoaFisicaCollectionNewPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionNewPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionNewPessoaFisicaToAttach.getId());
+                attachedPessoaFisicaCollectionNew.add(pessoaFisicaCollectionNewPessoaFisicaToAttach);
+            }
+            pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
+            estadoCivil.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
             estadoCivil = em.merge(estadoCivil);
-            for (PessoaFisica pessoaFisicaCollectionOldPessoaFisica : pessoaFisicaCollectionOld) {
-                if (!pessoaFisicaCollectionNew.contains(pessoaFisicaCollectionOldPessoaFisica)) {
-                    pessoaFisicaCollectionOldPessoaFisica.setEstadoCivilFk(null);
-                    pessoaFisicaCollectionOldPessoaFisica = em.merge(pessoaFisicaCollectionOldPessoaFisica);
-                }
-            }
-            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisica : pessoaFisicaCollectionNew) {
-                if (!pessoaFisicaCollectionOld.contains(pessoaFisicaCollectionNewPessoaFisica)) {
-                    EstadoCivil oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica = pessoaFisicaCollectionNewPessoaFisica.getEstadoCivilFk();
-                    pessoaFisicaCollectionNewPessoaFisica.setEstadoCivilFk(estadoCivil);
-                    pessoaFisicaCollectionNewPessoaFisica = em.merge(pessoaFisicaCollectionNewPessoaFisica);
-                    if (oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica.equals(estadoCivil)) {
-                        oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
-                        oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica);
-                    }
-                }
-            }
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
                 if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
                     pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico.setEstadoCivilFk(null);
@@ -150,6 +131,23 @@ public class EstadoCivilDAO implements Serializable {
                     if (oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(estadoCivil)) {
                         oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
                         oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldEstadoCivilFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    }
+                }
+            }
+            for (PessoaFisica pessoaFisicaCollectionOldPessoaFisica : pessoaFisicaCollectionOld) {
+                if (!pessoaFisicaCollectionNew.contains(pessoaFisicaCollectionOldPessoaFisica)) {
+                    pessoaFisicaCollectionOldPessoaFisica.setEstadoCivilFk(null);
+                    pessoaFisicaCollectionOldPessoaFisica = em.merge(pessoaFisicaCollectionOldPessoaFisica);
+                }
+            }
+            for (PessoaFisica pessoaFisicaCollectionNewPessoaFisica : pessoaFisicaCollectionNew) {
+                if (!pessoaFisicaCollectionOld.contains(pessoaFisicaCollectionNewPessoaFisica)) {
+                    EstadoCivil oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica = pessoaFisicaCollectionNewPessoaFisica.getEstadoCivilFk();
+                    pessoaFisicaCollectionNewPessoaFisica.setEstadoCivilFk(estadoCivil);
+                    pessoaFisicaCollectionNewPessoaFisica = em.merge(pessoaFisicaCollectionNewPessoaFisica);
+                    if (oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica.equals(estadoCivil)) {
+                        oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
+                        oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldEstadoCivilFkOfPessoaFisicaCollectionNewPessoaFisica);
                     }
                 }
             }
@@ -178,8 +176,7 @@ public class EstadoCivilDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             EstadoCivil estadoCivil;
             try {
                 estadoCivil = em.getReference(EstadoCivil.class, id);
@@ -187,15 +184,15 @@ public class EstadoCivilDAO implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The estadoCivil with id " + id + " no longer exists.", enfe);
             }
-            Collection<PessoaFisica> pessoaFisicaCollection = estadoCivil.getPessoaFisicaCollection();
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
-                pessoaFisicaCollectionPessoaFisica.setEstadoCivilFk(null);
-                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
-            }
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection = estadoCivil.getPessoaFisicaHistoricoCollection();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pessoaFisicaHistoricoCollection) {
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setEstadoCivilFk(null);
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+            }
+            Collection<PessoaFisica> pessoaFisicaCollection = estadoCivil.getPessoaFisicaCollection();
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
+                pessoaFisicaCollectionPessoaFisica.setEstadoCivilFk(null);
+                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
             em.remove(estadoCivil);
             em.getTransaction().commit();

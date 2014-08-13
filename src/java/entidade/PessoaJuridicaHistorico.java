@@ -99,6 +99,7 @@ public class PessoaJuridicaHistorico implements Serializable {
     @Column(name = "atividade_secundaria")
     private String atividadeSecundaria;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "data_de_modificacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataDeModificacao;

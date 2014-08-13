@@ -36,8 +36,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Pais.findById", query = "SELECT p FROM Pais p WHERE p.id = :id"),
     @NamedQuery(name = "Pais.findByNome", query = "SELECT p FROM Pais p WHERE p.nome = :nome")})
 public class Pais implements Serializable {
-    @OneToMany(mappedBy = "paisFk")
-    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +47,8 @@ public class Pais implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "nome")
     private String nome;
+    @OneToMany(mappedBy = "paisFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "paisFk")
     private Collection<Estado> estadoCollection;
     @OneToMany(mappedBy = "paisFk")
@@ -80,6 +80,15 @@ public class Pais implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
     }
 
     @XmlTransient
@@ -123,15 +132,6 @@ public class Pais implements Serializable {
     @Override
     public String toString() {
         return "entidade.Pais[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
-        return pessoaFisicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
-        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
     }
     
 }

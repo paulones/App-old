@@ -41,9 +41,6 @@ public class EnderecoDAO implements Serializable {
     }
 
     public void create(Endereco endereco) throws RollbackFailureException, Exception {
-        if (endereco.getEnderecoHistoricoCollection() == null) {
-            endereco.setEnderecoHistoricoCollection(new ArrayList<EnderecoHistorico>());
-        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -58,12 +55,6 @@ public class EnderecoDAO implements Serializable {
                 estadoFk = em.getReference(estadoFk.getClass(), estadoFk.getId());
                 endereco.setEstadoFk(estadoFk);
             }
-            Collection<EnderecoHistorico> attachedEnderecoHistoricoCollection = new ArrayList<EnderecoHistorico>();
-            for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistoricoToAttach : endereco.getEnderecoHistoricoCollection()) {
-                enderecoHistoricoCollectionEnderecoHistoricoToAttach = em.getReference(enderecoHistoricoCollectionEnderecoHistoricoToAttach.getClass(), enderecoHistoricoCollectionEnderecoHistoricoToAttach.getId());
-                attachedEnderecoHistoricoCollection.add(enderecoHistoricoCollectionEnderecoHistoricoToAttach);
-            }
-            endereco.setEnderecoHistoricoCollection(attachedEnderecoHistoricoCollection);
             em.persist(endereco);
             if (cidadeFk != null) {
                 cidadeFk.getEnderecoCollection().add(endereco);
@@ -72,15 +63,6 @@ public class EnderecoDAO implements Serializable {
             if (estadoFk != null) {
                 estadoFk.getEnderecoCollection().add(endereco);
                 estadoFk = em.merge(estadoFk);
-            }
-            for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistorico : endereco.getEnderecoHistoricoCollection()) {
-                Endereco oldEnderecoFkOfEnderecoHistoricoCollectionEnderecoHistorico = enderecoHistoricoCollectionEnderecoHistorico.getEnderecoFk();
-                enderecoHistoricoCollectionEnderecoHistorico.setEnderecoFk(endereco);
-                enderecoHistoricoCollectionEnderecoHistorico = em.merge(enderecoHistoricoCollectionEnderecoHistorico);
-                if (oldEnderecoFkOfEnderecoHistoricoCollectionEnderecoHistorico != null) {
-                    oldEnderecoFkOfEnderecoHistoricoCollectionEnderecoHistorico.getEnderecoHistoricoCollection().remove(enderecoHistoricoCollectionEnderecoHistorico);
-                    oldEnderecoFkOfEnderecoHistoricoCollectionEnderecoHistorico = em.merge(oldEnderecoFkOfEnderecoHistoricoCollectionEnderecoHistorico);
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -97,7 +79,7 @@ public class EnderecoDAO implements Serializable {
         }
     }
 
-    public void edit(Endereco endereco) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Endereco endereco) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -107,20 +89,6 @@ public class EnderecoDAO implements Serializable {
             Cidade cidadeFkNew = endereco.getCidadeFk();
             Estado estadoFkOld = persistentEndereco.getEstadoFk();
             Estado estadoFkNew = endereco.getEstadoFk();
-            Collection<EnderecoHistorico> enderecoHistoricoCollectionOld = persistentEndereco.getEnderecoHistoricoCollection();
-            Collection<EnderecoHistorico> enderecoHistoricoCollectionNew = endereco.getEnderecoHistoricoCollection();
-            List<String> illegalOrphanMessages = null;
-            for (EnderecoHistorico enderecoHistoricoCollectionOldEnderecoHistorico : enderecoHistoricoCollectionOld) {
-                if (!enderecoHistoricoCollectionNew.contains(enderecoHistoricoCollectionOldEnderecoHistorico)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain EnderecoHistorico " + enderecoHistoricoCollectionOldEnderecoHistorico + " since its enderecoFk field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
             if (cidadeFkNew != null) {
                 cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
                 endereco.setCidadeFk(cidadeFkNew);
@@ -129,13 +97,6 @@ public class EnderecoDAO implements Serializable {
                 estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
                 endereco.setEstadoFk(estadoFkNew);
             }
-            Collection<EnderecoHistorico> attachedEnderecoHistoricoCollectionNew = new ArrayList<EnderecoHistorico>();
-            for (EnderecoHistorico enderecoHistoricoCollectionNewEnderecoHistoricoToAttach : enderecoHistoricoCollectionNew) {
-                enderecoHistoricoCollectionNewEnderecoHistoricoToAttach = em.getReference(enderecoHistoricoCollectionNewEnderecoHistoricoToAttach.getClass(), enderecoHistoricoCollectionNewEnderecoHistoricoToAttach.getId());
-                attachedEnderecoHistoricoCollectionNew.add(enderecoHistoricoCollectionNewEnderecoHistoricoToAttach);
-            }
-            enderecoHistoricoCollectionNew = attachedEnderecoHistoricoCollectionNew;
-            endereco.setEnderecoHistoricoCollection(enderecoHistoricoCollectionNew);
             endereco = em.merge(endereco);
             if (cidadeFkOld != null && !cidadeFkOld.equals(cidadeFkNew)) {
                 cidadeFkOld.getEnderecoCollection().remove(endereco);
@@ -152,17 +113,6 @@ public class EnderecoDAO implements Serializable {
             if (estadoFkNew != null && !estadoFkNew.equals(estadoFkOld)) {
                 estadoFkNew.getEnderecoCollection().add(endereco);
                 estadoFkNew = em.merge(estadoFkNew);
-            }
-            for (EnderecoHistorico enderecoHistoricoCollectionNewEnderecoHistorico : enderecoHistoricoCollectionNew) {
-                if (!enderecoHistoricoCollectionOld.contains(enderecoHistoricoCollectionNewEnderecoHistorico)) {
-                    Endereco oldEnderecoFkOfEnderecoHistoricoCollectionNewEnderecoHistorico = enderecoHistoricoCollectionNewEnderecoHistorico.getEnderecoFk();
-                    enderecoHistoricoCollectionNewEnderecoHistorico.setEnderecoFk(endereco);
-                    enderecoHistoricoCollectionNewEnderecoHistorico = em.merge(enderecoHistoricoCollectionNewEnderecoHistorico);
-                    if (oldEnderecoFkOfEnderecoHistoricoCollectionNewEnderecoHistorico != null && !oldEnderecoFkOfEnderecoHistoricoCollectionNewEnderecoHistorico.equals(endereco)) {
-                        oldEnderecoFkOfEnderecoHistoricoCollectionNewEnderecoHistorico.getEnderecoHistoricoCollection().remove(enderecoHistoricoCollectionNewEnderecoHistorico);
-                        oldEnderecoFkOfEnderecoHistoricoCollectionNewEnderecoHistorico = em.merge(oldEnderecoFkOfEnderecoHistoricoCollectionNewEnderecoHistorico);
-                    }
-                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -186,7 +136,7 @@ public class EnderecoDAO implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -197,17 +147,6 @@ public class EnderecoDAO implements Serializable {
                 endereco.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The endereco with id " + id + " no longer exists.", enfe);
-            }
-            List<String> illegalOrphanMessages = null;
-            Collection<EnderecoHistorico> enderecoHistoricoCollectionOrphanCheck = endereco.getEnderecoHistoricoCollection();
-            for (EnderecoHistorico enderecoHistoricoCollectionOrphanCheckEnderecoHistorico : enderecoHistoricoCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Endereco (" + endereco + ") cannot be destroyed since the EnderecoHistorico " + enderecoHistoricoCollectionOrphanCheckEnderecoHistorico + " in its enderecoHistoricoCollection field has a non-nullable enderecoFk field.");
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Cidade cidadeFk = endereco.getCidadeFk();
             if (cidadeFk != null) {

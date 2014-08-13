@@ -37,10 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Cidade.findById", query = "SELECT c FROM Cidade c WHERE c.id = :id"),
     @NamedQuery(name = "Cidade.findByNome", query = "SELECT c FROM Cidade c WHERE c.nome = :nome")})
 public class Cidade implements Serializable {
-    @OneToMany(mappedBy = "cidadeFk")
-    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
-    @OneToMany(mappedBy = "cidadeFk")
-    private Collection<EnderecoHistorico> enderecoHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,13 +48,17 @@ public class Cidade implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "nome")
     private String nome;
+    @OneToMany(mappedBy = "cidadeFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
     @JoinColumn(name = "estado_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Estado estadoFk;
     @OneToMany(mappedBy = "cidadeFk")
+    private Collection<Endereco> enderecoCollection;
+    @OneToMany(mappedBy = "cidadeFk")
     private Collection<PessoaFisica> pessoaFisicaCollection;
     @OneToMany(mappedBy = "cidadeFk")
-    private Collection<Endereco> enderecoCollection;
+    private Collection<EnderecoHistorico> enderecoHistoricoCollection;
 
     public Cidade() {
     }
@@ -88,12 +88,30 @@ public class Cidade implements Serializable {
         this.nome = nome;
     }
 
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
+    }
+
     public Estado getEstadoFk() {
         return estadoFk;
     }
 
     public void setEstadoFk(Estado estadoFk) {
         this.estadoFk = estadoFk;
+    }
+
+    @XmlTransient
+    public Collection<Endereco> getEnderecoCollection() {
+        return enderecoCollection;
+    }
+
+    public void setEnderecoCollection(Collection<Endereco> enderecoCollection) {
+        this.enderecoCollection = enderecoCollection;
     }
 
     @XmlTransient
@@ -106,12 +124,12 @@ public class Cidade implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Endereco> getEnderecoCollection() {
-        return enderecoCollection;
+    public Collection<EnderecoHistorico> getEnderecoHistoricoCollection() {
+        return enderecoHistoricoCollection;
     }
 
-    public void setEnderecoCollection(Collection<Endereco> enderecoCollection) {
-        this.enderecoCollection = enderecoCollection;
+    public void setEnderecoHistoricoCollection(Collection<EnderecoHistorico> enderecoHistoricoCollection) {
+        this.enderecoHistoricoCollection = enderecoHistoricoCollection;
     }
 
     @Override
@@ -137,24 +155,6 @@ public class Cidade implements Serializable {
     @Override
     public String toString() {
         return "entidade.Cidade[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
-        return pessoaFisicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
-        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<EnderecoHistorico> getEnderecoHistoricoCollection() {
-        return enderecoHistoricoCollection;
-    }
-
-    public void setEnderecoHistoricoCollection(Collection<EnderecoHistorico> enderecoHistoricoCollection) {
-        this.enderecoHistoricoCollection = enderecoHistoricoCollection;
     }
     
 }

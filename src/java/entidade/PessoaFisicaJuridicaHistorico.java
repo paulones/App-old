@@ -7,7 +7,6 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,8 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,10 +32,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findAll", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p"),
     @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findById", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.id = :id"),
+    @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByIdFk", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.idFk = :idFk"),
+    @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByTipo", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.tipo = :tipo"),
     @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByCapitalDeParticipacao", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.capitalDeParticipacao = :capitalDeParticipacao"),
     @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByDataDeInicio", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.dataDeInicio = :dataDeInicio"),
-    @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByDataDeTermino", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.dataDeTermino = :dataDeTermino"),
-    @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
+    @NamedQuery(name = "PessoaFisicaJuridicaHistorico.findByDataDeTermino", query = "SELECT p FROM PessoaFisicaJuridicaHistorico p WHERE p.dataDeTermino = :dataDeTermino")})
 public class PessoaFisicaJuridicaHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,6 +44,15 @@ public class PessoaFisicaJuridicaHistorico implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "id_fk")
+    private int idFk;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "tipo")
+    private String tipo;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "capital_de_participacao")
     private Float capitalDeParticipacao;
@@ -55,25 +62,15 @@ public class PessoaFisicaJuridicaHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_de_termino")
     private String dataDeTermino;
-    @Basic(optional = false)
-    @Column(name = "data_de_modificacao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataDeModificacao;
     @JoinColumn(name = "funcao_fk", referencedColumnName = "id")
     @ManyToOne
     private Funcao funcaoFk;
     @JoinColumn(name = "pessoa_fisica_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaFisica pessoaFisicaFk;
-    @JoinColumn(name = "pessoa_fisica_juridica_fk", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private PessoaFisicaJuridica pessoaFisicaJuridicaFk;
     @JoinColumn(name = "pessoa_juridica_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaJuridica pessoaJuridicaFk;
-    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private Usuario usuarioFk;
 
     public PessoaFisicaJuridicaHistorico() {
     }
@@ -82,9 +79,10 @@ public class PessoaFisicaJuridicaHistorico implements Serializable {
         this.id = id;
     }
 
-    public PessoaFisicaJuridicaHistorico(Integer id, Date dataDeModificacao) {
+    public PessoaFisicaJuridicaHistorico(Integer id, int idFk, String tipo) {
         this.id = id;
-        this.dataDeModificacao = dataDeModificacao;
+        this.idFk = idFk;
+        this.tipo = tipo;
     }
 
     public Integer getId() {
@@ -93,6 +91,22 @@ public class PessoaFisicaJuridicaHistorico implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public int getIdFk() {
+        return idFk;
+    }
+
+    public void setIdFk(int idFk) {
+        this.idFk = idFk;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public Float getCapitalDeParticipacao() {
@@ -119,14 +133,6 @@ public class PessoaFisicaJuridicaHistorico implements Serializable {
         this.dataDeTermino = dataDeTermino;
     }
 
-    public Date getDataDeModificacao() {
-        return dataDeModificacao;
-    }
-
-    public void setDataDeModificacao(Date dataDeModificacao) {
-        this.dataDeModificacao = dataDeModificacao;
-    }
-
     public Funcao getFuncaoFk() {
         return funcaoFk;
     }
@@ -143,28 +149,12 @@ public class PessoaFisicaJuridicaHistorico implements Serializable {
         this.pessoaFisicaFk = pessoaFisicaFk;
     }
 
-    public PessoaFisicaJuridica getPessoaFisicaJuridicaFk() {
-        return pessoaFisicaJuridicaFk;
-    }
-
-    public void setPessoaFisicaJuridicaFk(PessoaFisicaJuridica pessoaFisicaJuridicaFk) {
-        this.pessoaFisicaJuridicaFk = pessoaFisicaJuridicaFk;
-    }
-
     public PessoaJuridica getPessoaJuridicaFk() {
         return pessoaJuridicaFk;
     }
 
     public void setPessoaJuridicaFk(PessoaJuridica pessoaJuridicaFk) {
         this.pessoaJuridicaFk = pessoaJuridicaFk;
-    }
-
-    public Usuario getUsuarioFk() {
-        return usuarioFk;
-    }
-
-    public void setUsuarioFk(Usuario usuarioFk) {
-        this.usuarioFk = usuarioFk;
     }
 
     @Override

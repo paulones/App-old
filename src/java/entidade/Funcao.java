@@ -35,8 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Funcao.findById", query = "SELECT f FROM Funcao f WHERE f.id = :id"),
     @NamedQuery(name = "Funcao.findByFuncao", query = "SELECT f FROM Funcao f WHERE f.funcao = :funcao")})
 public class Funcao implements Serializable {
-    @OneToMany(mappedBy = "funcaoFk")
-    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +48,8 @@ public class Funcao implements Serializable {
     private String funcao;
     @OneToMany(mappedBy = "funcaoFk")
     private Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection;
+    @OneToMany(mappedBy = "funcaoFk")
+    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
 
     public Funcao() {
     }
@@ -88,6 +88,15 @@ public class Funcao implements Serializable {
         this.pessoaFisicaJuridicaCollection = pessoaFisicaJuridicaCollection;
     }
 
+    @XmlTransient
+    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
+        return pessoaFisicaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
+        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -111,15 +120,6 @@ public class Funcao implements Serializable {
     @Override
     public String toString() {
         return "entidade.Funcao[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
-        return pessoaFisicaJuridicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
-        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
     }
     
 }

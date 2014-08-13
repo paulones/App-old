@@ -41,19 +41,24 @@ public class PaisDAO implements Serializable {
     }
 
     public void create(Pais pais) throws RollbackFailureException, Exception {
+        if (pais.getPessoaFisicaHistoricoCollection() == null) {
+            pais.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
+        }
         if (pais.getEstadoCollection() == null) {
             pais.setEstadoCollection(new ArrayList<Estado>());
         }
         if (pais.getPessoaFisicaCollection() == null) {
             pais.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
         }
-        if (pais.getPessoaFisicaHistoricoCollection() == null) {
-            pais.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
-        }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
+            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : pais.getPessoaFisicaHistoricoCollection()) {
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaHistoricoCollection.add(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach);
+            }
+            pais.setPessoaFisicaHistoricoCollection(attachedPessoaFisicaHistoricoCollection);
             Collection<Estado> attachedEstadoCollection = new ArrayList<Estado>();
             for (Estado estadoCollectionEstadoToAttach : pais.getEstadoCollection()) {
                 estadoCollectionEstadoToAttach = em.getReference(estadoCollectionEstadoToAttach.getClass(), estadoCollectionEstadoToAttach.getId());
@@ -66,13 +71,16 @@ public class PaisDAO implements Serializable {
                 attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
             }
             pais.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
-            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : pais.getPessoaFisicaHistoricoCollection()) {
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
-                attachedPessoaFisicaHistoricoCollection.add(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach);
-            }
-            pais.setPessoaFisicaHistoricoCollection(attachedPessoaFisicaHistoricoCollection);
             em.persist(pais);
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pais.getPessoaFisicaHistoricoCollection()) {
+                Pais oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPaisFk();
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setPaisFk(pais);
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                if (oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
+                    oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                    oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                }
+            }
             for (Estado estadoCollectionEstado : pais.getEstadoCollection()) {
                 Pais oldPaisFkOfEstadoCollectionEstado = estadoCollectionEstado.getPaisFk();
                 estadoCollectionEstado.setPaisFk(pais);
@@ -89,15 +97,6 @@ public class PaisDAO implements Serializable {
                 if (oldPaisFkOfPessoaFisicaCollectionPessoaFisica != null) {
                     oldPaisFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
                     oldPaisFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldPaisFkOfPessoaFisicaCollectionPessoaFisica);
-                }
-            }
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pais.getPessoaFisicaHistoricoCollection()) {
-                Pais oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPaisFk();
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setPaisFk(pais);
-                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
-                if (oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
-                    oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
-                    oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldPaisFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -118,15 +117,14 @@ public class PaisDAO implements Serializable {
     public void edit(Pais pais) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Pais persistentPais = em.find(Pais.class, pais.getId());
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentPais.getPessoaFisicaHistoricoCollection();
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = pais.getPessoaFisicaHistoricoCollection();
             Collection<Estado> estadoCollectionOld = persistentPais.getEstadoCollection();
             Collection<Estado> estadoCollectionNew = pais.getEstadoCollection();
             Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentPais.getPessoaFisicaCollection();
             Collection<PessoaFisica> pessoaFisicaCollectionNew = pais.getPessoaFisicaCollection();
-            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentPais.getPessoaFisicaHistoricoCollection();
-            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = pais.getPessoaFisicaHistoricoCollection();
             List<String> illegalOrphanMessages = null;
             for (Estado estadoCollectionOldEstado : estadoCollectionOld) {
                 if (!estadoCollectionNew.contains(estadoCollectionOldEstado)) {
@@ -139,6 +137,13 @@ public class PaisDAO implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
+                pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaHistoricoCollectionNew.add(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach);
+            }
+            pessoaFisicaHistoricoCollectionNew = attachedPessoaFisicaHistoricoCollectionNew;
+            pais.setPessoaFisicaHistoricoCollection(pessoaFisicaHistoricoCollectionNew);
             Collection<Estado> attachedEstadoCollectionNew = new ArrayList<Estado>();
             for (Estado estadoCollectionNewEstadoToAttach : estadoCollectionNew) {
                 estadoCollectionNewEstadoToAttach = em.getReference(estadoCollectionNewEstadoToAttach.getClass(), estadoCollectionNewEstadoToAttach.getId());
@@ -153,14 +158,24 @@ public class PaisDAO implements Serializable {
             }
             pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
             pais.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
-            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
-                pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
-                attachedPessoaFisicaHistoricoCollectionNew.add(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach);
-            }
-            pessoaFisicaHistoricoCollectionNew = attachedPessoaFisicaHistoricoCollectionNew;
-            pais.setPessoaFisicaHistoricoCollection(pessoaFisicaHistoricoCollectionNew);
             pais = em.merge(pais);
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
+                if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
+                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico.setPaisFk(null);
+                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico);
+                }
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
+                if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
+                    Pais oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPaisFk();
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.setPaisFk(pais);
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    if (oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(pais)) {
+                        oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                        oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    }
+                }
+            }
             for (Estado estadoCollectionNewEstado : estadoCollectionNew) {
                 if (!estadoCollectionOld.contains(estadoCollectionNewEstado)) {
                     Pais oldPaisFkOfEstadoCollectionNewEstado = estadoCollectionNewEstado.getPaisFk();
@@ -189,23 +204,6 @@ public class PaisDAO implements Serializable {
                     }
                 }
             }
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
-                if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
-                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico.setPaisFk(null);
-                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico);
-                }
-            }
-            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
-                if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
-                    Pais oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPaisFk();
-                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.setPaisFk(pais);
-                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
-                    if (oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(pais)) {
-                        oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
-                        oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldPaisFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
-                    }
-                }
-            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -231,8 +229,7 @@ public class PaisDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Pais pais;
             try {
                 pais = em.getReference(Pais.class, id);
@@ -251,15 +248,15 @@ public class PaisDAO implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Collection<PessoaFisica> pessoaFisicaCollection = pais.getPessoaFisicaCollection();
-            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
-                pessoaFisicaCollectionPessoaFisica.setPaisFk(null);
-                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
-            }
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection = pais.getPessoaFisicaHistoricoCollection();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pessoaFisicaHistoricoCollection) {
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setPaisFk(null);
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+            }
+            Collection<PessoaFisica> pessoaFisicaCollection = pais.getPessoaFisicaCollection();
+            for (PessoaFisica pessoaFisicaCollectionPessoaFisica : pessoaFisicaCollection) {
+                pessoaFisicaCollectionPessoaFisica.setPaisFk(null);
+                pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
             em.remove(pais);
             em.getTransaction().commit();
