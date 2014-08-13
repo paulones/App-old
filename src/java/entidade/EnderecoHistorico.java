@@ -7,9 +7,8 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,33 +18,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author paulones
  */
 @Entity
-@Table(name = "endereco")
+@Table(name = "endereco_historico")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Endereco.findAll", query = "SELECT e FROM Endereco e"),
-    @NamedQuery(name = "Endereco.findById", query = "SELECT e FROM Endereco e WHERE e.id = :id"),
-    @NamedQuery(name = "Endereco.findByIdFk", query = "SELECT e FROM Endereco e WHERE e.idFk = :idFk"),
-    @NamedQuery(name = "Endereco.findByTipo", query = "SELECT e FROM Endereco e WHERE e.tipo = :tipo"),
-    @NamedQuery(name = "Endereco.findByEndereco", query = "SELECT e FROM Endereco e WHERE e.endereco = :endereco"),
-    @NamedQuery(name = "Endereco.findByNumero", query = "SELECT e FROM Endereco e WHERE e.numero = :numero"),
-    @NamedQuery(name = "Endereco.findByComplemento", query = "SELECT e FROM Endereco e WHERE e.complemento = :complemento"),
-    @NamedQuery(name = "Endereco.findByBairro", query = "SELECT e FROM Endereco e WHERE e.bairro = :bairro"),
-    @NamedQuery(name = "Endereco.findByCep", query = "SELECT e FROM Endereco e WHERE e.cep = :cep")})
-public class Endereco implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "enderecoFk")
-    private Collection<EnderecoHistorico> enderecoHistoricoCollection;
+    @NamedQuery(name = "EnderecoHistorico.findAll", query = "SELECT e FROM EnderecoHistorico e"),
+    @NamedQuery(name = "EnderecoHistorico.findById", query = "SELECT e FROM EnderecoHistorico e WHERE e.id = :id"),
+    @NamedQuery(name = "EnderecoHistorico.findByIdFk", query = "SELECT e FROM EnderecoHistorico e WHERE e.idFk = :idFk"),
+    @NamedQuery(name = "EnderecoHistorico.findByTipo", query = "SELECT e FROM EnderecoHistorico e WHERE e.tipo = :tipo"),
+    @NamedQuery(name = "EnderecoHistorico.findByEndereco", query = "SELECT e FROM EnderecoHistorico e WHERE e.endereco = :endereco"),
+    @NamedQuery(name = "EnderecoHistorico.findByNumero", query = "SELECT e FROM EnderecoHistorico e WHERE e.numero = :numero"),
+    @NamedQuery(name = "EnderecoHistorico.findByComplemento", query = "SELECT e FROM EnderecoHistorico e WHERE e.complemento = :complemento"),
+    @NamedQuery(name = "EnderecoHistorico.findByBairro", query = "SELECT e FROM EnderecoHistorico e WHERE e.bairro = :bairro"),
+    @NamedQuery(name = "EnderecoHistorico.findByCep", query = "SELECT e FROM EnderecoHistorico e WHERE e.cep = :cep"),
+    @NamedQuery(name = "EnderecoHistorico.findByDataDeModificacao", query = "SELECT e FROM EnderecoHistorico e WHERE e.dataDeModificacao = :dataDeModificacao")})
+public class EnderecoHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,24 +73,35 @@ public class Endereco implements Serializable {
     @Size(max = 8)
     @Column(name = "cep")
     private String cep;
+    @Basic(optional = false)
+    @Column(name = "data_de_modificacao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataDeModificacao;
     @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
     @ManyToOne
     private Cidade cidadeFk;
+    @JoinColumn(name = "endereco_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Endereco enderecoFk;
     @JoinColumn(name = "estado_fk", referencedColumnName = "id")
     @ManyToOne
     private Estado estadoFk;
+    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioFk;
 
-    public Endereco() {
+    public EnderecoHistorico() {
     }
 
-    public Endereco(Integer id) {
+    public EnderecoHistorico(Integer id) {
         this.id = id;
     }
 
-    public Endereco(Integer id, int idFk, String tipo) {
+    public EnderecoHistorico(Integer id, int idFk, String tipo, Date dataDeModificacao) {
         this.id = id;
         this.idFk = idFk;
         this.tipo = tipo;
+        this.dataDeModificacao = dataDeModificacao;
     }
 
     public Integer getId() {
@@ -159,6 +168,14 @@ public class Endereco implements Serializable {
         this.cep = cep;
     }
 
+    public Date getDataDeModificacao() {
+        return dataDeModificacao;
+    }
+
+    public void setDataDeModificacao(Date dataDeModificacao) {
+        this.dataDeModificacao = dataDeModificacao;
+    }
+
     public Cidade getCidadeFk() {
         return cidadeFk;
     }
@@ -167,12 +184,28 @@ public class Endereco implements Serializable {
         this.cidadeFk = cidadeFk;
     }
 
+    public Endereco getEnderecoFk() {
+        return enderecoFk;
+    }
+
+    public void setEnderecoFk(Endereco enderecoFk) {
+        this.enderecoFk = enderecoFk;
+    }
+
     public Estado getEstadoFk() {
         return estadoFk;
     }
 
     public void setEstadoFk(Estado estadoFk) {
         this.estadoFk = estadoFk;
+    }
+
+    public Usuario getUsuarioFk() {
+        return usuarioFk;
+    }
+
+    public void setUsuarioFk(Usuario usuarioFk) {
+        this.usuarioFk = usuarioFk;
     }
 
     @Override
@@ -185,10 +218,10 @@ public class Endereco implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Endereco)) {
+        if (!(object instanceof EnderecoHistorico)) {
             return false;
         }
-        Endereco other = (Endereco) object;
+        EnderecoHistorico other = (EnderecoHistorico) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -197,16 +230,7 @@ public class Endereco implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.Endereco[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<EnderecoHistorico> getEnderecoHistoricoCollection() {
-        return enderecoHistoricoCollection;
-    }
-
-    public void setEnderecoHistoricoCollection(Collection<EnderecoHistorico> enderecoHistoricoCollection) {
-        this.enderecoHistoricoCollection = enderecoHistoricoCollection;
+        return "entidade.EnderecoHistorico[ id=" + id + " ]";
     }
     
 }

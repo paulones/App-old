@@ -7,9 +7,8 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,43 +18,38 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author paulones
  */
 @Entity
-@Table(name = "pessoa_juridica")
+@Table(name = "pessoa_juridica_historico")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PessoaJuridica.findAll", query = "SELECT p FROM PessoaJuridica p"),
-    @NamedQuery(name = "PessoaJuridica.findById", query = "SELECT p FROM PessoaJuridica p WHERE p.id = :id"),
-    @NamedQuery(name = "PessoaJuridica.findByNome", query = "SELECT p FROM PessoaJuridica p WHERE p.nome = :nome"),
-    @NamedQuery(name = "PessoaJuridica.findByNomeFantasia", query = "SELECT p FROM PessoaJuridica p WHERE p.nomeFantasia = :nomeFantasia"),
-    @NamedQuery(name = "PessoaJuridica.findByCnpj", query = "SELECT p FROM PessoaJuridica p WHERE p.cnpj = :cnpj"),
-    @NamedQuery(name = "PessoaJuridica.findByIncricaoEstadual", query = "SELECT p FROM PessoaJuridica p WHERE p.incricaoEstadual = :incricaoEstadual"),
-    @NamedQuery(name = "PessoaJuridica.findByIncricaoMunicipal", query = "SELECT p FROM PessoaJuridica p WHERE p.incricaoMunicipal = :incricaoMunicipal"),
-    @NamedQuery(name = "PessoaJuridica.findBySituacao", query = "SELECT p FROM PessoaJuridica p WHERE p.situacao = :situacao"),
-    @NamedQuery(name = "PessoaJuridica.findByMotivoDaDesativacao", query = "SELECT p FROM PessoaJuridica p WHERE p.motivoDaDesativacao = :motivoDaDesativacao"),
-    @NamedQuery(name = "PessoaJuridica.findByDataDeCriacao", query = "SELECT p FROM PessoaJuridica p WHERE p.dataDeCriacao = :dataDeCriacao"),
-    @NamedQuery(name = "PessoaJuridica.findByGrupoEconomico", query = "SELECT p FROM PessoaJuridica p WHERE p.grupoEconomico = :grupoEconomico"),
-    @NamedQuery(name = "PessoaJuridica.findByCnae", query = "SELECT p FROM PessoaJuridica p WHERE p.cnae = :cnae"),
-    @NamedQuery(name = "PessoaJuridica.findByNire", query = "SELECT p FROM PessoaJuridica p WHERE p.nire = :nire"),
-    @NamedQuery(name = "PessoaJuridica.findByAtividadePrincipal", query = "SELECT p FROM PessoaJuridica p WHERE p.atividadePrincipal = :atividadePrincipal"),
-    @NamedQuery(name = "PessoaJuridica.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridica p WHERE p.atividadeSecundaria = :atividadeSecundaria")})
-public class PessoaJuridica implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaFk")
-    private Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection;
-    @OneToMany(mappedBy = "sucessaoFk")
-    private Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaFk")
-    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
+    @NamedQuery(name = "PessoaJuridicaHistorico.findAll", query = "SELECT p FROM PessoaJuridicaHistorico p"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findById", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.id = :id"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByNome", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.nome = :nome"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByNomeFantasia", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.nomeFantasia = :nomeFantasia"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByCnpj", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.cnpj = :cnpj"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByIncricaoEstadual", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.incricaoEstadual = :incricaoEstadual"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByIncricaoMunicipal", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.incricaoMunicipal = :incricaoMunicipal"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findBySituacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.situacao = :situacao"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByMotivoDaDesativacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.motivoDaDesativacao = :motivoDaDesativacao"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByDataDeCriacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.dataDeCriacao = :dataDeCriacao"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByGrupoEconomico", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.grupoEconomico = :grupoEconomico"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByCnae", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.cnae = :cnae"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByNire", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.nire = :nire"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByAtividadePrincipal", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.atividadePrincipal = :atividadePrincipal"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.atividadeSecundaria = :atividadeSecundaria"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
+public class PessoaJuridicaHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,8 +64,9 @@ public class PessoaJuridica implements Serializable {
     @Size(max = 50)
     @Column(name = "nome_fantasia")
     private String nomeFantasia;
-    @Size(max = 14)
+    @Basic(optional = false)
     @NotNull
+    @Size(min = 1, max = 14)
     @Column(name = "cnpj")
     private String cnpj;
     @Size(max = 12)
@@ -103,27 +98,35 @@ public class PessoaJuridica implements Serializable {
     @Size(max = 300)
     @Column(name = "atividade_secundaria")
     private String atividadeSecundaria;
-    @OneToMany(mappedBy = "sucessaoFk")
-    private Collection<PessoaJuridica> pessoaJuridicaCollection;
+    @Basic(optional = false)
+    @Column(name = "data_de_modificacao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataDeModificacao;
+    @JoinColumn(name = "pessoa_juridica_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private PessoaJuridica pessoaJuridicaFk;
     @JoinColumn(name = "sucessao_fk", referencedColumnName = "id")
     @ManyToOne
     private PessoaJuridica sucessaoFk;
     @JoinColumn(name = "tipo_empresarial_fk", referencedColumnName = "id")
     @ManyToOne
     private TipoEmpresarial tipoEmpresarialFk;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaFk")
-    private Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection;
+    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioFk;
 
-    public PessoaJuridica() {
+    public PessoaJuridicaHistorico() {
     }
 
-    public PessoaJuridica(Integer id) {
+    public PessoaJuridicaHistorico(Integer id) {
         this.id = id;
     }
 
-    public PessoaJuridica(Integer id, String nome) {
+    public PessoaJuridicaHistorico(Integer id, String nome, String cnpj, Date dataDeModificacao) {
         this.id = id;
         this.nome = nome;
+        this.cnpj = cnpj;
+        this.dataDeModificacao = dataDeModificacao;
     }
 
     public Integer getId() {
@@ -238,13 +241,20 @@ public class PessoaJuridica implements Serializable {
         this.atividadeSecundaria = atividadeSecundaria;
     }
 
-    @XmlTransient
-    public Collection<PessoaJuridica> getPessoaJuridicaCollection() {
-        return pessoaJuridicaCollection;
+    public Date getDataDeModificacao() {
+        return dataDeModificacao;
     }
 
-    public void setPessoaJuridicaCollection(Collection<PessoaJuridica> pessoaJuridicaCollection) {
-        this.pessoaJuridicaCollection = pessoaJuridicaCollection;
+    public void setDataDeModificacao(Date dataDeModificacao) {
+        this.dataDeModificacao = dataDeModificacao;
+    }
+
+    public PessoaJuridica getPessoaJuridicaFk() {
+        return pessoaJuridicaFk;
+    }
+
+    public void setPessoaJuridicaFk(PessoaJuridica pessoaJuridicaFk) {
+        this.pessoaJuridicaFk = pessoaJuridicaFk;
     }
 
     public PessoaJuridica getSucessaoFk() {
@@ -263,13 +273,12 @@ public class PessoaJuridica implements Serializable {
         this.tipoEmpresarialFk = tipoEmpresarialFk;
     }
 
-    @XmlTransient
-    public Collection<PessoaFisicaJuridica> getPessoaFisicaJuridicaCollection() {
-        return pessoaFisicaJuridicaCollection;
+    public Usuario getUsuarioFk() {
+        return usuarioFk;
     }
 
-    public void setPessoaFisicaJuridicaCollection(Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection) {
-        this.pessoaFisicaJuridicaCollection = pessoaFisicaJuridicaCollection;
+    public void setUsuarioFk(Usuario usuarioFk) {
+        this.usuarioFk = usuarioFk;
     }
 
     @Override
@@ -282,10 +291,10 @@ public class PessoaJuridica implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PessoaJuridica)) {
+        if (!(object instanceof PessoaJuridicaHistorico)) {
             return false;
         }
-        PessoaJuridica other = (PessoaJuridica) object;
+        PessoaJuridicaHistorico other = (PessoaJuridicaHistorico) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -294,34 +303,7 @@ public class PessoaJuridica implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.PessoaJuridica[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
-        return pessoaFisicaJuridicaHistoricoCollection;
-    }
-
-    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
-        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<PessoaJuridicaHistorico> getPessoaJuridicaHistoricoCollection() {
-        return pessoaJuridicaHistoricoCollection;
-    }
-
-    public void setPessoaJuridicaHistoricoCollection(Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection) {
-        this.pessoaJuridicaHistoricoCollection = pessoaJuridicaHistoricoCollection;
-    }
-
-    @XmlTransient
-    public Collection<PessoaJuridicaHistorico> getPessoaJuridicaHistoricoCollection1() {
-        return pessoaJuridicaHistoricoCollection1;
-    }
-
-    public void setPessoaJuridicaHistoricoCollection1(Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection1) {
-        this.pessoaJuridicaHistoricoCollection1 = pessoaJuridicaHistoricoCollection1;
+        return "entidade.PessoaJuridicaHistorico[ id=" + id + " ]";
     }
     
 }

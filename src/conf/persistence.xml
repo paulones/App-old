@@ -16,6 +16,10 @@
     <class>entidade.PessoaFisicaJuridica</class>
     <class>entidade.PessoaJuridica</class>
     <class>entidade.TipoEmpresarial</class>
+    <class>entidade.EnderecoHistorico</class>
+    <class>entidade.PessoaFisicaHistorico</class>
+    <class>entidade.PessoaFisicaJuridicaHistorico</class>
+    <class>entidade.PessoaJuridicaHistorico</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <validation-mode>NONE</validation-mode>
     <properties>

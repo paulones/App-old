@@ -15,6 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaHistorico;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +41,9 @@ public class NacionalidadeDAO implements Serializable {
         if (nacionalidade.getPessoaFisicaCollection() == null) {
             nacionalidade.setPessoaFisicaCollection(new ArrayList<PessoaFisica>());
         }
+        if (nacionalidade.getPessoaFisicaHistoricoCollection() == null) {
+            nacionalidade.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,6 +54,12 @@ public class NacionalidadeDAO implements Serializable {
                 attachedPessoaFisicaCollection.add(pessoaFisicaCollectionPessoaFisicaToAttach);
             }
             nacionalidade.setPessoaFisicaCollection(attachedPessoaFisicaCollection);
+            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : nacionalidade.getPessoaFisicaHistoricoCollection()) {
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaHistoricoCollection.add(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach);
+            }
+            nacionalidade.setPessoaFisicaHistoricoCollection(attachedPessoaFisicaHistoricoCollection);
             em.persist(nacionalidade);
             for (PessoaFisica pessoaFisicaCollectionPessoaFisica : nacionalidade.getPessoaFisicaCollection()) {
                 Nacionalidade oldNacionalidadeFkOfPessoaFisicaCollectionPessoaFisica = pessoaFisicaCollectionPessoaFisica.getNacionalidadeFk();
@@ -58,6 +68,15 @@ public class NacionalidadeDAO implements Serializable {
                 if (oldNacionalidadeFkOfPessoaFisicaCollectionPessoaFisica != null) {
                     oldNacionalidadeFkOfPessoaFisicaCollectionPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionPessoaFisica);
                     oldNacionalidadeFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldNacionalidadeFkOfPessoaFisicaCollectionPessoaFisica);
+                }
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : nacionalidade.getPessoaFisicaHistoricoCollection()) {
+                Nacionalidade oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getNacionalidadeFk();
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setNacionalidadeFk(nacionalidade);
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                if (oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
+                    oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                    oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -83,6 +102,8 @@ public class NacionalidadeDAO implements Serializable {
             Nacionalidade persistentNacionalidade = em.find(Nacionalidade.class, nacionalidade.getId());
             Collection<PessoaFisica> pessoaFisicaCollectionOld = persistentNacionalidade.getPessoaFisicaCollection();
             Collection<PessoaFisica> pessoaFisicaCollectionNew = nacionalidade.getPessoaFisicaCollection();
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentNacionalidade.getPessoaFisicaHistoricoCollection();
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = nacionalidade.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisica> attachedPessoaFisicaCollectionNew = new ArrayList<PessoaFisica>();
             for (PessoaFisica pessoaFisicaCollectionNewPessoaFisicaToAttach : pessoaFisicaCollectionNew) {
                 pessoaFisicaCollectionNewPessoaFisicaToAttach = em.getReference(pessoaFisicaCollectionNewPessoaFisicaToAttach.getClass(), pessoaFisicaCollectionNewPessoaFisicaToAttach.getId());
@@ -90,6 +111,13 @@ public class NacionalidadeDAO implements Serializable {
             }
             pessoaFisicaCollectionNew = attachedPessoaFisicaCollectionNew;
             nacionalidade.setPessoaFisicaCollection(pessoaFisicaCollectionNew);
+            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
+                pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaHistoricoCollectionNew.add(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach);
+            }
+            pessoaFisicaHistoricoCollectionNew = attachedPessoaFisicaHistoricoCollectionNew;
+            nacionalidade.setPessoaFisicaHistoricoCollection(pessoaFisicaHistoricoCollectionNew);
             nacionalidade = em.merge(nacionalidade);
             for (PessoaFisica pessoaFisicaCollectionOldPessoaFisica : pessoaFisicaCollectionOld) {
                 if (!pessoaFisicaCollectionNew.contains(pessoaFisicaCollectionOldPessoaFisica)) {
@@ -105,6 +133,23 @@ public class NacionalidadeDAO implements Serializable {
                     if (oldNacionalidadeFkOfPessoaFisicaCollectionNewPessoaFisica != null && !oldNacionalidadeFkOfPessoaFisicaCollectionNewPessoaFisica.equals(nacionalidade)) {
                         oldNacionalidadeFkOfPessoaFisicaCollectionNewPessoaFisica.getPessoaFisicaCollection().remove(pessoaFisicaCollectionNewPessoaFisica);
                         oldNacionalidadeFkOfPessoaFisicaCollectionNewPessoaFisica = em.merge(oldNacionalidadeFkOfPessoaFisicaCollectionNewPessoaFisica);
+                    }
+                }
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
+                if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
+                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico.setNacionalidadeFk(null);
+                    pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico);
+                }
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
+                if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
+                    Nacionalidade oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getNacionalidadeFk();
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.setNacionalidadeFk(nacionalidade);
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    if (oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(nacionalidade)) {
+                        oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                        oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldNacionalidadeFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
                     }
                 }
             }
@@ -147,6 +192,11 @@ public class NacionalidadeDAO implements Serializable {
                 pessoaFisicaCollectionPessoaFisica.setNacionalidadeFk(null);
                 pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection = nacionalidade.getPessoaFisicaHistoricoCollection();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pessoaFisicaHistoricoCollection) {
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setNacionalidadeFk(null);
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+            }
             em.remove(nacionalidade);
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -162,7 +212,6 @@ public class NacionalidadeDAO implements Serializable {
             }
         }
     }
-
     public List<Nacionalidade> findNacionalidadeEntities() {
         return findNacionalidadeEntities(true, -1, -1);
     }

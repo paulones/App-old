@@ -8,10 +8,15 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
+import entidade.EnderecoHistorico;
+import entidade.PessoaFisicaHistorico;
+import entidade.PessoaFisicaJuridicaHistorico;
+import entidade.PessoaJuridicaHistorico;
 import entidade.RecuperarSenha;
 import entidade.Usuario;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,6 +43,18 @@ public class UsuarioDAO implements Serializable {
     }
 
     public void create(Usuario usuario) throws RollbackFailureException, Exception {
+        if (usuario.getPessoaFisicaHistoricoCollection() == null) {
+            usuario.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
+        }
+        if (usuario.getPessoaFisicaJuridicaHistoricoCollection() == null) {
+            usuario.setPessoaFisicaJuridicaHistoricoCollection(new ArrayList<PessoaFisicaJuridicaHistorico>());
+        }
+        if (usuario.getEnderecoHistoricoCollection() == null) {
+            usuario.setEnderecoHistoricoCollection(new ArrayList<EnderecoHistorico>());
+        }
+        if (usuario.getPessoaJuridicaHistoricoCollection() == null) {
+            usuario.setPessoaJuridicaHistoricoCollection(new ArrayList<PessoaJuridicaHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -47,6 +64,30 @@ public class UsuarioDAO implements Serializable {
                 recuperarSenha = em.getReference(recuperarSenha.getClass(), recuperarSenha.getId());
                 usuario.setRecuperarSenha(recuperarSenha);
             }
+            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : usuario.getPessoaFisicaHistoricoCollection()) {
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaHistoricoCollection.add(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach);
+            }
+            usuario.setPessoaFisicaHistoricoCollection(attachedPessoaFisicaHistoricoCollection);
+            Collection<PessoaFisicaJuridicaHistorico> attachedPessoaFisicaJuridicaHistoricoCollection = new ArrayList<PessoaFisicaJuridicaHistorico>();
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach : usuario.getPessoaFisicaJuridicaHistoricoCollection()) {
+                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach = em.getReference(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach.getClass(), pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach.getId());
+                attachedPessoaFisicaJuridicaHistoricoCollection.add(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach);
+            }
+            usuario.setPessoaFisicaJuridicaHistoricoCollection(attachedPessoaFisicaJuridicaHistoricoCollection);
+            Collection<EnderecoHistorico> attachedEnderecoHistoricoCollection = new ArrayList<EnderecoHistorico>();
+            for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistoricoToAttach : usuario.getEnderecoHistoricoCollection()) {
+                enderecoHistoricoCollectionEnderecoHistoricoToAttach = em.getReference(enderecoHistoricoCollectionEnderecoHistoricoToAttach.getClass(), enderecoHistoricoCollectionEnderecoHistoricoToAttach.getId());
+                attachedEnderecoHistoricoCollection.add(enderecoHistoricoCollectionEnderecoHistoricoToAttach);
+            }
+            usuario.setEnderecoHistoricoCollection(attachedEnderecoHistoricoCollection);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach : usuario.getPessoaJuridicaHistoricoCollection()) {
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollection.add(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach);
+            }
+            usuario.setPessoaJuridicaHistoricoCollection(attachedPessoaJuridicaHistoricoCollection);
             em.persist(usuario);
             if (recuperarSenha != null) {
                 Usuario oldUsuarioOfRecuperarSenha = recuperarSenha.getUsuario();
@@ -56,6 +97,42 @@ public class UsuarioDAO implements Serializable {
                 }
                 recuperarSenha.setUsuario(usuario);
                 recuperarSenha = em.merge(recuperarSenha);
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : usuario.getPessoaFisicaHistoricoCollection()) {
+                Usuario oldUsuarioFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getUsuarioFk();
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.setUsuarioFk(usuario);
+                pessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                if (oldUsuarioFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico != null) {
+                    oldUsuarioFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                    oldUsuarioFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = em.merge(oldUsuarioFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico);
+                }
+            }
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico : usuario.getPessoaFisicaJuridicaHistoricoCollection()) {
+                Usuario oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.getUsuarioFk();
+                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.setUsuarioFk(usuario);
+                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = em.merge(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
+                if (oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico != null) {
+                    oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.getPessoaFisicaJuridicaHistoricoCollection().remove(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
+                    oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = em.merge(oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
+                }
+            }
+            for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistorico : usuario.getEnderecoHistoricoCollection()) {
+                Usuario oldUsuarioFkOfEnderecoHistoricoCollectionEnderecoHistorico = enderecoHistoricoCollectionEnderecoHistorico.getUsuarioFk();
+                enderecoHistoricoCollectionEnderecoHistorico.setUsuarioFk(usuario);
+                enderecoHistoricoCollectionEnderecoHistorico = em.merge(enderecoHistoricoCollectionEnderecoHistorico);
+                if (oldUsuarioFkOfEnderecoHistoricoCollectionEnderecoHistorico != null) {
+                    oldUsuarioFkOfEnderecoHistoricoCollectionEnderecoHistorico.getEnderecoHistoricoCollection().remove(enderecoHistoricoCollectionEnderecoHistorico);
+                    oldUsuarioFkOfEnderecoHistoricoCollectionEnderecoHistorico = em.merge(oldUsuarioFkOfEnderecoHistoricoCollectionEnderecoHistorico);
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico : usuario.getPessoaJuridicaHistoricoCollection()) {
+                Usuario oldUsuarioFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getUsuarioFk();
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.setUsuarioFk(usuario);
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                if (oldUsuarioFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico != null) {
+                    oldUsuarioFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                    oldUsuarioFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(oldUsuarioFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -80,12 +157,52 @@ public class UsuarioDAO implements Serializable {
             Usuario persistentUsuario = em.find(Usuario.class, usuario.getId());
             RecuperarSenha recuperarSenhaOld = persistentUsuario.getRecuperarSenha();
             RecuperarSenha recuperarSenhaNew = usuario.getRecuperarSenha();
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentUsuario.getPessoaFisicaHistoricoCollection();
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = usuario.getPessoaFisicaHistoricoCollection();
+            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionOld = persistentUsuario.getPessoaFisicaJuridicaHistoricoCollection();
+            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionNew = usuario.getPessoaFisicaJuridicaHistoricoCollection();
+            Collection<EnderecoHistorico> enderecoHistoricoCollectionOld = persistentUsuario.getEnderecoHistoricoCollection();
+            Collection<EnderecoHistorico> enderecoHistoricoCollectionNew = usuario.getEnderecoHistoricoCollection();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOld = persistentUsuario.getPessoaJuridicaHistoricoCollection();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionNew = usuario.getPessoaJuridicaHistoricoCollection();
             List<String> illegalOrphanMessages = null;
             if (recuperarSenhaOld != null && !recuperarSenhaOld.equals(recuperarSenhaNew)) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("You must retain RecuperarSenha " + recuperarSenhaOld + " since its usuario field is not nullable.");
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOld) {
+                if (!pessoaFisicaHistoricoCollectionNew.contains(pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaFisicaHistorico " + pessoaFisicaHistoricoCollectionOldPessoaFisicaHistorico + " since its usuarioFk field is not nullable.");
+                }
+            }
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionOld) {
+                if (!pessoaFisicaJuridicaHistoricoCollectionNew.contains(pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaFisicaJuridicaHistorico " + pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico + " since its usuarioFk field is not nullable.");
+                }
+            }
+            for (EnderecoHistorico enderecoHistoricoCollectionOldEnderecoHistorico : enderecoHistoricoCollectionOld) {
+                if (!enderecoHistoricoCollectionNew.contains(enderecoHistoricoCollectionOldEnderecoHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain EnderecoHistorico " + enderecoHistoricoCollectionOldEnderecoHistorico + " since its usuarioFk field is not nullable.");
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOld) {
+                if (!pessoaJuridicaHistoricoCollectionNew.contains(pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaJuridicaHistorico " + pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico + " since its usuarioFk field is not nullable.");
+                }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
@@ -94,6 +211,34 @@ public class UsuarioDAO implements Serializable {
                 recuperarSenhaNew = em.getReference(recuperarSenhaNew.getClass(), recuperarSenhaNew.getId());
                 usuario.setRecuperarSenha(recuperarSenhaNew);
             }
+            Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
+                pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaHistoricoCollectionNew.add(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach);
+            }
+            pessoaFisicaHistoricoCollectionNew = attachedPessoaFisicaHistoricoCollectionNew;
+            usuario.setPessoaFisicaHistoricoCollection(pessoaFisicaHistoricoCollectionNew);
+            Collection<PessoaFisicaJuridicaHistorico> attachedPessoaFisicaJuridicaHistoricoCollectionNew = new ArrayList<PessoaFisicaJuridicaHistorico>();
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach : pessoaFisicaJuridicaHistoricoCollectionNew) {
+                pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach = em.getReference(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach.getClass(), pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach.getId());
+                attachedPessoaFisicaJuridicaHistoricoCollectionNew.add(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach);
+            }
+            pessoaFisicaJuridicaHistoricoCollectionNew = attachedPessoaFisicaJuridicaHistoricoCollectionNew;
+            usuario.setPessoaFisicaJuridicaHistoricoCollection(pessoaFisicaJuridicaHistoricoCollectionNew);
+            Collection<EnderecoHistorico> attachedEnderecoHistoricoCollectionNew = new ArrayList<EnderecoHistorico>();
+            for (EnderecoHistorico enderecoHistoricoCollectionNewEnderecoHistoricoToAttach : enderecoHistoricoCollectionNew) {
+                enderecoHistoricoCollectionNewEnderecoHistoricoToAttach = em.getReference(enderecoHistoricoCollectionNewEnderecoHistoricoToAttach.getClass(), enderecoHistoricoCollectionNewEnderecoHistoricoToAttach.getId());
+                attachedEnderecoHistoricoCollectionNew.add(enderecoHistoricoCollectionNewEnderecoHistoricoToAttach);
+            }
+            enderecoHistoricoCollectionNew = attachedEnderecoHistoricoCollectionNew;
+            usuario.setEnderecoHistoricoCollection(enderecoHistoricoCollectionNew);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollectionNew = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach : pessoaJuridicaHistoricoCollectionNew) {
+                pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollectionNew.add(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridicaHistoricoCollectionNew = attachedPessoaJuridicaHistoricoCollectionNew;
+            usuario.setPessoaJuridicaHistoricoCollection(pessoaJuridicaHistoricoCollectionNew);
             usuario = em.merge(usuario);
             if (recuperarSenhaNew != null && !recuperarSenhaNew.equals(recuperarSenhaOld)) {
                 Usuario oldUsuarioOfRecuperarSenha = recuperarSenhaNew.getUsuario();
@@ -103,6 +248,50 @@ public class UsuarioDAO implements Serializable {
                 }
                 recuperarSenhaNew.setUsuario(usuario);
                 recuperarSenhaNew = em.merge(recuperarSenhaNew);
+            }
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
+                if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
+                    Usuario oldUsuarioFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getUsuarioFk();
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.setUsuarioFk(usuario);
+                    pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    if (oldUsuarioFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico != null && !oldUsuarioFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.equals(usuario)) {
+                        oldUsuarioFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                        oldUsuarioFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = em.merge(oldUsuarioFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico);
+                    }
+                }
+            }
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionNew) {
+                if (!pessoaFisicaJuridicaHistoricoCollectionOld.contains(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico)) {
+                    Usuario oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico = pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.getUsuarioFk();
+                    pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.setUsuarioFk(usuario);
+                    pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico = em.merge(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico);
+                    if (oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico != null && !oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.equals(usuario)) {
+                        oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.getPessoaFisicaJuridicaHistoricoCollection().remove(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico);
+                        oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico = em.merge(oldUsuarioFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico);
+                    }
+                }
+            }
+            for (EnderecoHistorico enderecoHistoricoCollectionNewEnderecoHistorico : enderecoHistoricoCollectionNew) {
+                if (!enderecoHistoricoCollectionOld.contains(enderecoHistoricoCollectionNewEnderecoHistorico)) {
+                    Usuario oldUsuarioFkOfEnderecoHistoricoCollectionNewEnderecoHistorico = enderecoHistoricoCollectionNewEnderecoHistorico.getUsuarioFk();
+                    enderecoHistoricoCollectionNewEnderecoHistorico.setUsuarioFk(usuario);
+                    enderecoHistoricoCollectionNewEnderecoHistorico = em.merge(enderecoHistoricoCollectionNewEnderecoHistorico);
+                    if (oldUsuarioFkOfEnderecoHistoricoCollectionNewEnderecoHistorico != null && !oldUsuarioFkOfEnderecoHistoricoCollectionNewEnderecoHistorico.equals(usuario)) {
+                        oldUsuarioFkOfEnderecoHistoricoCollectionNewEnderecoHistorico.getEnderecoHistoricoCollection().remove(enderecoHistoricoCollectionNewEnderecoHistorico);
+                        oldUsuarioFkOfEnderecoHistoricoCollectionNewEnderecoHistorico = em.merge(oldUsuarioFkOfEnderecoHistoricoCollectionNewEnderecoHistorico);
+                    }
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionNew) {
+                if (!pessoaJuridicaHistoricoCollectionOld.contains(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico)) {
+                    Usuario oldUsuarioFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.getUsuarioFk();
+                    pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.setUsuarioFk(usuario);
+                    pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico);
+                    if (oldUsuarioFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico != null && !oldUsuarioFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.equals(usuario)) {
+                        oldUsuarioFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico);
+                        oldUsuarioFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = em.merge(oldUsuarioFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico);
+                    }
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -145,6 +334,34 @@ public class UsuarioDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the RecuperarSenha " + recuperarSenhaOrphanCheck + " in its recuperarSenha field has a non-nullable usuario field.");
+            }
+            Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOrphanCheck = usuario.getPessoaFisicaHistoricoCollection();
+            for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionOrphanCheckPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the PessoaFisicaHistorico " + pessoaFisicaHistoricoCollectionOrphanCheckPessoaFisicaHistorico + " in its pessoaFisicaHistoricoCollection field has a non-nullable usuarioFk field.");
+            }
+            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionOrphanCheck = usuario.getPessoaFisicaJuridicaHistoricoCollection();
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionOrphanCheckPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the PessoaFisicaJuridicaHistorico " + pessoaFisicaJuridicaHistoricoCollectionOrphanCheckPessoaFisicaJuridicaHistorico + " in its pessoaFisicaJuridicaHistoricoCollection field has a non-nullable usuarioFk field.");
+            }
+            Collection<EnderecoHistorico> enderecoHistoricoCollectionOrphanCheck = usuario.getEnderecoHistoricoCollection();
+            for (EnderecoHistorico enderecoHistoricoCollectionOrphanCheckEnderecoHistorico : enderecoHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the EnderecoHistorico " + enderecoHistoricoCollectionOrphanCheckEnderecoHistorico + " in its enderecoHistoricoCollection field has a non-nullable usuarioFk field.");
+            }
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOrphanCheck = usuario.getPessoaJuridicaHistoricoCollection();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the PessoaJuridicaHistorico " + pessoaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaHistorico + " in its pessoaJuridicaHistoricoCollection field has a non-nullable usuarioFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

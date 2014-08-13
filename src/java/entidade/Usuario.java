@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,11 +17,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,6 +40,14 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome"),
     @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha")})
 public class Usuario implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<EnderecoHistorico> enderecoHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -153,6 +164,42 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "entidade.Usuario[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaJuridicaHistorico> getPessoaFisicaJuridicaHistoricoCollection() {
+        return pessoaFisicaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaJuridicaHistoricoCollection(Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollection) {
+        this.pessoaFisicaJuridicaHistoricoCollection = pessoaFisicaJuridicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<EnderecoHistorico> getEnderecoHistoricoCollection() {
+        return enderecoHistoricoCollection;
+    }
+
+    public void setEnderecoHistoricoCollection(Collection<EnderecoHistorico> enderecoHistoricoCollection) {
+        this.enderecoHistoricoCollection = enderecoHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaHistorico> getPessoaJuridicaHistoricoCollection() {
+        return pessoaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaJuridicaHistoricoCollection(Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection) {
+        this.pessoaJuridicaHistoricoCollection = pessoaJuridicaHistoricoCollection;
     }
     
 }

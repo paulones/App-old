@@ -39,6 +39,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estado.findByNome", query = "SELECT e FROM Estado e WHERE e.nome = :nome"),
     @NamedQuery(name = "Estado.findByUf", query = "SELECT e FROM Estado e WHERE e.uf = :uf")})
 public class Estado implements Serializable {
+    @OneToMany(mappedBy = "rgUfFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection;
+    @OneToMany(mappedBy = "estadoFk")
+    private Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection1;
+    @OneToMany(mappedBy = "estadoFk")
+    private Collection<EnderecoHistorico> enderecoHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -171,6 +177,33 @@ public class Estado implements Serializable {
     @Override
     public String toString() {
         return "entidade.Estado[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection() {
+        return pessoaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaHistoricoCollection(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection) {
+        this.pessoaFisicaHistoricoCollection = pessoaFisicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaHistorico> getPessoaFisicaHistoricoCollection1() {
+        return pessoaFisicaHistoricoCollection1;
+    }
+
+    public void setPessoaFisicaHistoricoCollection1(Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollection1) {
+        this.pessoaFisicaHistoricoCollection1 = pessoaFisicaHistoricoCollection1;
+    }
+
+    @XmlTransient
+    public Collection<EnderecoHistorico> getEnderecoHistoricoCollection() {
+        return enderecoHistoricoCollection;
+    }
+
+    public void setEnderecoHistoricoCollection(Collection<EnderecoHistorico> enderecoHistoricoCollection) {
+        this.enderecoHistoricoCollection = enderecoHistoricoCollection;
     }
     
 }

@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaHistorico;
 import entidade.TipoEmpresarial;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +41,9 @@ public class TipoEmpresarialDAO implements Serializable {
         if (tipoEmpresarial.getPessoaJuridicaCollection() == null) {
             tipoEmpresarial.setPessoaJuridicaCollection(new ArrayList<PessoaJuridica>());
         }
+        if (tipoEmpresarial.getPessoaJuridicaHistoricoCollection() == null) {
+            tipoEmpresarial.setPessoaJuridicaHistoricoCollection(new ArrayList<PessoaJuridicaHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -50,6 +54,12 @@ public class TipoEmpresarialDAO implements Serializable {
                 attachedPessoaJuridicaCollection.add(pessoaJuridicaCollectionPessoaJuridicaToAttach);
             }
             tipoEmpresarial.setPessoaJuridicaCollection(attachedPessoaJuridicaCollection);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach : tipoEmpresarial.getPessoaJuridicaHistoricoCollection()) {
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollection.add(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach);
+            }
+            tipoEmpresarial.setPessoaJuridicaHistoricoCollection(attachedPessoaJuridicaHistoricoCollection);
             em.persist(tipoEmpresarial);
             for (PessoaJuridica pessoaJuridicaCollectionPessoaJuridica : tipoEmpresarial.getPessoaJuridicaCollection()) {
                 TipoEmpresarial oldTipoEmpresarialFkOfPessoaJuridicaCollectionPessoaJuridica = pessoaJuridicaCollectionPessoaJuridica.getTipoEmpresarialFk();
@@ -58,6 +68,15 @@ public class TipoEmpresarialDAO implements Serializable {
                 if (oldTipoEmpresarialFkOfPessoaJuridicaCollectionPessoaJuridica != null) {
                     oldTipoEmpresarialFkOfPessoaJuridicaCollectionPessoaJuridica.getPessoaJuridicaCollection().remove(pessoaJuridicaCollectionPessoaJuridica);
                     oldTipoEmpresarialFkOfPessoaJuridicaCollectionPessoaJuridica = em.merge(oldTipoEmpresarialFkOfPessoaJuridicaCollectionPessoaJuridica);
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico : tipoEmpresarial.getPessoaJuridicaHistoricoCollection()) {
+                TipoEmpresarial oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getTipoEmpresarialFk();
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.setTipoEmpresarialFk(tipoEmpresarial);
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                if (oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico != null) {
+                    oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                    oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -83,6 +102,8 @@ public class TipoEmpresarialDAO implements Serializable {
             TipoEmpresarial persistentTipoEmpresarial = em.find(TipoEmpresarial.class, tipoEmpresarial.getId());
             Collection<PessoaJuridica> pessoaJuridicaCollectionOld = persistentTipoEmpresarial.getPessoaJuridicaCollection();
             Collection<PessoaJuridica> pessoaJuridicaCollectionNew = tipoEmpresarial.getPessoaJuridicaCollection();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOld = persistentTipoEmpresarial.getPessoaJuridicaHistoricoCollection();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionNew = tipoEmpresarial.getPessoaJuridicaHistoricoCollection();
             Collection<PessoaJuridica> attachedPessoaJuridicaCollectionNew = new ArrayList<PessoaJuridica>();
             for (PessoaJuridica pessoaJuridicaCollectionNewPessoaJuridicaToAttach : pessoaJuridicaCollectionNew) {
                 pessoaJuridicaCollectionNewPessoaJuridicaToAttach = em.getReference(pessoaJuridicaCollectionNewPessoaJuridicaToAttach.getClass(), pessoaJuridicaCollectionNewPessoaJuridicaToAttach.getId());
@@ -90,6 +111,13 @@ public class TipoEmpresarialDAO implements Serializable {
             }
             pessoaJuridicaCollectionNew = attachedPessoaJuridicaCollectionNew;
             tipoEmpresarial.setPessoaJuridicaCollection(pessoaJuridicaCollectionNew);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollectionNew = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach : pessoaJuridicaHistoricoCollectionNew) {
+                pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollectionNew.add(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridicaHistoricoCollectionNew = attachedPessoaJuridicaHistoricoCollectionNew;
+            tipoEmpresarial.setPessoaJuridicaHistoricoCollection(pessoaJuridicaHistoricoCollectionNew);
             tipoEmpresarial = em.merge(tipoEmpresarial);
             for (PessoaJuridica pessoaJuridicaCollectionOldPessoaJuridica : pessoaJuridicaCollectionOld) {
                 if (!pessoaJuridicaCollectionNew.contains(pessoaJuridicaCollectionOldPessoaJuridica)) {
@@ -105,6 +133,23 @@ public class TipoEmpresarialDAO implements Serializable {
                     if (oldTipoEmpresarialFkOfPessoaJuridicaCollectionNewPessoaJuridica != null && !oldTipoEmpresarialFkOfPessoaJuridicaCollectionNewPessoaJuridica.equals(tipoEmpresarial)) {
                         oldTipoEmpresarialFkOfPessoaJuridicaCollectionNewPessoaJuridica.getPessoaJuridicaCollection().remove(pessoaJuridicaCollectionNewPessoaJuridica);
                         oldTipoEmpresarialFkOfPessoaJuridicaCollectionNewPessoaJuridica = em.merge(oldTipoEmpresarialFkOfPessoaJuridicaCollectionNewPessoaJuridica);
+                    }
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOld) {
+                if (!pessoaJuridicaHistoricoCollectionNew.contains(pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico)) {
+                    pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico.setTipoEmpresarialFk(null);
+                    pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico);
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionNew) {
+                if (!pessoaJuridicaHistoricoCollectionOld.contains(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico)) {
+                    TipoEmpresarial oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.getTipoEmpresarialFk();
+                    pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.setTipoEmpresarialFk(tipoEmpresarial);
+                    pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico);
+                    if (oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico != null && !oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.equals(tipoEmpresarial)) {
+                        oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico);
+                        oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = em.merge(oldTipoEmpresarialFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico);
                     }
                 }
             }
@@ -146,6 +191,11 @@ public class TipoEmpresarialDAO implements Serializable {
             for (PessoaJuridica pessoaJuridicaCollectionPessoaJuridica : pessoaJuridicaCollection) {
                 pessoaJuridicaCollectionPessoaJuridica.setTipoEmpresarialFk(null);
                 pessoaJuridicaCollectionPessoaJuridica = em.merge(pessoaJuridicaCollectionPessoaJuridica);
+            }
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection = tipoEmpresarial.getPessoaJuridicaHistoricoCollection();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollection) {
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.setTipoEmpresarialFk(null);
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
             }
             em.remove(tipoEmpresarial);
             em.getTransaction().commit();
