@@ -215,7 +215,7 @@
                                             </label>
                                             <div class="col-md-3 natuf">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="natuf" value="#{pessoaFisicaBean.pessoaFisica.estadoFk}" tabindex="1" converter="entityConverter">
-                                                    <f:ajax execute="@this" event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city" />
+                                                    <f:ajax execute="@this" event="valueChange" listener="#{pessoaFisicaBean.getCidadesPeloEstado()}" render="city" />
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
@@ -316,7 +316,7 @@
                                             </label>
                                             <div class="col-md-3">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="enduf" value="#{pessoaFisicaBean.endereco.estadoFk}" tabindex="1" converter="entityConverter">
-                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaFisicaBean.getCitiesByState()}" render="city2" />
+                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaFisicaBean.getCidadesPeloEstado()}" render="city2" />
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
@@ -406,6 +406,9 @@
                                     </div>
                                 </div>
                                 <!--/row-->
+                                <h:commandLink class="table-refresher">
+                                    <f:ajax render="pessoaFisicaJuridica"/>
+                                </h:commandLink>
                                 <h:panelGroup id="pessoaFisicaJuridica">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -454,7 +457,7 @@
                                                             </td>
                                                             <td>
                                                                 <h:commandLink class="delete">
-                                                                    <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerVinculo(status.index)}" render=":form:pessoaFisicaJuridica"/>
+                                                                    <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerVinculo(status.index)}"/>
                                                                     <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
                                                             </td>
                                                         </tr>

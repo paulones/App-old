@@ -84,6 +84,7 @@ public class PessoaFisicaBean implements Serializable {
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
     private List<Funcao> funcaoList;
     private List<EnderecoPessoa> enderecoPessoaList;
+    private List<PessoaFisicaJuridica> oldPessoaFisicaJuridicaList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -151,6 +152,7 @@ public class PessoaFisicaBean implements Serializable {
 
                         oldPessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
                         oldEndereco = enderecoBO.findPFAddress(id);
+                        oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
                         prepararHistorico(pessoaFisica, endereco, pessoaFisicaJuridicaList);
 
                         carregarFormulario();
@@ -247,8 +249,28 @@ public class PessoaFisicaBean implements Serializable {
             if (pessoaFisica.getEstadoFk() != null) {
                 pessoaFisica.setPaisFk(paisBO.findBrasil());
             }
-            if (oldPessoaFisica.equals(pessoaFisica)
-                    && oldEndereco.equals(endereco)) {
+            boolean identical = true;
+            if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
+                identical = false;
+            } else {
+                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                    for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
+                        if (pfj.changedValues(oldPfj).isEmpty()) {
+                            identical = true;
+                            break;
+                        } else {
+                            identical = false;
+                        }
+                    }
+                    if (!identical) {
+                        break;
+                    }
+                }
+            }
+            if (oldPessoaFisica.changedValues(pessoaFisica).isEmpty()
+                    && oldEndereco.changedValues(endereco).isEmpty()
+                    && identical) {
+                Cookie.addCookie("FacesMessage", "fail", 10);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
             } else {
                 UtilBO utilBO = new UtilBO();
@@ -261,7 +283,6 @@ public class PessoaFisicaBean implements Serializable {
                 enderecoHistoricoBO.create(EnderecoHistorico);
                 pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
                 for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                    pfj.setPessoaFisicaFk(pessoaFisica);
                     pessoaFisicaJuridicaBO.create(pfj);
                 }
                 for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
@@ -269,7 +290,6 @@ public class PessoaFisicaBean implements Serializable {
                     pfjh.setIdFk(pessoaFisicaHistorico.getId());
                     pessoaFisicaJuridicaHistoricoBO.create(pfjh);
                 }
-                register = "success";
                 Cookie.addCookie("FacesMessage", "success", 10);
                 FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
             }
@@ -290,6 +310,9 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
+        if (edit) {
+            pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
+        }
         pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {

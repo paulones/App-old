@@ -290,7 +290,9 @@ var PFCad = function() {
                         $('.endcity').select2();
                     } else if ($(data.source).attr("id") === "natuf") {
                         $('.natcity').select2();
-                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
+                    } else if ($(data.source).attr("class") === "delete"){
+                        $('.table-refresher').click();
+                    }else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
                         $('.capital').keyup(checkCapital);
@@ -299,7 +301,7 @@ var PFCad = function() {
                         if ($('.rows').children().length == 0) {
                             $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                         }
-                    }
+                    } 
                 }
             });
 
