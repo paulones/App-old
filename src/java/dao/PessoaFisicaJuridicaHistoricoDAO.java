@@ -8,20 +8,21 @@ package dao;
 
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.Funcao;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaFisicaJuridicaHistorico;
 import entidade.PessoaJuridica;
 import entidade.Usuario;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -243,4 +244,16 @@ public class PessoaFisicaJuridicaHistoricoDAO implements Serializable {
         }
     }
     
+    public List<PessoaFisicaJuridicaHistorico> findAllByPF(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList = (List<PessoaFisicaJuridicaHistorico>) em.createNativeQuery("select pfjh.* from pessoa_fisica_juridica_historico pfjh "
+                        + "join pessoa_fisica_historico pfh on pfh.id = pfjh.id_fk where pfjh.tipo = 'PF' and pfh.pessoa_fisica_fk = '"+id+"' order by data_de_modificacao desc", PessoaFisicaJuridicaHistorico.class).getResultList();
+            return pessoaFisicaJuridicaHistoricoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

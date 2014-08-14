@@ -24,6 +24,7 @@ import entidade.Usuario;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -380,6 +381,19 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaFisicaHistorico> findAllByPF(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaFisicaHistorico> pessoaFisicaHistoricoList = (List<PessoaFisicaHistorico>) em.createNativeQuery("select * from pessoa_fisica_historico "
+                        + "where pessoa_fisica_fk = '"+id+"' order by data_de_modificacao desc", PessoaFisicaHistorico.class).getResultList();
+            return pessoaFisicaHistoricoList;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }
