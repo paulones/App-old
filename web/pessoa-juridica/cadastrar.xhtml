@@ -4,7 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:define name="title">Pessoa Jurídica - Cadastro</ui:define>
+    <ui:define name="title">Pessoa Jurídica - #{pessoaJuridicaBean.edit ? 'Alteração' :'Cadastro'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaJuridicaBean.init()}"/>
     </ui:define>
@@ -21,7 +21,7 @@
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    Pessoa Jurídica <small>Cadastro</small>
+                    Pessoa Jurídica <small>#{pessoaJuridicaBean.edit ? 'Alteração' :'Cadastro'}</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -35,7 +35,7 @@
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
-                        <a href="../pessoa-juridica/cadastrar.xhtml">Cadastrar</a>
+                        <a href="../pessoa-juridica/cadastrar.xhtml#{pessoaJuridicaBean.edit ? '?id=' :''}#{pessoaJuridicaBean.edit ? pessoaJuridicaBean.pessoaJuridica.id : ''}">#{pessoaJuridicaBean.edit ? 'Alterar' : 'Cadastrar'}</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->
@@ -48,7 +48,7 @@
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-edit"></i>Dados da Pessoa Jurídica
+                            <i class="fa fa-edit"></i>Dados #{pessoaJuridicaBean.edit ? 'de ' :'da '} #{pessoaJuridicaBean.edit ? pessoaJuridicaBean.pessoaJuridicaBean.nome : 'Pessoa Jurídica'}
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -128,7 +128,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Inscrição Estadual <span class="required"> * </span>
+                                            <label class="control-label col-md-3">Inscrição Estadual
                                             </label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
@@ -146,7 +146,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}"/>
+                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}" p:maxlength="30"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -392,6 +392,9 @@
                                     </div>
                                 </div>
                                 <!--/row-->
+                                <h:commandLink class="table-refresher">
+                                    <f:ajax render="pessoaFisicaJuridica"/>
+                                </h:commandLink>
                                 <h:panelGroup id="pessoaFisicaJuridica">
                                     <div class="row">
                                         <div class="col-md-12">
@@ -421,7 +424,7 @@
                                                     <ui:repeat value="#{pessoaJuridicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
                                                         <tr>
-                                                            <td style="text-align:center">
+                                                            <td>
                                                                 #{cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                             </td>
                                                             <td>

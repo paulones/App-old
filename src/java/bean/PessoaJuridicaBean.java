@@ -3,33 +3,44 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package bean;
 
 import bo.CidadeBO;
 import bo.EnderecoBO;
+import bo.EnderecoHistoricoBO;
 import bo.EstadoBO;
 import bo.FuncaoBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaFisicaJuridicaBO;
+import bo.PessoaFisicaJuridicaHistoricoBO;
 import bo.PessoaJuridicaBO;
+import bo.PessoaJuridicaHistoricoBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
+import bo.UtilBO;
 import entidade.Cidade;
 import entidade.Endereco;
+import entidade.EnderecoHistorico;
+import entidade.EnderecoPessoa;
 import entidade.Estado;
 import entidade.Funcao;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
+import entidade.PessoaFisicaJuridicaHistorico;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaHistorico;
 import entidade.TipoEmpresarial;
+import entidade.Usuario;
+import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
 
 /**
@@ -38,15 +49,34 @@ import util.Cookie;
  */
 @SessionScoped
 @ManagedBean(name = "pessoaJuridicaBean")
-public class PessoaJuridicaBean implements Serializable{
-    
+public class PessoaJuridicaBean implements Serializable {
+
     private PessoaJuridica pessoaJuridica;
+    private PessoaJuridica oldPessoaJuridica;
     private Endereco endereco;
+    private Endereco oldEndereco;
     private PessoaFisica pessoaFisica;
     private PessoaFisicaJuridica pessoaFisicaJuridica;
-    
+
+    private PessoaJuridicaHistorico pessoaJuridicaHistorico;
+    private EnderecoHistorico EnderecoHistorico;
+    private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
+
     private String register;
-    
+    private String redirect;
+    private boolean edit;
+
+    private List<TipoEmpresarial> tipoEmpresarialList;
+    private List<Estado> estadoList;
+    private List<Cidade> cidadeEndList;
+    private List<PessoaFisica> pessoaFisicaList;
+    private List<PessoaJuridica> pessoaJuridicaList;
+    private List<Funcao> funcaoList;
+    private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
+    private List<PessoaFisicaJuridica> oldPessoaFisicaJuridicaList;
+    private List<EnderecoPessoa> enderecoPessoaList;
+    private List<Endereco> enderecoList;
+
     private TipoEmpresarialBO tipoEmpresarialBO;
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -54,24 +84,26 @@ public class PessoaJuridicaBean implements Serializable{
     private EstadoBO estadoBO;
     private CidadeBO cidadeBO;
     private FuncaoBO funcaoBO;
+    private UsuarioBO usuarioBO;
     private EnderecoBO enderecoBO;
-    
-    private List<TipoEmpresarial> tipoEmpresarialList;
-    private List<Estado> estadoList;
-    private List<Cidade> cidadeEndList;
-    private List<PessoaFisica> pessoaFisicaList;
-    private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
-    private List<Funcao> funcaoList;
-    
-    public void init(){
+    private PessoaJuridicaHistoricoBO pessoaJuridicaHistoricoBO;
+    private EnderecoHistoricoBO enderecoHistoricoBO;
+    private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
+
+    public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            pessoaJuridica = new PessoaJuridica();
+            boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
+            boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
+
             endereco = new Endereco();
             pessoaFisica = new PessoaFisica();
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
-            
+
+            edit = false;
             register = "";
-            
+            redirect = Cookie.getCookie("FacesMessage");
+            Cookie.apagarCookie("FacesMessage");
+
             tipoEmpresarialBO = new TipoEmpresarialBO();
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
@@ -80,30 +112,160 @@ public class PessoaJuridicaBean implements Serializable{
             cidadeBO = new CidadeBO();
             funcaoBO = new FuncaoBO();
             enderecoBO = new EnderecoBO();
-            
+
             tipoEmpresarialList = new ArrayList<>();
             cidadeEndList = new ArrayList<>();
             pessoaFisicaJuridicaList = new ArrayList<>();
-            
-            loadForm();
+
+            /*
+             Tela cadastro.xhtml. Se houver "id" na url, entra na condição de alteração.
+             Caso contrário, apenas carrega o formulário
+             */
+            if (isRegisterPage) {
+                /*
+                 Tela cadastro.xhtml. Se houver "id" na url, entra na condição de alteração.
+                 Caso contrário, apenas carrega o formulário
+                 */
+                HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+                pessoaJuridica = new PessoaJuridica();
+                if (request.getParameter("id") == null) { //Novo
+                    edit = false;
+                    carregarFormulario();
+                } else {
+                    Integer id = Integer.valueOf(request.getParameter("id"));
+                    pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
+                    if (pessoaJuridica == null) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
+                    } else {
+                        edit = true;
+                        endereco = enderecoBO.findPFAddress(id);
+                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+
+                        oldPessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
+                        oldEndereco = enderecoBO.findPFAddress(id);
+                        oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+                        prepararHistorico(pessoaJuridica, endereco, pessoaFisicaJuridicaList);
+
+                        carregarFormulario();
+                        getCidadesPeloEstado();
+                    }
+                }
+            } else if (isSearchPage) {
+                /*
+                 Tela consulta.xhtml
+                 */
+                pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
+                enderecoList = enderecoBO.findAllPFAddress();
+                enderecoPessoaList = new ArrayList<>();
+                for (PessoaJuridica pj : pessoaJuridicaList) {
+                    for (Endereco end : enderecoList) {
+                        if (pj.getId().equals(end.getIdFk())) {
+                            EnderecoPessoa enderecoPessoa = new EnderecoPessoa(pj, end);
+                            enderecoPessoaList.add(enderecoPessoa);
+                        }
+
+                    }
+                }
+            }
         }
     }
-    
-    public void loadForm(){
+
+    public void cadastrar() throws IOException {
+        if (!edit) {
+            /*  
+             Cadastrar nova Pessoa Jurídica
+             */
+            PessoaJuridica pjDB = pessoaJuridicaBO.findDuplicates(pessoaJuridica);
+            if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) { //CNPJ novo
+                pessoaJuridica.setStatus('A');
+                pessoaJuridicaBO.create(pessoaJuridica);
+                endereco.setTipo("PJ");
+                endereco.setIdFk(pessoaJuridica.getId());
+                enderecoBO.create(endereco);
+                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                    pfj.setPessoaJuridicaFk(pessoaJuridica);
+                    pessoaFisicaJuridicaBO.create(pfj);
+                }
+                register = "success";
+                pessoaJuridica = new PessoaJuridica();
+                endereco = new Endereco();
+                pessoaFisicaJuridicaList = new ArrayList<>();
+            } else { //CNPJ previamente cadastrado
+                register = "fail";
+                String cnpj = pjDB.getCnpj().substring(0, 3) + "." + pjDB.getCnpj().substring(3, 6) + "." + pjDB.getCnpj().substring(6, 9) + "/" + pjDB.getCnpj().substring(9, 13) + "-" + pjDB.getCnpj().substring(13);
+                String message = "Já existe empresa cadastrada com o CNPJ " + cnpj;
+                message += pjDB.getNome() != null ? "\nNome: " + pjDB.getNome() : "";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+            }
+        } else {
+            /*  
+             Alterar Pessoa Física existente
+             */
+            pessoaJuridicaHistoricoBO = new PessoaJuridicaHistoricoBO();
+            enderecoHistoricoBO = new EnderecoHistoricoBO();
+            pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
+            boolean identical = true;
+            if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
+                identical = false;
+            } else {
+                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                    for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
+                        if (pfj.changedValues(oldPfj).isEmpty()) {
+                            identical = true;
+                            break;
+                        } else {
+                            identical = false;
+                        }
+                    }
+                    if (!identical) {
+                        break;
+                    }
+                }
+            }
+            if (oldPessoaJuridica.changedValues(pessoaJuridica).isEmpty()
+                    && oldEndereco.changedValues(endereco).isEmpty()
+                    && identical) {
+                Cookie.addCookie("FacesMessage", "fail", 10);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+            } else {
+                UtilBO utilBO = new UtilBO();
+                Timestamp timestamp = utilBO.findServerTime();
+                pessoaFisicaBO.edit(pessoaFisica);
+                pessoaJuridicaHistorico.setDataDeModificacao(timestamp);
+                pessoaJuridicaHistoricoBO.create(pessoaJuridicaHistorico);
+                enderecoBO.edit(endereco);
+                EnderecoHistorico.setIdFk(pessoaJuridicaHistorico.getId());
+                enderecoHistoricoBO.create(EnderecoHistorico);
+                pessoaFisicaJuridicaBO.destroyByPF(pessoaJuridica.getId());
+                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                    pessoaFisicaJuridicaBO.create(pfj);
+                }
+                for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
+                    pfjh.setTipo("PF");
+                    pfjh.setIdFk(pessoaJuridicaHistorico.getId());
+                    pessoaFisicaJuridicaHistoricoBO.create(pfjh);
+                }
+                Cookie.addCookie("FacesMessage", "success", 10);
+                FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+            }
+        }
+    }
+
+    public void carregarFormulario() {
         estadoList = estadoBO.findAll();
         tipoEmpresarialList = tipoEmpresarialBO.findAll();
         pessoaFisicaList = pessoaFisicaBO.findAll();
         funcaoList = funcaoBO.findAll();
     }
-    
-    public void getCitiesByState() {
+
+    public void getCidadesPeloEstado() { // Renderizar cidades baseado no estado escolhido
         if (endereco.getEstadoFk() != null) {
             cidadeEndList = cidadeBO.getByStateId(endereco.getEstadoFk().getId());
         } else {
             cidadeEndList.clear();
         }
     }
-    
+
     public void vincularPessoaFisica() {
         pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         boolean exists = false;
@@ -117,35 +279,53 @@ public class PessoaJuridicaBean implements Serializable{
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
         }
     }
-    
+
     public void removerVinculo(int index) {
         pessoaFisicaJuridicaList.remove(index);
     }
     
-    public void cadastrar() {
-        PessoaJuridica pjDB = pessoaJuridicaBO.findDuplicates(pessoaJuridica);
-        if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) {
-            pessoaJuridica.setStatus('A');
-            UsuarioBO usuarioBO = new UsuarioBO();
-            pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-            pessoaJuridicaBO.create(pessoaJuridica);
-            endereco.setTipo("PJ");
-            endereco.setIdFk(pessoaJuridica.getId());
-            enderecoBO.create(endereco);
-            for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                pfj.setPessoaJuridicaFk(pessoaJuridica);
-                pessoaFisicaJuridicaBO.create(pfj);
-            }
-            register = "success";
-            pessoaJuridica = new PessoaJuridica();
-            endereco = new Endereco();
-            pessoaFisicaJuridicaList = new ArrayList<>();
-        }else{
-            register = "fail";
-            String cnpj = pjDB.getCnpj().substring(0,3)+"."+pjDB.getCnpj().substring(3,6)+"."+pjDB.getCnpj().substring(6,9)+"/"+pjDB.getCnpj().substring(9,13)+"-"+pjDB.getCnpj().substring(13);
-            String message = "Já existe empresa cadastrada com o CNPJ "+cnpj;
-            message += pjDB.getNome()!= null ? "\nNome: " + pjDB.getNome():"";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+    public void prepararHistorico(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList) {
+        /*
+         Montar entidades dos históricos de alteração 
+         */
+        usuarioBO = new UsuarioBO();
+        Usuario usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
+        pessoaJuridicaHistorico = new PessoaJuridicaHistorico();
+        EnderecoHistorico = new EnderecoHistorico();
+        pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+
+        pessoaJuridicaHistorico.setNomeFantasia(pessoaJuridica.getNomeFantasia());
+        pessoaJuridicaHistorico.setTipoEmpresarialFk(pessoaJuridica.getTipoEmpresarialFk());
+        pessoaJuridicaHistorico.setIncricaoEstadual(pessoaJuridica.getIncricaoEstadual());
+        pessoaJuridicaHistorico.setIncricaoMunicipal(pessoaJuridica.getIncricaoMunicipal());
+        pessoaJuridicaHistorico.setSituacao(pessoaJuridica.getSituacao());
+        pessoaJuridicaHistorico.setDataDeCriacao(pessoaJuridica.getDataDeCriacao());
+        pessoaJuridicaHistorico.setGrupoEconomico(pessoaJuridica.getGrupoEconomico());
+        pessoaJuridicaHistorico.setCnae(pessoaJuridica.getCnae());
+        pessoaJuridicaHistorico.setNire(pessoaJuridica.getNire());
+        pessoaJuridicaHistorico.setAtividadePrincipal(pessoaJuridica.getAtividadePrincipal());
+        pessoaJuridicaHistorico.setAtividadeSecundaria(pessoaJuridica.getAtividadeSecundaria());
+        
+        pessoaJuridicaHistorico.setUsuarioFk(usuario);
+
+        EnderecoHistorico.setBairro(endereco.getBairro());
+        EnderecoHistorico.setCep(endereco.getCep());
+        EnderecoHistorico.setCidadeFk(endereco.getCidadeFk());
+        EnderecoHistorico.setComplemento(endereco.getComplemento());
+        EnderecoHistorico.setEndereco(endereco.getEndereco());
+        EnderecoHistorico.setEstadoFk(endereco.getEstadoFk());
+        EnderecoHistorico.setNumero(endereco.getNumero());
+        EnderecoHistorico.setTipo(endereco.getTipo());
+
+        for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+            PessoaFisicaJuridicaHistorico pfjh = new PessoaFisicaJuridicaHistorico();
+            pfjh.setCapitalDeParticipacao(pfj.getCapitalDeParticipacao());
+            pfjh.setDataDeInicio(pfj.getDataDeInicio());
+            pfjh.setDataDeTermino(pfj.getDataDeTermino());
+            pfjh.setFuncaoFk(pfj.getFuncaoFk());
+            pfjh.setPessoaFisicaFk(pfj.getPessoaFisicaFk());
+            pfjh.setPessoaJuridicaFk(pfj.getPessoaJuridicaFk());
+            pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
     }
 
@@ -236,5 +416,21 @@ public class PessoaJuridicaBean implements Serializable{
     public void setRegister(String register) {
         this.register = register;
     }
-    
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
+    }
+
 }
