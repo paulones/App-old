@@ -90,7 +90,7 @@ var PFCon = function() {
         var oTable = table.dataTable({
             "columnDefs": [{
                     "orderable": false,
-                    "targets": [0,2,3]
+                    "targets": [0, 2, 3]
                 }],
             "order": [
                 [1, 'desc']
@@ -142,12 +142,35 @@ var PFCon = function() {
             if (window.location.search != "") {
                 var atual;
                 initHistoryTable();
-                $.each($('.data-de-modificacao'),function(){
-                    if ($(this).html().contains('Atual')){
+                $.each($('.data-de-modificacao'), function() {
+                    if ($(this).html().contains('Atual')) {
+                        $(this).parent().find('.form-body').addClass('current');
                         atual = $(this).parent().find('.form-body');
+                    } else {
+                        $(this).parent().find('.form-body').addClass('past');
                     }
-                })
-                console.log(atual);
+                });
+                $.each($('.past'), function() {
+                    $.each($(this).find('.form-control-static'), function(index) {
+                        if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                            $(this).parent().parent().css("color", "#a94442");
+                        }
+                    });
+                    var upper = this;
+                    $.each($(atual).find('.rows tr'), function() {
+                        var atual = this;
+                        $.each($(upper).find('.rows tr'), function() {
+                            if ($(atual).find('td').eq(0).html().trim() === $(this).find('td').eq(0).html().trim()) {
+                                $.each($(this).find('td'), function(index) {
+                                    if ($(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                        $(this).css("color", "#a94442");
+                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color','#a94442')
+                                    }
+                                })
+                            }
+                        })
+                    })
+                });
             } else {
                 initTable();
 

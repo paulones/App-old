@@ -248,7 +248,7 @@ public class PessoaFisicaJuridicaHistoricoDAO implements Serializable {
         EntityManager em = getEntityManager();
         try {
             List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList = (List<PessoaFisicaJuridicaHistorico>) em.createNativeQuery("select pfjh.* from pessoa_fisica_juridica_historico pfjh "
-                        + "join pessoa_fisica_historico pfh on pfh.id = pfjh.id_fk where pfjh.tipo = 'PF' and pfh.pessoa_fisica_fk = '"+id+"' order by data_de_modificacao desc", PessoaFisicaJuridicaHistorico.class).getResultList();
+                        + "join pessoa_fisica_historico pfh on pfh.id = pfjh.id_fk where pfjh.tipo = 'PF' and pfh.pessoa_fisica_fk = '"+id+"'", PessoaFisicaJuridicaHistorico.class).getResultList();
             return pessoaFisicaJuridicaHistoricoList;
         } catch (NoResultException e) {
             return null;

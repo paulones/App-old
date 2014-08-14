@@ -218,7 +218,6 @@ public class PessoaFisicaBean implements Serializable {
                                     for(PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList){
                                         if(pfh.getId() == pfjh.getIdFk()){
                                             pfjhList.add(pfjh);
-                                            break;
                                         }
                                     }
                                     epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
