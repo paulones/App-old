@@ -8,19 +8,20 @@ package dao;
 
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.Cidade;
 import entidade.Endereco;
 import entidade.EnderecoHistorico;
 import entidade.Estado;
 import entidade.Usuario;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -217,4 +218,16 @@ public class EnderecoHistoricoDAO implements Serializable {
         }
     }
     
+    public List<EnderecoHistorico> findAllByPF(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<EnderecoHistorico> enderecoHistoricoList = (List<EnderecoHistorico>) em.createNativeQuery("select eh.* from endereco_historico eh "
+                        + "join pessoa_fisica_historico pfh on pfh.id = eh.id_fk where pfh.pessoa_fisica_fk = '"+id+"' order by data_de_modificacao desc", EnderecoHistorico.class).getResultList();
+            return enderecoHistoricoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

@@ -34,6 +34,12 @@
                         <a href="#">Pessoa Física</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
+                    <h:panelGroup rendered="#{pessoaFisicaBean.edit}">
+                    <li>
+                        <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
+                        <i class="fa fa-angle-right"></i>
+                    </li>
+                    </h:panelGroup>
                     <li>
                         <a href="../pessoa-fisica/cadastrar.xhtml#{pessoaFisicaBean.edit ? '?id=' :''}#{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.id : ''}">#{pessoaFisicaBean.edit ? 'Alterar' : 'Cadastrar'}</a>
                     </li>

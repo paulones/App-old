@@ -53,6 +53,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaFisica.findByObservacoes", query = "SELECT p FROM PessoaFisica p WHERE p.observacoes = :observacoes"),
     @NamedQuery(name = "PessoaFisica.findByStatus", query = "SELECT p FROM PessoaFisica p WHERE p.status = :status")})
 public class PessoaFisica implements Serializable {
+    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioFk;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -380,7 +383,7 @@ public class PessoaFisica implements Serializable {
             list.add("nomeDoConjuge");
         }
         if (!Objects.equals(this.observacoes, other.observacoes)) {
-            list.add("observcoes");
+            list.add("observacoes");
         }
         if (!Objects.equals(this.cidadeFk, other.cidadeFk)) {
             list.add("cidadeFk");
@@ -407,6 +410,14 @@ public class PessoaFisica implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaFisica[ id=" + id + " ]";
+    }
+
+    public Usuario getUsuarioFk() {
+        return usuarioFk;
+    }
+
+    public void setUsuarioFk(Usuario usuarioFk) {
+        this.usuarioFk = usuarioFk;
     }
     
 }

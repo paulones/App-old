@@ -9,6 +9,8 @@ package bo;
 import dao.PessoaFisicaHistoricoDAO;
 import entidade.PessoaFisicaHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,5 +46,14 @@ public class PessoaFisicaHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<PessoaFisicaHistorico> findAllByPF(Integer id){
+        try { 
+            return pessoaFisicaHistoricoDAO.findAllByPF(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaFisicaHistorico>();
     }
 }
