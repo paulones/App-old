@@ -14,6 +14,7 @@ import bo.PessoaFisicaBO;
 import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaJuridicaBO;
 import bo.TipoEmpresarialBO;
+import bo.UsuarioBO;
 import entidade.Cidade;
 import entidade.Endereco;
 import entidade.Estado;
@@ -29,6 +30,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import util.Cookie;
 
 /**
  *
@@ -124,6 +126,8 @@ public class PessoaJuridicaBean implements Serializable{
         PessoaJuridica pjDB = pessoaJuridicaBO.findDuplicates(pessoaJuridica);
         if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) {
             pessoaJuridica.setStatus('A');
+            UsuarioBO usuarioBO = new UsuarioBO();
+            pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
             pessoaJuridicaBO.create(pessoaJuridica);
             endereco.setTipo("PJ");
             endereco.setIdFk(pessoaJuridica.getId());

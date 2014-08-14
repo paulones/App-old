@@ -19,6 +19,10 @@ public class EnderecoPessoaFisicaJuridicaHistorico {
     private EnderecoHistorico enderecoHistorico;
     private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
 
+    public EnderecoPessoaFisicaJuridicaHistorico() {
+    }
+
+    
     public EnderecoPessoaFisicaJuridicaHistorico(Object pessoaHistorico, EnderecoHistorico enderecoHistorico) {
         this.pessoaHistorico = pessoaHistorico;
         this.enderecoHistorico = enderecoHistorico;

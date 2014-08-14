@@ -17,6 +17,7 @@ import entidade.PessoaFisica;
 import entidade.PessoaFisicaHistorico;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaFisicaJuridicaHistorico;
+import entidade.Usuario;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -56,7 +57,8 @@ public class PessoaFisicaDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Cidade cidadeFk = pessoaFisica.getCidadeFk();
             if (cidadeFk != null) {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
@@ -86,6 +88,11 @@ public class PessoaFisicaDAO implements Serializable {
             if (paisFk != null) {
                 paisFk = em.getReference(paisFk.getClass(), paisFk.getId());
                 pessoaFisica.setPaisFk(paisFk);
+            }
+            Usuario usuarioFk = pessoaFisica.getUsuarioFk();
+            if (usuarioFk != null) {
+                usuarioFk = em.getReference(usuarioFk.getClass(), usuarioFk.getId());
+                pessoaFisica.setUsuarioFk(usuarioFk);
             }
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : pessoaFisica.getPessoaFisicaHistoricoCollection()) {
@@ -129,6 +136,10 @@ public class PessoaFisicaDAO implements Serializable {
             if (paisFk != null) {
                 paisFk.getPessoaFisicaCollection().add(pessoaFisica);
                 paisFk = em.merge(paisFk);
+            }
+            if (usuarioFk != null) {
+                usuarioFk.getPessoaFisicaCollection().add(pessoaFisica);
+                usuarioFk = em.merge(usuarioFk);
             }
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : pessoaFisica.getPessoaFisicaHistoricoCollection()) {
                 PessoaFisica oldPessoaFisicaFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getPessoaFisicaFk();
@@ -175,7 +186,8 @@ public class PessoaFisicaDAO implements Serializable {
     public void edit(PessoaFisica pessoaFisica) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             PessoaFisica persistentPessoaFisica = em.find(PessoaFisica.class, pessoaFisica.getId());
             Cidade cidadeFkOld = persistentPessoaFisica.getCidadeFk();
             Cidade cidadeFkNew = pessoaFisica.getCidadeFk();
@@ -189,6 +201,8 @@ public class PessoaFisicaDAO implements Serializable {
             Nacionalidade nacionalidadeFkNew = pessoaFisica.getNacionalidadeFk();
             Pais paisFkOld = persistentPessoaFisica.getPaisFk();
             Pais paisFkNew = pessoaFisica.getPaisFk();
+            Usuario usuarioFkOld = persistentPessoaFisica.getUsuarioFk();
+            Usuario usuarioFkNew = pessoaFisica.getUsuarioFk();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentPessoaFisica.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = pessoaFisica.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionOld = persistentPessoaFisica.getPessoaFisicaJuridicaCollection();
@@ -246,6 +260,10 @@ public class PessoaFisicaDAO implements Serializable {
             if (paisFkNew != null) {
                 paisFkNew = em.getReference(paisFkNew.getClass(), paisFkNew.getId());
                 pessoaFisica.setPaisFk(paisFkNew);
+            }
+            if (usuarioFkNew != null) {
+                usuarioFkNew = em.getReference(usuarioFkNew.getClass(), usuarioFkNew.getId());
+                pessoaFisica.setUsuarioFk(usuarioFkNew);
             }
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
@@ -317,6 +335,14 @@ public class PessoaFisicaDAO implements Serializable {
                 paisFkNew.getPessoaFisicaCollection().add(pessoaFisica);
                 paisFkNew = em.merge(paisFkNew);
             }
+            if (usuarioFkOld != null && !usuarioFkOld.equals(usuarioFkNew)) {
+                usuarioFkOld.getPessoaFisicaCollection().remove(pessoaFisica);
+                usuarioFkOld = em.merge(usuarioFkOld);
+            }
+            if (usuarioFkNew != null && !usuarioFkNew.equals(usuarioFkOld)) {
+                usuarioFkNew.getPessoaFisicaCollection().add(pessoaFisica);
+                usuarioFkNew = em.merge(usuarioFkNew);
+            }
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
                 if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
                     PessoaFisica oldPessoaFisicaFkOfPessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico.getPessoaFisicaFk();
@@ -375,7 +401,8 @@ public class PessoaFisicaDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             PessoaFisica pessoaFisica;
             try {
                 pessoaFisica = em.getReference(PessoaFisica.class, id);
@@ -437,6 +464,11 @@ public class PessoaFisicaDAO implements Serializable {
             if (paisFk != null) {
                 paisFk.getPessoaFisicaCollection().remove(pessoaFisica);
                 paisFk = em.merge(paisFk);
+            }
+            Usuario usuarioFk = pessoaFisica.getUsuarioFk();
+            if (usuarioFk != null) {
+                usuarioFk.getPessoaFisicaCollection().remove(pessoaFisica);
+                usuarioFk = em.merge(usuarioFk);
             }
             em.remove(pessoaFisica);
             em.getTransaction().commit();

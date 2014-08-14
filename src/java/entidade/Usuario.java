@@ -40,6 +40,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByNome", query = "SELECT u FROM Usuario u WHERE u.nome = :nome"),
     @NamedQuery(name = "Usuario.findBySenha", query = "SELECT u FROM Usuario u WHERE u.senha = :senha")})
 public class Usuario implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaJuridica> pessoaJuridicaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioFk")
+    private Collection<PessoaFisica> pessoaFisicaCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -178,6 +182,24 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "entidade.Usuario[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridica> getPessoaJuridicaCollection() {
+        return pessoaJuridicaCollection;
+    }
+
+    public void setPessoaJuridicaCollection(Collection<PessoaJuridica> pessoaJuridicaCollection) {
+        this.pessoaJuridicaCollection = pessoaJuridicaCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisica> getPessoaFisicaCollection() {
+        return pessoaFisicaCollection;
+    }
+
+    public void setPessoaFisicaCollection(Collection<PessoaFisica> pessoaFisicaCollection) {
+        this.pessoaFisicaCollection = pessoaFisicaCollection;
     }
     
 }

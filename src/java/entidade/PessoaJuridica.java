@@ -54,6 +54,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridica.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridica p WHERE p.atividadeSecundaria = :atividadeSecundaria"),
     @NamedQuery(name = "PessoaJuridica.findByStatus", query = "SELECT p FROM PessoaJuridica p WHERE p.status = :status")})
 public class PessoaJuridica implements Serializable {
+    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioFk;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -390,6 +393,14 @@ public class PessoaJuridica implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaJuridica[ id=" + id + " ]";
+    }
+
+    public Usuario getUsuarioFk() {
+        return usuarioFk;
+    }
+
+    public void setUsuarioFk(Usuario usuarioFk) {
+        this.usuarioFk = usuarioFk;
     }
     
 }
