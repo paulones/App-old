@@ -439,7 +439,8 @@
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                         <tr>
                                                             <td>
-                                                                #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</td>
+                                                                #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
+                                                            </td>
                                                             <td>
                                                                 <h:selectOneMenu styleClass="select2_category select2me form-control funcao" p:placeholder="Selecione..." value="#{pessoaFisicaJuridica.funcaoFk}" tabindex="1" converter="entityConverter">
                                                                     <f:selectItem itemLabel="" itemValue=""/>

@@ -16,7 +16,7 @@ var PJCad = function() {
                     required: true
                 },
                 alias: {
-                    minlength: 1,
+                    minlength_optional: 2,
                     required: false
                 },
                 cnpj: {
@@ -28,10 +28,9 @@ var PJCad = function() {
                 },
                 state: {
                     minlength: 15,
-                    required: true
+                    required: false
                 },
                 province: {
-                    maxlength: 30,
                     required: false
                 },
                 situacao: {
@@ -52,23 +51,23 @@ var PJCad = function() {
                     required: false
                 },
                 cnae: {
-                    maxlength: 9,
+                    minlength: 9,
                     required: false
                 },
                 activity1: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false
                 },
                 activity2: {
-                    minlength: 2,
+                    minlength_optional: 2,
                     required: false
                 },
                 address: {
-                    minlength: 3,
+                    minlength_optional: 3,
                     required: false
                 },
                 complement: {
-                    minlength: 3,
+                    minlength_optional: 3,
                     required: false
                 },
                 number: {
@@ -76,11 +75,12 @@ var PJCad = function() {
                     required: false
                 },
                 neighborhood: {
-                    minlength: 1,
+                    minlength_optional: 1,
                     required: false
                 },
                 cep: {
-                    minlength: 9,
+                    minlength_optional: 9,
+                    number: true,
                     required: false
                 },
                 enduf: {
@@ -191,7 +191,7 @@ var PJCad = function() {
             return result;
         }
     };
-    
+
     var checkCapital = function() {
         if ($(this).val() > 100) {
             $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
@@ -201,7 +201,7 @@ var PJCad = function() {
             $('.date-error').hide();
         }
     }
-    
+
     var handleTable = function() {
 
         var table = $('#vinculations');
@@ -236,6 +236,7 @@ var PJCad = function() {
         init: function() {
 
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
+            $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
 
             handleValidation();
             handleTable();
@@ -250,9 +251,13 @@ var PJCad = function() {
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
             $('.menu-pj a .arrow').addClass('open');
-            $('.sub-menu-pj-cad').addClass('active');
+            if (window.location.search == "") {
+                $('.sub-menu-pj-cad').addClass('active');
+            } else {
+                $('.sub-menu-pj-con').addClass('active');
+            }
 
-            var masks = [$('#cpf'), $('#state'), $('#date'), $('#nire'), $('#cnae')];
+            var masks = [$('#cpf'), $('#date'), $('#iniDate'), $('#nire'), $('#cnae')];
             $('#form').submit(function() {
                 $.each(masks, function() {
                     if ($(this).val() == "") {
@@ -266,6 +271,8 @@ var PJCad = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
                         $('.endcity').select2();
+                    } else if ($(data.source).attr("class") === "delete") {
+                        $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
@@ -286,6 +293,11 @@ var PJCad = function() {
                 }
             });
 
+            function validaMinLength(value, element, param) {
+                var length = $.isArray(value) ? value.length : this.getLength($.trim(value), element);
+                return length >= param || length === 0;
+            }
+
             situacao();
             $('#situacao').change(situacao);
             function situacao() {
@@ -295,12 +307,66 @@ var PJCad = function() {
                     $('.reason').hide();
                 }
             }
-            
+
+            function validarCNPJ(value) {
+                value = value.replace(/[^\d]+/g, '');
+
+                if (value == '')
+                    return false;
+
+                if (value.length != 14)
+                    return false;
+
+                // Elimina CNPJs invalidos conhecidos
+                if (value == "00000000000000" ||
+                        value == "11111111111111" ||
+                        value == "22222222222222" ||
+                        value == "33333333333333" ||
+                        value == "44444444444444" ||
+                        value == "55555555555555" ||
+                        value == "66666666666666" ||
+                        value == "77777777777777" ||
+                        value == "88888888888888" ||
+                        value == "99999999999999")
+                    return false;
+
+                // Valida DVs
+                tamanho = value.length - 2
+                numeros = value.substring(0, tamanho);
+                digitos = value.substring(tamanho);
+                soma = 0;
+                pos = tamanho - 7;
+                for (i = tamanho; i >= 1; i--) {
+                    soma += numeros.charAt(tamanho - i) * pos--;
+                    if (pos < 2)
+                        pos = 9;
+                }
+                resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+                if (resultado != digitos.charAt(0))
+                    return false;
+
+                tamanho = tamanho + 1;
+                numeros = value.substring(0, tamanho);
+                soma = 0;
+                pos = tamanho - 7;
+                for (i = tamanho; i >= 1; i--) {
+                    soma += numeros.charAt(tamanho - i) * pos--;
+                    if (pos < 2)
+                        pos = 9;
+                }
+                resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+                if (resultado != digitos.charAt(1))
+                    return false;
+
+                return true;
+
+            }
 
             function validaData(value, element) {
                 var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
                 return value.match(reg) ? true : false;
-            };
+            }
+            ;
         }
     };
 }();

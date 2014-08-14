@@ -496,4 +496,16 @@ public class PessoaJuridicaDAO implements Serializable {
         }
     }
     
+    public List<PessoaJuridica> findAllActive(){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridica> pessoaFisicaList = (List<PessoaJuridica>) em.createNativeQuery("select * from pessoa_juridica "
+                        + "where status = 'A'", PessoaJuridica.class).getResultList();
+            return pessoaFisicaList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

@@ -41,9 +41,27 @@ public class PessoaJuridicaBO implements Serializable{
         return null;
     }
     
+    public PessoaJuridica findPessoaJuridica(Integer id){
+        try { 
+            return pessoaJuridicaDAO.findPessoaJuridica(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<PessoaJuridica> findAll(){
         try { 
             return pessoaJuridicaDAO.findPessoaJuridicaEntities();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaJuridica>();
+    }
+    
+    public List<PessoaJuridica> findAllActive(){
+        try { 
+            return pessoaJuridicaDAO.findAllActive();
         } catch (Exception e) {
             e.printStackTrace();
         }
