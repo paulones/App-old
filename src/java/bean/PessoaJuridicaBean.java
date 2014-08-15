@@ -171,6 +171,7 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void cadastrar() throws IOException {
+        UsuarioBO usuarioBO = new UsuarioBO();
         if (!edit) {
             /*  
              Cadastrar nova Pessoa Jurídica
@@ -178,6 +179,7 @@ public class PessoaJuridicaBean implements Serializable {
             PessoaJuridica pjDB = pessoaJuridicaBO.findDuplicates(pessoaJuridica);
             if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) { //CNPJ novo
                 pessoaJuridica.setStatus('A');
+                pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
                 pessoaJuridicaBO.create(pessoaJuridica);
                 endereco.setTipo("PJ");
                 endereco.setIdFk(pessoaJuridica.getId());

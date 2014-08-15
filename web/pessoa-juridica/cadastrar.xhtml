@@ -146,7 +146,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}" p:maxlength="30"/>
+                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -301,7 +301,7 @@
                                             </label>
                                             <div class="col-md-3">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="enduf" value="#{pessoaJuridicaBean.endereco.estadoFk}" tabindex="1" converter="entityConverter">
-                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaJuridicaBean.getCitiesByState()}" render="city2" />
+                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaJuridicaBean.getCidadesPeloEstado()}" render="city2" />
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaJuridicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
