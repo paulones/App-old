@@ -8,18 +8,19 @@ package dao;
 
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaHistorico;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -264,6 +265,19 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaJuridicaHistorico> findAllByPJ(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaHistorico> pessoaFisicaHistoricoList = (List<PessoaJuridicaHistorico>) em.createNativeQuery("select * from pessoa_juridica_historico "
+                        + "where pessoa_juridica_fk = '"+id+"' order by data_de_modificacao desc", PessoaJuridicaHistorico.class).getResultList();
+            return pessoaFisicaHistoricoList;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

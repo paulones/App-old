@@ -57,9 +57,27 @@ public class EnderecoBO implements Serializable{
         return new ArrayList<Endereco>();
     }
     
+    public List<Endereco> findAllPJAddress(){
+        try { 
+            return enderecoDAO.findAllPJAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Endereco>();
+    }
+    
     public Endereco findPFAddress(Integer id){
         try { 
             return enderecoDAO.findPFAddress(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Endereco findPJAddress(Integer id){
+        try { 
+            return enderecoDAO.findPJAddress(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
