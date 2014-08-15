@@ -301,7 +301,7 @@
                                             </label>
                                             <div class="col-md-3">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="enduf" value="#{pessoaJuridicaBean.endereco.estadoFk}" tabindex="1" converter="entityConverter">
-                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaJuridicaBean.getCitiesByState()}" render="city2" />
+                                                    <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaJuridicaBean.getCidadesPeloEstado()}" render="city2" />
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaJuridicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
                                                 </h:selectOneMenu>
