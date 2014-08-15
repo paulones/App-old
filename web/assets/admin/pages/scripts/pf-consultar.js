@@ -90,7 +90,7 @@ var PFCon = function() {
         var oTable = table.dataTable({
             "columnDefs": [{
                     "orderable": false,
-                    "targets": [0,2,3]
+                    "targets": [0, 2, 3]
                 }],
             "order": [
                 [1, 'desc']
@@ -142,12 +142,67 @@ var PFCon = function() {
             if (window.location.search != "") {
                 var atual;
                 initHistoryTable();
-                $.each($('.data-de-modificacao'),function(){
-                    if ($(this).html().contains('Atual')){
+                $.each($('.data-de-modificacao'), function() {
+                    if ($(this).html().contains('Atual')) {
+                        $(this).parent().find('.form-body').addClass('current');
+                        $(this).parent().children('.description').removeClass('description');
                         atual = $(this).parent().find('.form-body');
+                    } else {
+                        $(this).parent().find('.form-body').addClass('past');
                     }
-                })
-                console.log(atual);
+                });
+                $.each($('.past'), function() {
+                    var description = "Altera&ccedil;&otilde;es: ";
+                    var informacoes = false;
+                    var endereco = false;
+                    var vinculo = false;
+                    $.each($(this).find('.form-control-static'), function(index) {
+                        if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                            $(this).parent().parent().css("color", "#a94442");
+                            if ($(this).parents('.informacoes-pessoais').length > 0) {
+                                informacoes = true;
+                            } else if ($(this).parents('.endereco').length > 0) {
+                                endereco = true;
+                            }
+                        }
+                    });
+                    var upper = this;
+                    $.each($(atual).find('.rows tr'), function() {
+                        var atual = this;
+                        $.each($(upper).find('.rows tr'), function() {
+                            if ($(atual).find('td').eq(0).html().trim() === $(this).find('td').eq(0).html().trim()) {
+                                $.each($(this).find('td'), function(index) {
+                                    if ($(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                        $(this).css("color", "#a94442");
+                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                        vinculo = true;
+                                    }
+                                })
+                            } else {
+                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1)) {
+                                    $(this).find('td').eq(0).css("color","#a94442");
+                                    vinculo = true;
+                                }
+                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)){
+                                    $(this).find('td').css("color","#a94442");
+                                    vinculo = true;
+                                }
+                            }
+                        });
+                    });
+                    if (informacoes) {
+                        description += "Informa&ccedil;&otilde;es Pessoais | ";
+                    }
+                    if (endereco) {
+                        description += "Endere&ccedil;o | ";
+                    }
+                    if (vinculo) {
+                        description += "V&iacute;nculos Empresariais | "
+                    }
+                    description = description.substring(0, description.length - 3) + ".";
+                    $(this).closest('.detail').parent().children('.description').append(description);
+                    description = "";
+                });
             } else {
                 initTable();
 
