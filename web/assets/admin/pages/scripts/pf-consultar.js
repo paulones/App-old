@@ -179,7 +179,12 @@ var PFCon = function() {
                                     }
                                 })
                             } else {
-                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1)) {
+                                    $(this).find('td').eq(0).css("color","#a94442");
+                                    vinculo = true;
+                                }
+                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)){
+                                    $(this).find('td').css("color","#a94442");
                                     vinculo = true;
                                 }
                             }
