@@ -16,22 +16,22 @@ var PJCad = function() {
                     required: true
                 },
                 cnpj: {
-                    //cnpj: true,
-                    required: false
+                    cnpj: true,
+                    required: true
                 },
                 alias: {
-                    minlength_optional: 2,
+                    minlength_optional: 1,
                     required: false
                 },
                 tipicidade: {
                     required: false
                 },
                 state: {
-                    minlength: 15,
+                    minlength_optional: 15,
                     required: false
                 },
                 province: {
-                    minlength_optional: 2,
+                    minlength_optional: 1,
                     required: false
                 },
                 situacao: {
@@ -52,7 +52,7 @@ var PJCad = function() {
                     required: false
                 },
                 cnae: {
-                    minlength: 9,
+                    minlength_optional: 9,
                     required: false
                 },
                 activity1: {
@@ -97,42 +97,39 @@ var PJCad = function() {
                 state: {
                     minlength: "Inscri&ccedil;&atilde;o estatal inv&aacute;lida.",
                 },
-                /*alias: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para o nome fantasia."
-                 },
-                 province: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para a inscri&ccedil;&atilde;o municipal."
-                 },
-                 iniDate: {
-                 iniDate: "Forneça uma data v&aacute;lida."
-                 },
-                 nire: {
-                 maxlength: "NIRE n&atilde;o deve passar de 11 d&iicute;gitos."
-                 },
-                 cnae: {
-                 minlength: "CNAE deve conter mais que 9 d&iicute;gitos."
-                 },
-                 activity1: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para Atividade principal"
-                 },
-                 activity2: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para Atividade secund&aacute;ria."
-                 },
-                 address: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para endere&ccedil;o."
-                 },
-                 complement: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para complemento."
-                 },
-                 number: {
-                 number: "N&uucute;mero deve conter somente valores num&eecute;ricos."
-                 },
-                 neighborhood: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para bairro."
-                 },
-                 cep: {
-                 minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para CEP."
-                 }*/
+                alias: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para o nome fantasia."
+                },
+                province: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para a inscri&ccedil;&atilde;o municipal."
+                },
+                iniDate: {
+                    iniDate: "Forneça uma data v&aacute;lida."
+                },
+                nire: {
+                    maxlength: "NIRE n&atilde;o deve passar de 11 d&iicute;gitos."
+                },
+                activity1: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para Atividade principal"
+                },
+                activity2: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para Atividade secund&aacute;ria."
+                },
+                address: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para endere&ccedil;o."
+                },
+                complement: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para complemento."
+                },
+                number: {
+                    number: "N&uucute;mero deve conter somente valores num&eecute;ricos."
+                },
+                neighborhood: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para bairro."
+                },
+                cep: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para CEP."
+                }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit
                 $(".date-error").hide();
@@ -398,8 +395,12 @@ var PJCad = function() {
 
             function validaData(value, element) {
                 var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+                if (value === "" || value === null) {
+                    return true;
+                }
                 return value.match(reg) ? true : false;
-            };
+            }
+            ;
         }
     };
 }();

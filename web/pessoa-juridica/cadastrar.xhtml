@@ -115,7 +115,7 @@
                                             <label class="control-label col-md-3">Tipo Empresarial
                                             </label>
                                             <div class="col-md-9">
-                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="tipicidade" tabindex="1" value="#{pessoaJuridicaBean.pessoaJuridica.tipoEmpresarialFk}">
+                                                <h:selectOneMenu class="select2_category select2me form-control endcity" p:placeholder="Selecione..." id="tipicidade" value="#{pessoaJuridicaBean.pessoaJuridica.tipoEmpresarialFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaJuridicaBean.tipoEmpresarialList}" var="tipoEmpresarial" itemLabel="#{tipoEmpresarial.tipo}" itemValue="#{tipoEmpresarial}"/>
                                                 </h:selectOneMenu>
@@ -146,7 +146,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}"/>
+                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}" p:maxlegth="30"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -219,12 +219,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">CNAE
-                                            </label>
+                                            <label class="control-label col-md-3">CNAE</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="cnae" value="#{pessoaJuridicaBean.pessoaJuridica.cnae}"/>
+                                                    <h:inputText class="form-control" id="cnae" value="#{pessoaJuridicaBean.pessoaJuridica.cnae}" converter="maskConverter"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -237,7 +236,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="nire" value="#{pessoaJuridicaBean.pessoaJuridica.nire}"/>
+                                                    <h:inputText class="form-control" id="nire" value="#{pessoaJuridicaBean.pessoaJuridica.nire}" converter="maskConverter"/>
                                                 </div>
                                             </div>
                                         </div>
