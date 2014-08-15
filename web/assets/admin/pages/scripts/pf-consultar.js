@@ -145,15 +145,25 @@ var PFCon = function() {
                 $.each($('.data-de-modificacao'), function() {
                     if ($(this).html().contains('Atual')) {
                         $(this).parent().find('.form-body').addClass('current');
+                        $(this).parent().children('.description').removeClass('description');
                         atual = $(this).parent().find('.form-body');
                     } else {
                         $(this).parent().find('.form-body').addClass('past');
                     }
                 });
                 $.each($('.past'), function() {
+                    var description = "Altera&ccedil;&otilde;es: ";
+                    var informacoes = false;
+                    var endereco = false;
+                    var vinculo = false;
                     $.each($(this).find('.form-control-static'), function(index) {
                         if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                             $(this).parent().parent().css("color", "#a94442");
+                            if ($(this).parents('.informacoes-pessoais').length > 0) {
+                                informacoes = true;
+                            } else if ($(this).parents('.endereco').length > 0) {
+                                endereco = true;
+                            }
                         }
                     });
                     var upper = this;
@@ -164,12 +174,29 @@ var PFCon = function() {
                                 $.each($(this).find('td'), function(index) {
                                     if ($(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
                                         $(this).css("color", "#a94442");
-                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color','#a94442')
+                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                        vinculo = true;
                                     }
                                 })
+                            } else {
+                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                    vinculo = true;
+                                }
                             }
-                        })
-                    })
+                        });
+                    });
+                    if (informacoes) {
+                        description += "Informa&ccedil;&otilde;es Pessoais | ";
+                    }
+                    if (endereco) {
+                        description += "Endere&ccedil;o | ";
+                    }
+                    if (vinculo) {
+                        description += "V&iacute;nculos Empresariais | "
+                    }
+                    description = description.substring(0, description.length - 3) + ".";
+                    $(this).closest('.detail').parent().children('.description').append(description);
+                    description = "";
                 });
             } else {
                 initTable();
