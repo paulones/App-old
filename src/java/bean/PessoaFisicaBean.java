@@ -137,6 +137,7 @@ public class PessoaFisicaBean implements Serializable {
 
             cidadeNatList = new ArrayList<>();
             cidadeEndList = new ArrayList<>();
+            cidadeEleList = new ArrayList<>();
             pessoaFisicaJuridicaList = new ArrayList<>();
 
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();

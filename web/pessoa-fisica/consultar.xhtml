@@ -12,6 +12,9 @@
         <link rel="stylesheet" type="text/css" href="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
+        <style>
+            .control-label{margin-top:7px !important}
+        </style>
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
@@ -151,11 +154,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="portlet-body form">
-                                                        <!-- BEGIN FORM-->
-                                                        <form class="form-horizontal" role="form">
+                                                        <!-- BEGIN LISTA CONTENT-->
                                                             <div class="form-body">
+                                                                <h3 class="form-section">Informações Pessoais</h3>
                                                                 <h:panelGroup class="informacoes-pessoais">
-                                                                    <h3 class="form-section">Informações Pessoais</h3>
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
@@ -296,7 +298,7 @@
                                                                         <!--/span-->
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">INSS</label>
+                                                                                <label class="control-label col-md-3">INSS:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
                                                                                         #{historico.pessoaHistorico.inss eq null ? '-' : historico.pessoaHistorico.inss}
@@ -325,7 +327,7 @@
                                                                     <div class="row">
                                                                         <div class="col-md-9">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-2">Observações</label>
+                                                                                <label class="control-label col-md-2">Observações:</label>
                                                                                 <div class="col-md-10">
                                                                                     <p class="form-control-static">
                                                                                         #{historico.pessoaHistorico.observacoes eq null ? '-' : historico.pessoaHistorico.observacoes}
@@ -336,8 +338,8 @@
                                                                     </div>
                                                                 </h:panelGroup>
                                                                 <!--/row-->
+                                                                <h3 class="form-section">Domicílio Eleitoral</h3>
                                                                 <h:panelGroup class="domicilio-eleitoral">
-                                                                    <h3 class="form-section">Domicílio Eleitoral</h3>
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
@@ -413,8 +415,8 @@
                                                                     </div>
                                                                 </h:panelGroup>
                                                                 <!--/row-->
+                                                                <h3 class="form-section">Endereço</h3>
                                                                 <h:panelGroup class="endereco">
-                                                                    <h3 class="form-section">Endereço</h3>
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
@@ -538,8 +540,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </form>
-                                                        <!-- END FORM-->
+                                                        <!-- END LISTA FORM-->
                                                     </div>
                                                 </div>
                                             </td>
@@ -578,8 +579,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="portlet-body form">
-                                                        <!-- BEGIN FORM-->
-                                                        <form class="form-horizontal" role="form">
+                                                        <!-- BEGIN LISTA CONTENT-->
                                                             <div class="form-actions top">
                                                                 <div class="row">
                                                                     <div class="col-md-6">
@@ -733,7 +733,7 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">INSS</label>
+                                                                            <label class="control-label col-md-3">INSS:</label>
                                                                             <div class="col-md-9">
                                                                                 <p class="form-control-static">
                                                                                     #{pessoaFisica.pessoa.inss eq null ? '-' : pessoaFisica.pessoa.inss}
@@ -762,7 +762,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-9">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-2">Observações</label>
+                                                                            <label class="control-label col-md-2">Observações:</label>
                                                                             <div class="col-md-10">
                                                                                 <p class="form-control-static">
                                                                                     #{pessoaFisica.pessoa.observacoes eq null ? '-' : pessoaFisica.pessoa.observacoes}
@@ -970,8 +970,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </form>
-                                                        <!-- END FORM-->
+                                                        <!-- END LISTA CONTENT-->
                                                     </div>
                                                 </div>
                                             </td>
