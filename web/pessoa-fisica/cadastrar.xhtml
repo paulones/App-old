@@ -36,11 +36,14 @@
                     </li>
                     <h:panelGroup rendered="#{pessoaFisicaBean.edit}">
                     <li>
+                        <i class="fa fa-search"></i>
                         <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
                     </h:panelGroup>
                     <li>
+                        <ui:fragment rendered="#{pessoaFisicaBean.edit}"><i class="fa fa-edit"/></ui:fragment>
+                        <ui:fragment rendered="#{!pessoaFisicaBean.edit}"><i class="fa fa-floppy-o"/></ui:fragment>
                         <a href="../pessoa-fisica/cadastrar.xhtml#{pessoaFisicaBean.edit ? '?id=' :''}#{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.id : ''}">#{pessoaFisicaBean.edit ? 'Alterar' : 'Cadastrar'}</a>
                     </li>
                 </ul>
@@ -54,7 +57,7 @@
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-edit"></i>Dados #{pessoaFisicaBean.edit ? 'de ' :'da '} #{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.nome : 'Pessoa Física'}
+                            <i class="fa fa-user"></i>Dados #{pessoaFisicaBean.edit ? 'de ' :'da '} #{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.nome : 'Pessoa Física'}
                         </div>
                     </div>
                     <div class="portlet-body form">
