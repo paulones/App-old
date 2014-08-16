@@ -44,7 +44,8 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     public void create(PessoaFisicaHistorico pessoaFisicaHistorico) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Cidade cidadeFk = pessoaFisicaHistorico.getCidadeFk();
             if (cidadeFk != null) {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
@@ -85,6 +86,16 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 usuarioFk = em.getReference(usuarioFk.getClass(), usuarioFk.getId());
                 pessoaFisicaHistorico.setUsuarioFk(usuarioFk);
             }
+            Cidade cidadeEleitoralFk = pessoaFisicaHistorico.getCidadeEleitoralFk();
+            if (cidadeEleitoralFk != null) {
+                cidadeEleitoralFk = em.getReference(cidadeEleitoralFk.getClass(), cidadeEleitoralFk.getId());
+                pessoaFisicaHistorico.setCidadeEleitoralFk(cidadeEleitoralFk);
+            }
+            Estado estadoEleitoralFk = pessoaFisicaHistorico.getEstadoEleitoralFk();
+            if (estadoEleitoralFk != null) {
+                estadoEleitoralFk = em.getReference(estadoEleitoralFk.getClass(), estadoEleitoralFk.getId());
+                pessoaFisicaHistorico.setEstadoEleitoralFk(estadoEleitoralFk);
+            }
             em.persist(pessoaFisicaHistorico);
             if (cidadeFk != null) {
                 cidadeFk.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
@@ -118,6 +129,14 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 usuarioFk.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
                 usuarioFk = em.merge(usuarioFk);
             }
+            if (cidadeEleitoralFk != null) {
+                cidadeEleitoralFk.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
+                cidadeEleitoralFk = em.merge(cidadeEleitoralFk);
+            }
+            if (estadoEleitoralFk != null) {
+                estadoEleitoralFk.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
+                estadoEleitoralFk = em.merge(estadoEleitoralFk);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -136,7 +155,8 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     public void edit(PessoaFisicaHistorico pessoaFisicaHistorico) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             PessoaFisicaHistorico persistentPessoaFisicaHistorico = em.find(PessoaFisicaHistorico.class, pessoaFisicaHistorico.getId());
             Cidade cidadeFkOld = persistentPessoaFisicaHistorico.getCidadeFk();
             Cidade cidadeFkNew = pessoaFisicaHistorico.getCidadeFk();
@@ -154,6 +174,10 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
             PessoaFisica pessoaFisicaFkNew = pessoaFisicaHistorico.getPessoaFisicaFk();
             Usuario usuarioFkOld = persistentPessoaFisicaHistorico.getUsuarioFk();
             Usuario usuarioFkNew = pessoaFisicaHistorico.getUsuarioFk();
+            Cidade cidadeEleitoralFkOld = persistentPessoaFisicaHistorico.getCidadeEleitoralFk();
+            Cidade cidadeEleitoralFkNew = pessoaFisicaHistorico.getCidadeEleitoralFk();
+            Estado estadoEleitoralFkOld = persistentPessoaFisicaHistorico.getEstadoEleitoralFk();
+            Estado estadoEleitoralFkNew = pessoaFisicaHistorico.getEstadoEleitoralFk();
             if (cidadeFkNew != null) {
                 cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
                 pessoaFisicaHistorico.setCidadeFk(cidadeFkNew);
@@ -185,6 +209,14 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
             if (usuarioFkNew != null) {
                 usuarioFkNew = em.getReference(usuarioFkNew.getClass(), usuarioFkNew.getId());
                 pessoaFisicaHistorico.setUsuarioFk(usuarioFkNew);
+            }
+            if (cidadeEleitoralFkNew != null) {
+                cidadeEleitoralFkNew = em.getReference(cidadeEleitoralFkNew.getClass(), cidadeEleitoralFkNew.getId());
+                pessoaFisicaHistorico.setCidadeEleitoralFk(cidadeEleitoralFkNew);
+            }
+            if (estadoEleitoralFkNew != null) {
+                estadoEleitoralFkNew = em.getReference(estadoEleitoralFkNew.getClass(), estadoEleitoralFkNew.getId());
+                pessoaFisicaHistorico.setEstadoEleitoralFk(estadoEleitoralFkNew);
             }
             pessoaFisicaHistorico = em.merge(pessoaFisicaHistorico);
             if (cidadeFkOld != null && !cidadeFkOld.equals(cidadeFkNew)) {
@@ -251,6 +283,22 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 usuarioFkNew.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
                 usuarioFkNew = em.merge(usuarioFkNew);
             }
+            if (cidadeEleitoralFkOld != null && !cidadeEleitoralFkOld.equals(cidadeEleitoralFkNew)) {
+                cidadeEleitoralFkOld.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistorico);
+                cidadeEleitoralFkOld = em.merge(cidadeEleitoralFkOld);
+            }
+            if (cidadeEleitoralFkNew != null && !cidadeEleitoralFkNew.equals(cidadeEleitoralFkOld)) {
+                cidadeEleitoralFkNew.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
+                cidadeEleitoralFkNew = em.merge(cidadeEleitoralFkNew);
+            }
+            if (estadoEleitoralFkOld != null && !estadoEleitoralFkOld.equals(estadoEleitoralFkNew)) {
+                estadoEleitoralFkOld.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistorico);
+                estadoEleitoralFkOld = em.merge(estadoEleitoralFkOld);
+            }
+            if (estadoEleitoralFkNew != null && !estadoEleitoralFkNew.equals(estadoEleitoralFkOld)) {
+                estadoEleitoralFkNew.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
+                estadoEleitoralFkNew = em.merge(estadoEleitoralFkNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -276,7 +324,8 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             PessoaFisicaHistorico pessoaFisicaHistorico;
             try {
                 pessoaFisicaHistorico = em.getReference(PessoaFisicaHistorico.class, id);
@@ -323,6 +372,16 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
             if (usuarioFk != null) {
                 usuarioFk.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistorico);
                 usuarioFk = em.merge(usuarioFk);
+            }
+            Cidade cidadeEleitoralFk = pessoaFisicaHistorico.getCidadeEleitoralFk();
+            if (cidadeEleitoralFk != null) {
+                cidadeEleitoralFk.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistorico);
+                cidadeEleitoralFk = em.merge(cidadeEleitoralFk);
+            }
+            Estado estadoEleitoralFk = pessoaFisicaHistorico.getEstadoEleitoralFk();
+            if (estadoEleitoralFk != null) {
+                estadoEleitoralFk.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistorico);
+                estadoEleitoralFk = em.merge(estadoEleitoralFk);
             }
             em.remove(pessoaFisicaHistorico);
             em.getTransaction().commit();

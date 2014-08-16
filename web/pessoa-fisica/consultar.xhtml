@@ -105,8 +105,8 @@
                                             <th style="width:15%">
                                                 Registro
                                             </th>
-                                            <th style="width:44%">
-                                                Descrição da alteração
+                                            <th style="width:48%">
+                                                Alterações
                                             </th>
                                             <th style="width:40%">
                                                 Usuário alterador
@@ -336,6 +336,83 @@
                                                                     </div>
                                                                 </h:panelGroup>
                                                                 <!--/row-->
+                                                                <h:panelGroup class="domicilio-eleitoral">
+                                                                    <h3 class="form-section">Domicílio Eleitoral</h3>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Zona:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{historico.pessoaHistorico.zona eq null ? '-' : historico.pessoaHistorico.zona}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--span-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Seção:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{historico.pessoaHistorico.secao eq null ? '-' : historico.pessoaHistorico.secao}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/row-->
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Local:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{historico.pessoaHistorico.local eq null ? '-' : historico.pessoaHistorico.local}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--/span-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{historico.pessoaHistorico.cidadeEleitoralFk eq null ? '-' : historico.pessoaHistorico.cidadeEleitoralFk.nome} #{historico.pessoaHistorico.estadoEleitoralFk eq null ? '' : '/'} #{historico.pessoaHistorico.estadoEleitoralFk eq null ? '' : historico.pessoaHistorico.estadoEleitoralFk.uf}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--/span-->
+                                                                    </div>
+                                                                    <!--/row-->
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Endereço:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{historico.pessoaHistorico.endereco eq null ? '-' : historico.pessoaHistorico.endereco}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--/span-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Fonte:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{historico.pessoaHistorico.fonte eq null ? '-' : historico.pessoaHistorico.fonte}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--/span-->
+                                                                    </div>
+                                                                </h:panelGroup>
+                                                                <!--/row-->
                                                                 <h:panelGroup class="endereco">
                                                                     <h3 class="form-section">Endereço</h3>
                                                                     <div class="row">
@@ -353,7 +430,7 @@
                                                                         <!--span-->
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">Estado/Cidade:</label>
+                                                                                <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
                                                                                         #{historico.enderecoHistorico.cidadeFk eq null ? '-' : historico.enderecoHistorico.cidadeFk.nome} #{historico.enderecoHistorico.estadoFk eq null ? '' : '/'} #{historico.enderecoHistorico.estadoFk eq null ? '' : historico.enderecoHistorico.estadoFk.uf}
@@ -695,6 +772,81 @@
                                                                     </div>
                                                                 </div>
                                                                 <!--/row-->
+                                                                <h3 class="form-section">Domicílio Eleitoral</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Zona:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{pessoaFisica.pessoa.zona eq null ? '-' : pessoaFisica.pessoa.zona}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Seção:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{pessoaFisica.pessoa.secao eq null ? '-' : pessoaFisica.pessoa.secao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Local:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{pessoaFisica.pessoa.local eq null ? '-' : pessoaFisica.pessoa.local}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{pessoaFisica.pessoa.cidadeEleitoralFk eq null ? '-' : pessoaFisica.pessoa.cidadeEleitoralFk.nome} #{pessoaFisica.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{pessoaFisica.pessoa.estadoEleitoralFk eq null ? '' : pessoaFisica.pessoa.estadoEleitoralFk.uf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Endereço:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{pessoaFisica.pessoa.endereco eq null ? '-' : pessoaFisica.pessoa.endereco}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Fonte:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{pessoaFisica.pessoa.fonte eq null ? '-' : pessoaFisica.pessoa.fonte}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!-- row/-->
                                                                 <h3 class="form-section">Endereço</h3>
                                                                 <div class="row">
                                                                     <div class="col-md-6">
@@ -711,7 +863,7 @@
                                                                     <!--span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Estado/Cidade:</label>
+                                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                             <div class="col-md-9">
                                                                                 <p class="form-control-static">
                                                                                     #{pessoaFisica.endereco.cidadeFk eq null ? '-' : pessoaFisica.endereco.cidadeFk.nome} #{pessoaFisica.endereco.estadoFk eq null ? '' : '/'} #{pessoaFisica.endereco.estadoFk eq null ? '' : pessoaFisica.endereco.estadoFk.uf}

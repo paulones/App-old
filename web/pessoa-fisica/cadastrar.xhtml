@@ -302,6 +302,93 @@
                                         </div>
                                     </div>
                                 </div>
+                                <h3 class="form-section">Domicílio Eleitoral</h3>
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Zona
+                                            </label>
+                                            <div class="col-md-9 ">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.zona}" id="zone"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Seção
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.secao}" id="section"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Local
+                                            </label>
+                                            <div class="col-md-9 ">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.local}" id="local"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Estado/Cidade
+                                            </label>
+                                            <div class="col-md-3 eleuf">
+                                                <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="eleuf" value="#{pessoaFisicaBean.pessoaFisica.estadoEleitoralFk}" tabindex="1" converter="entityConverter">
+                                                    <f:ajax execute="@this" event="valueChange" listener="#{pessoaFisicaBean.getCidadesPeloEstado()}" render="elector-city" />
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                            <h:panelGroup layout="block" class="col-md-6" id="elector-city">
+                                                <h:selectOneMenu class="select2_category select2me form-control elecity" p:placeholder="Cidade" id="elecity" value="#{pessoaFisicaBean.pessoaFisica.cidadeEleitoralFk}" tabindex="1" converter="entityConverter">
+                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                    <f:selectItems value="#{pessoaFisicaBean.cidadeEleList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
+                                                </h:selectOneMenu>
+                                            </h:panelGroup>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Endereço
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.endereco}" id="electoraddress"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Fonte
+                                            </label>
+                                            <div class="col-md-9">
+                                                <div class="input-icon right">
+                                                    <i class="fa"></i>
+                                                    <h:inputText class="form-control" value="#{pessoaFisicaBean.pessoaFisica.fonte}" id="font"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <h3 class="form-section">Endereço</h3>
                                 <!--/row-->
                                 <div class="row">

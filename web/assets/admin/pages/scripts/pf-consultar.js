@@ -152,10 +152,11 @@ var PFCon = function() {
                     }
                 });
                 $.each($('.past'), function() {
-                    var description = "Altera&ccedil;&otilde;es: ";
+                    var description = "";
                     var informacoes = false;
                     var endereco = false;
                     var vinculo = false;
+                    var elector = false;
                     $.each($(this).find('.form-control-static'), function(index) {
                         if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                             $(this).parent().parent().css("color", "#a94442");
@@ -163,6 +164,8 @@ var PFCon = function() {
                                 informacoes = true;
                             } else if ($(this).parents('.endereco').length > 0) {
                                 endereco = true;
+                            } else if ($(this).parents('.domicilio-eleitoral').length > 0) {
+                                elector = true;
                             }
                         }
                     });
@@ -193,6 +196,9 @@ var PFCon = function() {
                     if (informacoes) {
                         description += "Informa&ccedil;&otilde;es Pessoais | ";
                     }
+                    if (elector) {
+                        description += "Domic&iacute;lio Eleitoral | "
+                    }
                     if (endereco) {
                         description += "Endere&ccedil;o | ";
                     }
@@ -200,8 +206,10 @@ var PFCon = function() {
                         description += "V&iacute;nculos Empresariais | "
                     }
                     description = description.substring(0, description.length - 3) + ".";
+                    if (!informacoes && !endereco && !vinculo && !elector){
+                        description = "";
+                    }
                     $(this).closest('.detail').parent().children('.description').append(description);
-                    description = "";
                 });
             } else {
                 initTable();

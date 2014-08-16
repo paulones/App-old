@@ -53,6 +53,25 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaFisica.findByObservacoes", query = "SELECT p FROM PessoaFisica p WHERE p.observacoes = :observacoes"),
     @NamedQuery(name = "PessoaFisica.findByStatus", query = "SELECT p FROM PessoaFisica p WHERE p.status = :status")})
 public class PessoaFisica implements Serializable {
+    @Column(name = "zona")
+    private Integer zona;
+    @Column(name = "secao")
+    private Integer secao;
+    @Size(max = 80)
+    @Column(name = "local")
+    private String local;
+    @Size(max = 100)
+    @Column(name = "endereco")
+    private String endereco;
+    @Size(max = 50)
+    @Column(name = "fonte")
+    private String fonte;
+    @JoinColumn(name = "cidade_eleitoral_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Cidade cidadeEleitoralFk;
+    @JoinColumn(name = "estado_eleitoral_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Estado estadoEleitoralFk;
     @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuarioFk;
@@ -403,6 +422,27 @@ public class PessoaFisica implements Serializable {
         if (!Objects.equals(this.paisFk, other.paisFk)) {
             list.add("paisFk");
         }
+        if (!Objects.equals(this.cidadeEleitoralFk, other.cidadeEleitoralFk)) {
+            list.add("cidadeEleitoralFk");
+        }
+        if (!Objects.equals(this.estadoEleitoralFk, other.estadoEleitoralFk)) {
+            list.add("estadoEleitoralFk");
+        }
+        if (!Objects.equals(this.zona, other.zona)) {
+            list.add("zona");
+        }
+        if (!Objects.equals(this.secao, other.secao)) {
+            list.add("secao");
+        }
+        if (!Objects.equals(this.endereco, other.endereco)) {
+            list.add("endereco");
+        }
+        if (!Objects.equals(this.local, other.local)) {
+            list.add("local");
+        }
+        if (!Objects.equals(this.fonte, other.fonte)) {
+            list.add("fonte");
+        }
         return list;
     }
     
@@ -418,6 +458,62 @@ public class PessoaFisica implements Serializable {
 
     public void setUsuarioFk(Usuario usuarioFk) {
         this.usuarioFk = usuarioFk;
+    }
+
+    public Integer getZona() {
+        return zona;
+    }
+
+    public void setZona(Integer zona) {
+        this.zona = zona;
+    }
+
+    public Integer getSecao() {
+        return secao;
+    }
+
+    public void setSecao(Integer secao) {
+        this.secao = secao;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getFonte() {
+        return fonte;
+    }
+
+    public void setFonte(String fonte) {
+        this.fonte = fonte;
+    }
+
+    public Cidade getCidadeEleitoralFk() {
+        return cidadeEleitoralFk;
+    }
+
+    public void setCidadeEleitoralFk(Cidade cidadeEleitoralFk) {
+        this.cidadeEleitoralFk = cidadeEleitoralFk;
+    }
+
+    public Estado getEstadoEleitoralFk() {
+        return estadoEleitoralFk;
+    }
+
+    public void setEstadoEleitoralFk(Estado estadoEleitoralFk) {
+        this.estadoEleitoralFk = estadoEleitoralFk;
     }
     
 }

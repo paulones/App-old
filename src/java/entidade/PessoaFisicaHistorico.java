@@ -49,6 +49,25 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaFisicaHistorico.findByObservacoes", query = "SELECT p FROM PessoaFisicaHistorico p WHERE p.observacoes = :observacoes"),
     @NamedQuery(name = "PessoaFisicaHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaFisicaHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
 public class PessoaFisicaHistorico implements Serializable {
+    @Column(name = "zona")
+    private Integer zona;
+    @Column(name = "secao")
+    private Integer secao;
+    @Size(max = 80)
+    @Column(name = "local")
+    private String local;
+    @Size(max = 100)
+    @Column(name = "endereco")
+    private String endereco;
+    @Size(max = 50)
+    @Column(name = "fonte")
+    private String fonte;
+    @JoinColumn(name = "cidade_eleitoral_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Cidade cidadeEleitoralFk;
+    @JoinColumn(name = "estado_eleitoral_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Estado estadoEleitoralFk;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -334,6 +353,62 @@ public class PessoaFisicaHistorico implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaFisicaHistorico[ id=" + id + " ]";
+    }
+
+    public Integer getZona() {
+        return zona;
+    }
+
+    public void setZona(Integer zona) {
+        this.zona = zona;
+    }
+
+    public Integer getSecao() {
+        return secao;
+    }
+
+    public void setSecao(Integer secao) {
+        this.secao = secao;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getFonte() {
+        return fonte;
+    }
+
+    public void setFonte(String fonte) {
+        this.fonte = fonte;
+    }
+
+    public Cidade getCidadeEleitoralFk() {
+        return cidadeEleitoralFk;
+    }
+
+    public void setCidadeEleitoralFk(Cidade cidadeEleitoralFk) {
+        this.cidadeEleitoralFk = cidadeEleitoralFk;
+    }
+
+    public Estado getEstadoEleitoralFk() {
+        return estadoEleitoralFk;
+    }
+
+    public void setEstadoEleitoralFk(Estado estadoEleitoralFk) {
+        this.estadoEleitoralFk = estadoEleitoralFk;
     }
     
 }

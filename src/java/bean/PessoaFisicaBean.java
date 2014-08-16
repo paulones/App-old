@@ -78,6 +78,7 @@ public class PessoaFisicaBean implements Serializable {
     private List<Estado> estadoList;
     private List<Cidade> cidadeNatList;
     private List<Cidade> cidadeEndList;
+    private List<Cidade> cidadeEleList;
     private List<Nacionalidade> nacionalidadeList;
     private List<EstadoCivil> estadoCivilList;
     private List<PessoaFisica> pessoaFisicaList;
@@ -253,6 +254,11 @@ public class PessoaFisicaBean implements Serializable {
         } else {
             cidadeEndList.clear();
         }
+        if (pessoaFisica.getEstadoEleitoralFk()!= null) {
+            cidadeEleList = cidadeBO.getByStateId(pessoaFisica.getEstadoEleitoralFk().getId());
+        } else {
+            cidadeEleList.clear();
+        }
     }
 
     public void cadastrar() throws IOException {
@@ -407,6 +413,13 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisicaHistorico.setSexo(pessoaFisica.getSexo());
         pessoaFisicaHistorico.setTituloDeEleitor(pessoaFisica.getTituloDeEleitor());
         pessoaFisicaHistorico.setUsuarioFk(pessoaFisica.getUsuarioFk());
+        pessoaFisicaHistorico.setZona(pessoaFisica.getZona());
+        pessoaFisicaHistorico.setSecao(pessoaFisica.getSecao());
+        pessoaFisicaHistorico.setLocal(pessoaFisica.getLocal());
+        pessoaFisicaHistorico.setCidadeEleitoralFk(pessoaFisica.getCidadeEleitoralFk());
+        pessoaFisicaHistorico.setEstadoEleitoralFk(pessoaFisica.getEstadoEleitoralFk());
+        pessoaFisicaHistorico.setFonte(pessoaFisica.getFonte());
+        pessoaFisicaHistorico.setEndereco(pessoaFisica.getEndereco());
 
         EnderecoHistorico.setBairro(endereco.getBairro());
         EnderecoHistorico.setCep(endereco.getCep());
@@ -457,12 +470,20 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisicaHistorico.setSexo(pessoaFisica.getSexo());
         pessoaFisicaHistorico.setTituloDeEleitor(pessoaFisica.getTituloDeEleitor());
         pessoaFisicaHistorico.setUsuarioFk(pessoaFisica.getUsuarioFk());
+        pessoaFisicaHistorico.setZona(pessoaFisica.getZona());
+        pessoaFisicaHistorico.setSecao(pessoaFisica.getSecao());
+        pessoaFisicaHistorico.setLocal(pessoaFisica.getLocal());
+        pessoaFisicaHistorico.setCidadeEleitoralFk(pessoaFisica.getCidadeEleitoralFk());
+        pessoaFisicaHistorico.setEstadoEleitoralFk(pessoaFisica.getEstadoEleitoralFk());
+        pessoaFisicaHistorico.setFonte(pessoaFisica.getFonte());
+        pessoaFisicaHistorico.setEndereco(pessoaFisica.getEndereco());
         
         enderecoHistorico.setBairro(endereco.getBairro());
         enderecoHistorico.setCep(endereco.getCep());
         enderecoHistorico.setComplemento(endereco.getComplemento());
         enderecoHistorico.setEndereco(endereco.getEndereco());
         enderecoHistorico.setEstadoFk(endereco.getEstadoFk());
+        enderecoHistorico.setCidadeFk(endereco.getCidadeFk());
         enderecoHistorico.setNumero(endereco.getNumero());
         
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
@@ -512,6 +533,14 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setCidadeEndList(List<Cidade> cidadeEndList) {
         this.cidadeEndList = cidadeEndList;
+    }
+
+    public List<Cidade> getCidadeEleList() {
+        return cidadeEleList;
+    }
+
+    public void setCidadeEleList(List<Cidade> cidadeEleList) {
+        this.cidadeEleList = cidadeEleList;
     }
 
     public List<Nacionalidade> getNacionalidadeList() {

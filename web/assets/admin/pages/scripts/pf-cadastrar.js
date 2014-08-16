@@ -76,6 +76,30 @@ var PFCad = function() {
                     required: false,
                     minlength_optional: 2,
                 },
+                zone: {
+                    required: false,
+                },
+                section: {
+                    required: false,
+                },
+                local: {
+                    required: false,
+                    minlength_optional: 3,
+                },
+                electoraddress: {
+                    required: false,
+                    minlength_optional: 3,
+                },
+                font: {
+                    required: false,
+                    minlength_optional: 2,
+                },
+                eleuf: {
+                    required:false,
+                },
+                elecity: {
+                    required:false,
+                },
                 address: {
                     minlength_optional: 3,
                     required: false
@@ -266,9 +290,11 @@ var PFCad = function() {
             $('#elector').mask("9999999999999");
             $('#cep').mask("99999-999");
             $('#inss').mask("999999999999999");
+            $('#zone').mask("999999999999999");
+            $('#section').mask("999999999999999");
             $('.date').mask("99/99/9999");
 
-            var masks = [$('#cpf'), $('#rg'), $('#elector'), $('#cep'), $('#oe'), $('#inss')];
+            var masks = [$('#cpf'), $('#rg'), $('#elector'), $('#cep'), $('#oe'), $('#inss'), $('#zone'), $('#section')];
             $('#form').submit(function() {
                 $.each(masks, function() {
                     if ($(this).val() == "") {
@@ -290,9 +316,11 @@ var PFCad = function() {
                         $('.endcity').select2();
                     } else if ($(data.source).attr("id") === "natuf") {
                         $('.natcity').select2();
+                    } else if ($(data.source).attr("id") === "eleuf") {
+                        $('.elecity').select2();
                     } else if ($(data.source).attr("class") === "delete"){
                         $('.table-refresher').click();
-                    }else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
+                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
                         $('.capital').keyup(checkCapital);
