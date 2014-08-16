@@ -15,22 +15,23 @@ var PJCad = function() {
                     minlength: 2,
                     required: true
                 },
-                alias: {
-                    minlength_optional: 2,
-                    required: false
-                },
                 cnpj: {
-                    minlength: 18,
+                    cnpj: true,
                     required: true
+                },
+                alias: {
+                    minlength_optional: 1,
+                    required: false
                 },
                 tipicidade: {
                     required: false
                 },
                 state: {
-                    minlength: 15,
+                    minlength_optional: 15,
                     required: false
                 },
                 province: {
+                    minlength_optional: 1,
                     required: false
                 },
                 situacao: {
@@ -51,7 +52,7 @@ var PJCad = function() {
                     required: false
                 },
                 cnae: {
-                    minlength: 9,
+                    minlength_optional: 9,
                     required: false
                 },
                 activity1: {
@@ -80,7 +81,6 @@ var PJCad = function() {
                 },
                 cep: {
                     minlength_optional: 9,
-                    number: true,
                     required: false
                 },
                 enduf: {
@@ -94,13 +94,41 @@ var PJCad = function() {
                 name: {
                     required: "Entre com um nome."
                 },
-                cnpj: {
-                    minlength: "CNPJ inv&aacute;lido.",
-                    required: "Informe o CNPJ."
-                },
                 state: {
                     minlength: "Inscri&ccedil;&atilde;o estatal inv&aacute;lida.",
-                    required: "Informe a inscrição estatal."
+                },
+                alias: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para o nome fantasia."
+                },
+                province: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para a inscri&ccedil;&atilde;o municipal."
+                },
+                iniDate: {
+                    iniDate: "Forneça uma data v&aacute;lida."
+                },
+                nire: {
+                    maxlength: "NIRE n&atilde;o deve passar de 11 d&iicute;gitos."
+                },
+                activity1: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para Atividade principal"
+                },
+                activity2: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para Atividade secund&aacute;ria."
+                },
+                address: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para endere&ccedil;o."
+                },
+                complement: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para complemento."
+                },
+                number: {
+                    number: "N&uucute;mero deve conter somente valores num&eecute;ricos."
+                },
+                neighborhood: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para bairro."
+                },
+                cep: {
+                    minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para CEP."
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit
@@ -133,7 +161,7 @@ var PJCad = function() {
                 $(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
             },
             unhighlight: function(element) { // revert the change done by hightlight
-
+                $(element).closest('.form-group').removeClass('has-error');
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');
@@ -235,6 +263,7 @@ var PJCad = function() {
     return {
         init: function() {
 
+            $.validator.addMethod("cnpj", validaCNPJ, "Digite um CNPJ v&aacute;lido.");
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
             $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
 
@@ -245,6 +274,7 @@ var PJCad = function() {
             $('#state').mask("999.999.999.999");
             $('#iniDate').mask("99/99/9999");
             $('#nire').mask("99999999999");
+            $('#cep').mask("99999-999");
             $('#cnae').mask("9999-9/99");
             $('.date').mask("99/99/9999");
 
@@ -257,7 +287,7 @@ var PJCad = function() {
                 $('.sub-menu-pj-con').addClass('active');
             }
 
-            var masks = [$('#cpf'), $('#date'), $('#iniDate'), $('#nire'), $('#cnae')];
+            var masks = [$('#date'), $('#cep'), $('#iniDate'), $('#nire'), $('#cnae')];
             $('#form').submit(function() {
                 $.each(masks, function() {
                     if ($(this).val() == "") {
@@ -300,6 +330,7 @@ var PJCad = function() {
 
             situacao();
             $('#situacao').change(situacao);
+            $('#situacao').click(situacao);
             function situacao() {
                 if ($("input[name=situacao]:checked").val() === 'I') {
                     $('.reason').show();
@@ -308,7 +339,7 @@ var PJCad = function() {
                 }
             }
 
-            function validarCNPJ(value) {
+            function validaCNPJ(value, element) {
                 value = value.replace(/[^\d]+/g, '');
 
                 if (value == '')
@@ -364,6 +395,9 @@ var PJCad = function() {
 
             function validaData(value, element) {
                 var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+                if (value === "" || value === null) {
+                    return true;
+                }
                 return value.match(reg) ? true : false;
             }
             ;

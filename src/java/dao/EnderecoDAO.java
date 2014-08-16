@@ -233,11 +233,37 @@ public class EnderecoDAO implements Serializable {
         }
     }
     
+    public Endereco findPJAddress(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            Endereco endereco = (Endereco) em.createNativeQuery("select * from endereco "
+                        + "where tipo = 'PJ' and id_fk = '"+id+"'", Endereco.class).getSingleResult();
+            return endereco;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
     public List<Endereco> findAllPFAddress(){
         EntityManager em = getEntityManager();
         try {
             List<Endereco> enderecoList = (List<Endereco>) em.createNativeQuery("select * from endereco "
                         + "where tipo = 'PF'", Endereco.class).getResultList();
+            return enderecoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Endereco> findAllPJAddress(){
+        EntityManager em = getEntityManager();
+        try {
+            List<Endereco> enderecoList = (List<Endereco>) em.createNativeQuery("select * from endereco "
+                        + "where tipo = 'PJ'", Endereco.class).getResultList();
             return enderecoList;
         } catch (NoResultException e) {
             return null;

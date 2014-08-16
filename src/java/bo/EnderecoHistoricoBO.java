@@ -56,4 +56,13 @@ public class EnderecoHistoricoBO implements Serializable{
         }
         return new ArrayList<EnderecoHistorico>();
     }
+    
+    public List<EnderecoHistorico> findAllByPJ(Integer id){
+        try { 
+            return enderecoHistoricoDAO.findAllByPJ(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<EnderecoHistorico>();
+    }
 }

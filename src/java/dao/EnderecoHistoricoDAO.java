@@ -230,4 +230,17 @@ public class EnderecoHistoricoDAO implements Serializable {
             em.close();
         }
     }
+    
+    public List<EnderecoHistorico> findAllByPJ(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<EnderecoHistorico> enderecoHistoricoList = (List<EnderecoHistorico>) em.createNativeQuery("select eh.* from endereco_historico eh "
+                        + "join pessoa_juridica_historico pjh on pjh.id = eh.id_fk where pjh.pessoa_juridica_fk = '"+id+"' order by data_de_modificacao desc", EnderecoHistorico.class).getResultList();
+            return enderecoHistoricoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }
