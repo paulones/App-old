@@ -536,6 +536,7 @@
                                                     <label class="control-label col-md-3">CPF:</label>
                                                     <div class="col-md-9">
                                                         <p class="form-control-static">
+                                                            <ui:param value="#{pessoaJuridicaBean.enderecoPessoa.pessoa.cpf.substring(0,3)}.#{pessoaJuridicaBean.enderecoPessoa.pessoa.cpf.substring(3,6)}.#{pessoaJuridicaBean.enderecoPessoa.pessoa.cpf.substring(6,9)}-#{pessoaJuridicaBean.enderecoPessoa.pessoa.cpf.substring(9)}" name="cpf"/>
                                                             #{pessoaJuridicaBean.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf}
                                                         </p>
                                                     </div>

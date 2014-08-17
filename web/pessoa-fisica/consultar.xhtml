@@ -1010,6 +1010,7 @@
                                                     <label class="control-label col-md-3">CNPJ:</label>
                                                     <div class="col-md-9">
                                                         <p class="form-control-static">
+                                                            <ui:param value="#{pessoaFisicaBean.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{pessoaFisicaBean.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{pessoaFisicaBean.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
                                                             #{pessoaFisicaBean.enderecoPessoa.pessoa.cnpj eq null ? '-' : cnpj}
                                                         </p>
                                                     </div>
