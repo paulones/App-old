@@ -301,6 +301,8 @@ var PJCad = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
                         $('.endcity').select2();
+                    } else if ($(data.source).attr("class") === "pf-info"){
+                        $('.modal-pf').click();
                     } else if ($(data.source).attr("class") === "delete") {
                         $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
