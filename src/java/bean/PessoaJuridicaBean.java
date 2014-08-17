@@ -183,7 +183,7 @@ public class PessoaJuridicaBean implements Serializable {
                     } else {
                         history = true;
                         endereco = enderecoBO.findPFAddress(id);
-                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
                         
                         pessoaJuridicaHistoricoList = new ArrayList<>();
                         enderecoHistoricoList = new ArrayList<>();

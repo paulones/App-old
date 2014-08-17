@@ -35,6 +35,8 @@
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
+                        <ui:fragment rendered="#{pessoaFisicaBean.edit}"><i class="fa fa-edit"/></ui:fragment>
+                        <ui:fragment rendered="#{!pessoaFisicaBean.edit}"><i class="fa fa-floppy-o"/></ui:fragment>
                         <a href="../pessoa-juridica/cadastrar.xhtml#{pessoaJuridicaBean.edit ? '?id=' :''}#{pessoaJuridicaBean.edit ? pessoaJuridicaBean.pessoaJuridica.id : ''}">#{pessoaJuridicaBean.edit ? 'Alterar' : 'Cadastrar'}</a>
                     </li>
                 </ul>
@@ -99,8 +101,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Nome Fantasia 
-                                            </label>
+                                            <label class="control-label col-md-3">Nome Fantasia</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -112,8 +113,7 @@
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Tipo Empresarial
-                                            </label>
+                                            <label class="control-label col-md-3">Tipo Empresarial</label>
                                             <div class="col-md-9">
                                                 <h:selectOneMenu class="select2_category select2me form-control endcity" p:placeholder="Selecione..." id="tipicidade" value="#{pessoaJuridicaBean.pessoaJuridica.tipoEmpresarialFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
@@ -128,8 +128,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Inscrição Estadual
-                                            </label>
+                                            <label class="control-label col-md-3">Inscrição Estadual</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -141,8 +140,7 @@
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Inscrição Municipal
-                                            </label>
+                                            <label class="control-label col-md-3">Inscrição Municipal</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -172,8 +170,7 @@
                                     <!--/row-->
                                     <div class="col-md-6">
                                         <div class="form-group reason">
-                                            <label class="control-label col-md-3">Motivo da Desativação
-                                            </label>
+                                            <label class="control-label col-md-3">Motivo da Desativação</label>
                                             <div class="col-md-9 ">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -190,8 +187,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Data de Criação
-                                            </label>
+                                            <label class="control-label col-md-3">Data de Criação</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -203,8 +199,7 @@
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Grupo Econômico
-                                            </label>
+                                            <label class="control-label col-md-3">Grupo Econômico</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -231,8 +226,7 @@
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">NIRE
-                                            </label>
+                                            <label class="control-label col-md-3">NIRE</label>
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -247,8 +241,7 @@
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2">Atividade Principal
-                                            </label>
+                                            <label class="control-label col-md-2">Atividade Principal</label>
                                             <div class="col-md-10">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -265,8 +258,7 @@
                                 <div class="row">
                                     <div class="col-md-9">
                                         <div class="form-group">
-                                            <label class="control-label col-md-2">Atividades Secundarias
-                                            </label>
+                                            <label class="control-label col-md-2">Atividades Secundarias</label>
                                             <div class="col-md-10">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
@@ -296,8 +288,7 @@
                                     <!--/span-->
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Estado/Cidade
-                                            </label>
+                                            <label class="control-label col-md-3">Estado/Cidade</label>
                                             <div class="col-md-3">
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="enduf" value="#{pessoaJuridicaBean.endereco.estadoFk}" tabindex="1" converter="entityConverter">
                                                     <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{pessoaJuridicaBean.getCidadesPeloEstado()}" render="city2" />

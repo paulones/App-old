@@ -259,6 +259,19 @@ public class PessoaFisicaJuridicaDAO implements Serializable {
         }
     }
     
+    public List<PessoaFisicaJuridica> findAllByPJ(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaFisicaJuridica> pessoaFisicaJuridicaList = (List<PessoaFisicaJuridica>) em.createNativeQuery("select * from pessoa_fisica_juridica "
+                        + "where pessoa_juridica_fk = '"+id+"'", PessoaFisicaJuridica.class).getResultList();
+            return pessoaFisicaJuridicaList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
     public PessoaFisicaJuridica findByPFAndPJ(Integer idPf, Integer idPj){
         EntityManager em = getEntityManager();
         try {

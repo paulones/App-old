@@ -40,6 +40,8 @@
                         </li>
                     </h:panelGroup>
                     <li>
+                        <ui:fragment rendered="#{pessoaFisicaBean.history}"><i class="fa fa-history"/></ui:fragment>
+                        <ui:fragment rendered="#{!pessoaFisicaBean.history}"><i class="fa fa-search"/></ui:fragment>
                         <a href="../pessoa-juridica/consultar.xhtml#{pessoaJuridicaBean.history ? '?id=' :''}#{pessoaJuridicaBean.history ? pessoaJuridicaBean.pessoaJuridica.id : ''}">Consultar #{!pessoaJuridicaBean.history ? '':'histórico'}</a>
                     </li>
                 </ul>
@@ -126,7 +128,7 @@
                                             <td class="expand-box">
                                                 <span class="row-details row-details-close"></span>
                                             </td>
-                                             <td>
+                                            <td>
                                                 #{pessoaJuridica.pessoa.nome}
                                             </td>
                                             <td>
@@ -137,14 +139,351 @@
                                                 #{pessoaJuridica.pessoa.nomeFantasia}
                                             </td>
                                             <td>
-                                                #{pessoaFisica.pessoa.tipoEmpresarialFk.tipo}
+                                                #{pessoaJuridica.pessoa.tipoEmpresarialFk.tipo}
                                             </td>
                                             <td>
                                                 <a href="javascript:;" class="button-delete" >
                                                     <i class="glyphicon glyphicon-remove" style="color:red"/> </a>
                                                 <h:commandLink class="delete" action="#{pessoaJuridicaBean.removerPessoaJuridica(status.index)}" />
                                             </td>
-                                            <td></td>
+                                            <td class="detail display-hide" colspan="6">
+                                                <div class="portlet box blue-chambray">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="fa fa-user"></i>Dados de #{pessoaJuridica.pessoa.nome}
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body form">
+                                                        <!-- BEGIN LISTA CONTENT-->
+                                                        <div class="form-actions top">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="col-md-offset-6 col-md-9">
+                                                                        <a href="cadastrar.xhtml?id=#{pessoaJuridica.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-body">
+                                                            <h3 class="form-section">Informações Empresariais</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Nome:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.nome}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">CNPJ:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.cnpj eq null ? '-' : cnpj}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Nome Fantasia: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.nomeFantasia eq null ? '-' : pessoaJuridica.pessoa.nomeFantasia}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Tipo Empresarial: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : pessoaJuridica.pessoa.tipoEmpresarialFk.tipo}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Inscrição Estadual: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.incricaoEstadual eq null ? '-' : pessoaJuridica.pessoa.incricaoEstadual}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Inscrição Municipal: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.incricaoMunicipal eq null ? '-' : pessoaJuridica.pessoa.incricaoMunicipal}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Situação: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Motivo da Desativação: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Data de Criação: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.dataDeCriacao eq null ? '-' : pessoaJuridica.pessoa.dataDeCriacao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Grupo Econômico: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.grupoEconomico eq null ? '-' : pessoaJuridica.pessoa.grupoEconomico}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">NIRE: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.nire eq null ? '-' : pessoaJuridica.pessoa.nire}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">CNAE: </label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.pessoa.cnae eq null ? '-' : pessoaJuridica.pessoa.cnae}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Atividade Principal:</label>
+                                                                        <div class="col-md-10">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaFisica.pessoa.atividadePrincipal eq null ? '-' : pessoaFisica.pessoa.atividadePrincipal}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Atividades Secundarias</label>
+                                                                        <div class="col-md-10">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaFisica.pessoa.atividadeSecundaria eq null ? '-' : pessoaFisica.pessoa.atividadeSecundaria}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <h3 class="form-section">Endereço</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">CEP:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                <ui:param name="cep" value="#{pessoaJuridica.endereco.cep.substring(0,5)}-#{pessoaJuridica.endereco.cep.substring(5,8)}" />
+                                                                                #{pessoaJuridica.endereco.cep eq null ? '-' : cep}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.endereco.cidadeFk eq null ? '-' : pessoaJuridica.endereco.cidadeFk.nome} #{pessoaJuridica.endereco.estadoFk eq null ? '' : '/'} #{pessoaJuridica.endereco.estadoFk eq null ? '' : pessoaJuridica.endereco.estadoFk.uf}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Endereço:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.endereco.endereco eq null ? '-' : pessoaJuridica.endereco.endereco}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Número:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.endereco.numero eq null ? '-' : pessoaJuridica.endereco.numero}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Complemento:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.endereco.complemento eq null ? '-' : pessoaJuridica.endereco.complemento}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Bairro:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static">
+                                                                                #{pessoaJuridica.endereco.bairro eq null ? '-' : pessoaJuridica.endereco.bairro}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <h3 class="form-section">Vínculos Administrativos</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <table class="table table-striped table-hover table-bordered vinculations">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th style="width:20%;text-align:center">
+                                                                                    CPF
+                                                                                </th>
+                                                                                <th style="width:20%;text-align:center">
+                                                                                    Função
+                                                                                </th>
+                                                                                <th style="width:20%;text-align:center">
+                                                                                    Capital de Participação
+                                                                                </th>
+                                                                                <th style="width:18%;text-align:center">
+                                                                                    Data de Início
+                                                                                </th>
+                                                                                <th style="width:18%;text-align:center">
+                                                                                    Data de Término
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="rows">
+                                                                            <ui:repeat value="#{pessoaJuridica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                                <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
+                                                                                <tr>
+                                                                                    <td style="text-align:center">
+                                                                                        #{cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
+                                                                                    </td>
+                                                                                    <td style="text-align:center">
+                                                                                        #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
+                                                                                    </td>
+                                                                                    <td style="text-align:center">
+                                                                                        #{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridica.capitalDeParticipacao}#{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                    </td>
+                                                                                    <td style="text-align:center">
+                                                                                        #{pessoaFisicaJuridica.dataDeInicio eq null ? '-' : pessoaFisicaJuridica.dataDeInicio}
+                                                                                    </td>
+                                                                                    <td style="text-align:center">
+                                                                                        #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </ui:repeat>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-actions top">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="col-md-offset-6 col-md-9">
+                                                                        <a href="consultar.xhtml?id=#{pessoaJuridica.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Alterações</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END LISTA CONTENT-->
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </ui:repeat>
                                     <!-- END LISTA GERAL -->
