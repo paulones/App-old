@@ -419,7 +419,6 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisicaHistorico.setLocal(pessoaFisica.getLocal());
         pessoaFisicaHistorico.setCidadeEleitoralFk(pessoaFisica.getCidadeEleitoralFk());
         pessoaFisicaHistorico.setEstadoEleitoralFk(pessoaFisica.getEstadoEleitoralFk());
-        pessoaFisicaHistorico.setFonte(pessoaFisica.getFonte());
         pessoaFisicaHistorico.setEndereco(pessoaFisica.getEndereco());
 
         EnderecoHistorico.setBairro(endereco.getBairro());
@@ -476,7 +475,6 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisicaHistorico.setLocal(pessoaFisica.getLocal());
         pessoaFisicaHistorico.setCidadeEleitoralFk(pessoaFisica.getCidadeEleitoralFk());
         pessoaFisicaHistorico.setEstadoEleitoralFk(pessoaFisica.getEstadoEleitoralFk());
-        pessoaFisicaHistorico.setFonte(pessoaFisica.getFonte());
         pessoaFisicaHistorico.setEndereco(pessoaFisica.getEndereco());
         
         enderecoHistorico.setBairro(endereco.getBairro());

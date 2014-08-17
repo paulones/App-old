@@ -59,9 +59,6 @@ public class PessoaFisicaHistorico implements Serializable {
     @Size(max = 100)
     @Column(name = "endereco")
     private String endereco;
-    @Size(max = 50)
-    @Column(name = "fonte")
-    private String fonte;
     @JoinColumn(name = "cidade_eleitoral_fk", referencedColumnName = "id")
     @ManyToOne
     private Cidade cidadeEleitoralFk;
@@ -385,14 +382,6 @@ public class PessoaFisicaHistorico implements Serializable {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public String getFonte() {
-        return fonte;
-    }
-
-    public void setFonte(String fonte) {
-        this.fonte = fonte;
     }
 
     public Cidade getCidadeEleitoralFk() {
