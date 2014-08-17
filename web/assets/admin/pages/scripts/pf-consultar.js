@@ -239,6 +239,14 @@ var PFCon = function() {
                     }
                 });
             });
+            
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr("class") === "pj-info"){
+                        $('.modal-pj').click();
+                    } 
+                }
+            });
 
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
