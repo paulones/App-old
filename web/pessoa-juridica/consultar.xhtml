@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">Pessoa Jurídica - Consulta</ui:define>
+    <ui:define name="title">Pessoa Jurídica - #{pessoaJuridicaBean.history ? 'Histórico' :'Consulta'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaJuridicaBean.init()}"/>
     </ui:define>
@@ -36,15 +36,16 @@
                         <a href="#">Pessoa Jurídica</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
-                    <h:panelGroup rendered="#{pessoaFisicaBean.history}">
+                    <h:panelGroup rendered="#{pessoaJuridicaBean.history}">
                         <li>
+                            <i class="fa fa-search"/>
                             <a href="../pessoa-juridica/consultar.xhtml">Consultar</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
                     </h:panelGroup>
                     <li>
-                        <ui:fragment rendered="#{pessoaFisicaBean.history}"><i class="fa fa-history"/></ui:fragment>
-                        <ui:fragment rendered="#{!pessoaFisicaBean.history}"><i class="fa fa-search"/></ui:fragment>
+                        <ui:fragment rendered="#{pessoaJuridicaBean.history}"><i class="fa fa-history"/></ui:fragment>
+                        <ui:fragment rendered="#{!pessoaJuridicaBean.history}"><i class="fa fa-search"/></ui:fragment>
                         <a href="../pessoa-juridica/consultar.xhtml#{pessoaJuridicaBean.history ? '?id=' :''}#{pessoaJuridicaBean.history ? pessoaJuridicaBean.pessoaJuridica.id : ''}">Consultar #{!pessoaJuridicaBean.history ? '':'histórico'}</a>
                     </li>
                 </ul>
@@ -78,6 +79,7 @@
                                 Cadastro removido com sucesso!
                             </h:panelGroup>
                             <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
+                                <span class="help-block">Para visualizar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span>.</span>
                                 <span class="help-block">Para alterar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span> e, em seguida, clique no botão de alterar.</span>
                             </ui:fragment>
                             <ui:fragment rendered="#{pessoaJuridicaBean.history}">

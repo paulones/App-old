@@ -37,6 +37,13 @@
                         <a href="#">Pessoa Jurídica</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
+                    <h:panelGroup rendered="#{pessoaJuridicaBean.edit}">
+                        <li>
+                            <i class="fa fa-search"></i>
+                            <a href="../pessoa-juridica/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-angle-right"></i>
+                        </li>
+                    </h:panelGroup>
                     <li>
                         <ui:fragment rendered="#{pessoaJuridicaBean.edit}"><i class="fa fa-edit"/></ui:fragment>
                         <ui:fragment rendered="#{!pessoaJuridicaBean.edit}"><i class="fa fa-floppy-o"/></ui:fragment>
