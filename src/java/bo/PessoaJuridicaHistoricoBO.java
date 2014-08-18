@@ -32,6 +32,22 @@ public class PessoaJuridicaHistoricoBO implements Serializable{
         }
     }
     
+    public void edit(PessoaJuridicaHistorico pessoaJuridicaHistorico){
+        try {
+            pessoaJuridicaHistoricoDAO.edit(pessoaJuridicaHistorico);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void destroy(PessoaJuridicaHistorico pessoaJuridicaHistorico){
+        try {
+            pessoaJuridicaHistoricoDAO.destroy(pessoaJuridicaHistorico.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     public List<PessoaJuridicaHistorico> findAllByPJ(Integer id){
         try { 
             return pessoaJuridicaHistoricoDAO.findAllByPJ(id);
