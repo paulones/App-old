@@ -133,8 +133,8 @@
                                             <td class="description">
                                             </td>
                                             <td>
-                                                <ui:param value="#{historico.pessoaHistorico.usuarioFk.cnpj.substring(0,2)}.#{historico.pessoaHistorico.usuarioFk.cnpj.substring(2,5)}.#{historico.pessoaHistorico.usuarioFk.cnpj.substring(5,8)}/#{historico.pessoaHistorico.usuarioFk.cnpj.substring(8,12)}-#{historico.pessoaHistorico.usuarioFk.cnpj.substring(12)}" name="cnpjUsuario"/>
-                                                #{historico.pessoaHistorico.usuarioFk.nome} | #{cnpjUsuario}
+                                                <ui:param value="#{historico.pessoaHistorico.usuarioFk.cpf.substring(0,3)}.#{historico.pessoaHistorico.usuarioFk.cpf.substring(3,6)}.#{historico.pessoaHistorico.usuarioFk.cpf.substring(6,9)}-#{historico.pessoaHistorico.usuarioFk.cpf.substring(9)}" name="cpfUsuario"/>
+                                                #{historico.pessoaHistorico.usuarioFk.nome} | #{cpfUsuario}
                                             </td>
                                             <td class="detail display-hide" colspan="6">
                                                 <div class="portlet box blue-chambray">
@@ -207,6 +207,256 @@
                                                                     <!--/span-->
                                                                 </div>
                                                                 <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Inscrição Estadual: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.incricaoEstadual eq null ? '-' : historico.pessoaHistorico.incricaoEstadual}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Inscrição Municipal: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.incricaoMunicipal eq null ? '-' : historico.pessoaHistorico.incricaoMunicipal}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Situação: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.situacao eq 'A' ? 'Ativo' : 'Inativo'}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Motivo da Desativação: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.motivoDaDesativacao eq null ? '-' : historico.pessoaHistorico.motivoDaDesativacao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Data de Criação: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.dataDeCriacao eq null ? '-' : historico.pessoaHistorico.dataDeCriacao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Grupo Econômico: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.grupoEconomico eq null ? '-' : historico.pessoaHistorico.grupoEconomico}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">NIRE: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.nire eq null ? '-' : historico.pessoaHistorico.nire}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">CNAE: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.cnae eq null ? '-' : historico.pessoaHistorico.cnae}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Atividade Principal:</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.atividadePrincipal eq null ? '-' : historico.pessoaHistorico.atividadePrincipal}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Atividades Secundarias</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.atividadeSecundaria eq null ? '-' : historico.pessoaHistorico.atividadeSecundaria}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <h3 class="form-section">Endereço</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">CEP:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    <ui:param name="cep" value="#{historico.enderecoHistorico.cep.substring(0,5)}-#{historico.enderecoHistorico.cep.substring(5,8)}" />
+                                                                                    #{historico.enderecoHistorico.cep eq null ? '-' : cep}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.enderecoHistorico.cidadeFk eq null ? '-' : historico.enderecoHistorico.cidadeFk.nome} #{historico.enderecoHistorico.estadoFk eq null ? '' : '/'} #{historico.enderecoHistorico.estadoFk eq null ? '' : historico.enderecoHistorico.estadoFk.uf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Endereço:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.enderecoHistorico.endereco eq null ? '-' : historico.enderecoHistorico.endereco}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Número:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.enderecoHistorico.numero eq null ? '-' : historico.enderecoHistorico.numero}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Complemento:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.enderecoHistorico.complemento eq null ? '-' : historico.enderecoHistorico.complemento}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Bairro:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.enderecoHistorico.bairro eq null ? '-' : historico.enderecoHistorico.bairro}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <h3 class="form-section">Vínculos Administrativos</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <table class="table table-striped table-hover table-bordered vinculations">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th style="width:20%;text-align:center">
+                                                                                        CPF
+                                                                                    </th>
+                                                                                    <th style="width:20%;text-align:center">
+                                                                                        Função
+                                                                                    </th>
+                                                                                    <th style="width:20%;text-align:center">
+                                                                                        Capital de Participação
+                                                                                    </th>
+                                                                                    <th style="width:18%;text-align:center">
+                                                                                        Data de Início
+                                                                                    </th>
+                                                                                    <th style="width:18%;text-align:center">
+                                                                                        Data de Término
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="rows">
+                                                                                <ui:repeat value="#{historico.pessoaFisicaJuridicaHistoricoList}" var="pessoaFisicaJuridicaHistorico">
+                                                                                    <ui:param value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
+                                                                                    <tr>
+                                                                                        <td style="text-align:center">
+                                                                                            #{cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridicaHistorico.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridicaHistorico.funcaoFk.funcao}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridicaHistorico.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridicaHistorico.capitalDeParticipacao}#{pessoaFisicaJuridicaHistorico.capitalDeParticipacao eq null ? '':'%'}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridicaHistorico.dataDeInicio eq null ? '-' : pessoaFisicaJuridicaHistorico.dataDeInicio}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridicaHistorico.dataDeTermino  eq null ? '-' : pessoaFisicaJuridicaHistorico.dataDeTermino}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </ui:repeat>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
                                                             </h:panelGroup>
                                                         </div>
                                                         <!-- END LISTA CONTENT-->

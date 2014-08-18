@@ -67,7 +67,6 @@ public class PessoaFisicaBean implements Serializable {
 
     private PessoaFisicaHistorico pessoaFisicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
-    
 
     private String register;
     private String redirect;

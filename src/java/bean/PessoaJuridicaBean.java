@@ -100,15 +100,6 @@ public class PessoaJuridicaBean implements Serializable {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
             boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
 
-            endereco = new Endereco();
-            pessoaFisica = new PessoaFisica();
-            pessoaFisicaJuridica = new PessoaFisicaJuridica();
-
-            edit = false;
-            register = "";
-            redirect = Cookie.getCookie("FacesMessage");
-            Cookie.apagarCookie("FacesMessage");
-
             tipoEmpresarialBO = new TipoEmpresarialBO();
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
@@ -120,6 +111,14 @@ public class PessoaJuridicaBean implements Serializable {
             cidadeBO = new CidadeBO();
             funcaoBO = new FuncaoBO();
             enderecoBO = new EnderecoBO();
+
+            endereco = new Endereco();
+            pessoaFisica = new PessoaFisica();
+            pessoaFisicaJuridica = new PessoaFisicaJuridica();
+
+            register = "";
+            redirect = Cookie.getCookie("FacesMessage");
+            Cookie.apagarCookie("FacesMessage");
 
             tipoEmpresarialList = new ArrayList<>();
             cidadeEndList = new ArrayList<>();
@@ -146,7 +145,7 @@ public class PessoaJuridicaBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                     } else {
                         edit = true;
-                        endereco = enderecoBO.findPFAddress(id);
+                        endereco = enderecoBO.findPJAddress(id);
                         pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
 
                         oldPessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
@@ -160,7 +159,8 @@ public class PessoaJuridicaBean implements Serializable {
                 }
             } else if (isSearchPage) {
                 /*
-                 Tela consulta.xhtml
+                 Tela consulta.xhtml. Se houver "id" na url, entra na lista de alterações nos
+                 dados da Pessoa Jurídica. Caso contrário, acessa a consulta geral 
                  */
                 if (request.getParameter("id") == null) {   // Consulta geral
                     history = false;
@@ -187,26 +187,26 @@ public class PessoaJuridicaBean implements Serializable {
                         history = true;
                         endereco = enderecoBO.findPJAddress(id);
                         pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        
+
                         pessoaJuridicaHistoricoList = new ArrayList<>();
                         enderecoHistoricoList = new ArrayList<>();
                         pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
-                        
+
                         pessoaJuridicaHistoricoList = pessoaJuridicaHistoricoBO.findAllByPJ(id);
                         enderecoHistoricoList = enderecoHistoricoBO.findAllByPJ(id);
                         pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoBO.findAllByPJ(id);
-                        
+
                         enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
                         EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
                         enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaJuridica, endereco, pessoaFisicaJuridicaList);
                         enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
-                        for (PessoaJuridicaHistorico pjh : pessoaJuridicaHistoricoList){
-                            for (EnderecoHistorico eh : enderecoHistoricoList){
-                                if (pjh.getId() == eh.getIdFk()){
+                        for (PessoaJuridicaHistorico pjh : pessoaJuridicaHistoricoList) {
+                            for (EnderecoHistorico eh : enderecoHistoricoList) {
+                                if (pjh.getId() == eh.getIdFk()) {
                                     EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pjh, eh);
                                     List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
-                                    for(PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList){
-                                        if(pjh.getId() == pfjh.getIdFk()){
+                                    for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
+                                        if (pjh.getId() == pfjh.getIdFk()) {
                                             pfjhList.add(pfjh);
                                         }
                                     }
@@ -220,6 +220,13 @@ public class PessoaJuridicaBean implements Serializable {
                 }
             }
         }
+    }
+    
+    public void carregarFormulario() {
+        estadoList = estadoBO.findAll();
+        tipoEmpresarialList = tipoEmpresarialBO.findAll();
+        pessoaFisicaList = pessoaFisicaBO.findAll();
+        funcaoList = funcaoBO.findAll();
     }
 
     public void cadastrar() throws IOException {
@@ -303,13 +310,6 @@ public class PessoaJuridicaBean implements Serializable {
         }
     }
 
-    public void carregarFormulario() {
-        estadoList = estadoBO.findAll();
-        tipoEmpresarialList = tipoEmpresarialBO.findAll();
-        pessoaFisicaList = pessoaFisicaBO.findAll();
-        funcaoList = funcaoBO.findAll();
-    }
-
     public void getCidadesPeloEstado() { // Renderizar cidades baseado no estado escolhido
         if (endereco.getEstadoFk() != null) {
             cidadeEndList = cidadeBO.getByStateId(endereco.getEstadoFk().getId());
@@ -319,6 +319,9 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void vincularPessoaFisica() {
+        if (edit) {
+            pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
+        }
         pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
@@ -389,16 +392,16 @@ public class PessoaJuridicaBean implements Serializable {
             pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
     }
-    
-    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList){
+
+    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList) {
         /*
          Montar registro atual como uma entidade de histórico para facilitar o ui:repeat do form
          */
         EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
         PessoaJuridicaHistorico pessoaJuridicaHistorico = new PessoaJuridicaHistorico();
         EnderecoHistorico enderecoHistorico = new EnderecoHistorico();
-        List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList =  new ArrayList<>();
-        
+        List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+
         pessoaJuridicaHistorico.setNome(pessoaJuridica.getNome());
         pessoaJuridicaHistorico.setNomeFantasia(pessoaJuridica.getNomeFantasia());
         pessoaJuridicaHistorico.setTipoEmpresarialFk(pessoaJuridica.getTipoEmpresarialFk());
@@ -411,16 +414,16 @@ public class PessoaJuridicaBean implements Serializable {
         pessoaJuridicaHistorico.setNire(pessoaJuridica.getNire());
         pessoaJuridicaHistorico.setAtividadePrincipal(pessoaJuridica.getAtividadePrincipal());
         pessoaJuridicaHistorico.setAtividadeSecundaria(pessoaJuridica.getAtividadeSecundaria());
-        
+
         pessoaJuridicaHistorico.setUsuarioFk(pessoaJuridica.getUsuarioFk());
-        
+
         enderecoHistorico.setBairro(endereco.getBairro());
         enderecoHistorico.setCep(endereco.getCep());
         enderecoHistorico.setComplemento(endereco.getComplemento());
         enderecoHistorico.setEndereco(endereco.getEndereco());
         enderecoHistorico.setEstadoFk(endereco.getEstadoFk());
         enderecoHistorico.setNumero(endereco.getNumero());
-        
+
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
             PessoaFisicaJuridicaHistorico pfjh = new PessoaFisicaJuridicaHistorico();
             pfjh.setCapitalDeParticipacao(pfj.getCapitalDeParticipacao());
@@ -431,7 +434,7 @@ public class PessoaJuridicaBean implements Serializable {
             pfjh.setPessoaJuridicaFk(pfj.getPessoaJuridicaFk());
             pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
-                
+
         enderecoPessoaFisicaJuridicaHistorico.setPessoaHistorico(pessoaJuridicaHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setEnderecoHistorico(enderecoHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaFisicaJuridicaHistoricoList(pessoaFisicaJuridicaHistoricoList);
