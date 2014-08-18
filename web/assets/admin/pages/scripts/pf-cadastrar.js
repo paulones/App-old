@@ -262,7 +262,6 @@ var PFCad = function() {
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
 
-
         table.on('keyup', '.capital', checkCapital);
     };
 

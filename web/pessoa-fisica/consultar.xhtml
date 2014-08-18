@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">Pessoa Física - Consulta</ui:define>
+    <ui:define name="title">Pessoa Física - #{pessoaFisicaBean.history ? 'Histórico' :'Consulta'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaFisicaBean.init()}"/>
     </ui:define>
@@ -116,7 +116,7 @@
                                                 Alterações
                                             </th>
                                             <th style="width:40%">
-                                                Usuário alterador
+                                                Usuário Alterador
                                             </th>
                                             <th class="display-hide"></th>
                                         </h:panelGroup>

@@ -42,8 +42,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridica.findByNome", query = "SELECT p FROM PessoaJuridica p WHERE p.nome = :nome"),
     @NamedQuery(name = "PessoaJuridica.findByNomeFantasia", query = "SELECT p FROM PessoaJuridica p WHERE p.nomeFantasia = :nomeFantasia"),
     @NamedQuery(name = "PessoaJuridica.findByCnpj", query = "SELECT p FROM PessoaJuridica p WHERE p.cnpj = :cnpj"),
-    @NamedQuery(name = "PessoaJuridica.findByIncricaoEstadual", query = "SELECT p FROM PessoaJuridica p WHERE p.incricaoEstadual = :incricaoEstadual"),
-    @NamedQuery(name = "PessoaJuridica.findByIncricaoMunicipal", query = "SELECT p FROM PessoaJuridica p WHERE p.incricaoMunicipal = :incricaoMunicipal"),
+    @NamedQuery(name = "PessoaJuridica.findByInscricaoEstadual", query = "SELECT p FROM PessoaJuridica p WHERE p.inscricaoEstadual = :inscricaoEstadual"),
+    @NamedQuery(name = "PessoaJuridica.findByInscricaoMunicipal", query = "SELECT p FROM PessoaJuridica p WHERE p.inscricaoMunicipal = :inscricaoMunicipal"),
     @NamedQuery(name = "PessoaJuridica.findBySituacao", query = "SELECT p FROM PessoaJuridica p WHERE p.situacao = :situacao"),
     @NamedQuery(name = "PessoaJuridica.findByMotivoDaDesativacao", query = "SELECT p FROM PessoaJuridica p WHERE p.motivoDaDesativacao = :motivoDaDesativacao"),
     @NamedQuery(name = "PessoaJuridica.findByDataDeCriacao", query = "SELECT p FROM PessoaJuridica p WHERE p.dataDeCriacao = :dataDeCriacao"),
@@ -77,11 +77,11 @@ public class PessoaJuridica implements Serializable {
     @Column(name = "cnpj")
     private String cnpj;
     @Size(max = 12)
-    @Column(name = "incricao_estadual")
-    private String incricaoEstadual;
+    @Column(name = "inscricao_estadual")
+    private String inscricaoEstadual;
     @Size(max = 30)
-    @Column(name = "incricao_municipal")
-    private String incricaoMunicipal;
+    @Column(name = "inscricao_municipal")
+    private String inscricaoMunicipal;
     @Column(name = "situacao")
     private Character situacao;
     @Size(max = 300)
@@ -169,20 +169,20 @@ public class PessoaJuridica implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public String getIncricaoEstadual() {
-        return incricaoEstadual;
+    public String getInscricaoEstadual() {
+        return inscricaoEstadual;
     }
 
-    public void setIncricaoEstadual(String incricaoEstadual) {
-        this.incricaoEstadual = incricaoEstadual;
+    public void setInscricaoEstadual(String inscricaoEstadual) {
+        this.inscricaoEstadual = inscricaoEstadual;
     }
 
-    public String getIncricaoMunicipal() {
-        return incricaoMunicipal;
+    public String getInscricaoMunicipal() {
+        return inscricaoMunicipal;
     }
 
-    public void setIncricaoMunicipal(String incricaoMunicipal) {
-        this.incricaoMunicipal = incricaoMunicipal;
+    public void setInscricaoMunicipal(String inscricaoMunicipal) {
+        this.inscricaoMunicipal = inscricaoMunicipal;
     }
 
     public Character getSituacao() {
@@ -350,11 +350,11 @@ public class PessoaJuridica implements Serializable {
         if (!Objects.equals(this.cnpj, other.cnpj)) {
             list.add("cnpj");
         }
-        if (!Objects.equals(this.incricaoEstadual, other.incricaoEstadual)) {
-            list.add("incricaoEstadual");
+        if (!Objects.equals(this.inscricaoEstadual, other.inscricaoEstadual)) {
+            list.add("inscricaoEstadual");
         }
-        if (!Objects.equals(this.incricaoMunicipal, other.incricaoMunicipal)) {
-            list.add("incricaoMunicipal");
+        if (!Objects.equals(this.inscricaoMunicipal, other.inscricaoMunicipal)) {
+            list.add("inscricaoMunicipal");
         }
         if (!Objects.equals(this.situacao, other.situacao)) {
             list.add("situacao");

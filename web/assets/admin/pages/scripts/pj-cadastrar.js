@@ -290,7 +290,7 @@ var PJCad = function() {
             $('#cnae').mask("9999-9/99");
             $('.date').mask("99/99/9999");
 
-            var masks = [$('#date'), $('#cep'), $('#iniDate'), $('#nire'), $('#cnae')];
+            var masks = [$('#cep'), $('#iniDate'), $('#nire'), $('#cnae')];
             $('#form').submit(function() {
                 $.each(masks, function() {
                     if ($(this).val() == "") {
@@ -308,7 +308,7 @@ var PJCad = function() {
                         $('.modal-pf').click();
                     } else if ($(data.source).attr("class") === "delete") {
                         $('.table-refresher').click();
-                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "delete") {
+                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
                         $('.capital').keyup(checkCapital);
