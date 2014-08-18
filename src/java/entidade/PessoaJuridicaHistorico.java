@@ -38,8 +38,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaJuridicaHistorico.findByNome", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.nome = :nome"),
     @NamedQuery(name = "PessoaJuridicaHistorico.findByNomeFantasia", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.nomeFantasia = :nomeFantasia"),
     @NamedQuery(name = "PessoaJuridicaHistorico.findByCnpj", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.cnpj = :cnpj"),
-    @NamedQuery(name = "PessoaJuridicaHistorico.findByIncricaoEstadual", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.incricaoEstadual = :incricaoEstadual"),
-    @NamedQuery(name = "PessoaJuridicaHistorico.findByIncricaoMunicipal", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.incricaoMunicipal = :incricaoMunicipal"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByInscricaoEstadual", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.inscricaoEstadual = :inscricaoEstadual"),
+    @NamedQuery(name = "PessoaJuridicaHistorico.findByInscricaoMunicipal", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.inscricaoMunicipal = :inscricaoMunicipal"),
     @NamedQuery(name = "PessoaJuridicaHistorico.findBySituacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.situacao = :situacao"),
     @NamedQuery(name = "PessoaJuridicaHistorico.findByMotivoDaDesativacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.motivoDaDesativacao = :motivoDaDesativacao"),
     @NamedQuery(name = "PessoaJuridicaHistorico.findByDataDeCriacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.dataDeCriacao = :dataDeCriacao"),
@@ -70,11 +70,11 @@ public class PessoaJuridicaHistorico implements Serializable {
     @Column(name = "cnpj")
     private String cnpj;
     @Size(max = 12)
-    @Column(name = "incricao_estadual")
-    private String incricaoEstadual;
+    @Column(name = "inscricao_estadual")
+    private String inscricaoEstadual;
     @Size(max = 30)
-    @Column(name = "incricao_municipal")
-    private String incricaoMunicipal;
+    @Column(name = "inscricao_municipal")
+    private String inscricaoMunicipal;
     @Column(name = "situacao")
     private Character situacao;
     @Size(max = 300)
@@ -162,20 +162,20 @@ public class PessoaJuridicaHistorico implements Serializable {
         this.cnpj = cnpj;
     }
 
-    public String getIncricaoEstadual() {
-        return incricaoEstadual;
+    public String getInscricaoEstadual() {
+        return inscricaoEstadual;
     }
 
-    public void setIncricaoEstadual(String incricaoEstadual) {
-        this.incricaoEstadual = incricaoEstadual;
+    public void setInscricaoEstadual(String inscricaoEstadual) {
+        this.inscricaoEstadual = inscricaoEstadual;
     }
 
-    public String getIncricaoMunicipal() {
-        return incricaoMunicipal;
+    public String getInscricaoMunicipal() {
+        return inscricaoMunicipal;
     }
 
-    public void setIncricaoMunicipal(String incricaoMunicipal) {
-        this.incricaoMunicipal = incricaoMunicipal;
+    public void setInscricaoMunicipal(String inscricaoMunicipal) {
+        this.inscricaoMunicipal = inscricaoMunicipal;
     }
 
     public Character getSituacao() {

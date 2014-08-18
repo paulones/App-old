@@ -173,7 +173,7 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">CPF:</label>
+                                                                            <label class="control-label col-md-3">CNPJ:</label>
                                                                             <div class="col-md-9">
                                                                                 <p class="form-control-static">
                                                                                     <ui:param value="#{historico.pessoaHistorico.cnpj.substring(0,2)}.#{historico.pessoaHistorico.cnpj.substring(2,5)}.#{historico.pessoaHistorico.cnpj.substring(5,8)}/#{historico.pessoaHistorico.cnpj.substring(8,12)}-#{historico.pessoaHistorico.cnpj.substring(12)}" name="cnpj"/>
@@ -216,7 +216,7 @@
                                                                             <label class="control-label col-md-3">Inscrição Estadual: </label>
                                                                             <div class="col-md-9">
                                                                                 <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.incricaoEstadual eq null ? '-' : historico.pessoaHistorico.incricaoEstadual}
+                                                                                    #{historico.pessoaHistorico.inscricaoEstadual eq null ? '-' : historico.pessoaHistorico.inscricaoEstadual}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -227,7 +227,7 @@
                                                                             <label class="control-label col-md-3">Inscrição Municipal: </label>
                                                                             <div class="col-md-9">
                                                                                 <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.incricaoMunicipal eq null ? '-' : historico.pessoaHistorico.incricaoMunicipal}
+                                                                                    #{historico.pessoaHistorico.inscricaoMunicipal eq null ? '-' : historico.pessoaHistorico.inscricaoMunicipal}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -572,7 +572,7 @@
                                                                         <label class="control-label col-md-3">Inscrição Estadual: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{pessoaJuridica.pessoa.incricaoEstadual eq null ? '-' : pessoaJuridica.pessoa.incricaoEstadual}
+                                                                                #{pessoaJuridica.pessoa.inscricaoEstadual eq null ? '-' : pessoaJuridica.pessoa.inscricaoEstadual}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -583,7 +583,7 @@
                                                                         <label class="control-label col-md-3">Inscrição Municipal: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{pessoaJuridica.pessoa.incricaoMunicipal eq null ? '-' : pessoaJuridica.pessoa.incricaoMunicipal}
+                                                                                #{pessoaJuridica.pessoa.inscricaoMunicipal eq null ? '-' : pessoaJuridica.pessoa.inscricaoMunicipal}
                                                                             </p>
                                                                         </div>
                                                                     </div>

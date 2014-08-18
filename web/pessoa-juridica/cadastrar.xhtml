@@ -135,7 +135,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="state" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoEstadual}" converter="maskConverter"/>
+                                                    <h:inputText class="form-control" id="state" value="#{pessoaJuridicaBean.pessoaJuridica.inscricaoEstadual}" converter="maskConverter"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.incricaoMunicipal}" p:maxlegth="30"/>
+                                                    <h:inputText class="form-control" id="province" value="#{pessoaJuridicaBean.pessoaJuridica.inscricaoMunicipal}" p:maxlegth="30"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -431,7 +431,7 @@
                                                                 </h:selectOneMenu>
                                                             </td>
                                                             <td>
-                                                                <h:inputText class="form-control input-small capital" value="#{pessoaFisicaJuridica.capitalDeParticipacao}" p:placeholder="%" maxlength="3"/>
+                                                                <h:inputText class="form-control input-small capital" value="#{pessoaFisicaJuridica.capitalDeParticipacao}" p:placeholder="%"/>
                                                             </td>
                                                             <td>
                                                                 <h:inputText class="form-control input-small date initial-date" value="#{pessoaFisicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
@@ -441,7 +441,7 @@
                                                             </td>
                                                             <td>
                                                                 <h:commandLink class="delete">
-                                                                    <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculo(status.index)}" render=":form:pessoaFisicaJuridica"/>
+                                                                    <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculo(status.index)}"/>
                                                                     <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
                                                             </td>
                                                         </tr>

@@ -285,7 +285,7 @@ public class PessoaJuridicaBean implements Serializable {
             } else {
                 UtilBO utilBO = new UtilBO();
                 Timestamp timestamp = utilBO.findServerTime();
-                pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCNPJ(Cookie.getCookie("usuario")));
+                pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
                 pessoaJuridicaBO.edit(pessoaJuridica);
                 pessoaJuridicaHistorico.setDataDeModificacao(timestamp);
                 pessoaJuridicaHistoricoBO.create(pessoaJuridicaHistorico);
@@ -297,7 +297,7 @@ public class PessoaJuridicaBean implements Serializable {
                     pessoaFisicaJuridicaBO.create(pfj);
                 }
                 for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
-                    pfjh.setTipo("PF");
+                    pfjh.setTipo("PJ");
                     pfjh.setIdFk(pessoaJuridicaHistorico.getId());
                     pessoaFisicaJuridicaHistoricoBO.create(pfjh);
                 }
@@ -361,18 +361,21 @@ public class PessoaJuridicaBean implements Serializable {
         EnderecoHistorico = new EnderecoHistorico();
         pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
 
+        pessoaJuridicaHistorico.setNome(pessoaJuridica.getNome());
+        pessoaJuridicaHistorico.setCnpj(pessoaJuridica.getCnpj());
         pessoaJuridicaHistorico.setNomeFantasia(pessoaJuridica.getNomeFantasia());
         pessoaJuridicaHistorico.setTipoEmpresarialFk(pessoaJuridica.getTipoEmpresarialFk());
-        pessoaJuridicaHistorico.setIncricaoEstadual(pessoaJuridica.getIncricaoEstadual());
-        pessoaJuridicaHistorico.setIncricaoMunicipal(pessoaJuridica.getIncricaoMunicipal());
+        pessoaJuridicaHistorico.setInscricaoEstadual(pessoaJuridica.getInscricaoEstadual());
+        pessoaJuridicaHistorico.setInscricaoMunicipal(pessoaJuridica.getInscricaoMunicipal());
         pessoaJuridicaHistorico.setSituacao(pessoaJuridica.getSituacao());
+        pessoaJuridicaHistorico.setMotivoDaDesativacao(pessoaJuridica.getMotivoDaDesativacao());
         pessoaJuridicaHistorico.setDataDeCriacao(pessoaJuridica.getDataDeCriacao());
         pessoaJuridicaHistorico.setGrupoEconomico(pessoaJuridica.getGrupoEconomico());
         pessoaJuridicaHistorico.setCnae(pessoaJuridica.getCnae());
         pessoaJuridicaHistorico.setNire(pessoaJuridica.getNire());
         pessoaJuridicaHistorico.setAtividadePrincipal(pessoaJuridica.getAtividadePrincipal());
         pessoaJuridicaHistorico.setAtividadeSecundaria(pessoaJuridica.getAtividadeSecundaria());
-
+        pessoaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
         pessoaJuridicaHistorico.setUsuarioFk(usuario);
 
         EnderecoHistorico.setBairro(endereco.getBairro());
@@ -406,18 +409,19 @@ public class PessoaJuridicaBean implements Serializable {
         List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
 
         pessoaJuridicaHistorico.setNome(pessoaJuridica.getNome());
+        pessoaJuridicaHistorico.setCnpj(pessoaJuridica.getCnpj());
         pessoaJuridicaHistorico.setNomeFantasia(pessoaJuridica.getNomeFantasia());
         pessoaJuridicaHistorico.setTipoEmpresarialFk(pessoaJuridica.getTipoEmpresarialFk());
-        pessoaJuridicaHistorico.setIncricaoEstadual(pessoaJuridica.getIncricaoEstadual());
-        pessoaJuridicaHistorico.setIncricaoMunicipal(pessoaJuridica.getIncricaoMunicipal());
+        pessoaJuridicaHistorico.setInscricaoEstadual(pessoaJuridica.getInscricaoEstadual());
+        pessoaJuridicaHistorico.setInscricaoMunicipal(pessoaJuridica.getInscricaoMunicipal());
         pessoaJuridicaHistorico.setSituacao(pessoaJuridica.getSituacao());
+        pessoaJuridicaHistorico.setMotivoDaDesativacao(pessoaJuridica.getMotivoDaDesativacao());
         pessoaJuridicaHistorico.setDataDeCriacao(pessoaJuridica.getDataDeCriacao());
         pessoaJuridicaHistorico.setGrupoEconomico(pessoaJuridica.getGrupoEconomico());
         pessoaJuridicaHistorico.setCnae(pessoaJuridica.getCnae());
         pessoaJuridicaHistorico.setNire(pessoaJuridica.getNire());
         pessoaJuridicaHistorico.setAtividadePrincipal(pessoaJuridica.getAtividadePrincipal());
         pessoaJuridicaHistorico.setAtividadeSecundaria(pessoaJuridica.getAtividadeSecundaria());
-
         pessoaJuridicaHistorico.setUsuarioFk(pessoaJuridica.getUsuarioFk());
 
         enderecoHistorico.setBairro(endereco.getBairro());
@@ -425,6 +429,7 @@ public class PessoaJuridicaBean implements Serializable {
         enderecoHistorico.setComplemento(endereco.getComplemento());
         enderecoHistorico.setEndereco(endereco.getEndereco());
         enderecoHistorico.setEstadoFk(endereco.getEstadoFk());
+        enderecoHistorico.setCidadeFk(endereco.getCidadeFk());
         enderecoHistorico.setNumero(endereco.getNumero());
 
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {

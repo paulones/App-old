@@ -152,7 +152,7 @@ var PJCon = function() {
                     }
                 });
                 $.each($('.past'), function() {
-                    var description = "Altera&ccedil;&otilde;es: ";
+                    var description = "";
                     var informacoes = false;
                     var endereco = false;
                     var vinculo = false;
@@ -200,6 +200,9 @@ var PJCon = function() {
                         description += "V&iacute;nculos Administrativos | "
                     }
                     description = description.substring(0, description.length - 3) + ".";
+                    if (!informacoes && !endereco && !vinculo){
+                        description = "";
+                    }
                     $(this).closest('.detail').parent().children('.description').append(description);
                     description = "";
                 });
