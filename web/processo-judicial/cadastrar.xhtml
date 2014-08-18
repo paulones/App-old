@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">Processos Administrativos</ui:define>
+    <ui:define name="title">Processo Judicial - Cadastro</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{homeBean.init()}"/>
     </ui:define>
@@ -19,7 +19,7 @@
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    Processos Judiciais <small>Cadastro</small>
+                    Processo Judicial <small>Cadastro</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -29,12 +29,12 @@
                     </li>
                     <li>
                         <i class="fa fa-legal"></i>
-                        <a href="#">Processos Judiciais</a>
+                        <a href="#">Processo Judicial</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
                     <li>
                         <i class="fa fa-floppy-o"/>
-                        <a href="../processos-judiciais/cadastrar.xhtml">Cadastrar</a>
+                        <a href="processo-judicial/cadastrar.xhtml">Cadastrar</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->
@@ -48,11 +48,12 @@
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-files-o"></i> Formulário de Cadastro - <span class="step-title">
-                                Passo 1 de 3 </span>
+                                Passo 1 de 4 </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <form action="#" class="form-horizontal" id="submit_form" method="POST">
+                        <!-- BEGIN FORM-->
+                        <h:form prependId="false" id="submit_form" class="form-horizontal">
                             <div class="form-wizard">
                                 <div class="form-body">
                                     <ul class="nav nav-pills nav-justified steps">
@@ -107,13 +108,13 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-3">Nome <span class="required">
+                                                        <label class="control-label col-md-4">Nº do Processo <span class="required">
                                                                 * </span>
                                                         </label>
-                                                        <div class="col-md-9">
+                                                        <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="name" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                                <h:inputText class="form-control" id="nprocesso" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -121,11 +122,137 @@
                                                 <!--/span-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-3">CPF </label>
-                                                        <div class="col-md-9">
+                                                        <label class="control-label col-md-4">Nº do Processo Anterior <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="cpf" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                                <h:inputText class="form-control" id="nprocessoant" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Vara <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="vara" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Vara Anterior <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="varaant" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Comarca <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="comarca" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Procurador <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="procurador" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Decisão do Juiz <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="decisaojuiz" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Grupo de Especialização <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="especializacao" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Distribuição <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="distribuicao" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Outras Informações <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea class="form-control" id="outrasinfos" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -614,21 +741,21 @@
                                 <div class="form-actions fluid">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="col-md-offset-3 col-md-9">
+                                            <div class="col-md-offset-9 col-md-9">
                                                 <a href="javascript:;" class="btn default button-previous">
-                                                    <i class="m-icon-swapleft"></i> Back </a>
-                                                <a href="javascript:;" class="btn blue button-next">
-                                                    Continue <i class="m-icon-swapright m-icon-white"></i>
+                                                    <i class="m-icon-swapleft"></i> Voltar </a>
+                                                <a href="javascript:;" class="btn blue-chambray button-next">
+                                                    Continuar <i class="m-icon-swapright m-icon-white"></i>
                                                 </a>
-                                                <a href="javascript:;" class="btn green button-submit">
-                                                    Submit <i class="m-icon-swapright m-icon-white"></i>
+                                                <a href="javascript:;" class="btn blue-chambray button-submit">
+                                                    <i class="fa fa-save"></i> Cadastrar 
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </h:form>
                     </div>
                 </div>
             </div>
