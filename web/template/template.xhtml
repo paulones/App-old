@@ -16,6 +16,10 @@
             <f:view encoding="ISO-8859-1"/> 
             <ui:insert name="metadata-components"/>
         </f:metadata>
+        <!-- BEGIN PACE PLUGIN FILES -->
+        <script src="../assets/global/plugins/pace/pace.min.js" type="text/javascript"></script>
+        <link href="../assets/global/plugins/pace/themes/pace.min.css" rel="stylesheet" type="text/css"/>
+        <!-- END PACE PLUGIN FILES -->
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all" rel="stylesheet" type="text/css"/>
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -236,11 +240,26 @@
                                 <span class="title">Processos Administrativos</span>
                             </a>
                         </li>
-                        <li class="menu-proc-jud">
-                            <a href="../processos-judiciais/processos-judiciais.xhtml">
+                        <li class="menu-pjud">
+                            <a href="javascript:;">
                                 <i class="fa fa-gavel"></i>
                                 <span class="title">Processos Judiciais</span>
+                                <span class="arrow"/>
                             </a>
+                            <ul class="sub-menu">
+                                <li class="sub-menu-pjud-cad">
+                                    <a href="../processos-judiciais/cadastrar.xhtml">
+                                        <i class="fa fa-floppy-o"></i>
+                                        <span class="title">Cadastrar</span>
+                                    </a>
+                                </li>
+                                <li class="sub-menu-pjud-con">
+                                    <a href="../processos-judiciais/consultar.xhtml">
+                                        <i class="fa fa-search"></i>
+                                        <span class="title">Consultar/Alterar</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="menu-pf">
                             <a href="javascript:;">
