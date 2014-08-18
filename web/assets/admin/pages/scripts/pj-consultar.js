@@ -232,6 +232,14 @@ var PJCon = function() {
                 });
             });
             
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr("class") === "pf-info"){
+                        $('.modal-pf').click();
+                    } 
+                }
+            });
+            
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
             $('.menu-pj a .arrow').addClass('open');

@@ -318,6 +318,8 @@ var PFCad = function() {
                         $('.natcity').select2();
                     } else if ($(data.source).attr("id") === "eleuf") {
                         $('.elecity').select2();
+                    } else if ($(data.source).attr("class") === "pj-info"){
+                        $('.modal-pj').click();
                     } else if ($(data.source).attr("class") === "delete"){
                         $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {

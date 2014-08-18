@@ -58,6 +58,7 @@ public class PessoaJuridicaBean implements Serializable {
     private Endereco oldEndereco;
     private PessoaFisica pessoaFisica;
     private PessoaFisicaJuridica pessoaFisicaJuridica;
+    private EnderecoPessoa enderecoPessoa;
 
     private PessoaJuridicaHistorico pessoaJuridicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
@@ -338,6 +339,12 @@ public class PessoaJuridicaBean implements Serializable {
     public void removerVinculo(int index) {
         pessoaFisicaJuridicaList.remove(index);
     }
+    
+    public void exibirModal(PessoaFisica pessoaFisica){
+        Endereco endereco = new Endereco();
+        endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
+        enderecoPessoa = new EnderecoPessoa(pessoaFisica, endereco);
+    }
 
     public void removerPessoaJuridica(int index) {
         PessoaJuridica pessoaJuridica = (PessoaJuridica) enderecoPessoaList.get(index).getPessoa();
@@ -567,6 +574,14 @@ public class PessoaJuridicaBean implements Serializable {
 
     public void setEnderecoPessoaList(List<EnderecoPessoa> enderecoPessoaList) {
         this.enderecoPessoaList = enderecoPessoaList;
+    }
+
+    public EnderecoPessoa getEnderecoPessoa() {
+        return enderecoPessoa;
+    }
+
+    public void setEnderecoPessoa(EnderecoPessoa enderecoPessoa) {
+        this.enderecoPessoa = enderecoPessoa;
     }
 
 }
