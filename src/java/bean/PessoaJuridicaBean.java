@@ -125,10 +125,6 @@ public class PessoaJuridicaBean implements Serializable {
             cidadeEndList = new ArrayList<>();
             pessoaFisicaJuridicaList = new ArrayList<>();
 
-            /*
-             Tela cadastro.xhtml. Se houver "id" na url, entra na condição de alteração.
-             Caso contrário, apenas carrega o formulário
-             */
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             pessoaJuridica = new PessoaJuridica();
             if (isRegisterPage) {
@@ -147,11 +143,11 @@ public class PessoaJuridicaBean implements Serializable {
                     } else {
                         edit = true;
                         endereco = enderecoBO.findPJAddress(id);
-                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
 
                         oldPessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
-                        oldEndereco = enderecoBO.findPFAddress(id);
-                        oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+                        oldEndereco = enderecoBO.findPJAddress(id);
+                        oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
                         prepararHistorico(pessoaJuridica, endereco, pessoaFisicaJuridicaList);
 
                         carregarFormulario();

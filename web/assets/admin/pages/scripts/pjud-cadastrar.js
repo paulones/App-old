@@ -150,7 +150,7 @@ var PjudCad = function() {
                 var total = navigation.find('li').length;
                 var current = index + 1;
                 // set wizard title
-                $('.step-title', $('#form_wizard')).text('Step ' + (index + 1) + ' of ' + total);
+                $('.step-title', $('#form_wizard')).text('Passo ' + (index + 1) + ' de ' + total);
                 // set done steps
                 jQuery('li', $('#form_wizard')).removeClass("done");
                 var li_list = navigation.find('li');

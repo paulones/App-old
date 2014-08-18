@@ -53,7 +53,7 @@
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-edit"></i>Dados #{pessoaJuridicaBean.edit ? 'de ' :'da '} #{pessoaJuridicaBean.edit ? pessoaJuridicaBean.pessoaJuridicaBean.nome : 'Pessoa Jurídica'}
+                            <i class="fa fa-edit"></i>Dados #{pessoaJuridicaBean.edit ? 'de ' :'da '} #{pessoaJuridicaBean.edit ? pessoaJuridicaBean.pessoaJuridica.nome : 'Pessoa Jurídica'}
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -118,7 +118,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Tipo Empresarial</label>
                                             <div class="col-md-9">
-                                                <h:selectOneMenu class="select2_category select2me form-control endcity" p:placeholder="Selecione..." id="tipicidade" value="#{pessoaJuridicaBean.pessoaJuridica.tipoEmpresarialFk}" tabindex="1" converter="entityConverter">
+                                                <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="tipicidade" value="#{pessoaJuridicaBean.pessoaJuridica.tipoEmpresarialFk}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <f:selectItems value="#{pessoaJuridicaBean.tipoEmpresarialList}" var="tipoEmpresarial" itemLabel="#{tipoEmpresarial.tipo}" itemValue="#{tipoEmpresarial}"/>
                                                 </h:selectOneMenu>
@@ -882,7 +882,6 @@
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
         <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
-        <script type="text/javascript" src="../assets/global/plugins/jquery.maskMoney.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" type="text/javascript"></script>

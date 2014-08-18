@@ -104,7 +104,7 @@ var PJCad = function() {
                     minlength_optional: "Por favor, forne&ccedil;a ao menos {0} caracteres para a inscri&ccedil;&atilde;o municipal."
                 },
                 iniDate: {
-                    iniDate: "Forneça uma data v&aacute;lida."
+                    iniDate: "Forne&ccedil;a uma data v&aacute;lida."
                 },
                 nire: {
                     maxlength: "NIRE n&atilde;o deve passar de 11 d&iicute;gitos."
@@ -221,12 +221,19 @@ var PJCad = function() {
     };
 
     var checkCapital = function() {
-        if ($(this).val() > 100) {
-            $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+        $(this).val($(this).val().replace(/,/g, "."));
+        if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
+            if ($(this).val() > 100) {
+                $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+                $('.date-error').show();
+                $(this).val("");
+            } else {
+                $('.date-error').hide();
+            }
+        } else {
+            $('.date-error').html("Digite um percentual v&aacute;lido.");
             $('.date-error').show();
             $(this).val("");
-        } else {
-            $('.date-error').hide();
         }
     }
 
@@ -252,10 +259,6 @@ var PJCad = function() {
         tableWrapper.find(".dataTables_length select").select2({
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
-
-        table.on('keyup', '.initial-date, .final-date', function() {
-            checkDates();
-        });
 
         table.on('keyup', '.capital', checkCapital);
     }
@@ -301,7 +304,7 @@ var PJCad = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
                         $('.endcity').select2();
-                    } else if ($(data.source).attr("class") === "pf-info"){
+                    } else if ($(data.source).attr("class") === "pf-info") {
                         $('.modal-pf').click();
                     } else if ($(data.source).attr("class") === "delete") {
                         $('.table-refresher').click();
@@ -317,6 +320,8 @@ var PJCad = function() {
                     }
                 }
             });
+
+            $('.initial-date,.final-date').keyup(checkDates);
 
             $('#vinculate').click(function(e) {
                 e.preventDefault();
@@ -341,57 +346,27 @@ var PJCad = function() {
                 }
             }
 
-            function validaCNPJ(value, element) {
-                value = value.replace(/[^\d]+/g, '');
+            function validaCNPJ(value) {
+                var valida = new Array(6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2);
+                var dig1 = new Number;
+                var dig2 = new Number;
 
-                if (value == '')
-                    return false;
+                exp = /\.|\-|\//g
+                value = value.toString().replace(exp, "");
+                var digito = new Number(eval(value.charAt(12) + value.charAt(13)));
 
-                if (value.length != 14)
-                    return false;
-
-                // Elimina CNPJs invalidos conhecidos
-                if (value == "00000000000000" ||
-                        value == "11111111111111" ||
-                        value == "22222222222222" ||
-                        value == "33333333333333" ||
-                        value == "44444444444444" ||
-                        value == "55555555555555" ||
-                        value == "66666666666666" ||
-                        value == "77777777777777" ||
-                        value == "88888888888888" ||
-                        value == "99999999999999")
-                    return false;
-
-                // Valida DVs
-                tamanho = value.length - 2
-                numeros = value.substring(0, tamanho);
-                digitos = value.substring(tamanho);
-                soma = 0;
-                pos = tamanho - 7;
-                for (i = tamanho; i >= 1; i--) {
-                    soma += numeros.charAt(tamanho - i) * pos--;
-                    if (pos < 2)
-                        pos = 9;
+                for (i = 0; i < valida.length; i++) {
+                    dig1 += (i > 0 ? (value.charAt(i - 1) * valida[i]) : 0);
+                    dig2 += value.charAt(i) * valida[i];
                 }
-                resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-                if (resultado != digitos.charAt(0))
-                    return false;
+                dig1 = (((dig1 % 11) < 2) ? 0 : (11 - (dig1 % 11)));
+                dig2 = (((dig2 % 11) < 2) ? 0 : (11 - (dig2 % 11)));
 
-                tamanho = tamanho + 1;
-                numeros = value.substring(0, tamanho);
-                soma = 0;
-                pos = tamanho - 7;
-                for (i = tamanho; i >= 1; i--) {
-                    soma += numeros.charAt(tamanho - i) * pos--;
-                    if (pos < 2)
-                        pos = 9;
+                if (((dig1 * 10) + dig2) != digito)
+                    return false;
+                else{
+                    return true;
                 }
-                resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-                if (resultado != digitos.charAt(1))
-                    return false;
-
-                return true;
 
             }
 
