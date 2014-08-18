@@ -17,7 +17,6 @@ var PjudCad = function() {
                 errorClass: 'help-block help-block-error', // default input error message class
                 focusInvalid: false, // do not focus the last invalid input
                 rules: {
-                    //account
                     username: {
                         minlength: 5,
                         required: true
@@ -123,28 +122,6 @@ var PjudCad = function() {
                 }
 
             });
-
-            var displayConfirm = function() {
-                $('#tab4 .form-control-static', form).each(function() {
-                    var input = $('[name="' + $(this).attr("data-display") + '"]', form);
-                    if (input.is(":radio")) {
-                        input = $('[name="' + $(this).attr("data-display") + '"]:checked', form);
-                    }
-                    if (input.is(":text") || input.is("textarea")) {
-                        $(this).html(input.val());
-                    } else if (input.is("select")) {
-                        $(this).html(input.find('option:selected').text());
-                    } else if (input.is(":radio") && input.is(":checked")) {
-                        $(this).html(input.attr("data-title"));
-                    } else if ($(this).attr("data-display") == 'payment') {
-                        var payment = [];
-                        $('[name="payment[]"]:checked').each(function() {
-                            payment.push($(this).attr('data-title'));
-                        });
-                        $(this).html(payment.join("<br>"));
-                    }
-                });
-            }
 
             var handleTitle = function(tab, navigation, index) {
                 var total = navigation.find('li').length;

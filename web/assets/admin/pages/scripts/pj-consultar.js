@@ -191,20 +191,21 @@ var PJCon = function() {
                         });
                     });
                     if (informacoes) {
-                        description += "Informa&ccedil;&otilde;es Empresariais | ";
+                        description += "Informa&ccedil;&otilde;es Empresariais, ";
                     }
                     if (endereco) {
-                        description += "Endere&ccedil;o | ";
+                        description += "Endere&ccedil;o, ";
                     }
                     if (vinculo) {
-                        description += "V&iacute;nculos Administrativos | "
+                        description += "V&iacute;nculos Administrativos, "
                     }
-                    description = description.substring(0, description.length - 3) + ".";
-                    if (!informacoes && !endereco && !vinculo){
+                    description = description.substring(0, description.length - 2) + ".";
+                    if (description.contains(",")) {
+                        description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+                    } else if (description === ".") {
                         description = "";
                     }
                     $(this).closest('.detail').parent().children('.description').append(description);
-                    description = "";
                 });
             } else {
                 initTable();

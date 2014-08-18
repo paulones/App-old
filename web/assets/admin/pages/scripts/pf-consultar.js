@@ -183,30 +183,32 @@ var PFCon = function() {
                                 })
                             } else {
                                 if (($(atual).find('td').length > 1 && $(this).find('td').length === 1)) {
-                                    $(this).find('td').eq(0).css("color","#a94442");
+                                    $(this).find('td').eq(0).css("color", "#a94442");
                                     vinculo = true;
                                 }
-                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)){
-                                    $(this).find('td').css("color","#a94442");
+                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                    $(this).find('td').css("color", "#a94442");
                                     vinculo = true;
                                 }
                             }
                         });
                     });
                     if (informacoes) {
-                        description += "Informa&ccedil;&otilde;es Pessoais | ";
+                        description += "Informa&ccedil;&otilde;es Pessoais, ";
                     }
                     if (elector) {
-                        description += "Domic&iacute;lio Eleitoral | "
+                        description += "Domic&iacute;lio Eleitoral, "
                     }
                     if (endereco) {
-                        description += "Endere&ccedil;o | ";
+                        description += "Endere&ccedil;o, ";
                     }
                     if (vinculo) {
-                        description += "V&iacute;nculos Empresariais | "
+                        description += "V&iacute;nculos Empresariais, "
                     }
-                    description = description.substring(0, description.length - 3) + ".";
-                    if (!informacoes && !endereco && !vinculo && !elector){
+                    description = description.substring(0, description.length - 2) + ".";
+                    if (description.contains(",")) {
+                        description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+                    } else if (description === ".") {
                         description = "";
                     }
                     $(this).closest('.detail').parent().children('.description').append(description);
@@ -239,12 +241,12 @@ var PFCon = function() {
                     }
                 });
             });
-            
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
-                    if ($(data.source).attr("class") === "pj-info"){
+                    if ($(data.source).attr("class") === "pj-info") {
                         $('.modal-pj').click();
-                    } 
+                    }
                 }
             });
 
