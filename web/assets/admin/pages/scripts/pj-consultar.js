@@ -159,7 +159,7 @@ var PJCon = function() {
                     $.each($(this).find('.form-control-static'), function(index) {
                         if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                             $(this).parent().parent().css("color", "#a94442");
-                            if ($(this).parents('.informacoes-pessoais').length > 0) {
+                            if ($(this).parents('.informacoes-empresariais').length > 0) {
                                 informacoes = true;
                             } else if ($(this).parents('.endereco').length > 0) {
                                 endereco = true;

@@ -455,4 +455,17 @@ public class UsuarioDAO implements Serializable {
             em.close();
         }
     }
+    
+    public Usuario findUsuarioByCNPJ(String cnpj) {
+        EntityManager em = getEntityManager();
+        try {
+            Usuario usuario = (Usuario) em.createNativeQuery("select * from usuario "
+                    + "where cnpj = '" + cnpj + "'", Usuario.class).getSingleResult();
+            return usuario;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

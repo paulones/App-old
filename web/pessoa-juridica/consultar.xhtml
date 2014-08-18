@@ -120,6 +120,100 @@
                                 <tbody>
                                     <!-- BEGIN LISTA DE HISTÓRICOS -->
                                     <ui:repeat value="#{pessoaJuridicaBean.enderecoPessoaFisicaJuridicaHistoricoList}" var="historico" rendered="#{pessoaJuridicaBean.history}">
+                                        <tr>
+                                            <td class="expand-box">
+                                                <span class="row-details row-details-close"></span>
+                                            </td>
+                                            <td class="data-de-modificacao">
+                                                <h:outputText rendered="#{empty historico.pessoaHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
+                                                <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
+                                                    <f:convertDateTime pattern="dd-MM-yyyy : HH:mm:ss"/>
+                                                </h:outputText>
+                                            </td>
+                                            <td class="description">
+                                            </td>
+                                            <td>
+                                                <ui:param value="#{historico.pessoaHistorico.usuarioFk.cnpj.substring(0,2)}.#{historico.pessoaHistorico.usuarioFk.cnpj.substring(2,5)}.#{historico.pessoaHistorico.usuarioFk.cnpj.substring(5,8)}/#{historico.pessoaHistorico.usuarioFk.cnpj.substring(8,12)}-#{historico.pessoaHistorico.usuarioFk.cnpj.substring(12)}" name="cnpjUsuario"/>
+                                                #{historico.pessoaHistorico.usuarioFk.nome} | #{cnpjUsuario}
+                                            </td>
+                                            <td class="detail display-hide" colspan="6">
+                                                <div class="portlet box blue-chambray">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="fa fa-history"></i>
+                                                            Registro #{empty historico.pessoaHistorico.dataDeModificacao ? 'atual': 'do dia'}
+                                                            <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
+                                                                <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                                            </h:outputText>
+                                                            #{empty historico.pessoaHistorico.dataDeModificacao ? '': ' às '}
+                                                            <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
+                                                                <f:convertDateTime pattern="HH:mm:ss"/>
+                                                            </h:outputText>
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body form">
+                                                        <!-- BEGIN LISTA CONTENT-->
+                                                        <div class="form-body">
+                                                            <h3 class="form-section">Informações Empresariais</h3>
+                                                            <h:panelGroup class="informacoes-empresariais">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Nome:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.nome}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">CPF:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    <ui:param value="#{historico.pessoaHistorico.cnpj.substring(0,2)}.#{historico.pessoaHistorico.cnpj.substring(2,5)}.#{historico.pessoaHistorico.cnpj.substring(5,8)}/#{historico.pessoaHistorico.cnpj.substring(8,12)}-#{historico.pessoaHistorico.cnpj.substring(12)}" name="cnpj"/>
+                                                                                    #{historico.pessoaHistorico.cnpj eq null ? '-' : cnpj}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Nome Fantasia: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.nomeFantasia eq null ? '-' : historico.pessoaHistorico.nomeFantasia}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Tipo Empresarial: </label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{historico.pessoaHistorico.tipoEmpresarialFk.tipo eq null ? '-' : historico.pessoaHistorico.tipoEmpresarialFk.tipo}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                            </h:panelGroup>
+                                                        </div>
+                                                        <!-- END LISTA CONTENT-->
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </ui:repeat>
                                     <!-- END LISTA DE HISTÓRICOS -->
                                     <!-- BEGIN LISTA GERAL -->

@@ -113,6 +113,9 @@ public class PessoaJuridicaBean implements Serializable {
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
             pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
+            pessoaJuridicaHistoricoBO = new PessoaJuridicaHistoricoBO();
+            enderecoHistoricoBO = new EnderecoHistoricoBO();
+            pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
             estadoBO = new EstadoBO();
             cidadeBO = new CidadeBO();
             funcaoBO = new FuncaoBO();
@@ -177,12 +180,12 @@ public class PessoaJuridicaBean implements Serializable {
                 } else { // Consulta histórico
                     Integer id = Integer.valueOf(request.getParameter("id"));
                     pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
-                    if (pessoaFisica == null) {
+                    if (pessoaJuridica == null) {
                         history = false;
                         FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                     } else {
                         history = true;
-                        endereco = enderecoBO.findPFAddress(id);
+                        endereco = enderecoBO.findPJAddress(id);
                         pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
                         
                         pessoaJuridicaHistoricoList = new ArrayList<>();
@@ -250,11 +253,8 @@ public class PessoaJuridicaBean implements Serializable {
             }
         } else {
             /*  
-             Alterar Pessoa Física existente
+             Alterar Pessoa Jurídica existente
              */
-            pessoaJuridicaHistoricoBO = new PessoaJuridicaHistoricoBO();
-            enderecoHistoricoBO = new EnderecoHistoricoBO();
-            pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
             boolean identical = true;
             if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
                 identical = false;
@@ -281,13 +281,14 @@ public class PessoaJuridicaBean implements Serializable {
             } else {
                 UtilBO utilBO = new UtilBO();
                 Timestamp timestamp = utilBO.findServerTime();
-                pessoaFisicaBO.edit(pessoaFisica);
+                pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCNPJ(Cookie.getCookie("usuario")));
+                pessoaJuridicaBO.edit(pessoaJuridica);
                 pessoaJuridicaHistorico.setDataDeModificacao(timestamp);
                 pessoaJuridicaHistoricoBO.create(pessoaJuridicaHistorico);
                 enderecoBO.edit(endereco);
                 EnderecoHistorico.setIdFk(pessoaJuridicaHistorico.getId());
                 enderecoHistoricoBO.create(EnderecoHistorico);
-                pessoaFisicaJuridicaBO.destroyByPF(pessoaJuridica.getId());
+                pessoaFisicaJuridicaBO.destroyByPJ(pessoaJuridica.getId());
                 for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
                     pessoaFisicaJuridicaBO.create(pfj);
                 }

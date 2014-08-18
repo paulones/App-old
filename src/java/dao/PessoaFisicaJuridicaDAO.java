@@ -298,4 +298,17 @@ public class PessoaFisicaJuridicaDAO implements Serializable {
         }
     }
     
+    public void destroyByPJ(Integer idPj){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from pessoa_fisica_juridica "
+                    + "where pessoa_juridica_fk = '" + idPj + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
+    
 }
