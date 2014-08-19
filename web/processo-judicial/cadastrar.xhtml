@@ -2,7 +2,8 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="title">Processo Judicial - Cadastro</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{homeBean.init()}"/>
@@ -48,7 +49,7 @@
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-files-o"></i> Formulário de Cadastro - <span class="step-title">
-                                Passo 1 de 4 </span>
+                                Passo 1 de 3 </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -96,7 +97,8 @@
                                             Processo Judicial cadastrado com sucesso!
                                         </div>
                                         <div class="tab-pane active" id="tab1">
-                                            <h3 class="block">Identificação Processual</h3>
+                                            <span class="help-block">Campos com * são obrigatórios.</span>
+                                            <h3 class="form-section">Identificação do Processo Judicial</h3>
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
@@ -114,44 +116,12 @@
                                                 <!--/span-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Nº do Processo Anterior <span class="required">
-                                                                * </span>
+                                                        <label class="control-label col-md-4">Nº do Processo Anterior 
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
                                                                 <h:inputText class="form-control" id="nprocessoant" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                            <!--/row-->
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">Vara <span class="required">
-                                                                * </span>
-                                                        </label>
-                                                        <div class="col-md-8">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="vara" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-4">Vara Anterior <span class="required">
-                                                                * </span>
-                                                        </label>
-                                                        <div class="col-md-8">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="varaant" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -176,8 +146,7 @@
                                                 <!--/span-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Procurador <span class="required">
-                                                                * </span>
+                                                        <label class="control-label col-md-4">Procurador 
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="input-icon right">
@@ -191,15 +160,132 @@
                                             </div>
                                             <!--/row-->
                                             <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Vara 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="vara" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Vara Anterior 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="varaant" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Grupo de Especialização 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="especializacao" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Distribuição/Data do Ato/Nº da Folha <span class="required">
+                                                        <label class="control-label col-md-2">Distribuição / Data do Ato / Nº da Folha 
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="distribuicao" p:placeholder="Descrição" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="distribuicaodata" p:placeholder="Data do Ato" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="distribuicaofolha" p:placeholder="Nº da Folha" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Decisão do Juiz / Data do Ato / Nº da Folha 
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="decisaojuiz" p:placeholder="Descrição" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="decisaojuizdata" p:placeholder="Data do Ato" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="decisaojuizfolha" p:placeholder="Nº da Folha" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <h3 class="form-section">Identificação do Crédito Fiscal</h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Nº da CDA <span class="required">
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="distribuicao" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                                <h:inputText class="form-control" id="ncda" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Fatos Geradores 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="fatosgeradores" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -210,20 +296,28 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Decisão do Juiz <span class="required">
-                                                                * </span>
+                                                        <label class="control-label col-md-4">Fundamentação 
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="decisaojuiz" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                                <h:inputText class="form-control" id="fundamentacao" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!--/span-->
                                                 <div class="col-md-6">
-                                                   
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Data de Inscrição 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="datadeinscricao" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <!--/span-->
                                             </div>
@@ -231,13 +325,12 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Grupo de Especialização <span class="required">
-                                                                * </span>
+                                                        <label class="control-label col-md-4">Discriminação do Crédito/Imposto 
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="especializacao" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                                <h:inputText class="form-control" id="discriminacaoimposto" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -245,13 +338,77 @@
                                                 <!--/span-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Outras Informações <span class="required">
-                                                                * </span>
+                                                        <label class="control-label col-md-4">Discriminação do Crédito/Multa 
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputTextarea class="form-control" id="outrasinfos" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                                <h:inputText class="form-control" id="discriminacaomulta" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Valor da Causa 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="valorcausa" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Valor Atualizado 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="valoratualizado" value="#{pessoaFisicaBean.pessoaFisica.cpf}" converter="maskConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Notificação Administrativa
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="notificacaoadministrativa" autocomplete="off" value="#{pessoaFisicaBean.pessoaFisica.nome}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <h3 class="form-section"></h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Outras Informações 
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos1" value="#{pessoaFisicaBean.pessoaFisica.cpf}"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -262,371 +419,116 @@
                                         </div>
                                         <!--/tab-->
                                         <div class="tab-pane" id="tab2">
-                                            <h3 class="block">Provide your profile details</h3>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Fullname <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control" name="fullname"/>
-                                                    <span class="help-block">
-                                                        Provide your fullname </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Phone Number <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control" name="phone"/>
-                                                    <span class="help-block">
-                                                        Provide your phone number </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Gender <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <div class="radio-list">
-                                                        <label>
-                                                            <input type="radio" name="gender" value="M" data-title="Male"/>
-                                                            Male </label>
-                                                        <label>
-                                                            <input type="radio" name="gender" value="F" data-title="Female"/>
-                                                            Female </label>
-                                                    </div>
-                                                    <div id="form_gender_error">
+                                            <h3 class="form-section">Identificação do Executado</h3>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Executado <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="radio-list" data-error-container="#form_executado_error">
+                                                                <input type="radio" name="executado" value="cpf" data-title="Pessoa Física."> Pessoa Física </input>
+                                                                <input type="radio" name="executado" value="cnpj" data-title="Pessoa Jurídica."> Pessoa Jurídica </input>
+                                                            </div>
+                                                            <div id="form_executado_error">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Address <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control" name="address"/>
-                                                    <span class="help-block">
-                                                        Provide your street address </span>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group cpf display-hide">
+                                                        <label class="control-label col-md-4">CPF <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="cpf" tabindex="1" value="#{pessoaFisicaBean.pessoaFisica.rgUfFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
+                                                            </h:selectOneMenu>
+                                                            <div id="form_executadocpf_error">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group cnpj display-hide">
+                                                        <label class="control-label col-md-4">CNPJ <span class="required">
+                                                                * </span>
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="UF" id="cnpj" tabindex="1" value="#{pessoaFisicaBean.pessoaFisica.rgUfFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{pessoaFisicaBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
+                                                            </h:selectOneMenu>
+                                                            <div id="form_executadocnpj_error">
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">City/Town <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control" name="city"/>
-                                                    <span class="help-block">
-                                                        Provide your city or town </span>
+                                            <!--/row-->
+                                            <h3 class="form-section"></h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Outras Informações 
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos2" value="#{pessoaFisicaBean.pessoaFisica.cpf}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Country</label>
-                                                <div class="col-md-4">
-                                                    <select name="country" id="country_list" class="form-control">
-                                                        <option value=""></option>
-                                                        <option value="AF">Afghanistan</option>
-                                                        <option value="AL">Albania</option>
-                                                        <option value="DZ">Algeria</option>
-                                                        <option value="AS">American Samoa</option>
-                                                        <option value="AD">Andorra</option>
-                                                        <option value="AO">Angola</option>
-                                                        <option value="AI">Anguilla</option>
-                                                        <option value="AQ">Antarctica</option>
-                                                        <option value="AR">Argentina</option>
-                                                        <option value="AM">Armenia</option>
-                                                        <option value="AW">Aruba</option>
-                                                        <option value="AU">Australia</option>
-                                                        <option value="AT">Austria</option>
-                                                        <option value="AZ">Azerbaijan</option>
-                                                        <option value="BS">Bahamas</option>
-                                                        <option value="BH">Bahrain</option>
-                                                        <option value="BD">Bangladesh</option>
-                                                        <option value="BB">Barbados</option>
-                                                        <option value="BY">Belarus</option>
-                                                        <option value="BE">Belgium</option>
-                                                        <option value="BZ">Belize</option>
-                                                        <option value="BJ">Benin</option>
-                                                        <option value="BM">Bermuda</option>
-                                                        <option value="BT">Bhutan</option>
-                                                        <option value="BO">Bolivia</option>
-                                                        <option value="BA">Bosnia and Herzegowina</option>
-                                                        <option value="BW">Botswana</option>
-                                                        <option value="BV">Bouvet Island</option>
-                                                        <option value="BR">Brazil</option>
-                                                        <option value="IO">British Indian Ocean Territory</option>
-                                                        <option value="BN">Brunei Darussalam</option>
-                                                        <option value="BG">Bulgaria</option>
-                                                        <option value="BF">Burkina Faso</option>
-                                                        <option value="BI">Burundi</option>
-                                                        <option value="KH">Cambodia</option>
-                                                        <option value="CM">Cameroon</option>
-                                                        <option value="CA">Canada</option>
-                                                        <option value="CV">Cape Verde</option>
-                                                        <option value="KY">Cayman Islands</option>
-                                                        <option value="CF">Central African Republic</option>
-                                                        <option value="TD">Chad</option>
-                                                        <option value="CL">Chile</option>
-                                                        <option value="CN">China</option>
-                                                        <option value="CX">Christmas Island</option>
-                                                        <option value="CC">Cocos (Keeling) Islands</option>
-                                                        <option value="CO">Colombia</option>
-                                                        <option value="KM">Comoros</option>
-                                                        <option value="CG">Congo</option>
-                                                        <option value="CD">Congo, the Democratic Republic of the</option>
-                                                        <option value="CK">Cook Islands</option>
-                                                        <option value="CR">Costa Rica</option>
-                                                        <option value="CI">Cote d'Ivoire</option>
-                                                        <option value="HR">Croatia (Hrvatska)</option>
-                                                        <option value="CU">Cuba</option>
-                                                        <option value="CY">Cyprus</option>
-                                                        <option value="CZ">Czech Republic</option>
-                                                        <option value="DK">Denmark</option>
-                                                        <option value="DJ">Djibouti</option>
-                                                        <option value="DM">Dominica</option>
-                                                        <option value="DO">Dominican Republic</option>
-                                                        <option value="EC">Ecuador</option>
-                                                        <option value="EG">Egypt</option>
-                                                        <option value="SV">El Salvador</option>
-                                                        <option value="GQ">Equatorial Guinea</option>
-                                                        <option value="ER">Eritrea</option>
-                                                        <option value="EE">Estonia</option>
-                                                        <option value="ET">Ethiopia</option>
-                                                        <option value="FK">Falkland Islands (Malvinas)</option>
-                                                        <option value="FO">Faroe Islands</option>
-                                                        <option value="FJ">Fiji</option>
-                                                        <option value="FI">Finland</option>
-                                                        <option value="FR">France</option>
-                                                        <option value="GF">French Guiana</option>
-                                                        <option value="PF">French Polynesia</option>
-                                                        <option value="TF">French Southern Territories</option>
-                                                        <option value="GA">Gabon</option>
-                                                        <option value="GM">Gambia</option>
-                                                        <option value="GE">Georgia</option>
-                                                        <option value="DE">Germany</option>
-                                                        <option value="GH">Ghana</option>
-                                                        <option value="GI">Gibraltar</option>
-                                                        <option value="GR">Greece</option>
-                                                        <option value="GL">Greenland</option>
-                                                        <option value="GD">Grenada</option>
-                                                        <option value="GP">Guadeloupe</option>
-                                                        <option value="GU">Guam</option>
-                                                        <option value="GT">Guatemala</option>
-                                                        <option value="GN">Guinea</option>
-                                                        <option value="GW">Guinea-Bissau</option>
-                                                        <option value="GY">Guyana</option>
-                                                        <option value="HT">Haiti</option>
-                                                        <option value="HM">Heard and Mc Donald Islands</option>
-                                                        <option value="VA">Holy See (Vatican City State)</option>
-                                                        <option value="HN">Honduras</option>
-                                                        <option value="HK">Hong Kong</option>
-                                                        <option value="HU">Hungary</option>
-                                                        <option value="IS">Iceland</option>
-                                                        <option value="IN">India</option>
-                                                        <option value="ID">Indonesia</option>
-                                                        <option value="IR">Iran (Islamic Republic of)</option>
-                                                        <option value="IQ">Iraq</option>
-                                                        <option value="IE">Ireland</option>
-                                                        <option value="IL">Israel</option>
-                                                        <option value="IT">Italy</option>
-                                                        <option value="JM">Jamaica</option>
-                                                        <option value="JP">Japan</option>
-                                                        <option value="JO">Jordan</option>
-                                                        <option value="KZ">Kazakhstan</option>
-                                                        <option value="KE">Kenya</option>
-                                                        <option value="KI">Kiribati</option>
-                                                        <option value="KP">Korea, Democratic People's Republic of</option>
-                                                        <option value="KR">Korea, Republic of</option>
-                                                        <option value="KW">Kuwait</option>
-                                                        <option value="KG">Kyrgyzstan</option>
-                                                        <option value="LA">Lao People's Democratic Republic</option>
-                                                        <option value="LV">Latvia</option>
-                                                        <option value="LB">Lebanon</option>
-                                                        <option value="LS">Lesotho</option>
-                                                        <option value="LR">Liberia</option>
-                                                        <option value="LY">Libyan Arab Jamahiriya</option>
-                                                        <option value="LI">Liechtenstein</option>
-                                                        <option value="LT">Lithuania</option>
-                                                        <option value="LU">Luxembourg</option>
-                                                        <option value="MO">Macau</option>
-                                                        <option value="MK">Macedonia, The Former Yugoslav Republic of</option>
-                                                        <option value="MG">Madagascar</option>
-                                                        <option value="MW">Malawi</option>
-                                                        <option value="MY">Malaysia</option>
-                                                        <option value="MV">Maldives</option>
-                                                        <option value="ML">Mali</option>
-                                                        <option value="MT">Malta</option>
-                                                        <option value="MH">Marshall Islands</option>
-                                                        <option value="MQ">Martinique</option>
-                                                        <option value="MR">Mauritania</option>
-                                                        <option value="MU">Mauritius</option>
-                                                        <option value="YT">Mayotte</option>
-                                                        <option value="MX">Mexico</option>
-                                                        <option value="FM">Micronesia, Federated States of</option>
-                                                        <option value="MD">Moldova, Republic of</option>
-                                                        <option value="MC">Monaco</option>
-                                                        <option value="MN">Mongolia</option>
-                                                        <option value="MS">Montserrat</option>
-                                                        <option value="MA">Morocco</option>
-                                                        <option value="MZ">Mozambique</option>
-                                                        <option value="MM">Myanmar</option>
-                                                        <option value="NA">Namibia</option>
-                                                        <option value="NR">Nauru</option>
-                                                        <option value="NP">Nepal</option>
-                                                        <option value="NL">Netherlands</option>
-                                                        <option value="AN">Netherlands Antilles</option>
-                                                        <option value="NC">New Caledonia</option>
-                                                        <option value="NZ">New Zealand</option>
-                                                        <option value="NI">Nicaragua</option>
-                                                        <option value="NE">Niger</option>
-                                                        <option value="NG">Nigeria</option>
-                                                        <option value="NU">Niue</option>
-                                                        <option value="NF">Norfolk Island</option>
-                                                        <option value="MP">Northern Mariana Islands</option>
-                                                        <option value="NO">Norway</option>
-                                                        <option value="OM">Oman</option>
-                                                        <option value="PK">Pakistan</option>
-                                                        <option value="PW">Palau</option>
-                                                        <option value="PA">Panama</option>
-                                                        <option value="PG">Papua New Guinea</option>
-                                                        <option value="PY">Paraguay</option>
-                                                        <option value="PE">Peru</option>
-                                                        <option value="PH">Philippines</option>
-                                                        <option value="PN">Pitcairn</option>
-                                                        <option value="PL">Poland</option>
-                                                        <option value="PT">Portugal</option>
-                                                        <option value="PR">Puerto Rico</option>
-                                                        <option value="QA">Qatar</option>
-                                                        <option value="RE">Reunion</option>
-                                                        <option value="RO">Romania</option>
-                                                        <option value="RU">Russian Federation</option>
-                                                        <option value="RW">Rwanda</option>
-                                                        <option value="KN">Saint Kitts and Nevis</option>
-                                                        <option value="LC">Saint LUCIA</option>
-                                                        <option value="VC">Saint Vincent and the Grenadines</option>
-                                                        <option value="WS">Samoa</option>
-                                                        <option value="SM">San Marino</option>
-                                                        <option value="ST">Sao Tome and Principe</option>
-                                                        <option value="SA">Saudi Arabia</option>
-                                                        <option value="SN">Senegal</option>
-                                                        <option value="SC">Seychelles</option>
-                                                        <option value="SL">Sierra Leone</option>
-                                                        <option value="SG">Singapore</option>
-                                                        <option value="SK">Slovakia (Slovak Republic)</option>
-                                                        <option value="SI">Slovenia</option>
-                                                        <option value="SB">Solomon Islands</option>
-                                                        <option value="SO">Somalia</option>
-                                                        <option value="ZA">South Africa</option>
-                                                        <option value="GS">South Georgia and the South Sandwich Islands</option>
-                                                        <option value="ES">Spain</option>
-                                                        <option value="LK">Sri Lanka</option>
-                                                        <option value="SH">St. Helena</option>
-                                                        <option value="PM">St. Pierre and Miquelon</option>
-                                                        <option value="SD">Sudan</option>
-                                                        <option value="SR">Suriname</option>
-                                                        <option value="SJ">Svalbard and Jan Mayen Islands</option>
-                                                        <option value="SZ">Swaziland</option>
-                                                        <option value="SE">Sweden</option>
-                                                        <option value="CH">Switzerland</option>
-                                                        <option value="SY">Syrian Arab Republic</option>
-                                                        <option value="TW">Taiwan, Province of China</option>
-                                                        <option value="TJ">Tajikistan</option>
-                                                        <option value="TZ">Tanzania, United Republic of</option>
-                                                        <option value="TH">Thailand</option>
-                                                        <option value="TG">Togo</option>
-                                                        <option value="TK">Tokelau</option>
-                                                        <option value="TO">Tonga</option>
-                                                        <option value="TT">Trinidad and Tobago</option>
-                                                        <option value="TN">Tunisia</option>
-                                                        <option value="TR">Turkey</option>
-                                                        <option value="TM">Turkmenistan</option>
-                                                        <option value="TC">Turks and Caicos Islands</option>
-                                                        <option value="TV">Tuvalu</option>
-                                                        <option value="UG">Uganda</option>
-                                                        <option value="UA">Ukraine</option>
-                                                        <option value="AE">United Arab Emirates</option>
-                                                        <option value="GB">United Kingdom</option>
-                                                        <option value="US">United States</option>
-                                                        <option value="UM">United States Minor Outlying Islands</option>
-                                                        <option value="UY">Uruguay</option>
-                                                        <option value="UZ">Uzbekistan</option>
-                                                        <option value="VU">Vanuatu</option>
-                                                        <option value="VE">Venezuela</option>
-                                                        <option value="VN">Viet Nam</option>
-                                                        <option value="VG">Virgin Islands (British)</option>
-                                                        <option value="VI">Virgin Islands (U.S.)</option>
-                                                        <option value="WF">Wallis and Futuna Islands</option>
-                                                        <option value="EH">Western Sahara</option>
-                                                        <option value="YE">Yemen</option>
-                                                        <option value="ZM">Zambia</option>
-                                                        <option value="ZW">Zimbabwe</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Remarks</label>
-                                                <div class="col-md-4">
-                                                    <textarea class="form-control" rows="3" name="remarks"></textarea>
-                                                </div>
+                                                <!--/span-->
                                             </div>
                                         </div>
                                         <!--/tab-->
                                         <div class="tab-pane" id="tab3">
-                                            <h3 class="block">Provide your billing and credit card details</h3>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Card Holder Name <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control" name="card_name"/>
-                                                    <span class="help-block">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Card Number <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" class="form-control" name="card_number"/>
-                                                    <span class="help-block">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">CVC <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" placeholder="" class="form-control" name="card_cvc"/>
-                                                    <span class="help-block">
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Expiration(MM/YYYY) <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <input type="text" placeholder="MM/YYYY" maxlength="7" class="form-control" name="card_expiry_date"/>
-                                                    <span class="help-block">
-                                                        e.g 11/2020 </span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-md-3">Payment Options <span class="required">
-                                                        * </span>
-                                                </label>
-                                                <div class="col-md-4">
-                                                    <div class="checkbox-list">
-                                                        <label>
-                                                            <input type="checkbox" name="payment[]" value="1" data-title="Auto-Pay with this Credit Card."/> Auto-Pay with this Credit Card </label>
-                                                        <label>
-                                                            <input type="checkbox" name="payment[]" value="2" data-title="Email me monthly billing."/> Email me monthly billing </label>
-                                                    </div>
-                                                    <div id="form_payment_error">
+                                            <h3 class="form-section">Identificação dos Bens</h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Descrição do Bem / Data do Ato / Nº da Folha 
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="bem" p:placeholder="Descrição" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="bemdata" p:placeholder="Data do Ato" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="bemfolha" p:placeholder="Nº da Folha" value="#{pessoaFisicaBean.pessoaFisica.cpf}" />
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <h3 class="form-section"></h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Outras Informações 
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos3" value="#{pessoaFisicaBean.pessoaFisica.cpf}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
                                             </div>
                                         </div>
                                         <!--/tab-->
@@ -660,6 +562,7 @@
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
         <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/localization/messages_pt_BR.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
