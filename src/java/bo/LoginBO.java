@@ -18,8 +18,8 @@ import util.Base64Crypt;
  */
 public class LoginBO implements Serializable {
 
-    private String chaveTeste = "60ayZtoAY//D7Z+odXgniL4AZQk85UkqgudHVVhN+Vc=";
-    private String cnpj = "12345678901111";
+    private String chaveTeste = "79OPRx8E0xVmaqi950wC1pxBWBN3Jt1jh6qUrsDJJeY=";
+    private String cnpj = "12345678901150";
     private String cryptKey = "deadwood8986deadwood8986";
     ConfigDAO configDAO = new ConfigDAO();
 
@@ -33,14 +33,14 @@ public class LoginBO implements Serializable {
         try {
             //Consulta em uma persistênca a string de licença
             String licenca = DesEncriptonator(crypt);
-            System.out.println("chave: "+crypt);
-            System.out.println("licenca: "+licenca);
-            if (licenca.length() >= 31) {
+            //System.out.println("chave: "+crypt);
+            //System.out.println("licenca: "+licenca);
+            if (licenca != null && licenca.length() >= 31) {
                 String tipo = licenca.substring(0, 1);
-                String cnpj = licenca.substring(1, 15);
-                String iniData = licenca.substring(15, 23);
-                String endData = licenca.substring(23, 31);
-                System.out.println("string: "+tipo +" - "+ cnpj +" - "+ iniData +" - "+ endData);
+                String iniData = licenca.substring(1, 9);
+                String endData = licenca.substring(9, 17);
+                String cnpj = licenca.substring(17, 31);
+                //System.out.println("string: "+tipo +" - "+ iniData +" - "+ endData+" - "+ cnpj);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Date dataChave = sdf.parse(endData);
                 Date dataAtual = new Date();
@@ -77,7 +77,7 @@ public class LoginBO implements Serializable {
             //System.out.println("config: "+config.getChave()+", "+config.getCnpj()+", "+config.getUltimoLogin().toString());
             if (!config.getChave().isEmpty()) {
                 descriptografia = DesEncriptonator(config.getChave());
-                String endData = descriptografia.substring(23, 31);
+                String endData = descriptografia.substring(9, 17);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Date dataChave = sdf.parse(endData);
                 if(!dataChave.before(new Date())){
