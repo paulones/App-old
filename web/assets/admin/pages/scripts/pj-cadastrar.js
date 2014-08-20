@@ -266,15 +266,6 @@ var PJCad = function() {
     return {
         init: function() {
 
-            $('.menu-pj').addClass('active open');
-            $('.menu-pj a').append('<span class="selected"></span>');
-            $('.menu-pj a .arrow').addClass('open');
-            if (window.location.search == "") {
-                $('.sub-menu-pj-cad').addClass('active');
-            } else {
-                $('.sub-menu-pj-con').addClass('active');
-            }
-            
             $.validator.addMethod("cnpj", validaCNPJ, "Digite um CNPJ v&aacute;lido.");
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
             $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
@@ -289,6 +280,15 @@ var PJCad = function() {
             $('#cep').mask("99999-999");
             $('#cnae').mask("9999-9/99");
             $('.date').mask("99/99/9999");
+
+            $('.menu-pj').addClass('active open');
+            $('.menu-pj a').append('<span class="selected"></span>');
+            $('.menu-pj a .arrow').addClass('open');
+            if (window.location.search == "") {
+                $('.sub-menu-pj-cad').addClass('active');
+            } else {
+                $('.sub-menu-pj-con').addClass('active');
+            }
 
             var masks = [$('#cep'), $('#iniDate'), $('#nire'), $('#cnae')];
             $('#form').submit(function() {
@@ -364,7 +364,7 @@ var PJCad = function() {
 
                 if (((dig1 * 10) + dig2) != digito)
                     return false;
-                else {
+                else{
                     return true;
                 }
 
