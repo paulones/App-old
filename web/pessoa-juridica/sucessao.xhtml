@@ -47,15 +47,94 @@
         </div>
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT-->
-        <h:form  id="form">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="portlet box blue-chambray">
-                        
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet box blue-chambray">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-exchange"></i>
+                            Sucessão de Empresas
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <!-- BEGIN FORM-->
+                        <h:form prependId="false" id="form" class="form-horizontal">
+                            <h:panelGroup layout="block" class="alert alert-info" rendered="#{sucessaoBean.succeed eq 'fail'}">
+                                <button class="close" data-close="alert"></button>
+                                <h:messages layout="table" class="pf-error"/> 
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" class="alert alert-success" rendered="#{sucessaoBean.succeed eq 'success'}">
+                                <button class="close" data-close="alert"></button>
+                                Sucessão realizada com sucesso!
+                            </h:panelGroup>
+                            <span class="help-block">Se faz necessário que tanto a empresa sucedida e a sucessora estejam cadastradas no sistema.</span>
+                            <h3 class="form-section">Empresa Sucedida</h3>
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">CNPJ</label>
+                                        <div class="col-md-9">
+                                            <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="sucedida" value="#{sucessaoBean.sucedida}" tabindex="1" converter="entityConverter">
+                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
+                                                <f:selectItems value="#{sucessaoBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button  class="btn blue-chambray" id="vinculate">
+                                        <i class="fa fa-plus-circle"></i> Cadastrar Nova Empresa</button>
+                                    <h:commandLink styleClass="vinculate">
+                                        <f:ajax event="click" listener="#{sucessaoBean.cadastrarSucedida}"/>
+                                    </h:commandLink>
+                                </div>
+                            </div>
+                            <!--/row-->
+                            <h3 class="form-section">Empresa Sucessora</h3>
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-2">CNPJ</label>
+                                        <div class="col-md-9">
+                                            <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="sucessora" value="#{sucessaoBean.sucessora}" tabindex="1" converter="entityConverter">
+                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
+                                                <f:selectItems value="#{sucessaoBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button  class="btn blue-chambray" id="vinculate">
+                                        <i class="fa fa-plus-circle"></i> Cadastrar Nova Empresa</button>
+                                    <h:commandLink styleClass="vinculate">
+                                        <f:ajax event="click" listener="#{sucessaoBean.cadastrarSucessora}"/>
+                                    </h:commandLink>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="form-actions right">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-offset-3 col-md-9">
+                                            <button type="submit" class="btn blue-chambray">
+                                                <ui:fragment><i class="fa fa-exchange"></i> Suceder</ui:fragment>
+                                            </button>
+                                        </div>
+                                        <h:commandLink styleClass="register" action="#{sucessaoBean.suceder}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                        <!-- END FORM-->
                     </div>
                 </div>
             </div>
-        </h:form>
+        </div>
         <!-- END PAGE CONTENT-->
     </ui:define>
     <ui:define name="page-scripts">
