@@ -33,7 +33,7 @@
                         <i class="fa fa-angle-right"/>
                     </li>
                     <li>
-                        <i class="fa fa-institution"></i>
+                        <i class="fa fa-building"></i>
                         <a href="#">Pessoa Jurídica</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
@@ -465,20 +465,10 @@
                             <div class="form-actions right">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <ui:fragment rendered="#{pessoaJuridicaBean.edit}">
-                                            <div class="col-md-offset-0 col-md-3">
-                                                <a href="consultar.xhtml" class="btn default">
-                                                    <i class="m-icon-swapleft"></i> Voltar
-                                                </a>
-                                            </div>
-                                        </ui:fragment>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn blue-chambray">
-                                                <ui:fragment rendered="#{!pessoaJuridicaBean.edit}"><i class="fa fa-save"></i> Cadastrar</ui:fragment>
-                                                <ui:fragment rendered="#{pessoaJuridicaBean.edit}"><i class="fa fa-edit"></i> Alterar</ui:fragment>
-                                            </button>
+                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-check-circle"></i> Cadastrar</button>
                                         </div>
                                         <h:commandLink styleClass="register" action="#{pessoaJuridicaBean.cadastrar}"/>
                                     </div>

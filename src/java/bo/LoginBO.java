@@ -19,7 +19,7 @@ import util.Base64Crypt;
 public class LoginBO implements Serializable {
 
     private String chaveTeste = "79OPRx8E0xVmaqi950wC1pxBWBN3Jt1jh6qUrsDJJeY=";
-    private String cnpj = "12345678901111";
+    private String cnpj = "12345678901150";
     private String cryptKey = "deadwood8986deadwood8986";
     ConfigDAO configDAO = new ConfigDAO();
 
@@ -77,7 +77,7 @@ public class LoginBO implements Serializable {
             //System.out.println("config: "+config.getChave()+", "+config.getCnpj()+", "+config.getUltimoLogin().toString());
             if (!config.getChave().isEmpty()) {
                 descriptografia = DesEncriptonator(config.getChave());
-                String endData = descriptografia.substring(23, 31);
+                String endData = descriptografia.substring(9, 17);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Date dataChave = sdf.parse(endData);
                 if(!dataChave.before(new Date())){

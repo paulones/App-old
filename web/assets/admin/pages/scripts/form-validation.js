@@ -77,6 +77,13 @@ var FormValidation = function () {
                     error.hide();
                 }
             });
+            
+            // initialize select2 tags
+            $("#select2_tags").change(function() {
+                form.validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input 
+            }).select2({
+                tags: ["red", "green", "blue", "yellow", "pink"]
+            });
     }
 
     return {
