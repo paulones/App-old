@@ -239,7 +239,7 @@ public class PessoaFisicaBean implements Serializable {
         estadoList = estadoBO.findAll();
         nacionalidadeList = nacionalidadeBO.findAll();
         estadoCivilList = estadoCivilBO.findAll();
-        pessoaJuridicaList = pessoaJuridicaBO.findAll();
+        pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
         funcaoList = funcaoBO.findAll();
     }
 

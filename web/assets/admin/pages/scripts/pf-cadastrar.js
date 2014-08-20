@@ -345,7 +345,6 @@ var PFCad = function() {
                     $('#natuf').select2('data', null);
                     $('.natcity').hide();
                     $('#natcity').select2('data', null);
-                    $('#natcity').val("");
                     $('.natforeign').show();
                 } else {
                     $('.natuf').show();
