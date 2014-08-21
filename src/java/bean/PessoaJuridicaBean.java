@@ -222,7 +222,7 @@ public class PessoaJuridicaBean implements Serializable {
     public void carregarFormulario() {
         estadoList = estadoBO.findAll();
         tipoEmpresarialList = tipoEmpresarialBO.findAll();
-        pessoaFisicaList = pessoaFisicaBO.findAll();
+        pessoaFisicaList = pessoaFisicaBO.findAllActive();
         funcaoList = funcaoBO.findAll();
     }
 

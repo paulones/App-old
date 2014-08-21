@@ -24,3 +24,7 @@
 #situacao input{margin-left:-9px}
 /*cadastroPJUD*/
 textarea{resize:none}
+#executado{margin-top:7px}
+#executado .radio{margin-right:4px}
+#executado label{margin-right:33px}
+#executado input{margin-left:-9px}

@@ -244,6 +244,7 @@ var PjudCad = function() {
             }
 
             $.validator.addMethod("data", validaData, "Digite uma data v&aacute;lida.");
+//            $.validator.addMethod("oneOrAnother", validaExecutado, "Digite uma data v&aacute;lida.");
             $.validator.addClassRules({
                 bem:{
                     required:false
@@ -280,13 +281,16 @@ var PjudCad = function() {
             });
 
             executado();
-            $('#executado').change(executado);
             $('#executado').click(executado);
             function executado() {
-                if ($("input[name=executado]:checked").val() === 'cpf') {
+                if ($("input[name=executado]:checked").val() === 'PF') {
                     $('.cpf').show();
-                } else if ($("input[name=executado]:checked").val() === 'cnpj') {
                     $('.cnpj').hide();
+                    $('#cnpj').select2('data', null);
+                } else if ($("input[name=executado]:checked").val() === 'PJ') {
+                    $('.cnpj').show();
+                    $('.cpf').hide();
+                    $('#cpf').select2('data', null);
                 }
             }
 
