@@ -52,6 +52,7 @@ public class LoginBO implements Serializable {
                         config.setUltimoLogin(dataAtual);
                         configDAO.create(config);
                     } else {
+                        System.out.println(cnpj);
                         config = configDAO.findConfigByCNPJ(cnpj);
                         config.setChave(crypt);
                         config.setUltimoLogin(dataAtual);
@@ -75,7 +76,7 @@ public class LoginBO implements Serializable {
             config = configDAO.findConfigByCNPJ(cnpj);
             String descriptografia;
             //System.out.println("config: "+config.getChave()+", "+config.getCnpj()+", "+config.getUltimoLogin().toString());
-            if (!config.getChave().isEmpty()) {
+            if (config != null) {
                 descriptografia = DesEncriptonator(config.getChave());
                 String endData = descriptografia.substring(9, 17);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");

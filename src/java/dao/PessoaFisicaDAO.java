@@ -605,7 +605,20 @@ public class PessoaFisicaDAO implements Serializable {
         EntityManager em = getEntityManager();
         try {
             List<PessoaFisica> pessoaFisicaList = (List<PessoaFisica>) em.createNativeQuery("select * from pessoa_fisica "
-                        + "where status = 'A'", PessoaFisica.class).getResultList();
+                        + "where status = 'A' ", PessoaFisica.class).getResultList();
+            return pessoaFisicaList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaFisica> findFirstTenActive(){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaFisica> pessoaFisicaList = (List<PessoaFisica>) em.createNativeQuery("select * from pessoa_fisica "
+                        + "where status = 'A' order by nome limit 10", PessoaFisica.class).getResultList();
             return pessoaFisicaList;
         } catch (NoResultException e) {
             return null;

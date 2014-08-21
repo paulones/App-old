@@ -83,4 +83,22 @@ public class PessoaFisicaBO implements Serializable {
         }
         return new ArrayList<PessoaFisica>();
     }
+    
+    public List<PessoaFisica> findFirstTenActive(){
+        try { 
+            return pessoaFisicaDAO.findFirstTenActive();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaFisica>();
+    } 
+    
+    public Integer getPessoaFisicaCount(){
+        try { 
+            return pessoaFisicaDAO.getPessoaFisicaCount();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
