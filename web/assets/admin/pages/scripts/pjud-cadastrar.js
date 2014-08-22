@@ -299,12 +299,14 @@ var PjudCad = function() {
             validaCPFCNPJ();
             $('#cpf,#cnpj').change(validaCPFCNPJ);
             function validaCPFCNPJ() {
-                if ($(this).find(":selected").text() !== "") {
-                    $(this).closest('.form-group').removeClass("has-error");
-                    $(this).next('span').hide();
-                } else {
-                    $(this).closest('.form-group').addClass("has-error");
-                    $(this).next('span').show();
+                if ($(this).next('span').length > 0) {
+                    if ($(this).find(":selected").text() !== "") {
+                        $(this).closest('.form-group').removeClass("has-error");
+                        $(this).next('span').hide();
+                    } else {
+                        $(this).closest('.form-group').addClass("has-error");
+                        $(this).next('span').show();
+                    }
                 }
             }
 
@@ -323,10 +325,11 @@ var PjudCad = function() {
                 } else {
                     return false;
                 }
-            };
-            
-            jsf.ajax.addOnEvent(function(data){
-                if (data.status == "success"){
+            }
+            ;
+
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status == "success") {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
                     }

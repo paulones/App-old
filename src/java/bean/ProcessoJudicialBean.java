@@ -48,6 +48,8 @@ public class ProcessoJudicialBean implements Serializable {
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
 
+            bens = 0;
+            
             bemList = new ArrayList<>();
 
             carregarFormulario();
