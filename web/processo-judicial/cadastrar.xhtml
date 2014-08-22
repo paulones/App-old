@@ -461,7 +461,7 @@
                                                             <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}">
                                                                 <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
-                                                                <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.cpf}"/>
+                                                                <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.cpf}"/>
                                                             </h:selectOneMenu>
                                                         </div>
                                                     </div>
@@ -489,7 +489,7 @@
                                                         <div class="col-md-10">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos2" value="#{PessoaFisicaBean.pessoaFisica.cpf}"/>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos2" value="#{processoJudicialBean.processoJudicial.outrasInformacoesExecutado}"/>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -504,34 +504,44 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-2">Descrição do Bem / Data do Ato 
+                                                        <label class="control-label col-md-2">Quantidade de Bens 
                                                         </label>
-                                                        <div class="col-md-7">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputTextarea class="form-control bem" value="#{PessoaFisicaBean.pessoaFisica.cpf}" />
-                                                            </div>
+                                                        <div class="col-md-2">
+                                                            <h:inputText p:type="number" class="form-control" id="bens" value="#{processoJudicialBean.bens}" />
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputText class="form-control bemdata date" p:placeholder="dd/mm/aaaa" value="#{PessoaFisicaBean.pessoaFisica.cpf}" />
-                                                            </div>
+                                                            <h:commandLink class="bens btn blue-chambray">
+                                                                <f:ajax execute="bens" listener="#{processoJudicialBean.adicionarBens}" render="bem"/>
+                                                                <i class="fa fa-plus-circle"> Adicionar Campos</i>
+                                                            </h:commandLink>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="col-md-offset-0 col-md-9">
-                                                        <a href="javascript:;" class="btn blue-chambray">
-                                                            <i class="fa fa-plus-circle"> Adicionar Mais Bens </i>
-                                                        </a>
+                                            <h:panelGroup id="bem">
+                                                <ui:repeat value="#{processoJudicialBean.bemList}" var="bem">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-2">Descrição do Bem / Data do Ato 
+                                                                </label>
+                                                                <div class="col-md-7">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputTextarea class="form-control bem" id="descricao" value="#{bem.descricao}" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control bemdata date" p:placeholder="dd/mm/aaaa" value="#{bem.dataDoAto}" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                </div>
-                                            </div>
+                                                </ui:repeat>
+                                            </h:panelGroup>
                                             <h3 class="form-section"></h3>
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -541,7 +551,7 @@
                                                         <div class="col-md-10">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos3" value="#{PessoaFisicaBean.pessoaFisica.cpf}"/>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos3" value="#{processoJudicialBean.processoJudicial.outrasInformacoesBem}"/>
                                                             </div>
                                                         </div>
                                                     </div>

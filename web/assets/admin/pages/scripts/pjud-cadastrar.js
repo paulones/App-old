@@ -258,6 +258,7 @@ var PjudCad = function() {
 
             handleValidation();
 
+            $('#bens').mask("99");
             $('.date').mask("99/99/9999");
             $('.money').maskMoney({
                 prefix: 'R$ ',
@@ -322,8 +323,15 @@ var PjudCad = function() {
                 } else {
                     return false;
                 }
-            }
-            ;
+            };
+            
+            jsf.ajax.addOnEvent(function(data){
+                if (data.status == "success"){
+                    if ($(data.source).hasClass("bens")) {
+                        $('.bemdata').mask("99/99/9999");
+                    }
+                }
+            });
 
             $('#form_wizard').find('.button-previous').hide();
             $('#form_wizard .button-submit').click(function() {

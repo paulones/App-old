@@ -378,7 +378,7 @@
                                                 <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="pessoafisica" value="#{pessoaJuridicaBean.pessoaFisica}" tabindex="1" converter="entityConverter">
                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                     <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
-                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica}"/>
+                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica}"/>
                                                 </h:selectOneMenu>
                                             </div>
                                         </div>
@@ -428,7 +428,7 @@
                                                             <td>
                                                                 <h:commandLink class="pf-info">
                                                                     <f:ajax listener="#{pessoaJuridicaBean.exibirModal(pessoaFisicaJuridica.pessoaFisicaFk)}" render=":modal"/>
-                                                                    #{cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
+                                                                    #{cpf  eq '..-' ? 'Sem CPF' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                                 </h:commandLink>
                                                             </td>
                                                             <td>
