@@ -556,7 +556,7 @@
             </div>
             <h:inputHidden id="pf-id" value="#{pessoaFisicaBean.pfId}"/>
             <h:commandLink class="info-refresher">
-                <f:ajax execute="pf-id" listener="#{pessoaFisicaBean.renderInfo()}" render="info"/>
+                <f:ajax execute="pf-id" listener="#{pessoaFisicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>
             <h:panelGroup class="dirty-infos display-hide">
                 <ui:repeat value="#{pessoaFisicaBean.enderecoPessoaList}" var="pessoaFisica" rendered="#{!pessoaFisicaBean.history}">
@@ -575,7 +575,7 @@
                             #{pessoaFisica.pessoa.estadoCivilFk.situacao} #{pessoaFisica.pessoa.nacionalidadeFk.tipo} #{pessoaFisica.pessoa.paisFk.nome} #{pessoaFisica.pessoa.cidadeEleitoralFk.nome}
                             #{pessoaFisica.pessoa.estadoEleitoralFk.nome} #{pessoaFisica.pessoa.zona} #{pessoaFisica.pessoa.secao} #{pessoaFisica.pessoa.endereco}
                             #{pessoaFisica.pessoa.local} #{pessoaFisica.endereco.bairro} #{pessoaFisica.endereco.cep} #{pessoaFisica.endereco.cidadeFk.nome}
-                            #{pessoaFisica.endereco.estadoFk.nome} #{pessoaFisica.endereco.numero}
+                            #{pessoaFisica.endereco.estadoFk.nome} #{pessoaFisica.endereco.numero} #{pessoaFisica.endereco.complemento} #{pessoaFisica.endereco.endereco}
                             <ui:repeat value="#{pessoaFisica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                 <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                 #{cnpj} #{pessoaFisicaJuridica.pessoaJuridicaFk.nome} #{pessoaFisicaJuridica.capitalDeParticipacao} #{pessoaFisicaJuridica.funcaoFk.funcao}

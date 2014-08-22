@@ -247,16 +247,6 @@ var PFCon = function() {
                 });
                 $('.detailed-info').remove();
             });
-            
-            $('.paginate_button').click(function(){
-                alert(1)
-                $.each($('.row-details'), function() {
-                    if ($(this).hasClass("row-details-open")) {
-                        $(this).addClass("row-details-close").removeClass("row-details-open");
-                    }
-                });
-            })
-            
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {

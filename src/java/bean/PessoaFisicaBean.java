@@ -73,6 +73,7 @@ public class PessoaFisicaBean implements Serializable {
     private String redirect;
     private boolean edit;
     private boolean history;
+    private Integer pfId;
 
     private List<Pais> paisList;
     private List<Estado> estadoList;
@@ -107,8 +108,6 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaFisicaHistoricoBO pessoaFisicaHistoricoBO;
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
-    
-    private Integer pfId;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -298,61 +297,73 @@ public class PessoaFisicaBean implements Serializable {
             /*  
              Alterar Pessoa Física existente
              */
-            if (pessoaFisica.getRgOrgaoEmissor() != null) {
-                pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
-            }
-            if (pessoaFisica.getEstadoFk() != null) {
-                pessoaFisica.setPaisFk(paisBO.findBrasil());
-            }
-            boolean identical = true;
-            if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
-                identical = false;
-            } else {
-                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                    for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
-                        if (pfj.changedValues(oldPfj).isEmpty()) {
-                            identical = true;
+            PessoaFisica pfDB = pessoaFisicaBO.findByCPF(pessoaFisica.getCpf());
+            if (pfDB == null || pessoaFisica.equals(pfDB)){ 
+                
+            
+                if (pessoaFisica.getRgOrgaoEmissor() != null) {
+                    pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
+                }
+                if (pessoaFisica.getEstadoFk() != null) {
+                    pessoaFisica.setPaisFk(paisBO.findBrasil());
+                }
+                boolean identical = true;
+                if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
+                    identical = false;
+                } else {
+                    for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                        for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
+                            if (pfj.changedValues(oldPfj).isEmpty()) {
+                                identical = true;
+                                break;
+                            } else {
+                                identical = false;
+                            }
+                        }
+                        if (!identical) {
                             break;
-                        } else {
-                            identical = false;
                         }
                     }
-                    if (!identical) {
-                        break;
+                }
+                if (oldPessoaFisica.changedValues(pessoaFisica).isEmpty()
+                        && oldEndereco.changedValues(endereco).isEmpty()
+                        && identical) {
+                    Cookie.addCookie("FacesMessage", "fail", 10);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+                } else {
+                    UtilBO utilBO = new UtilBO();
+                    Timestamp timestamp = utilBO.findServerTime();
+                    pessoaFisica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                    pessoaFisicaBO.edit(pessoaFisica);
+                    pessoaFisicaHistorico.setDataDeModificacao(timestamp);
+                    pessoaFisicaHistoricoBO.create(pessoaFisicaHistorico);
+                    enderecoBO.edit(endereco);
+                    EnderecoHistorico.setIdFk(pessoaFisicaHistorico.getId());
+                    enderecoHistoricoBO.create(EnderecoHistorico);
+                    pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
+                    for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                        pessoaFisicaJuridicaBO.create(pfj);
                     }
+                    for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
+                        pfjh.setTipo("PF");
+                        pfjh.setIdFk(pessoaFisicaHistorico.getId());
+                        pessoaFisicaJuridicaHistoricoBO.create(pfjh);
+                    }
+                    Cookie.addCookie("FacesMessage", "success", 10);
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 }
-            }
-            if (oldPessoaFisica.changedValues(pessoaFisica).isEmpty()
-                    && oldEndereco.changedValues(endereco).isEmpty()
-                    && identical) {
-                Cookie.addCookie("FacesMessage", "fail", 10);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
-            } else {
-                UtilBO utilBO = new UtilBO();
-                Timestamp timestamp = utilBO.findServerTime();
-                pessoaFisica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-                pessoaFisicaBO.edit(pessoaFisica);
-                pessoaFisicaHistorico.setDataDeModificacao(timestamp);
-                pessoaFisicaHistoricoBO.create(pessoaFisicaHistorico);
-                enderecoBO.edit(endereco);
-                EnderecoHistorico.setIdFk(pessoaFisicaHistorico.getId());
-                enderecoHistoricoBO.create(EnderecoHistorico);
-                pessoaFisicaJuridicaBO.destroyByPF(pessoaFisica.getId());
-                for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                    pessoaFisicaJuridicaBO.create(pfj);
-                }
-                for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
-                    pfjh.setTipo("PF");
-                    pfjh.setIdFk(pessoaFisicaHistorico.getId());
-                    pessoaFisicaJuridicaHistoricoBO.create(pfjh);
-                }
-                Cookie.addCookie("FacesMessage", "success", 10);
-                FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+            } else { // CPF previamente cadastrado
+                register = "fail";
+                String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
+                String message = "Já existe usuário cadastrado com o CPF " + cpf;
+                message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
+                message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
             }
         }
     }
-    
-    public void renderInfo(){
+
+    public void exibirInfo() {
         Endereco endereco = new Endereco();
         PessoaFisica pessoaFisica = new PessoaFisica();
         pessoaFisica = pessoaFisicaBO.findPessoaFisica(pfId);
