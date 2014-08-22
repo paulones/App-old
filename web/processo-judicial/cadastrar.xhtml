@@ -458,13 +458,11 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-8">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}" >
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}">
                                                                 <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
-                                                                <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.id}"/>
+                                                                <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.cpf}"/>
                                                             </h:selectOneMenu>
-                                                            <div id="form_executadocpf_error">
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group cnpj display-hide">
@@ -472,13 +470,11 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-8">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{PessoaFisicaBean.pessoaFisica.executadoFk}">
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{PessoaFisicaBean.pessoaFisica.executadoFk}" >
                                                                 <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
-                                                                <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.id}"/>
+                                                                <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.cnpj}"/>
                                                             </h:selectOneMenu>
-                                                            <div id="form_executadocnpj_error">
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

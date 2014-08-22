@@ -92,10 +92,10 @@ var PjudCad = function() {
                     required: true,
                 },
                 cpf: {
-                    required: false,
+                    cpfOrCnpj: true,
                 },
                 cnpj: {
-                    required: false,
+                    cpfOrCnpj: true,
                 },
                 outrasinfos2: {
                     required: false,
@@ -105,11 +105,12 @@ var PjudCad = function() {
                 },
             },
             messages: {// custom messages for radio buttons and checkboxes
-
             },
             errorPlacement: function(error, element) { // render error placement for each input type
                 if (element.attr("name") == "executado") { // for uniform radio buttons, insert the after the given container
                     error.insertAfter("#form_executado_error");
+                } else if (element.attr("name") == "cpf" || element.attr("name") == "cnpj") {
+                    error.insertAfter(element);
                 } else {
                     var icon = $(element).parent('.input-icon').children('i');
                     icon.removeClass('fa-check').addClass("fa-warning");
@@ -244,14 +245,14 @@ var PjudCad = function() {
             }
 
             $.validator.addMethod("data", validaData, "Digite uma data v&aacute;lida.");
-//            $.validator.addMethod("oneOrAnother", validaExecutado, "Digite uma data v&aacute;lida.");
+            $.validator.addMethod("cpfOrCnpj", validaExecutado, "Escolha um executado.");
             $.validator.addClassRules({
-                bem:{
-                    required:false
+                bem: {
+                    required: false
                 },
-                bemdata:{
-                    data:true,
-                    required:false
+                bemdata: {
+                    data: true,
+                    required: false
                 }
             });
 
@@ -294,6 +295,18 @@ var PjudCad = function() {
                 }
             }
 
+            validaCPFCNPJ();
+            $('#cpf,#cnpj').change(validaCPFCNPJ);
+            function validaCPFCNPJ() {
+                if ($(this).find(":selected").text() !== "") {
+                    $(this).closest('.form-group').removeClass("has-error");
+                    $(this).next('span').hide();
+                } else {
+                    $(this).closest('.form-group').addClass("has-error");
+                    $(this).next('span').show();
+                }
+            }
+
             function validaData(value, element) {
                 var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
                 if (value === "" || value === null) {
@@ -303,9 +316,18 @@ var PjudCad = function() {
             }
             ;
 
+            function validaExecutado() {
+                if ($('#cpf').val() !== "" || $('#cnpj').val() !== "") {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            ;
+
             $('#form_wizard').find('.button-previous').hide();
             $('#form_wizard .button-submit').click(function() {
-                 $('#submit_form').submit();
+                $('#submit_form').submit();
             }).hide();
 
             $('.menu-pjud').addClass('active open');
