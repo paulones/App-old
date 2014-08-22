@@ -18,6 +18,9 @@ public class EnderecoPessoa implements Serializable{
     private Object pessoa;
     private Endereco endereco;
 
+    public EnderecoPessoa() {
+    }
+    
     public EnderecoPessoa(Object pessoa, Endereco endereco) {
         this.pessoa = pessoa;
         this.endereco = endereco;

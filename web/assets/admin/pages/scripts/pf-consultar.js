@@ -1,21 +1,14 @@
 var PFCon = function() {
 
+    var pessoaFisicaArray = [];
+    $.each($('.infos'), function() {
+        var pessoaFisica = ["<span class='row-details row-details-close'></span>", $(this).children(".nome").text(), $(this).children(".sexo").text(), $(this).children(".cpf").text(), $(this).children(".rg").text(), "", $(this).children(".detalhes").text(), $(this).children(".pf").text()];
+        pessoaFisicaArray.push(pessoaFisica);
+    })
+    var element;
+
     var initTable = function() {
         var table = $('#table');
-        var tableDetails = $('.vinculations');
-
-        var oTable2 = tableDetails.dataTable({
-            paginate: false,
-            lengthMenu: false,
-            info: false,
-            filter: false,
-            // set the initial value
-            "pageLength": 10,
-            "language": {
-                "emptyTable": "Sem V&iacute;nculos."
-            },
-            "ordering": false
-        });
         /*
          * Initialize DataTables, with no sorting on the 'details' column
          */
@@ -24,8 +17,20 @@ var PFCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
+            "data": pessoaFisicaArray,
+            "columns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {"class": "display-hide"},
+                {"class": "display-hide"}
+            ],
+            "orderClasses": false,
+            "deferRender": true,
             "order": [
-                [1, 'asc']
             ],
             "language": {
                 "emptyTable": "Nenhuma Pessoa F&iacute;sica cadastrada.",
@@ -37,8 +42,8 @@ var PFCon = function() {
                 "lengthMenu": " Exibir _MENU_",
             },
             "lengthMenu": [
-                [10, 15, 20, 50, -1],
-                [10, 15, 20, 50, "Todos"] // change per page values here
+                [10, 15, 20, 50, 100],
+                [10, 15, 20, 50, 100] // change per page values here
             ],
             // set the initial value
             "pageLength": 10,
@@ -47,25 +52,19 @@ var PFCon = function() {
 
         tableWrapper.find('.dataTables_length select').select2(); // initialize select2 dropdown
 
-        /* Add event listener for opening and closing details
-         * Note that the indicator for showing which row is open is not controlled by DataTables,
-         * rather it is done here
-         */
         table.on('click', ' tbody td .row-details', function() {
             if ($(this).hasClass('row-details-open')) {
                 /* This row is already open - close it */
                 $(this).addClass("row-details-close").removeClass("row-details-open");
-                $(this).parent().parent().append($(this).parent().parent().next().children());
                 $(this).parent().parent().next().remove();
-                $(this).parent().parent().children(".detail").hide();
             } else {
                 /* Open this row */
-                $(this).addClass("row-details-open").removeClass("row-details-close");
-                $('<tr>').insertAfter($(this).parent().parent());
-                $(this).parent().parent().children(".detail").appendTo($(this).parent().parent().next());
-                $(this).parent().parent().next().children(".detail").show();
+                $('#pf-id').val($(this).parent().siblings(":last").text());
+                $('.info-refresher').click();
+                element = $(this);
             }
         });
+        
     }
 
     var initHistoryTable = function() {
@@ -230,22 +229,56 @@ var PFCon = function() {
                     $('.delete').get(index).click();
                 });
             }
+            
+            $('select[name=table_length]').change(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+                $('.detailed-info').remove();
+            });
 
             $('#table_filter label input').keypress(function() {
                 $.each($('.row-details'), function() {
                     if ($(this).hasClass("row-details-open")) {
                         $(this).addClass("row-details-close").removeClass("row-details-open");
-                        $(this).parent().parent().append($(this).parent().parent().next().children());
-                        $(this).parent().parent().next().remove();
-                        $(this).parent().parent().children(".detail").hide();
                     }
                 });
+                $('.detailed-info').remove();
             });
+            
+            $('.paginate_button').click(function(){
+                alert(1)
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+            })
+            
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("class") === "pj-info") {
                         $('.modal-pj').click();
+                    }else if ($(element).hasClass("row-details")) {
+                        $(element).addClass("row-details-open").removeClass("row-details-close");
+                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
+                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
+                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
+                        $(element).parent().parent().next().find('table').dataTable({
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem V&iacute;nculos."
+                            },
+                            "ordering": false
+                        });
                     }
                 }
             });
