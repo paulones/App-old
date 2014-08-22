@@ -1,21 +1,15 @@
 var PJCon = function() {
     
+    var pessoaJuridicaArray = [];
+    $.each($('.infos'), function() {
+        var pessoaJuridica = ["<span class='row-details row-details-close'></span>", $(this).children(".nome").text(), $(this).children(".cnpj").text(), $(this).children(".nomeFantasia").text(), $(this).children(".tipo").text(), "", $(this).children(".detalhes").text(), $(this).children(".pj").text()];
+        pessoaJuridicaArray.push(pessoaJuridica);
+    })
+    var element;
+    
     var initTable = function() {
         var table = $('#table');
-        var tableDetails = $('.vinculations');
 
-        var oTable2 = tableDetails.dataTable({
-            paginate: false,
-            lengthMenu: false,
-            info: false,
-            filter: false,
-            // set the initial value
-            "pageLength": 10,
-            "language": {
-                "emptyTable": "Sem V&iacute;nculos."
-            },
-            "ordering": false
-        });
         /*
          * Initialize DataTables, with no sorting on the 'details' column
          */
@@ -24,8 +18,20 @@ var PJCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
+            "data": pessoaJuridicaArray,
+            "columns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                {"class": "display-hide"},
+                {"class": "display-hide"}
+            ],
+            "orderClasses": false,
+            "deferRender": true,
             "order": [
-                [1, 'asc']
             ],
             "language": {
                 "emptyTable": "Nenhuma Pessoa Jur&iacute;dica cadastrada.",
@@ -37,8 +43,8 @@ var PJCon = function() {
                 "lengthMenu": " Exibir _MENU_",
             },
             "lengthMenu": [
-                [10, 15, 20, 50, -1],
-                [10, 15, 20, 50, "Todos"] // change per page values here
+                [10, 15, 20, 50, 100],
+                [10, 15, 20, 50, 100] // change per page values here
             ],
             // set the initial value
             "pageLength": 10,
@@ -55,15 +61,12 @@ var PJCon = function() {
             if ($(this).hasClass('row-details-open')) {
                 /* This row is already open - close it */
                 $(this).addClass("row-details-close").removeClass("row-details-open");
-                $(this).parent().parent().append($(this).parent().parent().next().children());
                 $(this).parent().parent().next().remove();
-                $(this).parent().parent().children(".detail").hide();
             } else {
                 /* Open this row */
-                $(this).addClass("row-details-open").removeClass("row-details-close");
-                $('<tr>').insertAfter($(this).parent().parent());
-                $(this).parent().parent().children(".detail").appendTo($(this).parent().parent().next());
-                $(this).parent().parent().next().children(".detail").show();
+                $('#pj-id').val($(this).parent().siblings(":last").text());
+                $('.info-refresher').click();
+                element = $(this);
             }
         });
     }
@@ -224,23 +227,47 @@ var PJCon = function() {
                     $('.delete').get(index).click();
                 });
             }
+            
+            $('select[name=table_length]').change(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+                $('.detailed-info').remove();
+            });
 
             $('#table_filter label input').keypress(function() {
                 $.each($('.row-details'), function() {
                     if ($(this).hasClass("row-details-open")) {
                         $(this).addClass("row-details-close").removeClass("row-details-open");
-                        $(this).parent().parent().append($(this).parent().parent().next().children());
-                        $(this).parent().parent().next().remove();
-                        $(this).parent().parent().children(".detail").hide();
                     }
                 });
+                $('.detailed-info').remove();
             });
             
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("class") === "pf-info"){
                         $('.modal-pf').click();
-                    } 
+                    } else if ($(element).hasClass("row-details")) {
+                        $(element).addClass("row-details-open").removeClass("row-details-close");
+                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
+                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
+                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
+                        $(element).parent().parent().next().find('table').dataTable({
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem V&iacute;nculos."
+                            },
+                            "ordering": false
+                        });
+                    }
                 }
             });
             
