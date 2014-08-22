@@ -2,7 +2,15 @@ var PJCon = function() {
     
     var pessoaJuridicaArray = [];
     $.each($('.infos'), function() {
-        var pessoaJuridica = ["<span class='row-details row-details-close'></span>", $(this).children(".nome").text(), $(this).children(".cnpj").text(), $(this).children(".nomeFantasia").text(), $(this).children(".tipo").text(), "", $(this).children(".detalhes").text(), $(this).children(".pj").text()];
+        var pessoaJuridica = [
+            "<span class='row-details row-details-close'></span>", 
+            $(this).children(".nome").text(), 
+            $(this).children(".cnpj").text(), 
+            $(this).children(".nomeFantasia").text(), 
+            $(this).children(".tipo").text(), 
+            "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>", 
+            $(this).children(".detalhes").text(), 
+            $(this).children(".pj").text()];
         pessoaJuridicaArray.push(pessoaJuridica);
     })
     var element;
@@ -224,7 +232,8 @@ var PJCon = function() {
                 });
                 $('.remove').click(function(e) {
                     e.preventDefault();
-                    $('.delete').get(index).click();
+                    $('#pj-id').val($($('.button-delete').get(index)).parent().next().next().text());
+                    $('.info-delete').click();
                 });
             }
             

@@ -334,24 +334,22 @@ public class PessoaJuridicaBean implements Serializable {
     }
     
     public void exibirModal(PessoaFisica pessoaFisica){
-        Endereco endereco = new Endereco();
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         enderecoPessoaModal = new EnderecoPessoa(pessoaFisica, endereco);
     }
     
     public void exibirInfo(){
-        Endereco endereco = new Endereco();
-        PessoaJuridica pessoaJuridica = new PessoaJuridica();
         pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjId);
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaJuridica, endereco);
     }
 
-    public void removerPessoaJuridica(int index) {
-        PessoaJuridica pessoaJuridica = (PessoaJuridica) enderecoPessoaList.get(index).getPessoa();
+    public void removerPessoaJuridica() {
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjId);
+        endereco = enderecoBO.findPJAddress(pjId);
         pessoaJuridica.setStatus('I');
         pessoaJuridicaBO.edit(pessoaJuridica);
-        enderecoPessoaList.remove(index);
+        enderecoPessoaList.remove(new EnderecoPessoa(pessoaJuridica, endereco));
         redirect = "";
         register = "success";
     }

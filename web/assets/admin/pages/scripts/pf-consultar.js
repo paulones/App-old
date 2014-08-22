@@ -2,7 +2,15 @@ var PFCon = function() {
 
     var pessoaFisicaArray = [];
     $.each($('.infos'), function() {
-        var pessoaFisica = ["<span class='row-details row-details-close'></span>", $(this).children(".nome").text(), $(this).children(".sexo").text(), $(this).children(".cpf").text(), $(this).children(".rg").text(), "", $(this).children(".detalhes").text(), $(this).children(".pf").text()];
+        var pessoaFisica = [
+            "<span class='row-details row-details-close'></span>", 
+            $(this).children(".nome").text(), 
+            $(this).children(".sexo").text(), 
+            $(this).children(".cpf").text(), 
+            $(this).children(".rg").text(), 
+            "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>", 
+            $(this).children(".detalhes").text(), 
+            $(this).children(".pf").text()];
         pessoaFisicaArray.push(pessoaFisica);
     })
     var element;
@@ -226,7 +234,8 @@ var PFCon = function() {
                 });
                 $('.remove').click(function(e) {
                     e.preventDefault();
-                    $('.delete').get(index).click();
+                    $('#pf-id').val($($('.button-delete').get(index)).parent().next().next().text());
+                    $('.info-delete').click();
                 });
             }
             

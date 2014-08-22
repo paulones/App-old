@@ -554,7 +554,9 @@
                     <!-- END EXAMPLE TABLE PORTLET-->
                 </div>
             </div>
+            
             <h:inputHidden id="pf-id" value="#{pessoaFisicaBean.pfId}"/>
+            <h:commandLink class="info-delete" action="#{pessoaFisicaBean.removerPessoaFisica()}" />
             <h:commandLink class="info-refresher">
                 <f:ajax execute="pf-id" listener="#{pessoaFisicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>

@@ -482,6 +482,7 @@
                 </div>
             </div>
             <h:inputHidden id="pj-id" value="#{pessoaJuridicaBean.pjId}"/>
+            <h:commandLink class="info-delete" action="#{pessoaJuridicaBean.removerPessoaJuridica()}" />
             <h:commandLink class="info-refresher">
                 <f:ajax execute="pj-id" listener="#{pessoaJuridicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>

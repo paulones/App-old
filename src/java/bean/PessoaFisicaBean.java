@@ -364,8 +364,6 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void exibirInfo() {
-        Endereco endereco = new Endereco();
-        PessoaFisica pessoaFisica = new PessoaFisica();
         pessoaFisica = pessoaFisicaBO.findPessoaFisica(pfId);
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaFisica, endereco);
@@ -376,16 +374,16 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void exibirModal(PessoaJuridica pessoaJuridica) {
-        Endereco endereco = new Endereco();
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
         enderecoPessoaModal = new EnderecoPessoa(pessoaJuridica, endereco);
     }
 
-    public void removerPessoaFisica(int index) {
-        PessoaFisica pessoaFisica = (PessoaFisica) enderecoPessoaList.get(index).getPessoa();
+    public void removerPessoaFisica() {
+        pessoaFisica = pessoaFisicaBO.findPessoaFisica(pfId);
+        endereco = enderecoBO.findPFAddress(pfId);
         pessoaFisica.setStatus('I');
         pessoaFisicaBO.edit(pessoaFisica);
-        enderecoPessoaList.remove(index);
+        enderecoPessoaList.remove(new EnderecoPessoa(pessoaFisica, endereco));
         redirect = "";
         register = "success";
     }
