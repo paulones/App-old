@@ -222,4 +222,8 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
     
+    public ProcessoJudicial findByProcessNumber(ProcessoJudicial processoJudicial){
+        return new ProcessoJudicial();
+    }
+    
 }

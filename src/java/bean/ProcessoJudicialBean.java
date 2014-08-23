@@ -68,6 +68,10 @@ public class ProcessoJudicialBean implements Serializable {
             bemList.add(bem);
         }
     }
+    
+    public void cadastrar(){
+        
+    }
 
     public ProcessoJudicial getProcessoJudicial() {
         return processoJudicial;

@@ -45,4 +45,8 @@ public class ProcessoJudicialBO implements Serializable{
             e.printStackTrace();
         }
     }
+    
+    public ProcessoJudicial findByProcessNumber(ProcessoJudicial processoJudicial){
+        return new ProcessoJudicial();
+    }
 }

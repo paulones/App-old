@@ -25,7 +25,8 @@ var PFCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
-            "data": pessoaFisicaArray,
+//            "data": pessoaFisicaArray,
+            "ajax": "/webresources/reaver/pessoaFisica",
             "columns": [
                 null,
                 null,
