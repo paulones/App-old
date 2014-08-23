@@ -446,7 +446,10 @@
                                                                                 <ui:param value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
                                                                                 <tr>
                                                                                     <td style="text-align:center">
-                                                                                        #{cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}
+                                                                                        <h:commandLink class="pf-info">
+                                                                                            <f:ajax listener="#{pessoaJuridicaBean.exibirModal(pessoaFisicaJuridicaHistorico.pessoaFisicaFk)}" render=":modal"/>
+                                                                                        #{cpf eq '..-' ? 'Sem CPF' : cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}
+                                                                                        </h:commandLink>
                                                                                     </td>
                                                                                     <td style="text-align:center">
                                                                                         #{pessoaFisicaJuridicaHistorico.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridicaHistorico.funcaoFk.funcao}

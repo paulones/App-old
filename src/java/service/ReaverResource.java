@@ -55,23 +55,4 @@ public class ReaverResource {
     public void putXml(String content) {
     }
     
-    @GET
-    @Path("/pessoaFisica")
-    @Produces("application/json")
-    public String carregarPessoasFisicas(){
-        System.out.println("ae");
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        jsonArray.put("<span class='row-details row-details-close'></span>");
-        jsonArray.put("1");
-        jsonArray.put("2");
-        jsonArray.put("3");
-        jsonArray.put("4");
-        jsonArray.put("5");
-        jsonArray.put("6");
-        jsonArray.put("7");
-        jsonObject.put("pessoaFisica",jsonArray);
-        System.out.println(jsonArray);
-        return jsonArray.toString();
-    }
 }

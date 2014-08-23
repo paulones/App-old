@@ -1,20 +1,20 @@
 var PJCon = function() {
-    
+
     var pessoaJuridicaArray = [];
     $.each($('.infos'), function() {
         var pessoaJuridica = [
-            "<span class='row-details row-details-close'></span>", 
-            $(this).children(".nome").text(), 
-            $(this).children(".cnpj").text(), 
-            $(this).children(".nomeFantasia").text(), 
-            $(this).children(".tipo").text(), 
-            "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>", 
-            $(this).children(".detalhes").text(), 
+            "<span class='row-details row-details-close'></span>",
+            $(this).children(".nome").text(),
+            $(this).children(".cnpj").text(),
+            $(this).children(".nomeFantasia").text(),
+            $(this).children(".tipo").text(),
+            "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>",
+            $(this).children(".detalhes").text(),
             $(this).children(".pj").text()];
         pessoaJuridicaArray.push(pessoaJuridica);
     })
     var element;
-    
+
     var initTable = function() {
         var table = $('#table');
 
@@ -78,7 +78,7 @@ var PJCon = function() {
             }
         });
     }
-    
+
     var initHistoryTable = function() {
         var table = $('#table');
         var tableDetails = $('.vinculations');
@@ -149,7 +149,7 @@ var PJCon = function() {
 
     return {
         init: function() {
-            
+
             if (window.location.search != "") {
                 var atual;
                 initHistoryTable();
@@ -178,12 +178,19 @@ var PJCon = function() {
                         }
                     });
                     var upper = this;
+                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length){
+                        vinculo = true;
+                    }
                     $.each($(atual).find('.rows tr'), function() {
                         var atual = this;
+                        var exists = false;
                         $.each($(upper).find('.rows tr'), function() {
-                            if ($(atual).find('td').eq(0).html().trim() === $(this).find('td').eq(0).html().trim()) {
+                            var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
+                            var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
+                            if (cpfAtual === cpfHistorico) {
+                                exists = true;
                                 $.each($(this).find('td'), function(index) {
-                                    if ($(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                    if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
                                         $(this).css("color", "#a94442");
                                         $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
                                         vinculo = true;
@@ -191,15 +198,19 @@ var PJCon = function() {
                                 })
                             } else {
                                 if (($(atual).find('td').length > 1 && $(this).find('td').length === 1)) {
-                                    $(this).find('td').eq(0).css("color","#a94442");
+                                    $(this).find('td').eq(0).css("color", "#a94442");
                                     vinculo = true;
                                 }
-                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)){
-                                    $(this).find('td').css("color","#a94442");
+                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                    $(this).find('td').children().css("color", "#a94442");
+                                    $(this).find('td').css("color", "#a94442");
                                     vinculo = true;
                                 }
                             }
                         });
+                        if (!exists){
+                            vinculo = true;
+                        }
                     });
                     if (informacoes) {
                         description += "Informa&ccedil;&otilde;es Empresariais, ";
@@ -236,7 +247,7 @@ var PJCon = function() {
                     $('.info-delete').click();
                 });
             }
-            
+
             $('select[name=table_length]').change(function() {
                 $.each($('.row-details'), function() {
                     if ($(this).hasClass("row-details-open")) {
@@ -254,10 +265,10 @@ var PJCon = function() {
                 });
                 $('.detailed-info').remove();
             });
-            
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
-                    if ($(data.source).attr("class") === "pf-info"){
+                    if ($(data.source).attr("class") === "pf-info") {
                         $('.modal-pf').click();
                     } else if ($(element).hasClass("row-details")) {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
@@ -279,7 +290,7 @@ var PJCon = function() {
                     }
                 }
             });
-            
+
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
             $('.menu-pj a .arrow').addClass('open');
