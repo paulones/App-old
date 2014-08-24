@@ -186,6 +186,8 @@ public class TipoProcessoDAO implements Serializable {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(TipoProcesso.class));
+            Root<TipoProcesso> from = cq.from(TipoProcesso.class);
+            cq.orderBy(em.getCriteriaBuilder().asc(from.get("tipo")));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);

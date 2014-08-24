@@ -173,6 +173,8 @@ public class TipoRecursoDAO implements Serializable {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(TipoRecurso.class));
+            Root<TipoRecurso> from = cq.from(TipoRecurso.class);
+            cq.orderBy(em.getCriteriaBuilder().asc(from.get("tipo")));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
