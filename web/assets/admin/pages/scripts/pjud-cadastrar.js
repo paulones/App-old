@@ -305,8 +305,10 @@ var PjudCad = function() {
             ;
 
             executado();
-            $('#executado').click(executado);
+            $('#executado').change(executado);
             function executado() {
+                $('#pessoa-fisica').hide();
+                $('#pessoa-juridica').hide();
                 if ($("input[name=executado]:checked").val() === 'PF') {
                     $('.cpf').show();
                     $('.cnpj').hide();
@@ -321,6 +323,8 @@ var PjudCad = function() {
             validaCPFCNPJ();
             $('#cpf,#cnpj').change(validaCPFCNPJ);
             function validaCPFCNPJ() {
+                $('#pessoa-fisica').hide();
+                $('#pessoa-juridica').hide();
                 if ($(this).attr("id") === "cpf" && $(this).find(":selected").text() !== ""){
                     $('.button-pessoa-fisica').show();
                 } else if ($(this).attr("id") === "cnpj" && $(this).find(":selected").text() !== ""){
@@ -362,10 +366,13 @@ var PjudCad = function() {
                 if (data.status == "success") {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
-                    }
-                    if ($(data.source).hasClass("vinculos")) {
+                    } else if ($(data.source).hasClass("vinculos")) {
                         $('.vinculotipo').select2();
                         $('.vinculo').keypress(numeroDoProcesso);
+                    } else if ($(data.source).hasClass("button-pessoa-fisica")){
+                        $('#pessoa-fisica').show();
+                    } else if ($(data.source).hasClass("button-pessoa-juridica")){
+                        $('#pessoa-juridica').show();
                     }
                 }
             });

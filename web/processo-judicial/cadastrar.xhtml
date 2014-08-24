@@ -552,7 +552,7 @@
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.cpf}"/>
                                                             </h:selectOneMenu>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 button-visualizar">
                                                             <h:commandLink class="button-pessoa-fisica btn blue-chambray display-hide">
                                                                 <f:ajax execute="tab2" listener="#{processoJudicialBean.exibirExecutado}" render="pessoa-fisica"/>
                                                                 Visualizar Pessoa Física <i class="m-icon-swapright m-icon-white"></i>
@@ -570,7 +570,7 @@
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.cnpj}"/>
                                                             </h:selectOneMenu>
                                                         </div>
-                                                        <div class="col-md-3">
+                                                        <div class="col-md-3 button-visualizar">
                                                             <h:commandLink class="button-pessoa-juridica btn blue-chambray display-hide">
                                                                 <f:ajax execute="tab2" listener="#{processoJudicialBean.exibirExecutado}" render="pessoa-juridica"/>
                                                                 Visualizar Pessoa Jurídica <i class="m-icon-swapright m-icon-white"></i>
@@ -578,8 +578,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <h:panelGroup id="pessoa-fisica"></h:panelGroup>
-                                                <h:panelGroup id="pessoa-juridica"></h:panelGroup>
+                                                <h:panelGroup id="pessoa-fisica">fisico</h:panelGroup>
+                                                <h:panelGroup id="pessoa-juridica">juridico </h:panelGroup>
                                             </div>
                                             <!-- /row -->
                                             <h3 class="form-section"></h3>
