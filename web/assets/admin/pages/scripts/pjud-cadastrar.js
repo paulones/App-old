@@ -29,6 +29,12 @@ var PjudCad = function() {
                 varaant: {
                     required: false,
                 },
+                recurso: {
+                    required: false,
+                },
+                recursotipo: {
+                    required: false,
+                },
                 especializacao: {
                     required: false,
                 },
@@ -97,12 +103,18 @@ var PjudCad = function() {
                 cnpj: {
                     cpfOrCnpj: true,
                 },
+                atoprocessual: {
+                    required: false,
+                },
                 outrasinfos2: {
                     required: false,
                 },
                 outrasinfos3: {
                     required: false,
                 },
+                outrasinfos4: {
+                    required: false,
+                }
             },
             messages: {// custom messages for radio buttons and checkboxes
             },
@@ -253,12 +265,19 @@ var PjudCad = function() {
                 bemdata: {
                     data: true,
                     required: false
+                },
+                vinculo: {
+                    required: false
+                },
+                vinculotipo: {
+                    required: false
                 }
             });
 
             handleValidation();
 
             $('#bens').mask("99");
+            $('#vinculos').mask("99");
             $('.date').mask("99/99/9999");
             $('.money').maskMoney({
                 prefix: 'R$ ',
@@ -269,7 +288,9 @@ var PjudCad = function() {
                 allowZero: false, // Permite que o digito 0 seja o primeiro caractere
                 showSymbol: false // Exibe/Oculta o símbolo
             })
-            $('.masked-numbers').keypress(function(e) {
+
+            $('.masked-numbers').keypress(numeroDoProcesso);
+            function numeroDoProcesso(e) {
                 var regex = new RegExp("[0-9.\/\-]");
                 var key = e.keyCode || e.which;
                 key = String.fromCharCode(key);
@@ -280,7 +301,8 @@ var PjudCad = function() {
                         e.preventDefault();
                     }
                 }
-            });
+            }
+            ;
 
             executado();
             $('#executado').click(executado);
@@ -299,6 +321,14 @@ var PjudCad = function() {
             validaCPFCNPJ();
             $('#cpf,#cnpj').change(validaCPFCNPJ);
             function validaCPFCNPJ() {
+                if ($(this).attr("id") === "cpf" && $(this).find(":selected").text() !== ""){
+                    $('.button-pessoa-fisica').show();
+                } else if ($(this).attr("id") === "cnpj" && $(this).find(":selected").text() !== ""){
+                    $('.button-pessoa-juridica').show();
+                } else{
+                    $('.button-pessoa-fisica').hide();
+                    $('.button-pessoa-juridica').hide();
+                }
                 if ($(this).next('span').length > 0) {
                     if ($(this).find(":selected").text() !== "") {
                         $(this).closest('.form-group').removeClass("has-error");
@@ -332,6 +362,10 @@ var PjudCad = function() {
                 if (data.status == "success") {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
+                    }
+                    if ($(data.source).hasClass("vinculos")) {
+                        $('.vinculotipo').select2();
+                        $('.vinculo').keypress(numeroDoProcesso);
                     }
                 }
             });

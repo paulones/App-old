@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -64,6 +66,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesBem = :outrasInformacoesBem")})
 public class ProcessoJudicial implements Serializable {
+    @Size(max = 300)
+    @Column(name = "outras_informacoes_ato_processual")
+    private String outrasInformacoesAtoProcessual;
+    @Size(max = 2147483647)
+    @Column(name = "ato_processual")
+    private String atoProcessual;
+    @JoinColumn(name = "tipo_de_recurso_fk", referencedColumnName = "id")
+    @ManyToOne
+    private TipoRecurso tipoDeRecursoFk;
+    @Size(max = 50)
+    @Column(name = "recurso")
+    private String recurso;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<VinculoProcessual> vinculoProcessualCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -523,6 +539,15 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.outrasInformacoesBem, other.outrasInformacoesBem)) {
             return false;
         }
+        if (!Objects.equals(this.recurso, other.recurso)) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoDeRecursoFk, other.tipoDeRecursoFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.atoProcessual, other.atoProcessual)) {
+            return false;
+        }
         return true;
     }
     
@@ -531,5 +556,46 @@ public class ProcessoJudicial implements Serializable {
     public String toString() {
         return "entidade.ProcessoJudicial[ id=" + id + " ]";
     }
-    
+
+    public String getRecurso() {
+        return recurso;
+    }
+
+    public void setRecurso(String recurso) {
+        this.recurso = recurso;
+    }
+
+    @XmlTransient
+    public Collection<VinculoProcessual> getVinculoProcessualCollection() {
+        return vinculoProcessualCollection;
+    }
+
+    public void setVinculoProcessualCollection(Collection<VinculoProcessual> vinculoProcessualCollection) {
+        this.vinculoProcessualCollection = vinculoProcessualCollection;
+    }
+
+    public TipoRecurso getTipoDeRecursoFk() {
+        return tipoDeRecursoFk;
+    }
+
+    public void setTipoDeRecursoFk(TipoRecurso tipoDeRecursoFk) {
+        this.tipoDeRecursoFk = tipoDeRecursoFk;
+    }
+
+    public String getAtoProcessual() {
+        return atoProcessual;
+    }
+
+    public void setAtoProcessual(String atoProcessual) {
+        this.atoProcessual = atoProcessual;
+    }
+
+    public String getOutrasInformacoesAtoProcessual() {
+        return outrasInformacoesAtoProcessual;
+    }
+
+    public void setOutrasInformacoesAtoProcessual(String outrasInformacoesAtoProcessual) {
+        this.outrasInformacoesAtoProcessual = outrasInformacoesAtoProcessual;
+    }
+
 }

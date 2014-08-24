@@ -49,7 +49,7 @@
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-files-o"></i> Formulário de Cadastro - <span class="step-title">
-                                Passo 1 de 3 </span>
+                                Passo 1 de 4 </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -80,6 +80,14 @@
                                                     3 </span>
                                                 <span class="desc">
                                                     <i class="fa fa-check"></i> Bens </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#tab4" data-toggle="tab" class="step">
+                                                <span class="number">
+                                                    4 </span>
+                                                <span class="desc">
+                                                    <i class="fa fa-check"></i> Ato Processual </span>
                                             </a>
                                         </li>
                                     </ul>
@@ -187,6 +195,34 @@
                                                 </div>
                                                 <!--/span-->
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Recurso 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="recurso" autocomplete="off" value="#{processoJudicialBean.processoJudicial.recurso}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Tipo do Recurso 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="recursotipo" tabindex="1" value="#{processoJudicialBean.processoJudicial.tipoDeRecursoFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{processoJudicialBean.tipoDeRecursoList}" var="tipoDeRecurso" itemLabel="#{tipoDeRecurso.tipo}" itemValue="#{tipoDeRecurso}"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
                                             <!--/row-->
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -270,6 +306,59 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--/row-->
+                                            <h3 class="form-section">Identificação dos Vínculos Processuais</h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Quantidade de Vínculos 
+                                                        </label>
+                                                        <div class="col-md-2">
+                                                            <h:inputText p:type="number" p:min="0" class="form-control" id="vinculos" value="#{processoJudicialBean.vinculos}" />
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <h:commandLink class="vinculos btn blue-chambray">
+                                                                <f:ajax execute="vinculos" listener="#{processoJudicialBean.adicionarVinculosProcessuais}" render="vinculo"/>
+                                                                <i class="fa fa-plus-circle"> Adicionar Campos</i>
+                                                            </h:commandLink>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <h:panelGroup id="vinculo">
+                                                <ui:repeat value="#{processoJudicialBean.vinculoProcessualList}" var="vinculo">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-4">Nº do Processo Vinculado 
+                                                                </label>
+                                                                <div class="col-md-8">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control vinculo" autocomplete="off" value="#{vinculo.processo}"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--/span-->
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-4">Tipo do Processo Vinculado 
+                                                                </label>
+                                                                <div class="col-md-8">
+                                                                    <h:selectOneMenu class="select2_category select2me form-control vinculotipo" p:placeholder="Selecione..." tabindex="1" value="#{vinculo.tipoDeProcessoFk}" converter="entityConverter">
+                                                                        <f:selectItem itemLabel="" itemValue=""/>
+                                                                        <f:selectItems value="#{processoJudicialBean.tipoDoProcessoList}" var="tipoDoProcesso" itemLabel="#{tipoDoProcesso.tipo}" itemValue="#{tipoDoProcesso}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--/span-->
+                                                    </div>
+                                                </ui:repeat>
+                                            </h:panelGroup>
                                             <!--/row-->
                                             <h3 class="form-section">Identificação do Crédito Fiscal</h3>
                                             <div class="row">
@@ -428,8 +517,7 @@
                                             <!--/row-->
                                         </div>
                                         <!--/tab-->
-
-                                        <div class="tab-pane" id="tab2">
+                                        <h:panelGroup layout="block" class="tab-pane" id="tab2">
                                             <span class="help-block">Campos com * são obrigatórios.</span>
                                             <h3 class="form-section">Identificação do Executado</h3>
                                             <div class="row">
@@ -452,32 +540,46 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-12">
                                                     <div class="form-group cpf display-hide">
-                                                        <label class="control-label col-md-4">CPF <span class="required">
+                                                        <label class="control-label col-md-2">CPF <span class="required">
                                                                 * </span>
                                                         </label>
-                                                        <div class="col-md-8">
+                                                        <div class="col-md-6">
                                                             <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}">
                                                                 <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.cpf}"/>
                                                             </h:selectOneMenu>
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <h:commandLink class="button-pessoa-fisica btn blue-chambray display-hide">
+                                                                <f:ajax execute="tab2" listener="#{processoJudicialBean.exibirExecutado}" render="pessoa-fisica"/>
+                                                                Visualizar Pessoa Física <i class="m-icon-swapright m-icon-white"></i>
+                                                            </h:commandLink>
+                                                        </div>
                                                     </div>
                                                     <div class="form-group cnpj display-hide">
-                                                        <label class="control-label col-md-4">CNPJ <span class="required">
+                                                        <label class="control-label col-md-2">CNPJ <span class="required">
                                                                 * </span>
                                                         </label>
-                                                        <div class="col-md-8">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{PessoaFisicaBean.pessoaFisica.executadoFk}" >
+                                                        <div class="col-md-6">
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}" >
                                                                 <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.cnpj}"/>
                                                             </h:selectOneMenu>
                                                         </div>
+                                                        <div class="col-md-3">
+                                                            <h:commandLink class="button-pessoa-juridica btn blue-chambray display-hide">
+                                                                <f:ajax execute="tab2" listener="#{processoJudicialBean.exibirExecutado}" render="pessoa-juridica"/>
+                                                                Visualizar Pessoa Jurídica <i class="m-icon-swapright m-icon-white"></i>
+                                                            </h:commandLink>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <h:panelGroup id="pessoa-fisica"></h:panelGroup>
+                                                <h:panelGroup id="pessoa-juridica"></h:panelGroup>
                                             </div>
                                             <!-- /row -->
                                             <h3 class="form-section"></h3>
@@ -496,7 +598,7 @@
                                                 </div>
                                                 <!--/span-->
                                             </div>
-                                        </div>
+                                        </h:panelGroup>
                                         <!--/tab-->
                                         <div class="tab-pane" id="tab3">
                                             <span class="help-block">Campos com * são obrigatórios.</span>
@@ -507,7 +609,7 @@
                                                         <label class="control-label col-md-2">Quantidade de Bens 
                                                         </label>
                                                         <div class="col-md-2">
-                                                            <h:inputText p:type="number" class="form-control" id="bens" value="#{processoJudicialBean.bens}" />
+                                                            <h:inputText p:type="number" p:min="0" class="form-control" id="bens" value="#{processoJudicialBean.bens}" />
                                                         </div>
                                                         <div class="col-md-3">
                                                             <h:commandLink class="bens btn blue-chambray">
@@ -560,12 +662,46 @@
                                             </div>
                                         </div> 
                                         <!--/tab-->
+                                        <div class="tab-pane" id="tab4">
+                                            <span class="help-block">Campos com * são obrigatórios.</span>
+                                            <h3 class="form-section">Identificação dos Atos Processuais</h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Descrição dos Atos Processuais 
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="20" id="atoprocessual" value="#{processoJudicialBean.processoJudicial.atoProcessual}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h3 class="form-section"></h3>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Outras Informações 
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos4" value="#{processoJudicialBean.processoJudicial.outrasInformacoesAtoProcessual}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="form-actions fluid">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="col-md-offset-9 col-md-9">
+                                            <div class="col-md-offset-9 col-md-3">
                                                 <a href="javascript:;" class="btn default button-previous">
                                                     <i class="m-icon-swapleft"></i> Voltar </a>
                                                 <a href="javascript:;" class="btn blue-chambray button-next">

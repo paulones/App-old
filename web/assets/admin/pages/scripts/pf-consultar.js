@@ -151,7 +151,7 @@ var PFCon = function() {
                 var atual;
                 initHistoryTable();
                 $.each($('.data-de-modificacao'), function() {
-                    if ($(this).html().contains('Atual')) {
+                    if ($(this).html().indexOf('Atual') !== -1) {
                         $(this).parent().find('.form-body').addClass('current');
                         $(this).parent().children('.description').removeClass('description');
                         atual = $(this).parent().find('.form-body');
@@ -223,7 +223,7 @@ var PFCon = function() {
                         description += "V&iacute;nculos Empresariais, ";
                     }
                     description = description.substring(0, description.length - 2) + ".";
-                    if (description.contains(",")) {
+                    if (description.indexOf(",") !== -1) {
                         description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
                     } else if (description === ".") {
                         description = "";
