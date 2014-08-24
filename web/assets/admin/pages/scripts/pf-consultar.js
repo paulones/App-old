@@ -178,16 +178,20 @@ var PFCon = function() {
                         }
                     });
                     var upper = this;
-                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length){
+                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length) {
                         vinculo = true;
                     }
                     $.each($(atual).find('.rows tr'), function() {
                         var atual = this;
                         var exists = false;
                         $.each($(upper).find('.rows tr'), function() {
+                            $(this).find('td').children().css("color", "#a94442");
+                            $(this).find('td').css("color", "#a94442");
                             var cnpjAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
                             var cnpjHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
                             if (cnpjAtual === cnpjHistorico) {
+                                $(this).find('td').children().css("color", "black");
+                                $(this).find('td').css("color", "black");
                                 exists = true;
                                 $.each($(this).find('td'), function(index) {
                                     if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
@@ -197,18 +201,12 @@ var PFCon = function() {
                                     }
                                 });
                             } else {
-                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1)) {
-                                    $(this).find('td').eq(0).css("color", "#a94442");
-                                    vinculo = true;
-                                }
-                                if (($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
-                                    $(this).find('td').children().css("color", "#a94442");
-                                    $(this).find('td').css("color", "#a94442");
+                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
                                     vinculo = true;
                                 }
                             }
                         });
-                        if (!exists){
+                        if (!exists) {
                             vinculo = true;
                         }
                     });
