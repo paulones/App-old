@@ -58,6 +58,8 @@ public class ProcessoJudicialBean implements Serializable {
     private Integer bens;
     private Integer vinculos;
     private String tipoDoExecutado;
+    private Integer executadoPF;
+    private Integer executadoPJ;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -74,6 +76,8 @@ public class ProcessoJudicialBean implements Serializable {
 
             bens = 0;
             vinculos = 0;
+            executadoPF = 0;
+            executadoPJ = 0;
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
@@ -107,10 +111,10 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void exibirExecutado() {
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(executadoPF);
             enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
         } else if (processoJudicial.getExecutado().equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(executadoPJ);
             enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
     }
@@ -126,7 +130,7 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void cadastrar() {
-
+        processoJudicial.setExecutadoFk(executadoPF != null ? executadoPF : executadoPJ);
     }
 
     public ProcessoJudicial getProcessoJudicial() {
@@ -231,6 +235,22 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setEnderecoPessoaModal(EnderecoPessoa enderecoPessoaModal) {
         this.enderecoPessoaModal = enderecoPessoaModal;
+    }
+
+    public Integer getExecutadoPF() {
+        return executadoPF;
+    }
+
+    public void setExecutadoPF(Integer executadoPF) {
+        this.executadoPF = executadoPF;
+    }
+
+    public Integer getExecutadoPJ() {
+        return executadoPJ;
+    }
+
+    public void setExecutadoPJ(Integer executadoPJ) {
+        this.executadoPJ = executadoPJ;
     }
 
 }

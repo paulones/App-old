@@ -251,7 +251,7 @@ var PjudCad = function() {
 
     var initTable = function() {
         $('.vinculations').dataTable({
-            destroy:true,
+            destroy: true,
             paginate: false,
             lengthMenu: false,
             info: false,
@@ -341,9 +341,9 @@ var PjudCad = function() {
             function validaCPFCNPJ() {
                 $('#pessoa-fisica').hide();
                 $('#pessoa-juridica').hide();
-                if ($(this).attr("id") === "cpf" && $(this).find(":selected").text() !== "") {
+                if ($('#cpf').find(":selected").text() !== "") {
                     $('.button-pessoa-fisica').show();
-                } else if ($(this).attr("id") === "cnpj" && $(this).find(":selected").text() !== "") {
+                } else if ($('#cnpj').find(":selected").text() !== "") {
                     $('.button-pessoa-juridica').show();
                 } else {
                     $('.button-pessoa-fisica').hide();

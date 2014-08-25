@@ -12,6 +12,11 @@
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
+        <style>
+            .modal .control-label{margin-top:6px !important}
+            .pessoa .control-label{margin-top:6px !important;padding-top:0;text-align:left}
+            .pessoa .form-group{margin: 0}
+        </style>
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
@@ -546,8 +551,8 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-6">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}">
-                                                                <f:selectItem itemLabel="" itemValue="0"/>
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.executadoPF}">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.id}"/>
                                                             </h:selectOneMenu>
@@ -564,8 +569,8 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-6">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}" >
-                                                                <f:selectItem itemLabel="" itemValue="0"/>
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{processoJudicialBean.executadoPJ}" >
+                                                                <f:selectItem itemLabel="" itemValue=""/>
                                                                 <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.id}"/>
                                                             </h:selectOneMenu>
@@ -582,7 +587,7 @@
                                             <!-- /row -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h:panelGroup id="pessoa-fisica">
+                                                    <h:panelGroup id="pessoa-fisica" class="pessoa" rendered="#{not empty processoJudicialBean.executadoPF}">
                                                         <div class="portlet box blue-chambray">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
@@ -973,7 +978,7 @@
                                             <!-- /row -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h:panelGroup id="pessoa-juridica">
+                                                    <h:panelGroup id="pessoa-juridica" class="pessoa" rendered="#{not empty processoJudicialBean.executadoPJ}">
                                                         <div class="portlet box blue-chambray">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
@@ -1001,7 +1006,8 @@
                                                                                 <label class="control-label col-md-3">CNPJ:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.cnpj eq null ? '-' : cnpj}
+                                                                                        <ui:param value="#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        #{cnpj}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1421,9 +1427,9 @@
                                                 <a href="javascript:;" class="btn blue-chambray button-next">
                                                     Continuar <i class="m-icon-swapright m-icon-white"></i>
                                                 </a>
-                                                <a href="javascript:;" class="btn blue-chambray button-submit">
+                                                <h:commandLink action="#{processoJudicialBean.cadastrar()}" class="btn blue-chambray button-submit">
                                                     <i class="fa fa-save"></i> Cadastrar 
-                                                </a>
+                                                </h:commandLink>
                                             </div>
                                         </div>
                                     </div>
