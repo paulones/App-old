@@ -249,6 +249,22 @@ var PjudCad = function() {
         });
     }
 
+    var initTable = function() {
+        $('.vinculations').dataTable({
+            destroy:true,
+            paginate: false,
+            lengthMenu: false,
+            info: false,
+            filter: false,
+            // set the initial value
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "Sem V&iacute;nculos."
+            },
+            "ordering": false
+        });
+    }
+
     return {
         init: function() {
 
@@ -325,11 +341,11 @@ var PjudCad = function() {
             function validaCPFCNPJ() {
                 $('#pessoa-fisica').hide();
                 $('#pessoa-juridica').hide();
-                if ($(this).attr("id") === "cpf" && $(this).find(":selected").text() !== ""){
+                if ($(this).attr("id") === "cpf" && $(this).find(":selected").text() !== "") {
                     $('.button-pessoa-fisica').show();
-                } else if ($(this).attr("id") === "cnpj" && $(this).find(":selected").text() !== ""){
+                } else if ($(this).attr("id") === "cnpj" && $(this).find(":selected").text() !== "") {
                     $('.button-pessoa-juridica').show();
-                } else{
+                } else {
                     $('.button-pessoa-fisica').hide();
                     $('.button-pessoa-juridica').hide();
                 }
@@ -369,10 +385,18 @@ var PjudCad = function() {
                     } else if ($(data.source).hasClass("vinculos")) {
                         $('.vinculotipo').select2();
                         $('.vinculo').keypress(numeroDoProcesso);
-                    } else if ($(data.source).hasClass("button-pessoa-fisica")){
+                    } else if ($(data.source).hasClass("button-pessoa-fisica")) {
                         $('#pessoa-fisica').show();
-                    } else if ($(data.source).hasClass("button-pessoa-juridica")){
+                        initTable();
+                    } else if ($(data.source).hasClass("button-pessoa-juridica")) {
                         $('#pessoa-juridica').show();
+                        initTable();
+                    } else if ($(data.source).attr("class") === "pj-info") {
+                        $('.modal-pj').click();
+                        initTable();
+                    } else if ($(data.source).attr("class") === "pf-info") {
+                        $('.modal-pf').click();
+                        initTable();
                     }
                 }
             });

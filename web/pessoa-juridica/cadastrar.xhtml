@@ -428,7 +428,7 @@
                                                             <td>
                                                                 <h:commandLink class="pf-info">
                                                                     <f:ajax listener="#{pessoaJuridicaBean.exibirModal(pessoaFisicaJuridica.pessoaFisicaFk)}" render=":modal"/>
-                                                                    #{cpf  eq '..-' ? 'Sem CPF' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
+                                                                    #{cpf  eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                                 </h:commandLink>
                                                             </td>
                                                             <td>

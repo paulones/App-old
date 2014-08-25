@@ -628,7 +628,7 @@
                                         <label class="control-label col-md-3">CPF:</label>
                                         <div class="col-md-9">
                                             <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf}
+                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf eq '..-' ? '-' : cpf}
                                             </p>
                                         </div>
                                     </div>
@@ -1284,7 +1284,7 @@
                                                             <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                             <tr>
                                                                 <td style="text-align:center">
-                                                                    #{cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
+                                                                    #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                                 </td>
                                                                 <td style="text-align:center">
                                                                     #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
