@@ -74,7 +74,7 @@ public class PessoaFisicaBean implements Serializable {
     private String redirect;
     private boolean edit;
     private boolean history;
-    private Integer pfId;
+    private String pfId;
     private String pjId;
 
     private List<Pais> paisList;
@@ -179,7 +179,7 @@ public class PessoaFisicaBean implements Serializable {
                  dados da Pessoa Física.Caso contrário, acessa a consulta geral 
                  */
                 if (request.getParameter("id") == null) {   // Consulta geral
-                    pfId = 0;
+                    pfId = "";
                     history = false;
                     pessoaFisicaList = pessoaFisicaBO.findAllActive();
                     enderecoPessoaList = new ArrayList<>();
@@ -368,7 +368,7 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void exibirInfo() {
-        pessoaFisica = pessoaFisicaBO.findPessoaFisica(pfId);
+        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(pfId)));
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaFisica, endereco);
     }
@@ -383,8 +383,8 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void removerPessoaFisica() {
-        pessoaFisica = pessoaFisicaBO.findPessoaFisica(pfId);
-        endereco = enderecoBO.findPFAddress(pfId);
+        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(pfId)));
+        endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         pessoaFisica.setStatus('I');
         pessoaFisicaBO.edit(pessoaFisica);
         enderecoPessoaList.remove(new EnderecoPessoa(pessoaFisica, endereco));
@@ -702,11 +702,11 @@ public class PessoaFisicaBean implements Serializable {
         this.enderecoPessoaModal = enderecoPessoaModal;
     }
 
-    public Integer getPfId() {
+    public String getPfId() {
         return pfId;
     }
 
-    public void setPfId(Integer pfId) {
+    public void setPfId(String pfId) {
         this.pfId = pfId;
     }
 

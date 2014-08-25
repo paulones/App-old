@@ -560,34 +560,6 @@
             <h:commandLink class="info-refresher">
                 <f:ajax execute="pf-id" listener="#{pessoaFisicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>
-            <h:panelGroup class="dirty-infos display-hide">
-                <ui:repeat value="#{pessoaFisicaBean.enderecoPessoaList}" var="pessoaFisica" rendered="#{!pessoaFisicaBean.history}">
-                    <h:panelGroup styleClass="infos">
-                        <span class="nome">#{pessoaFisica.pessoa.nome}</span>
-                        <span class="sexo">#{pessoaFisica.pessoa.sexo eq 'M' ? 'Masculino' : pessoaFisica.pessoa.sexo eq 'F' ? 'Feminino' : '-'}</span>
-                        <span class="cpf">
-                            <ui:param value="#{pessoaFisica.pessoa.cpf.substring(0,3)}.#{pessoaFisica.pessoa.cpf.substring(3,6)}.#{pessoaFisica.pessoa.cpf.substring(6,9)}-#{pessoaFisica.pessoa.cpf.substring(9)}" name="cpf"/>
-                            #{pessoaFisica.pessoa.cpf eq null ? '-' : cpf}
-                        </span>
-                        <span class="rg">#{pessoaFisica.pessoa.rg eq null ? '-' : pessoaFisica.pessoa.rg} #{pessoaFisica.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{pessoaFisica.pessoa.rgOrgaoEmissor}#{pessoaFisica.pessoa.rgUfFk.uf eq null ? '' : '/'}#{pessoaFisica.pessoa.rgUfFk.uf}</span>
-                        <span class="detalhes">
-                            #{pessoaFisica.pessoa.apelido} #{pessoaFisica.pessoa.rgOrgaoEmissor} #{pessoaFisica.pessoa.tituloDeEleitor}
-                            #{pessoaFisica.pessoa.inss} #{pessoaFisica.pessoa.nomeDoPai} #{pessoaFisica.pessoa.nomeDaMae} #{pessoaFisica.pessoa.nomeDoConjuge}
-                            #{pessoaFisica.pessoa.observacoes} #{pessoaFisica.pessoa.cidadeFk.nome} #{pessoaFisica.pessoa.estadoFk.nome} #{pessoaFisica.pessoa.rgUfFk.nome}
-                            #{pessoaFisica.pessoa.estadoCivilFk.situacao} #{pessoaFisica.pessoa.nacionalidadeFk.tipo} #{pessoaFisica.pessoa.paisFk.nome} #{pessoaFisica.pessoa.cidadeEleitoralFk.nome}
-                            #{pessoaFisica.pessoa.estadoEleitoralFk.nome} #{pessoaFisica.pessoa.zona} #{pessoaFisica.pessoa.secao} #{pessoaFisica.pessoa.endereco}
-                            #{pessoaFisica.pessoa.local} #{pessoaFisica.endereco.bairro} #{pessoaFisica.endereco.cep} #{pessoaFisica.endereco.cidadeFk.nome}
-                            #{pessoaFisica.endereco.estadoFk.nome} #{pessoaFisica.endereco.numero} #{pessoaFisica.endereco.complemento} #{pessoaFisica.endereco.endereco}
-                            <ui:repeat value="#{pessoaFisica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
-                                <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
-                                #{cnpj} #{pessoaFisicaJuridica.pessoaJuridicaFk.nome} #{pessoaFisicaJuridica.capitalDeParticipacao} #{pessoaFisicaJuridica.funcaoFk.funcao}
-                                #{pessoaFisicaJuridica.dataDeInicio} #{pessoaFisicaJuridica.dataDeTermino} 
-                            </ui:repeat>
-                        </span>
-                        <span class="pf">#{pessoaFisica.pessoa.id}</span>
-                    </h:panelGroup>
-                </ui:repeat>
-            </h:panelGroup>
             <h:panelGroup id="info" class="display-hide">
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
@@ -1348,7 +1320,7 @@
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
-        <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->

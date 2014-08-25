@@ -1,18 +1,5 @@
 var PFCon = function() {
 
-    var pessoaFisicaArray = [];
-    $.each($('.infos'), function() {
-        var pessoaFisica = [
-            "<span class='row-details row-details-close'></span>",
-            $(this).children(".nome").text(),
-            $(this).children(".sexo").text(),
-            $(this).children(".cpf").text(),
-            $(this).children(".rg").text(),
-            "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>",
-            $(this).children(".detalhes").text(),
-            $(this).children(".pf").text()];
-        pessoaFisicaArray.push(pessoaFisica);
-    })
     var element;
 
     var initTable = function() {
@@ -25,17 +12,16 @@ var PFCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
-            "data": pessoaFisicaArray,
-//            "ajax": "/webresources/reaver/pessoaFisica",
+            "ajax": "/webresources/reaver/getPessoasFisicasTable",
             "columns": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                {"class": "display-hide"},
-                {"class": "display-hide"}
+                {"data": "row-details"},
+                {"data": "nome"},
+                {"data": "sexo"},
+                {"data": "cpf"},
+                {"data": "rg"},
+                {"data": "delete"},
+                {"data": "detalhes", "class": "display-hide"},
+                {"data": "pf", "class": "display-hide"}
             ],
             "orderClasses": false,
             "deferRender": true,
@@ -72,6 +58,22 @@ var PFCon = function() {
                 $('.info-refresher').click();
                 element = $(this);
             }
+        });
+        
+        var index;
+        table.on('click', '.button-delete', function(e) {
+            e.preventDefault();
+            index = $('.button-delete').index(this);
+            $('.delete-modal-activator').click();
+        });
+        
+        $('.cancel').click(function(e) {
+            e.preventDefault();
+        });
+        $('.remove').click(function(e) {
+            e.preventDefault();
+            $('#pf-id').val($($('.button-delete').get(index)).parent().next().next().text());
+            $('.info-delete').click();
         });
 
     }
@@ -232,21 +234,6 @@ var PFCon = function() {
                 });
             } else {
                 initTable();
-
-                var index;
-                $('.button-delete').click(function(e) {
-                    e.preventDefault();
-                    index = $('.button-delete').index(this);
-                    $('.delete-modal-activator').click();
-                });
-                $('.cancel').click(function(e) {
-                    e.preventDefault();
-                });
-                $('.remove').click(function(e) {
-                    e.preventDefault();
-                    $('#pf-id').val($($('.button-delete').get(index)).parent().next().next().text());
-                    $('.info-delete').click();
-                });
             }
 
             $('select[name=table_length]').change(function() {
