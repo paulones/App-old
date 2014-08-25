@@ -547,7 +547,7 @@
                                                         </label>
                                                         <div class="col-md-6">
                                                             <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}">
-                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItem itemLabel="" itemValue="0"/>
                                                                 <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.id}"/>
                                                             </h:selectOneMenu>
@@ -565,7 +565,7 @@
                                                         </label>
                                                         <div class="col-md-6">
                                                             <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{processoJudicialBean.processoJudicial.executadoFk}" >
-                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItem itemLabel="" itemValue="0"/>
                                                                 <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
                                                                 <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.id}"/>
                                                             </h:selectOneMenu>

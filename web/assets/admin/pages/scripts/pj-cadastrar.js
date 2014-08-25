@@ -321,6 +321,45 @@ var PJCad = function() {
                 }
             });
 
+            $.ajax({
+                url: "/webresources/reaver/getPessoasFisicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $('.cpf').select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear:true,
+                        });
+                    });
+
             $('.initial-date,.final-date').keyup(checkDates);
 
             $('#vinculate').click(function(e) {
@@ -364,7 +403,7 @@ var PJCad = function() {
 
                 if (((dig1 * 10) + dig2) != digito)
                     return false;
-                else{
+                else {
                     return true;
                 }
 

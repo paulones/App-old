@@ -42,6 +42,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import util.Base64Crypt;
 import util.Cookie;
 
 /**
@@ -69,6 +70,7 @@ public class PessoaJuridicaBean implements Serializable {
     private boolean edit;
     private boolean history;
     private Integer pjId;
+    private String pfId;
 
     private List<TipoEmpresarial> tipoEmpresarialList;
     private List<Estado> estadoList;
@@ -134,6 +136,7 @@ public class PessoaJuridicaBean implements Serializable {
                  Tela cadastro.xhtml. Se houver "id" na url, entra na condição de alteração.
                  Caso contrário, apenas carrega o formulário
                  */
+                pfId = "";
                 if (request.getParameter("id") == null) { //Novo
                     edit = false;
                     carregarFormulario();
@@ -242,6 +245,7 @@ public class PessoaJuridicaBean implements Serializable {
                     pessoaFisicaJuridicaBO.create(pfj);
                 }
                 register = "success";
+                pfId = "";
                 pessoaJuridica = new PessoaJuridica();
                 endereco = new Endereco();
                 pessoaFisicaJuridicaList = new ArrayList<>();
@@ -316,10 +320,11 @@ public class PessoaJuridicaBean implements Serializable {
         if (edit) {
             pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         }
+        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(pfId))); 
         pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-            if (pfj.getPessoaFisicaFk().getCpf().equals(pessoaFisica.getCpf())) {
+            if (pfj.getPessoaFisicaFk().getId().equals(pessoaFisica.getId())) { 
                 exists = true;
             }
         }
@@ -602,6 +607,14 @@ public class PessoaJuridicaBean implements Serializable {
 
     public void setPjId(Integer pjId) {
         this.pjId = pjId;
+    }
+
+    public String getPfId() {
+        return pfId;
+    }
+
+    public void setPfId(String pfId) {
+        this.pfId = pfId;
     }
 
 }

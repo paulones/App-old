@@ -9,20 +9,20 @@ import org.apache.commons.codec.binary.Base64;
 
 public class Base64Crypt {
 
+    private static final String CRYPT_KEY = "deadwood8986deadwood8986";
     private static final String UNICODE_FORMAT = "UTF8";
-    public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
-    private KeySpec ks;
-    private SecretKeyFactory skf;
-    private Cipher cipher;
-    byte[] arrayBytes;
-    private String myEncryptionKey;
-    private String myEncryptionScheme;
-    SecretKey key;
-
-    public Base64Crypt(String criptKey) {
+    private static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
+    private static KeySpec ks;
+    private static SecretKeyFactory skf;
+    private static Cipher cipher;
+    private static byte[] arrayBytes;
+    private static String myEncryptionKey;
+    private static String myEncryptionScheme;
+    private static SecretKey key;
+    
+    private static void crypt(){
         try {
-            //myEncryptionKey = "ThisIsSpartaThisIsSparta";
-            myEncryptionKey = criptKey;
+            myEncryptionKey = CRYPT_KEY;
             myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
             arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
             ks = new DESedeKeySpec(arrayBytes);
@@ -34,7 +34,8 @@ public class Base64Crypt {
         }
     }
 
-    public String encrypt(String unencryptedString) {
+    public static String encrypt(String unencryptedString) {
+        crypt();
         String encryptedString = null;
         try {
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -47,7 +48,8 @@ public class Base64Crypt {
         return encryptedString;
     }
 
-    public String decrypt(String encryptedString) {
+    public static String decrypt(String encryptedString) {
+        crypt();
         String decryptedText = null;
         try {
             cipher.init(Cipher.DECRYPT_MODE, key);
@@ -59,21 +61,4 @@ public class Base64Crypt {
         }
         return decryptedText;
     }
-
-    public static void main(String args[]) throws Exception {
-        Base64Crypt td = new Base64Crypt("deadwood8986deadwood8986");
-
-        String target = "2123456789011110108201401012015";
-        String encrypted = td.encrypt(target);
-        String decrypted = td.decrypt(encrypted);
-
-        System.out.println("String To Encrypt: " + target);
-        System.out.println("Encrypted String:" + encrypted);
-        System.out.println("Decrypted String:" + decrypted);
-        if (target.equals(decrypted)){
-            System.out.println("valeu o boi!");
-        }
-
-    }
-
 }

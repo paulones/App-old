@@ -375,11 +375,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-2">CPF</label>
                                             <div class="col-md-10">
-                                                <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="pessoafisica" value="#{pessoaJuridicaBean.pessoaFisica}" tabindex="1" converter="entityConverter">
-                                                    <f:selectItem itemLabel="" itemValue=""/>
-                                                    <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
-                                                    <f:selectItems value="#{pessoaJuridicaBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica}"/>
-                                                </h:selectOneMenu>
+                                                <h:inputText p:type="hidden" class="cpf select2_category form-control" id="pessoafisica" value="#{pessoaJuridicaBean.pfId}"/>
                                             </div>
                                         </div>
                                     </div>
@@ -468,7 +464,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-check-circle"></i> Cadastrar</button>
+                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-floppy-o"></i> Cadastrar</button>
                                         </div>
                                         <h:commandLink styleClass="register" action="#{pessoaJuridicaBean.cadastrar}"/>
                                     </div>
@@ -891,6 +887,7 @@
         <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" type="text/javascript"></script>
         <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/jquery.validate.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/localization/messages_pt_BR.js"></script>

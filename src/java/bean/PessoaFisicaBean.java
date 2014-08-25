@@ -48,6 +48,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import util.Base64Crypt;
 import util.Cookie;
 
 /**
@@ -74,6 +75,7 @@ public class PessoaFisicaBean implements Serializable {
     private boolean edit;
     private boolean history;
     private Integer pfId;
+    private String pjId;
 
     private List<Pais> paisList;
     private List<Estado> estadoList;
@@ -148,6 +150,7 @@ public class PessoaFisicaBean implements Serializable {
                  Tela cadastro.xhtml. Se houver "id" na url, entra na condição de alteração.
                  Caso contrário, apenas carrega o formulário
                  */
+                pjId = "";
                 if (request.getParameter("id") == null) {   // Novo
                     edit = false;
                     carregarFormulario();
@@ -282,6 +285,7 @@ public class PessoaFisicaBean implements Serializable {
                     pessoaFisicaJuridicaBO.create(pfj);
                 }
                 register = "success";
+                pjId = "";
                 pessoaFisica = new PessoaFisica();
                 endereco = new Endereco();
                 pessoaFisicaJuridicaList = new ArrayList<>();
@@ -392,6 +396,7 @@ public class PessoaFisicaBean implements Serializable {
         if (edit) {
             pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         }
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjId))); 
         pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
@@ -703,6 +708,14 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setPfId(Integer pfId) {
         this.pfId = pfId;
+    }
+
+    public String getPjId() {
+        return pjId;
+    }
+
+    public void setPjId(String pjId) {
+        this.pjId = pjId;
     }
 
 }
