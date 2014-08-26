@@ -66,6 +66,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesBem = :outrasInformacoesBem")})
 public class ProcessoJudicial implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "status")
+    private Character status;
+    @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Usuario usuarioFk;
     @Size(max = 300)
     @Column(name = "outras_informacoes_ato_processual")
     private String outrasInformacoesAtoProcessual;
@@ -596,6 +603,22 @@ public class ProcessoJudicial implements Serializable {
 
     public void setOutrasInformacoesAtoProcessual(String outrasInformacoesAtoProcessual) {
         this.outrasInformacoesAtoProcessual = outrasInformacoesAtoProcessual;
+    }
+
+    public Character getStatus() {
+        return status;
+    }
+
+    public void setStatus(Character status) {
+        this.status = status;
+    }
+
+    public Usuario getUsuarioFk() {
+        return usuarioFk;
+    }
+
+    public void setUsuarioFk(Usuario usuarioFk) {
+        this.usuarioFk = usuarioFk;
     }
 
 }

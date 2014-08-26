@@ -89,7 +89,6 @@ public class PessoaFisicaBean implements Serializable {
     private List<PessoaJuridica> pessoaJuridicaList;
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
     private List<Funcao> funcaoList;
-    private List<EnderecoPessoa> enderecoPessoaList;
     private List<PessoaFisicaJuridica> oldPessoaFisicaJuridicaList;
     private List<PessoaFisicaHistorico> pessoaFisicaHistoricoList;
     private List<EnderecoHistorico> enderecoHistoricoList;
@@ -181,12 +180,6 @@ public class PessoaFisicaBean implements Serializable {
                 if (request.getParameter("id") == null) {   // Consulta geral
                     pfId = "";
                     history = false;
-                    pessoaFisicaList = pessoaFisicaBO.findAllActive();
-                    enderecoPessoaList = new ArrayList<>();
-                    for (PessoaFisica pessoaFisica : pessoaFisicaList) {
-                        endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
-                        enderecoPessoaList.add(new EnderecoPessoa(pessoaFisica, endereco));
-                    }
                 } else {                                    // Consulta histórico
                     Integer id = Integer.valueOf(request.getParameter("id"));
                     pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
@@ -382,7 +375,6 @@ public class PessoaFisicaBean implements Serializable {
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         pessoaFisica.setStatus('I');
         pessoaFisicaBO.edit(pessoaFisica);
-        enderecoPessoaList.remove(new EnderecoPessoa(pessoaFisica, endereco));
         redirect = "";
         register = "success";
     }
@@ -615,14 +607,6 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setEstadoCivilList(List<EstadoCivil> estadoCivilList) {
         this.estadoCivilList = estadoCivilList;
-    }
-
-    public List<EnderecoPessoa> getEnderecoPessoaList() {
-        return enderecoPessoaList;
-    }
-
-    public void setEnderecoPessoaList(List<EnderecoPessoa> enderecoPessoaList) {
-        this.enderecoPessoaList = enderecoPessoaList;
     }
 
     public Endereco getEndereco() {

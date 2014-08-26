@@ -12,6 +12,7 @@ import dao.exceptions.RollbackFailureException;
 import entidade.Bem;
 import entidade.ProcessoJudicial;
 import entidade.TipoRecurso;
+import entidade.Usuario;
 import entidade.VinculoProcessual;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,10 +51,15 @@ public class ProcessoJudicialDAO implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
-            TipoRecurso tipoDeRecurso = processoJudicial.getTipoDeRecursoFk();
-            if (tipoDeRecurso != null) {
-                tipoDeRecurso = em.getReference(tipoDeRecurso.getClass(), tipoDeRecurso.getId());
-                processoJudicial.setTipoDeRecursoFk(tipoDeRecurso);
+            TipoRecurso tipoDeRecursoFk = processoJudicial.getTipoDeRecursoFk();
+            if (tipoDeRecursoFk != null) {
+                tipoDeRecursoFk = em.getReference(tipoDeRecursoFk.getClass(), tipoDeRecursoFk.getId());
+                processoJudicial.setTipoDeRecursoFk(tipoDeRecursoFk);
+            }
+            Usuario usuarioFk = processoJudicial.getUsuarioFk();
+            if (usuarioFk != null) {
+                usuarioFk = em.getReference(usuarioFk.getClass(), usuarioFk.getId());
+                processoJudicial.setUsuarioFk(usuarioFk);
             }
             Collection<Bem> attachedBemCollection = new ArrayList<Bem>();
             for (Bem bemCollectionBemToAttach : processoJudicial.getBemCollection()) {
@@ -68,9 +74,13 @@ public class ProcessoJudicialDAO implements Serializable {
             }
             processoJudicial.setVinculoProcessualCollection(attachedVinculoProcessualCollection);
             em.persist(processoJudicial);
-            if (tipoDeRecurso != null) {
-                tipoDeRecurso.getProcessoJudicialCollection().add(processoJudicial);
-                tipoDeRecurso = em.merge(tipoDeRecurso);
+            if (tipoDeRecursoFk != null) {
+                tipoDeRecursoFk.getProcessoJudicialCollection().add(processoJudicial);
+                tipoDeRecursoFk = em.merge(tipoDeRecursoFk);
+            }
+            if (usuarioFk != null) {
+                usuarioFk.getProcessoJudicialCollection().add(processoJudicial);
+                usuarioFk = em.merge(usuarioFk);
             }
             for (Bem bemCollectionBem : processoJudicial.getBemCollection()) {
                 ProcessoJudicial oldProcessoJudicialFkOfBemCollectionBem = bemCollectionBem.getProcessoJudicialFk();
@@ -110,8 +120,10 @@ public class ProcessoJudicialDAO implements Serializable {
         try {
             em = getEntityManager();em.getTransaction().begin();
             ProcessoJudicial persistentProcessoJudicial = em.find(ProcessoJudicial.class, processoJudicial.getId());
-            TipoRecurso tipoDeRecursoOld = persistentProcessoJudicial.getTipoDeRecursoFk();
-            TipoRecurso tipoDeRecursoNew = processoJudicial.getTipoDeRecursoFk();
+            TipoRecurso tipoDeRecursoFkOld = persistentProcessoJudicial.getTipoDeRecursoFk();
+            TipoRecurso tipoDeRecursoFkNew = processoJudicial.getTipoDeRecursoFk();
+            Usuario usuarioFkOld = persistentProcessoJudicial.getUsuarioFk();
+            Usuario usuarioFkNew = processoJudicial.getUsuarioFk();
             Collection<Bem> bemCollectionOld = persistentProcessoJudicial.getBemCollection();
             Collection<Bem> bemCollectionNew = processoJudicial.getBemCollection();
             Collection<VinculoProcessual> vinculoProcessualCollectionOld = persistentProcessoJudicial.getVinculoProcessualCollection();
@@ -136,9 +148,13 @@ public class ProcessoJudicialDAO implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            if (tipoDeRecursoNew != null) {
-                tipoDeRecursoNew = em.getReference(tipoDeRecursoNew.getClass(), tipoDeRecursoNew.getId());
-                processoJudicial.setTipoDeRecursoFk(tipoDeRecursoNew);
+            if (tipoDeRecursoFkNew != null) {
+                tipoDeRecursoFkNew = em.getReference(tipoDeRecursoFkNew.getClass(), tipoDeRecursoFkNew.getId());
+                processoJudicial.setTipoDeRecursoFk(tipoDeRecursoFkNew);
+            }
+            if (usuarioFkNew != null) {
+                usuarioFkNew = em.getReference(usuarioFkNew.getClass(), usuarioFkNew.getId());
+                processoJudicial.setUsuarioFk(usuarioFkNew);
             }
             Collection<Bem> attachedBemCollectionNew = new ArrayList<Bem>();
             for (Bem bemCollectionNewBemToAttach : bemCollectionNew) {
@@ -155,13 +171,21 @@ public class ProcessoJudicialDAO implements Serializable {
             vinculoProcessualCollectionNew = attachedVinculoProcessualCollectionNew;
             processoJudicial.setVinculoProcessualCollection(vinculoProcessualCollectionNew);
             processoJudicial = em.merge(processoJudicial);
-            if (tipoDeRecursoOld != null && !tipoDeRecursoOld.equals(tipoDeRecursoNew)) {
-                tipoDeRecursoOld.getProcessoJudicialCollection().remove(processoJudicial);
-                tipoDeRecursoOld = em.merge(tipoDeRecursoOld);
+            if (tipoDeRecursoFkOld != null && !tipoDeRecursoFkOld.equals(tipoDeRecursoFkNew)) {
+                tipoDeRecursoFkOld.getProcessoJudicialCollection().remove(processoJudicial);
+                tipoDeRecursoFkOld = em.merge(tipoDeRecursoFkOld);
             }
-            if (tipoDeRecursoNew != null && !tipoDeRecursoNew.equals(tipoDeRecursoOld)) {
-                tipoDeRecursoNew.getProcessoJudicialCollection().add(processoJudicial);
-                tipoDeRecursoNew = em.merge(tipoDeRecursoNew);
+            if (tipoDeRecursoFkNew != null && !tipoDeRecursoFkNew.equals(tipoDeRecursoFkOld)) {
+                tipoDeRecursoFkNew.getProcessoJudicialCollection().add(processoJudicial);
+                tipoDeRecursoFkNew = em.merge(tipoDeRecursoFkNew);
+            }
+            if (usuarioFkOld != null && !usuarioFkOld.equals(usuarioFkNew)) {
+                usuarioFkOld.getProcessoJudicialCollection().remove(processoJudicial);
+                usuarioFkOld = em.merge(usuarioFkOld);
+            }
+            if (usuarioFkNew != null && !usuarioFkNew.equals(usuarioFkOld)) {
+                usuarioFkNew.getProcessoJudicialCollection().add(processoJudicial);
+                usuarioFkNew = em.merge(usuarioFkNew);
             }
             for (Bem bemCollectionNewBem : bemCollectionNew) {
                 if (!bemCollectionOld.contains(bemCollectionNewBem)) {
@@ -236,10 +260,15 @@ public class ProcessoJudicialDAO implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            TipoRecurso tipoDeRecurso = processoJudicial.getTipoDeRecursoFk();
-            if (tipoDeRecurso != null) {
-                tipoDeRecurso.getProcessoJudicialCollection().remove(processoJudicial);
-                tipoDeRecurso = em.merge(tipoDeRecurso);
+            TipoRecurso tipoDeRecursoFk = processoJudicial.getTipoDeRecursoFk();
+            if (tipoDeRecursoFk != null) {
+                tipoDeRecursoFk.getProcessoJudicialCollection().remove(processoJudicial);
+                tipoDeRecursoFk = em.merge(tipoDeRecursoFk);
+            }
+            Usuario usuarioFk = processoJudicial.getUsuarioFk();
+            if (usuarioFk != null) {
+                usuarioFk.getProcessoJudicialCollection().remove(processoJudicial);
+                usuarioFk = em.merge(usuarioFk);
             }
             em.remove(processoJudicial);
             em.getTransaction().commit();

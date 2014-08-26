@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    Pessoa Jurídica <small>Consulta #{!pessoaJuridicaBean.history ? '':'de histórico'}</small>
+                    Pessoa Jurídica <small>Consulta #{!pessoaJuridicaBean.history ? '':'de Histórico'}</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -46,7 +46,7 @@
                     <li>
                         <ui:fragment rendered="#{pessoaJuridicaBean.history}"><i class="fa fa-history"/></ui:fragment>
                         <ui:fragment rendered="#{!pessoaJuridicaBean.history}"><i class="fa fa-search"/></ui:fragment>
-                        <a href="../pessoa-juridica/consultar.xhtml#{pessoaJuridicaBean.history ? '?id=' :''}#{pessoaJuridicaBean.history ? pessoaJuridicaBean.pessoaJuridica.id : ''}">Consultar #{!pessoaJuridicaBean.history ? '':'histórico'}</a>
+                        <a href="../pessoa-juridica/consultar.xhtml#{pessoaJuridicaBean.history ? '?id=' :''}#{pessoaJuridicaBean.history ? pessoaJuridicaBean.pessoaJuridica.id : ''}">Consultar #{!pessoaJuridicaBean.history ? '':'Histórico'}</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->

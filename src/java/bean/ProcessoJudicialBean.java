@@ -12,6 +12,7 @@ import bo.PessoaJuridicaBO;
 import bo.ProcessoJudicialBO;
 import bo.TipoProcessoBO;
 import bo.TipoRecursoBO;
+import bo.UsuarioBO;
 import bo.VinculoProcessualBO;
 import entidade.Bem;
 import entidade.Endereco;
@@ -30,7 +31,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import util.Base64Crypt;
+import util.Cookie;
 
 /**
  *
@@ -63,6 +66,7 @@ public class ProcessoJudicialBean implements Serializable {
     private TipoProcessoBO tipoProcessoBO;
     private VinculoProcessualBO vinculoProcessualBO;
     private EnderecoBO enderecoBO;
+    private UsuarioBO usuarioBO;
     private BemBO bemBO;
 
     private Integer bens;
@@ -70,9 +74,16 @@ public class ProcessoJudicialBean implements Serializable {
     private String executadoPF;
     private String executadoPJ;
     private String register;
+    private String redirect;
+    private String pjudId;
+    private boolean edit;
+    private boolean history;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
+            boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
+            boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
+
             executado = new Executado();
             processoJudicial = new ProcessoJudicial();
             enderecoPessoaFisica = new EnderecoPessoa();
@@ -87,17 +98,42 @@ public class ProcessoJudicialBean implements Serializable {
             vinculoProcessualBO = new VinculoProcessualBO();
             enderecoBO = new EnderecoBO();
             bemBO = new BemBO();
+            usuarioBO = new UsuarioBO();
 
             bens = 0;
             vinculos = 0;
             executadoPF = "";
             executadoPJ = "";
             register = "";
+            redirect = Cookie.getCookie("FacesMessage");
+            Cookie.apagarCookie("FacesMessage");
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
 
-            carregarFormulario();
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            if (isRegisterPage) {
+                /*
+                 Tela cadastro.xhtml. Se houver "id" na url, entra na condição de alteração.
+                 Caso contrário, apenas carrega o formulário
+                 */
+                if (request.getParameter("id") == null) {   // Novo
+                    edit = false;
+                    carregarFormulario();
+                } else {                                    // Alteração
+                    Integer id = Integer.valueOf(request.getParameter("id"));
+                }
+            } else if (isSearchPage) {
+                /*
+                 Tela consulta.xhtml. Se houver "id" na url, entra na lista de alterações nos
+                 dados da Pessoa Física.Caso contrário, acessa a consulta geral 
+                 */
+                if (request.getParameter("id") == null) {   // Consulta geral
+                    history = false;
+                } else {                                    // Consulta histórico
+                    Integer id = Integer.valueOf(request.getParameter("id"));
+                }
+            }
         }
     }
 
@@ -134,10 +170,33 @@ public class ProcessoJudicialBean implements Serializable {
         }
     }
 
+    public void exibirInfo() {
+        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
+        if (processoJudicial.getExecutado().equals("PF")) {
+            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+            enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+            executado = new Executado(processoJudicial, enderecoPessoaFisica);
+        } else {
+            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+            enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+            executado = new Executado(processoJudicial, enderecoPessoaJuridica);
+        }
+    }
+
+    public void removerProcessoJudicial() {
+        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
+        processoJudicial.setStatus('I');
+        processoJudicialBO.edit(processoJudicial);
+        redirect = "";
+        register = "success";
+    }
+
     public void cadastrar() {
         ProcessoJudicial pjudDB = processoJudicialBO.findByProcessNumberOrCDA(processoJudicial);
         if (pjudDB == null) { // Processo novo
             processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+            processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+            processoJudicial.setStatus('A');
             processoJudicialBO.create(processoJudicial);
             for (Bem bem : bemList) {
                 if (bem.getDescricao() != null || bem.getDataDoAto() != null) {
@@ -170,7 +229,7 @@ public class ProcessoJudicialBean implements Serializable {
             if (pjudDB.getExecutado().equals("PF")) {
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjudDB.getExecutadoFk());
                 message += "\nExecutado: " + pf.getNome();
-                message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-") ;
+                message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
             } else {
                 PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjudDB.getExecutadoFk());
                 message += "\nExecutado: " + pj.getNome();
@@ -314,6 +373,38 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setRegister(String register) {
         this.register = register;
+    }
+
+    public String getPjudId() {
+        return pjudId;
+    }
+
+    public void setPjudId(String pjudId) {
+        this.pjudId = pjudId;
+    }
+
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
+
+    public boolean isHistory() {
+        return history;
+    }
+
+    public void setHistory(boolean history) {
+        this.history = history;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public void setRedirect(String redirect) {
+        this.redirect = redirect;
     }
 
 }

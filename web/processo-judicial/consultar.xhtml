@@ -3,12 +3,13 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
-    <ui:define name="title">Processo Judicial - Consulta</ui:define>
+    <ui:define name="title">Processo Judicial - #{processoJudicialBean.history ? 'Histórico' :'Consulta'}</ui:define>
     <ui:define name="metadata-components">
-        <f:event type="preRenderComponent" listener="#{homeBean.init()}"/>
+        <f:event type="preRenderComponent" listener="#{processoJudicialBean.init()}"/>
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+        <link rel="stylesheet" type="text/css" href="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
         <!-- END PAGE STYLES -->
@@ -19,7 +20,7 @@
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    Processo Judicial <small>Consulta</small>
+                    Processo Judicial <small>Consulta #{!processoJudicialBean.history ? '':'de Histórico'}</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -32,15 +33,132 @@
                         <a href="#">Processo Judicial</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
+                    <h:panelGroup rendered="#{processoJudicialBean.history}">
+                        <li>
+                            <i class="fa fa-search"/>
+                            <a href="../processo-judicial/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-angle-right"></i>
+                        </li>
+                    </h:panelGroup>
                     <li>
-                        <i class="fa fa-search"/>
-                        <a href="processo-judicial/consultar.xhtml">Consultar</a>
+                        <ui:fragment rendered="#{processoJudicialBean.history}"><i class="fa fa-history"/></ui:fragment>
+                        <ui:fragment rendered="#{!processoJudicialBean.history}"><i class="fa fa-search"/></ui:fragment>
+                        <a href="../processo-judicial/consultar.xhtml#{processoJudicialBean.history ? '?id=' :''}#{processoJudicialBean.history ? processoJudicialBean.processoJudicial.id : ''}">Consultar #{!processoJudicialBean.history ? '':'Histórico'}</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->
             </div>
         </div>
         <!-- END PAGE HEADER-->
+        <!-- BEGIN PAGE CONTENT-->
+        <h:form  id="form" prependId="false">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                    <div class="portlet box blue-chambray">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-globe"></i>
+                                Registro de Processos Judiciais
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <h:panelGroup layout="block" class="alert alert-info"  rendered="#{processoJudicialBean.redirect eq 'fail'}">
+                                <button class="close" data-close="alert"></button>
+                                Nenhum campo foi alterado.
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" class="alert alert-success"  rendered="#{processoJudicialBean.redirect eq 'success'}">
+                                <button class="close" data-close="alert"></button>
+                                Cadastro alterado com sucesso!
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" class="alert alert-success"  rendered="#{processoJudicialBean.register eq 'success'}">
+                                <button class="close" data-close="alert"></button>
+                                Cadastro removido com sucesso!
+                            </h:panelGroup>
+                            <ui:fragment rendered="#{!processoJudicialBean.history}">
+                                <span class="help-block">Para visualizar os dados de um Processo Judicial, clique no <span class="expand-example"></span>.</span>
+                                <span class="help-block">Para alterar os dados de um Processo Judicial, clique no <span class="expand-example"></span> e, em seguida, clique no botão de Alterar.</span>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{processoJudicialBean.history}">
+                                <span class="help-block">Para visualizar os dados alterados de um registro anterior em relação ao atual,clique no <span class="expand-example"></span>.</span>
+                                <span class="help-block">Os campos alterados estão destacados na cor vermelha.</span>
+                            </ui:fragment>
+                            <br/>
+                            <table class="table table-striped table-bordered table-hover" id="table">
+                                <thead>
+                                    <tr>  
+                                        <h:panelGroup rendered="#{!pessoaFisicaBean.history}">
+                                            <th style="width:3%"></th>
+                                            <th>
+                                                Nº do Processo
+                                            </th>
+                                            <th>
+                                                Comarca
+                                            </th>
+                                            <th>
+                                                Nº da CDA
+                                            </th>
+                                            <th>
+                                                Executado
+                                            </th>
+                                            <th style="width:3%"></th>
+                                            <th class="display-hide"></th>
+                                            <th class="display-hide"></th>
+                                        </h:panelGroup>
+                                        <h:panelGroup rendered="#{pessoaFisicaBean.history}">
+                                            <th style="width:3%"></th>
+                                            <th style="width:15%">
+                                                Registro
+                                            </th>
+                                            <th style="width:48%">
+                                                Alterações
+                                            </th>
+                                            <th style="width:40%">
+                                                Usuário Alterador
+                                            </th>
+                                            <th class="display-hide"></th>
+                                        </h:panelGroup>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- END EXAMPLE TABLE PORTLET-->
+                </div>
+            </div>
+
+            <h:inputHidden id="pjud-id" value="#{processoJudicialBean.pjudId}"/>
+            <h:commandLink class="info-delete" action="#{processoJudicialBean.removerProcessoJudicial()}" />
+            <h:commandLink class="info-refresher">
+                <f:ajax execute="pjud-id" listener="#{processoJudicialBean.exibirInfo()}" render="info"/>
+            </h:commandLink>
+            <h:panelGroup id="info" class="display-hide">
+               
+            </h:panelGroup>
+        </h:form>
+        <!-- END PAGE CONTENT-->
+        <!-- /.modal -->
+        <a class="btn default display-hide delete-modal-activator" data-toggle="modal" href="#static"></a>
+        <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> Remover Processo Judicial <i class="fa fa-exclamation-triangle"></i></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Tem certeza que deseja remover este Processo Judicial?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn default cancel">Cancelar</button>
+                        <button type="button" data-dismiss="modal" class="btn blue-chambray remove">Remover</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
