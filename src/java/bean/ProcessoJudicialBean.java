@@ -12,6 +12,7 @@ import bo.PessoaJuridicaBO;
 import bo.ProcessoJudicialBO;
 import bo.TipoProcessoBO;
 import bo.TipoRecursoBO;
+import bo.VinculoProcessualBO;
 import entidade.Bem;
 import entidade.Endereco;
 import entidade.EnderecoPessoa;
@@ -25,6 +26,7 @@ import entidade.VinculoProcessual;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -59,14 +61,15 @@ public class ProcessoJudicialBean implements Serializable {
     private ProcessoJudicialBO processoJudicialBO;
     private TipoRecursoBO tipoRecursoBO;
     private TipoProcessoBO tipoProcessoBO;
+    private VinculoProcessualBO vinculoProcessualBO;
     private EnderecoBO enderecoBO;
     private BemBO bemBO;
 
     private Integer bens;
     private Integer vinculos;
-    private String tipoDoExecutado;
     private String executadoPF;
     private String executadoPJ;
+    private String register;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -81,6 +84,7 @@ public class ProcessoJudicialBean implements Serializable {
             processoJudicialBO = new ProcessoJudicialBO();
             tipoRecursoBO = new TipoRecursoBO();
             tipoProcessoBO = new TipoProcessoBO();
+            vinculoProcessualBO = new VinculoProcessualBO();
             enderecoBO = new EnderecoBO();
             bemBO = new BemBO();
 
@@ -88,6 +92,7 @@ public class ProcessoJudicialBean implements Serializable {
             vinculos = 0;
             executadoPF = "";
             executadoPJ = "";
+            register = "";
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
@@ -129,24 +134,49 @@ public class ProcessoJudicialBean implements Serializable {
         }
     }
 
-    public void exibirModal(Object pessoa, String tipoPessoa) {
-        if (tipoPessoa.equals("PF")) {
-            PessoaFisica pessoaFisica = (PessoaFisica) pessoa;
-            enderecoPessoaModalFisica = new EnderecoPessoa(pessoa, enderecoBO.findPFAddress(pessoaFisica.getId()));
-        } else if (tipoPessoa.equals("PJ")) {
-            PessoaJuridica pessoaJuridica = (PessoaJuridica) pessoa;
-            enderecoPessoaModalJuridica = new EnderecoPessoa(pessoa, enderecoBO.findPJAddress(pessoaJuridica.getId()));
-        }
-    }
-
     public void cadastrar() {
-        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
-        processoJudicialBO.create(processoJudicial);
-        for (Bem bem : bemList){
-            if (!bem.getDescricao().isEmpty()){
-                bem.setProcessoJudicialFk(processoJudicial);
-                bemBO.create(bem);
+        ProcessoJudicial pjudDB = processoJudicialBO.findByProcessNumberOrCDA(processoJudicial);
+        if (pjudDB == null) { // Processo novo
+            processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+            processoJudicialBO.create(processoJudicial);
+            for (Bem bem : bemList) {
+                if (bem.getDescricao() != null || bem.getDataDoAto() != null) {
+                    bem.setProcessoJudicialFk(processoJudicial);
+                    bemBO.create(bem);
+                }
             }
+            for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
+                vinculoProcessual.setProcessoJudicialFk(processoJudicial);
+                vinculoProcessualBO.create(vinculoProcessual);
+            }
+            register = "success";
+            processoJudicial = new ProcessoJudicial();
+            bemList = new ArrayList<>();
+            vinculoProcessual = new VinculoProcessual();
+            vinculos = 0;
+            bens = 0;
+        } else { // CDA ou Processo já cadastrado
+            register = "fail";
+            String message = "";
+            if (pjudDB.getNumeroDoProcesso().equals(processoJudicial.getNumeroDoProcesso())) {
+                message += "Já existe um processo cadastrado com o número " + pjudDB.getNumeroDoProcesso();
+                message += "\nComarca: " + pjudDB.getComarca();
+                message += "\nNº da CDA: " + pjudDB.getNumeroDaCda();
+            } else {
+                message += "Já existe um processo cadastrado com a CDA de número " + pjudDB.getNumeroDaCda();
+                message += "\nComarca: " + pjudDB.getComarca();
+                message += "\nNº do Processo: " + pjudDB.getNumeroDoProcesso();
+            }
+            if (pjudDB.getExecutado().equals("PF")) {
+                PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjudDB.getExecutadoFk());
+                message += "\nExecutado: " + pf.getNome();
+                message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-") ;
+            } else {
+                PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjudDB.getExecutadoFk());
+                message += "\nExecutado: " + pj.getNome();
+                message += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
     }
 
@@ -246,14 +276,6 @@ public class ProcessoJudicialBean implements Serializable {
         this.enderecoPessoaJuridica = enderecoPessoaJuridica;
     }
 
-    public String getTipoDoExecutado() {
-        return tipoDoExecutado;
-    }
-
-    public void setTipoDoExecutado(String tipoDoExecutado) {
-        this.tipoDoExecutado = tipoDoExecutado;
-    }
-
     public EnderecoPessoa getEnderecoPessoaModalFisica() {
         return enderecoPessoaModalFisica;
     }
@@ -284,6 +306,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setExecutadoPJ(String executadoPJ) {
         this.executadoPJ = executadoPJ;
+    }
+
+    public String getRegister() {
+        return register;
+    }
+
+    public void setRegister(String register) {
+        this.register = register;
     }
 
 }

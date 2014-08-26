@@ -46,7 +46,13 @@ public class ProcessoJudicialBO implements Serializable{
         }
     }
     
-    public ProcessoJudicial findByProcessNumber(ProcessoJudicial processoJudicial){
+    public ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial){
+        try { 
+            return processoJudicialDAO.findByProcessNumberOrCDA(processoJudicial);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return new ProcessoJudicial();
     }
+    
 }

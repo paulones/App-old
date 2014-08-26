@@ -2,6 +2,7 @@
 .login-title{color:#EEEEEE}
 /*index*/
 .home-logo{margin-top:15px}
+.modal .control-label{margin-top:6px !important}
 /*lock*/
 .password-error{margin:10px 0 -10px 0}
 /*cadastroPF*/

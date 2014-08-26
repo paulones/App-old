@@ -4,6 +4,7 @@ var PjudCad = function() {
         var form = $('#submit_form');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
+        var info = $('.alert-info', form);
  
         form.validate({
             doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
@@ -121,7 +122,7 @@ var PjudCad = function() {
             errorPlacement: function(error, element) { // render error placement for each input type
                 if (element.attr("name") == "executado") { // for uniform radio buttons, insert the after the given container
                     error.insertAfter("#form_executado_error");
-                } else if (element.attr("name") == "cpf" || element.attr("name") == "cnpj") {
+                } else if (element.attr("name") == "cpf" || element.attr("name") == "cnpj" || $(element).hasClass("vinculotipo")) {
                     error.insertAfter(element);
                 } else {
                     var icon = $(element).parent('.input-icon').children('i');
@@ -181,7 +182,7 @@ var PjudCad = function() {
                 $('#form_wizard').find('.button-next').show();
                 $('#form_wizard').find('.button-submit').hide();
             }
-            Metronic.scrollTo($('.page-title'));
+//            Metronic.scrollTo($('.page-title'));
         }
 
         // default form wizard
@@ -189,17 +190,20 @@ var PjudCad = function() {
             'nextSelector': '.button-next',
             'previousSelector': '.button-previous',
             onTabClick: function(tab, navigation, index, clickedIndex) {
-                success.hide();
-                error.hide();
-                if (form.valid() == false) {
-                    return false;
-                }
-                handleTitle(tab, navigation, clickedIndex);
+                return false;
+//                alert(index);
+//                alert(clickedIndex);
+//                success.hide();
+//                error.hide();
+//                if (form.valid() == false) {
+//                    return false;
+//                }
+//                handleTitle(tab, navigation, clickedIndex);
             },
             onNext: function(tab, navigation, index) {
                 success.hide();
                 error.hide();
-
+                info.hide();
                 if (form.valid() == false) {
                     return false;
                 }
@@ -276,17 +280,17 @@ var PjudCad = function() {
             $.validator.addMethod("cpfOrCnpj", validaExecutado, "Escolha um executado.");
             $.validator.addClassRules({
                 bem: {
-                    required: true
+                    required: false,
                 },
                 bemdata: {
                     data: true,
                     required: false
                 },
                 vinculo: {
-                    required: false
+                    required: true
                 },
                 vinculotipo: {
-                    required: false
+                    required: true
                 }
             });
 
@@ -325,6 +329,8 @@ var PjudCad = function() {
             function executado() {
                 $('#pessoa-fisica').hide();
                 $('#pessoa-juridica').hide();
+                $('.button-pessoa-fisica').hide();
+                $('.button-pessoa-juridica').hide();
                 if ($("input[name=executado]:checked").val() === 'PF') {
                     $('.cpf').show();
                     $('.cnpj').hide();
@@ -349,6 +355,20 @@ var PjudCad = function() {
                     $('.button-pessoa-fisica').hide();
                     $('.button-pessoa-juridica').hide();
                 }
+                if ($(this).next('span').length > 0) {
+                    if ($(this).val() !== "") {
+                        $(this).closest('.form-group').removeClass("has-error");
+                        $(this).next('span').hide();
+                    } else {
+                        $(this).closest('.form-group').addClass("has-error");
+                        $(this).next('span').show();
+                    }
+                }
+            }
+            
+            validaVinculosProcessuais();
+            $('.vinculotipo').change(validaVinculosProcessuais);
+            function validaVinculosProcessuais() {
                 if ($(this).next('span').length > 0) {
                     if ($(this).find(":selected").text() !== "") {
                         $(this).closest('.form-group').removeClass("has-error");
@@ -461,7 +481,10 @@ var PjudCad = function() {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
                     } else if ($(data.source).hasClass("vinculos")) {
-                        $('.vinculotipo').select2();
+                        $('.vinculotipo').select2({
+                            allowClear: true,
+                        });
+                        $('.vinculotipo').change(validaVinculosProcessuais);
                         $('.vinculo').keypress(numeroDoProcesso);
                     } else if ($(data.source).hasClass("button-pessoa-fisica")) {
                         $('#pessoa-fisica').show();

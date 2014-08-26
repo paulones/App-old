@@ -377,11 +377,6 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisicaJuridicaList.remove(index);
     }
 
-    public void exibirModal(PessoaJuridica pessoaJuridica) {
-        endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
-        enderecoPessoaModal = new EnderecoPessoa(pessoaJuridica, endereco);
-    }
-
     public void removerPessoaFisica() {
         pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(pfId)));
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());

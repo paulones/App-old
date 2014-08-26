@@ -9,20 +9,21 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.Bem;
 import entidade.ProcessoJudicial;
 import entidade.TipoRecurso;
 import entidade.VinculoProcessual;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -302,8 +303,16 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
     
-    public ProcessoJudicial findByProcessNumber(ProcessoJudicial processoJudicial){
-        return new ProcessoJudicial();
+    public ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial){
+        EntityManager em = getEntityManager();
+        try {
+            ProcessoJudicial usuario = (ProcessoJudicial) em.createNativeQuery("select * from processo_judicial "
+                    + "where numero_do_processo = '" + processoJudicial.getNumeroDoProcesso() + "' or numero_da_cda = '"+ processoJudicial.getNumeroDaCda() +"'", ProcessoJudicial.class).getSingleResult();
+            return usuario;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
     }
-    
 }

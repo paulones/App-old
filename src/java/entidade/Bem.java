@@ -42,7 +42,6 @@ public class Bem implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "descricao")
     private String descricao;
