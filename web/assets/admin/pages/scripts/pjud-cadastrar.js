@@ -190,15 +190,13 @@ var PjudCad = function() {
             'nextSelector': '.button-next',
             'previousSelector': '.button-previous',
             onTabClick: function(tab, navigation, index, clickedIndex) {
-                return false;
-//                alert(index);
-//                alert(clickedIndex);
-//                success.hide();
-//                error.hide();
-//                if (form.valid() == false) {
-//                    return false;
-//                }
-//                handleTitle(tab, navigation, clickedIndex);
+                success.hide();
+                error.hide();
+                info.hide();
+                if (form.valid() == false) {
+                    return false;
+                }
+                handleTitle(tab, navigation, clickedIndex);
             },
             onNext: function(tab, navigation, index) {
                 success.hide();
@@ -213,7 +211,6 @@ var PjudCad = function() {
             onPrevious: function(tab, navigation, index) {
                 success.hide();
                 error.hide();
-
                 handleTitle(tab, navigation, index);
             },
             onTabShow: function(tab, navigation, index) {
@@ -274,6 +271,10 @@ var PjudCad = function() {
 
             if (!jQuery().bootstrapWizard) {
                 return;
+            }
+            
+            if ($('.p-error').length > 0){
+                $('.alert-danger').show();
             }
 
             $.validator.addMethod("data", validaData, "Digite uma data v&aacute;lida.");

@@ -104,9 +104,10 @@
                                             <button class="close" data-dismiss="alert"></button>
                                             Há alguns erros no formulário. Digite os dados corretamente.
                                         </div>
+                                        <h:messages layout="table" class="p-error display-none" rendered="#{processoJudicialBean.register eq ''}"/>
                                         <h:panelGroup layout="block" class="alert alert-info" rendered="#{processoJudicialBean.register eq 'fail'}">
                                             <button class="close" data-close="alert"></button>
-                                            <h:messages layout="table" class="pf-error"/> 
+                                            <h:messages layout="table" class="p-info" rendered="#{processoJudicialBean.register eq 'fail'}"/> 
                                         </h:panelGroup>
                                         <h:panelGroup layout="block" class="alert alert-success" rendered="#{processoJudicialBean.register eq 'success'}">
                                             <button class="close" data-close="alert"></button>
