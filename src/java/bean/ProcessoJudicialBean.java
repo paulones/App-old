@@ -26,6 +26,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import util.Base64Crypt;
 
 /**
  *
@@ -37,8 +38,10 @@ public class ProcessoJudicialBean implements Serializable {
 
     private ProcessoJudicial processoJudicial;
     private Executado executado;
-    private EnderecoPessoa enderecoPessoa;
-    private EnderecoPessoa enderecoPessoaModal;
+    private EnderecoPessoa enderecoPessoaFisica;
+    private EnderecoPessoa enderecoPessoaJuridica;
+    private EnderecoPessoa enderecoPessoaModalFisica;
+    private EnderecoPessoa enderecoPessoaModalJuridica;
     private Bem bem;
     private VinculoProcessual vinculoProcessual;
 
@@ -58,15 +61,16 @@ public class ProcessoJudicialBean implements Serializable {
     private Integer bens;
     private Integer vinculos;
     private String tipoDoExecutado;
-    private Integer executadoPF;
-    private Integer executadoPJ;
+    private String executadoPF;
+    private String executadoPJ;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             executado = new Executado();
             processoJudicial = new ProcessoJudicial();
-            enderecoPessoa = new EnderecoPessoa();
-            enderecoPessoaModal = new EnderecoPessoa();
+            enderecoPessoaFisica = new EnderecoPessoa();
+            enderecoPessoaJuridica = new EnderecoPessoa();
+            enderecoPessoaModalFisica = new EnderecoPessoa();
 
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
@@ -76,8 +80,8 @@ public class ProcessoJudicialBean implements Serializable {
 
             bens = 0;
             vinculos = 0;
-            executadoPF = 0;
-            executadoPJ = 0;
+            executadoPF = "";
+            executadoPJ = "";
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
@@ -111,26 +115,26 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void exibirExecutado() {
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(executadoPF);
-            enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(executadoPF)));
+            enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
         } else if (processoJudicial.getExecutado().equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(executadoPJ);
-            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+            enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
     }
 
     public void exibirModal(Object pessoa, String tipoPessoa) {
         if (tipoPessoa.equals("PF")) {
             PessoaFisica pessoaFisica = (PessoaFisica) pessoa;
-            enderecoPessoaModal = new EnderecoPessoa(pessoa, enderecoBO.findPFAddress(pessoaFisica.getId()));
+            enderecoPessoaModalFisica = new EnderecoPessoa(pessoa, enderecoBO.findPFAddress(pessoaFisica.getId()));
         } else if (tipoPessoa.equals("PJ")) {
             PessoaJuridica pessoaJuridica = (PessoaJuridica) pessoa;
-            enderecoPessoaModal = new EnderecoPessoa(pessoa, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+            enderecoPessoaModalJuridica = new EnderecoPessoa(pessoa, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
     }
 
     public void cadastrar() {
-        processoJudicial.setExecutadoFk(executadoPF != null ? executadoPF : executadoPJ);
+        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
     }
 
     public ProcessoJudicial getProcessoJudicial() {
@@ -213,12 +217,20 @@ public class ProcessoJudicialBean implements Serializable {
         this.tipoDoProcessoList = tipoDoProcessoList;
     }
 
-    public EnderecoPessoa getEnderecoPessoa() {
-        return enderecoPessoa;
+    public EnderecoPessoa getEnderecoPessoaFisica() {
+        return enderecoPessoaFisica;
     }
 
-    public void setEnderecoPessoa(EnderecoPessoa enderecoPessoa) {
-        this.enderecoPessoa = enderecoPessoa;
+    public void setEnderecoPessoaFisica(EnderecoPessoa enderecoPessoaFisica) {
+        this.enderecoPessoaFisica = enderecoPessoaFisica;
+    }
+
+    public EnderecoPessoa getEnderecoPessoaJuridica() {
+        return enderecoPessoaJuridica;
+    }
+
+    public void setEnderecoPessoaJuridica(EnderecoPessoa enderecoPessoaJuridica) {
+        this.enderecoPessoaJuridica = enderecoPessoaJuridica;
     }
 
     public String getTipoDoExecutado() {
@@ -229,27 +241,35 @@ public class ProcessoJudicialBean implements Serializable {
         this.tipoDoExecutado = tipoDoExecutado;
     }
 
-    public EnderecoPessoa getEnderecoPessoaModal() {
-        return enderecoPessoaModal;
+    public EnderecoPessoa getEnderecoPessoaModalFisica() {
+        return enderecoPessoaModalFisica;
     }
 
-    public void setEnderecoPessoaModal(EnderecoPessoa enderecoPessoaModal) {
-        this.enderecoPessoaModal = enderecoPessoaModal;
+    public void setEnderecoPessoaModalFisica(EnderecoPessoa enderecoPessoaModalFisica) {
+        this.enderecoPessoaModalFisica = enderecoPessoaModalFisica;
     }
 
-    public Integer getExecutadoPF() {
+    public EnderecoPessoa getEnderecoPessoaModalJuridica() {
+        return enderecoPessoaModalJuridica;
+    }
+
+    public void setEnderecoPessoaModalJuridica(EnderecoPessoa enderecoPessoaModalJuridica) {
+        this.enderecoPessoaModalJuridica = enderecoPessoaModalJuridica;
+    }
+
+    public String getExecutadoPF() {
         return executadoPF;
     }
 
-    public void setExecutadoPF(Integer executadoPF) {
+    public void setExecutadoPF(String executadoPF) {
         this.executadoPF = executadoPF;
     }
 
-    public Integer getExecutadoPJ() {
+    public String getExecutadoPJ() {
         return executadoPJ;
     }
 
-    public void setExecutadoPJ(Integer executadoPJ) {
+    public void setExecutadoPJ(String executadoPJ) {
         this.executadoPJ = executadoPJ;
     }
 

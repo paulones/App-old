@@ -551,11 +551,7 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-6">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cpf" tabindex="1" value="#{processoJudicialBean.executadoPF}">
-                                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                                <ui:param value="#{pessoaFisica.cpf.substring(0,3)}.#{pessoaFisica.cpf.substring(3,6)}.#{pessoaFisica.cpf.substring(6,9)}-#{pessoaFisica.cpf.substring(9)}" name="cpf"/>
-                                                                <f:selectItems value="#{processoJudicialBean.pessoaFisicaList}" var="pessoaFisica" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{pessoaFisica.nome}" itemValue="#{pessoaFisica.id}"/>
-                                                            </h:selectOneMenu>
+                                                            <h:inputText class="select2_category form-control" id="cpf" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPF}"/>
                                                         </div>
                                                         <div class="col-md-3 button-visualizar">
                                                             <h:commandLink class="button-pessoa-fisica btn blue-chambray display-hide">
@@ -569,11 +565,7 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-6">
-                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="cnpj" tabindex="1" value="#{processoJudicialBean.executadoPJ}" >
-                                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                                <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
-                                                                <f:selectItems value="#{processoJudicialBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica.id}"/>
-                                                            </h:selectOneMenu>
+                                                            <h:inputText class="select2_category form-control" id="cnpj" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPJ}" />
                                                         </div>
                                                         <div class="col-md-3 button-visualizar">
                                                             <h:commandLink class="button-pessoa-juridica btn blue-chambray display-hide">
@@ -587,11 +579,11 @@
                                             <!-- /row -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h:panelGroup id="pessoa-fisica" class="pessoa" rendered="#{not empty processoJudicialBean.executadoPF}">
+                                                    <h:panelGroup id="pessoa-fisica" class="pessoa">
                                                         <div class="portlet box blue-chambray">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
-                                                                    <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoa.pessoa.nome}
+                                                                    <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaFisica.pessoa.nome}
                                                                 </div>
                                                             </div>
                                                             <div class="portlet-body form">
@@ -604,7 +596,7 @@
                                                                                 <label class="control-label col-md-3">Nome:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nome}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.nome}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -615,7 +607,7 @@
                                                                                 <label class="control-label col-md-3">CPF:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        <ui:param value="#{processoJudicialBean.enderecoPessoa.pessoa.cpf.substring(0,3)}.#{processoJudicialBean.enderecoPessoa.pessoa.cpf.substring(3,6)}.#{processoJudicialBean.enderecoPessoa.pessoa.cpf.substring(6,9)}-#{processoJudicialBean.enderecoPessoa.pessoa.cpf.substring(9)}" name="cpf"/>
+                                                                                        <ui:param value="#{processoJudicialBean.enderecoPessoaFisica.pessoa.cpf.substring(0,3)}.#{processoJudicialBean.enderecoPessoaFisica.pessoa.cpf.substring(3,6)}.#{processoJudicialBean.enderecoPessoaFisica.pessoa.cpf.substring(6,9)}-#{processoJudicialBean.enderecoPessoaFisica.pessoa.cpf.substring(9)}" name="cpf"/>
                                                                                         #{cpf eq '..-' ? '-' : cpf}
                                                                                     </p>
                                                                                 </div>
@@ -630,7 +622,7 @@
                                                                                 <label class="control-label col-md-3">Apelido:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.apelido eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.apelido}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.apelido eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.apelido}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -641,7 +633,7 @@
                                                                                 <label class="control-label col-md-3">RG:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.rg eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.rg} #{processoJudicialBean.enderecoPessoa.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{processoJudicialBean.enderecoPessoa.pessoa.rgOrgaoEmissor}#{processoJudicialBean.enderecoPessoa.pessoa.rgUfFk.uf eq null ? '' : '/'}#{processoJudicialBean.enderecoPessoa.pessoa.rgUfFk.uf}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.rg eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.rg} #{processoJudicialBean.enderecoPessoaFisica.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{processoJudicialBean.enderecoPessoaFisica.pessoa.rgOrgaoEmissor}#{processoJudicialBean.enderecoPessoaFisica.pessoa.rgUfFk.uf eq null ? '' : '/'}#{processoJudicialBean.enderecoPessoaFisica.pessoa.rgUfFk.uf}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -655,7 +647,7 @@
                                                                                 <label class="control-label col-md-3">Sexo:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.sexo eq 'M' ? 'Masculino' : processoJudicialBean.enderecoPessoa.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.sexo eq 'M' ? 'Masculino' : processoJudicialBean.enderecoPessoaFisica.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -666,7 +658,7 @@
                                                                                 <label class="control-label col-md-3">T. de Eleitor:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.tituloDeEleitor eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.tituloDeEleitor}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.tituloDeEleitor eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.tituloDeEleitor}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -680,7 +672,7 @@
                                                                                 <label class="control-label col-md-3">Pai:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nomeDoPai eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.nomeDoPai}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.nomeDoPai eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.nomeDoPai}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -691,7 +683,7 @@
                                                                                 <label class="control-label col-md-3">Nacionalidade:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nacionalidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.nacionalidadeFk.tipo}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.nacionalidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.nacionalidadeFk.tipo}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -705,7 +697,7 @@
                                                                                 <label class="control-label col-md-3">Mãe:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nomeDaMae eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.nomeDaMae}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.nomeDaMae eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.nomeDaMae}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -716,7 +708,7 @@
                                                                                 <label class="control-label col-md-3">Naturalidade:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.cidadeFk.nome} #{processoJudicialBean.enderecoPessoa.pessoa.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoa.pessoa.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoa.pessoa.estadoFk.uf}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaFisica.pessoa.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaFisica.pessoa.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaFisica.pessoa.estadoFk.uf}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -730,7 +722,7 @@
                                                                                 <label class="control-label col-md-3">Estado Civil:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.estadoCivilFk eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.estadoCivilFk.situacao}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.estadoCivilFk eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.estadoCivilFk.situacao}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -741,7 +733,7 @@
                                                                                 <label class="control-label col-md-3">INSS:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.inss eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.inss}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.inss eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.inss}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -754,7 +746,7 @@
                                                                                 <label class="control-label col-md-3">Cônjuge:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nomeDoConjuge eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.nomeDoConjuge}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.nomeDoConjuge eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.nomeDoConjuge}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -770,7 +762,7 @@
                                                                                 <label class="control-label col-md-2">Observações:</label>
                                                                                 <div class="col-md-10">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.observacoes eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.observacoes}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.observacoes eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.observacoes}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -784,7 +776,7 @@
                                                                                 <label class="control-label col-md-3">Zona:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.zona eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.zona}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.zona eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.zona}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -795,7 +787,7 @@
                                                                                 <label class="control-label col-md-3">Seção:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.secao eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.secao}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.secao eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.secao}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -808,7 +800,7 @@
                                                                                 <label class="control-label col-md-3">Local:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.local eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.local}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.local eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.local}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -819,7 +811,7 @@
                                                                                 <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.cidadeEleitoralFk eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.cidadeEleitoralFk.nome} #{processoJudicialBean.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : processoJudicialBean.enderecoPessoa.pessoa.estadoEleitoralFk.uf}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.cidadeEleitoralFk eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.cidadeEleitoralFk.nome} #{processoJudicialBean.enderecoPessoaFisica.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaFisica.pessoa.estadoEleitoralFk eq null ? '' : processoJudicialBean.enderecoPessoaFisica.pessoa.estadoEleitoralFk.uf}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -833,7 +825,7 @@
                                                                                 <label class="control-label col-md-3">Endereço:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.endereco eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.endereco}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.pessoa.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.pessoa.endereco}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -848,8 +840,8 @@
                                                                                 <label class="control-label col-md-3">CEP:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoa.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoa.endereco.cep.substring(5,8)}" />
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.cep eq null ? '-' : cep}
+                                                                                        <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoaFisica.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoaFisica.endereco.cep.substring(5,8)}" />
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.endereco.cep eq null ? '-' : cep}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -860,7 +852,7 @@
                                                                                 <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoa.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoa.endereco.estadoFk.uf}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaFisica.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaFisica.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaFisica.endereco.estadoFk.uf}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -873,7 +865,7 @@
                                                                                 <label class="control-label col-md-3">Endereço:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.endereco}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.endereco.endereco}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -884,7 +876,7 @@
                                                                                 <label class="control-label col-md-3">Número:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.numero}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.endereco.numero}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -898,7 +890,7 @@
                                                                                 <label class="control-label col-md-3">Complemento:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.complemento}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.endereco.complemento}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -909,7 +901,7 @@
                                                                                 <label class="control-label col-md-3">Bairro:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.bairro}
+                                                                                        #{processoJudicialBean.enderecoPessoaFisica.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoaFisica.endereco.bairro}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -941,7 +933,7 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody class="rows">
-                                                                                    <ui:repeat value="#{processoJudicialBean.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                                    <ui:repeat value="#{processoJudicialBean.enderecoPessoaFisica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
@@ -978,11 +970,11 @@
                                             <!-- /row -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <h:panelGroup id="pessoa-juridica" class="pessoa" rendered="#{not empty processoJudicialBean.executadoPJ}">
+                                                    <h:panelGroup id="pessoa-juridica" class="pessoa">
                                                         <div class="portlet box blue-chambray">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
-                                                                    <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoa.pessoa.nome}
+                                                                    <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaJuridica.pessoa.nome}
                                                                 </div>
                                                             </div>
                                                             <div class="portlet-body form">
@@ -995,7 +987,7 @@
                                                                                 <label class="control-label col-md-3">Nome:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nome}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.nome}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1006,7 +998,7 @@
                                                                                 <label class="control-label col-md-3">CNPJ:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        <ui:param value="#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{processoJudicialBean.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        <ui:param value="#{processoJudicialBean.enderecoPessoaJuridica.pessoa.cnpj.substring(0,2)}.#{processoJudicialBean.enderecoPessoaJuridica.pessoa.cnpj.substring(2,5)}.#{processoJudicialBean.enderecoPessoaJuridica.pessoa.cnpj.substring(5,8)}/#{processoJudicialBean.enderecoPessoaJuridica.pessoa.cnpj.substring(8,12)}-#{processoJudicialBean.enderecoPessoaJuridica.pessoa.cnpj.substring(12)}" name="cnpj"/>
                                                                                         #{cnpj}
                                                                                     </p>
                                                                                 </div>
@@ -1021,7 +1013,7 @@
                                                                                 <label class="control-label col-md-3">Nome Fantasia: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nomeFantasia eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.nomeFantasia}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.nomeFantasia eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.nomeFantasia}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1032,7 +1024,7 @@
                                                                                 <label class="control-label col-md-3">Tipo Empresarial: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.tipoEmpresarialFk.tipo}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1046,7 +1038,7 @@
                                                                                 <label class="control-label col-md-3">Inscrição Estadual: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.inscricaoEstadual eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.inscricaoEstadual}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.inscricaoEstadual eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.inscricaoEstadual}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1057,7 +1049,7 @@
                                                                                 <label class="control-label col-md-3">Inscrição Municipal: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.inscricaoMunicipal eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.inscricaoMunicipal}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.inscricaoMunicipal eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.inscricaoMunicipal}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1071,7 +1063,7 @@
                                                                                 <label class="control-label col-md-3">Situação: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1082,7 +1074,7 @@
                                                                                 <label class="control-label col-md-3">Motivo da Desativação: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1096,7 +1088,7 @@
                                                                                 <label class="control-label col-md-3">Data de Criação: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.dataDeCriacao eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.dataDeCriacao}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.dataDeCriacao eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.dataDeCriacao}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1107,7 +1099,7 @@
                                                                                 <label class="control-label col-md-3">Grupo Econômico: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.grupoEconomico eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.grupoEconomico}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.grupoEconomico eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.grupoEconomico}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1121,7 +1113,7 @@
                                                                                 <label class="control-label col-md-3">NIRE: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.nire eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.nire}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.nire eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.nire}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1132,7 +1124,7 @@
                                                                                 <label class="control-label col-md-3">CNAE: </label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.pessoa.cnae eq null ? '-' : processoJudicialBean.enderecoPessoa.pessoa.cnae}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.pessoa.cnae eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.pessoa.cnae}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1173,8 +1165,8 @@
                                                                                 <label class="control-label col-md-3">CEP:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoa.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoa.endereco.cep.substring(5,8)}" />
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.cep eq null ? '-' : cep}
+                                                                                        <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoaJuridica.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoaJuridica.endereco.cep.substring(5,8)}" />
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.endereco.cep eq null ? '-' : cep}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1185,7 +1177,7 @@
                                                                                 <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoa.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoa.endereco.estadoFk.uf}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaJuridica.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaJuridica.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaJuridica.endereco.estadoFk.uf}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1198,7 +1190,7 @@
                                                                                 <label class="control-label col-md-3">Endereço:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.endereco}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.endereco.endereco}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1209,7 +1201,7 @@
                                                                                 <label class="control-label col-md-3">Número:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.numero}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.endereco.numero}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1223,7 +1215,7 @@
                                                                                 <label class="control-label col-md-3">Complemento:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.complemento}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.endereco.complemento}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1234,7 +1226,7 @@
                                                                                 <label class="control-label col-md-3">Bairro:</label>
                                                                                 <div class="col-md-9">
                                                                                     <p class="form-control-static">
-                                                                                        #{processoJudicialBean.enderecoPessoa.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoa.endereco.bairro}
+                                                                                        #{processoJudicialBean.enderecoPessoaJuridica.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoaJuridica.endereco.bairro}
                                                                                     </p>
                                                                                 </div>
                                                                             </div>
@@ -1267,7 +1259,7 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody class="rows">
-                                                                                    <ui:repeat value="#{processoJudicialBean.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                                    <ui:repeat value="#{processoJudicialBean.enderecoPessoaJuridica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
@@ -1446,7 +1438,7 @@
                                             <div class="portlet box blue-chambray">
                                                 <div class="portlet-title">
                                                     <div class="caption">
-                                                        <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaModal.pessoa.nome}
+                                                        <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.nome}
                                                     </div>
                                                 </div>
                                                 <div class="portlet-body form">
@@ -1458,7 +1450,7 @@
                                                                     <label class="control-label col-md-3">Nome:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nome}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.nome}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1469,8 +1461,8 @@
                                                                     <label class="control-label col-md-3">CNPJ:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            <ui:param value="#{processoJudicialBean.enderecoPessoaModal.pessoa.cnpj.substring(0,2)}.#{processoJudicialBean.enderecoPessoaModal.pessoa.cnpj.substring(2,5)}.#{processoJudicialBean.enderecoPessoaModal.pessoa.cnpj.substring(5,8)}/#{processoJudicialBean.enderecoPessoaModal.pessoa.cnpj.substring(8,12)}-#{processoJudicialBean.enderecoPessoaModal.pessoa.cnpj.substring(12)}" name="cnpj"/>
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.cnpj eq null ? '-' : cnpj}
+                                                                            <ui:param value="#{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnpj.substring(0,2)}.#{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnpj.substring(2,5)}.#{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnpj.substring(5,8)}/#{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnpj.substring(8,12)}-#{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnpj.substring(12)}" name="cnpj"/>
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnpj eq null ? '-' : cnpj}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1484,7 +1476,7 @@
                                                                     <label class="control-label col-md-3">Nome Fantasia: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nomeFantasia eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.nomeFantasia}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.nomeFantasia eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.nomeFantasia}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1495,7 +1487,7 @@
                                                                     <label class="control-label col-md-3">Tipo Empresarial: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.tipoEmpresarialFk.tipo}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.tipoEmpresarialFk.tipo}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1509,7 +1501,7 @@
                                                                     <label class="control-label col-md-3">Inscrição Estadual: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.inscricaoEstadual eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.inscricaoEstadual}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.inscricaoEstadual eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.inscricaoEstadual}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1520,7 +1512,7 @@
                                                                     <label class="control-label col-md-3">Inscrição Municipal: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.inscricaoMunicipal eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.inscricaoMunicipal}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.inscricaoMunicipal eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.inscricaoMunicipal}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1534,7 +1526,7 @@
                                                                     <label class="control-label col-md-3">Situação: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1545,7 +1537,7 @@
                                                                     <label class="control-label col-md-3">Motivo da Desativação: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1559,7 +1551,7 @@
                                                                     <label class="control-label col-md-3">Data de Criação: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.dataDeCriacao eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.dataDeCriacao}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.dataDeCriacao eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.dataDeCriacao}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1570,7 +1562,7 @@
                                                                     <label class="control-label col-md-3">Grupo Econômico: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.grupoEconomico eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.grupoEconomico}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.grupoEconomico eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.grupoEconomico}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1584,7 +1576,7 @@
                                                                     <label class="control-label col-md-3">NIRE: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nire eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.nire}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.nire eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.nire}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1595,7 +1587,7 @@
                                                                     <label class="control-label col-md-3">CNAE: </label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.cnae eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.cnae}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnae eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.cnae}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1609,7 +1601,7 @@
                                                                     <label class="control-label col-md-2">Atividade Principal:</label>
                                                                     <div class="col-md-10">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.atividadePrincipal eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.atividadePrincipal}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.atividadePrincipal eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.atividadePrincipal}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1622,7 +1614,7 @@
                                                                     <label class="control-label col-md-2">Atividades Secundarias:</label>
                                                                     <div class="col-md-10">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.atividadeSecundaria eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.atividadeSecundaria}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.atividadeSecundaria eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.pessoa.atividadeSecundaria}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1636,8 +1628,8 @@
                                                                     <label class="control-label col-md-3">CEP:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoaModal.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoaModal.endereco.cep.substring(5,8)}" />
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.cep eq null ? '-' : cep}
+                                                                            <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoaModalJuridica.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoaModalJuridica.endereco.cep.substring(5,8)}" />
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.cep eq null ? '-' : cep}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1648,7 +1640,7 @@
                                                                     <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaModal.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModal.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaModal.endereco.estadoFk.uf}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaModalJuridica.endereco.estadoFk.uf}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1661,7 +1653,7 @@
                                                                     <label class="control-label col-md-3">Endereço:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.endereco}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.endereco.endereco}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1672,7 +1664,7 @@
                                                                     <label class="control-label col-md-3">Número:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.numero}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.endereco.numero}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1686,7 +1678,7 @@
                                                                     <label class="control-label col-md-3">Complemento:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.complemento}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.endereco.complemento}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1697,7 +1689,7 @@
                                                                     <label class="control-label col-md-3">Bairro:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.bairro}
+                                                                            #{processoJudicialBean.enderecoPessoaModalJuridica.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoaModalJuridica.endereco.bairro}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1729,7 +1721,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody class="rows">
-                                                                        <ui:repeat value="#{processoJudicialBean.enderecoPessoaModal.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                        <ui:repeat value="#{processoJudicialBean.enderecoPessoaModalJuridica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                             <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                             <tr>
                                                                                 <td style="text-align:center">
@@ -1783,7 +1775,7 @@
                                             <div class="portlet box blue-chambray">
                                                 <div class="portlet-title">
                                                     <div class="caption">
-                                                        <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaModal.pessoa.nome}
+                                                        <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.nome}
                                                     </div>
                                                 </div>
                                                 <div class="portlet-body form">
@@ -1795,7 +1787,7 @@
                                                                     <label class="control-label col-md-3">Nome:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nome}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.nome}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1806,8 +1798,8 @@
                                                                     <label class="control-label col-md-3">CPF:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            <ui:param value="#{processoJudicialBean.enderecoPessoaModal.pessoa.cpf.substring(0,3)}.#{processoJudicialBean.enderecoPessoaModal.pessoa.cpf.substring(3,6)}.#{processoJudicialBean.enderecoPessoaModal.pessoa.cpf.substring(6,9)}-#{processoJudicialBean.enderecoPessoaModal.pessoa.cpf.substring(9)}" name="cpf"/>
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.cpf eq null ? '-' : cpf}
+                                                                            <ui:param value="#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cpf.substring(0,3)}.#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cpf.substring(3,6)}.#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cpf.substring(6,9)}-#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cpf.substring(9)}" name="cpf"/>
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cpf eq null ? '-' : cpf}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1821,7 +1813,7 @@
                                                                     <label class="control-label col-md-3">Apelido:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.apelido eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.apelido}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.apelido eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.apelido}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1832,7 +1824,7 @@
                                                                     <label class="control-label col-md-3">RG:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.rg eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.rg} #{processoJudicialBean.enderecoPessoaModal.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{processoJudicialBean.enderecoPessoaModal.pessoa.rgOrgaoEmissor}#{processoJudicialBean.enderecoPessoaModal.pessoa.rgUfFk.uf eq null ? '' : '/'}#{processoJudicialBean.enderecoPessoaModal.pessoa.rgUfFk.uf}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.rg eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.rg} #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.rgOrgaoEmissor}#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.rgUfFk.uf eq null ? '' : '/'}#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.rgUfFk.uf}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1846,7 +1838,7 @@
                                                                     <label class="control-label col-md-3">Sexo:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.sexo eq 'M' ? 'Masculino' : processoJudicialBean.enderecoPessoaModal.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.sexo eq 'M' ? 'Masculino' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1857,7 +1849,7 @@
                                                                     <label class="control-label col-md-3">T. de Eleitor:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.tituloDeEleitor eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.tituloDeEleitor}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.tituloDeEleitor eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.tituloDeEleitor}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1871,7 +1863,7 @@
                                                                     <label class="control-label col-md-3">Pai:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nomeDoPai eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.nomeDoPai}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.nomeDoPai eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.nomeDoPai}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1882,7 +1874,7 @@
                                                                     <label class="control-label col-md-3">Nacionalidade:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nacionalidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.nacionalidadeFk.tipo}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.nacionalidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.nacionalidadeFk.tipo}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1896,7 +1888,7 @@
                                                                     <label class="control-label col-md-3">Mãe:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nomeDaMae eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.nomeDaMae}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.nomeDaMae eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.nomeDaMae}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1907,7 +1899,7 @@
                                                                     <label class="control-label col-md-3">Naturalidade:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaModal.pessoa.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModal.pessoa.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaModal.pessoa.estadoFk.uf}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoFk.uf}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1921,7 +1913,7 @@
                                                                     <label class="control-label col-md-3">Estado Civil:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.estadoCivilFk eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.estadoCivilFk.situacao}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoCivilFk eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoCivilFk.situacao}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1932,7 +1924,7 @@
                                                                     <label class="control-label col-md-3">INSS:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.inss eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.inss}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.inss eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.inss}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1945,7 +1937,7 @@
                                                                     <label class="control-label col-md-3">Cônjuge:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.nomeDoConjuge eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.nomeDoConjuge}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.nomeDoConjuge eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.nomeDoConjuge}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1961,7 +1953,7 @@
                                                                     <label class="control-label col-md-2">Observações:</label>
                                                                     <div class="col-md-10">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.observacoes eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.observacoes}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.observacoes eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.observacoes}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1975,7 +1967,7 @@
                                                                     <label class="control-label col-md-3">Zona:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.zona eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.zona}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.zona eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.zona}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1986,7 +1978,7 @@
                                                                     <label class="control-label col-md-3">Seção:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.secao eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.secao}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.secao eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.secao}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -1999,7 +1991,7 @@
                                                                     <label class="control-label col-md-3">Local:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.local eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.local}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.local eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.local}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2010,7 +2002,7 @@
                                                                     <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.cidadeEleitoralFk eq null ? '-' : processoJudicialBean.enderecoPessoaModal.pessoa.cidadeEleitoralFk.nome} #{processoJudicialBean.enderecoPessoaModal.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModal.pessoa.estadoEleitoralFk eq null ? '' : processoJudicialBean.enderecoPessoaModal.pessoa.estadoEleitoralFk.uf}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.cidadeEleitoralFk eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.cidadeEleitoralFk.nome} #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoEleitoralFk eq null ? '' : processoJudicialBean.enderecoPessoaModalFisica.pessoa.estadoEleitoralFk.uf}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2024,7 +2016,7 @@
                                                                     <label class="control-label col-md-3">Endereço:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.pessoa.endereco eq null ? '-' : pessoaFisica.pessoa.endereco}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.pessoa.endereco eq null ? '-' : pessoaFisica.pessoa.endereco}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2039,8 +2031,8 @@
                                                                     <label class="control-label col-md-3">CEP:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoaModal.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoaModal.endereco.cep.substring(5,8)}" />
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.cep eq null ? '-' : cep}
+                                                                            <ui:param name="cep" value="#{processoJudicialBean.enderecoPessoaModalFisica.endereco.cep.substring(0,5)}-#{processoJudicialBean.enderecoPessoaModalFisica.endereco.cep.substring(5,8)}" />
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.endereco.cep eq null ? '-' : cep}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2051,7 +2043,7 @@
                                                                     <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaModal.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModal.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaModal.endereco.estadoFk.uf}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.endereco.cidadeFk eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.endereco.cidadeFk.nome} #{processoJudicialBean.enderecoPessoaModalFisica.endereco.estadoFk eq null ? '' : '/'} #{processoJudicialBean.enderecoPessoaModalFisica.endereco.estadoFk eq null ? '' : processoJudicialBean.enderecoPessoaModalFisica.endereco.estadoFk.uf}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2064,7 +2056,7 @@
                                                                     <label class="control-label col-md-3">Endereço:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.endereco}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.endereco.endereco eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.endereco.endereco}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2075,7 +2067,7 @@
                                                                     <label class="control-label col-md-3">Número:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.numero}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.endereco.numero eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.endereco.numero}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2089,7 +2081,7 @@
                                                                     <label class="control-label col-md-3">Complemento:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.complemento}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.endereco.complemento eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.endereco.complemento}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2100,7 +2092,7 @@
                                                                     <label class="control-label col-md-3">Bairro:</label>
                                                                     <div class="col-md-9">
                                                                         <p class="form-control-static">
-                                                                            #{processoJudicialBean.enderecoPessoaModal.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoaModal.endereco.bairro}
+                                                                            #{processoJudicialBean.enderecoPessoaModalFisica.endereco.bairro eq null ? '-' : processoJudicialBean.enderecoPessoaModalFisica.endereco.bairro}
                                                                         </p>
                                                                     </div>
                                                                 </div>
@@ -2131,7 +2123,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody class="rows">
-                                                                        <ui:repeat value="#{processoJudicialBean.enderecoPessoaModal.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                        <ui:repeat value="#{processoJudicialBean.enderecoPessoaModalFisica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                             <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                             <tr>
                                                                                 <td style="text-align:center">
@@ -2193,6 +2185,7 @@
         <script type="text/javascript" src="../assets/global/plugins/jquery.maskMoney.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="../assets/admin/pages/scripts/pjud-cadastrar.js" type="text/javascript"></script>

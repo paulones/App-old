@@ -4,7 +4,7 @@ var PjudCad = function() {
         var form = $('#submit_form');
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
-
+ 
         form.validate({
             doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
             errorElement: 'span', //default input error message container
@@ -341,9 +341,9 @@ var PjudCad = function() {
             function validaCPFCNPJ() {
                 $('#pessoa-fisica').hide();
                 $('#pessoa-juridica').hide();
-                if ($('#cpf').find(":selected").text() !== "") {
+                if ($('#cpf').val() !== "") {
                     $('.button-pessoa-fisica').show();
-                } else if ($('#cnpj').find(":selected").text() !== "") {
+                } else if ($('#cnpj').val() !== "") {
                     $('.button-pessoa-juridica').show();
                 } else {
                     $('.button-pessoa-fisica').hide();
@@ -377,6 +377,84 @@ var PjudCad = function() {
                 }
             }
             ;
+
+            $.ajax({
+                url: "/webresources/reaver/getPessoasJuridicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $('#cnpj').select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
+                        });
+                    });
+
+            $.ajax({
+                url: "/webresources/reaver/getPessoasFisicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $('#cpf').select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
+                        });
+                    });
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status == "success") {
