@@ -5,9 +5,11 @@
  */
 package bean;
 
+import bo.BemBO;
 import bo.EnderecoBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
+import bo.ProcessoJudicialBO;
 import bo.TipoProcessoBO;
 import bo.TipoRecursoBO;
 import entidade.Bem;
@@ -54,9 +56,11 @@ public class ProcessoJudicialBean implements Serializable {
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
+    private ProcessoJudicialBO processoJudicialBO;
     private TipoRecursoBO tipoRecursoBO;
     private TipoProcessoBO tipoProcessoBO;
     private EnderecoBO enderecoBO;
+    private BemBO bemBO;
 
     private Integer bens;
     private Integer vinculos;
@@ -74,9 +78,11 @@ public class ProcessoJudicialBean implements Serializable {
 
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
+            processoJudicialBO = new ProcessoJudicialBO();
             tipoRecursoBO = new TipoRecursoBO();
             tipoProcessoBO = new TipoProcessoBO();
             enderecoBO = new EnderecoBO();
+            bemBO = new BemBO();
 
             bens = 0;
             vinculos = 0;
@@ -135,6 +141,13 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void cadastrar() {
         processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+        processoJudicialBO.create(processoJudicial);
+        for (Bem bem : bemList){
+            if (!bem.getDescricao().isEmpty()){
+                bem.setProcessoJudicialFk(processoJudicial);
+                bemBO.create(bem);
+            }
+        }
     }
 
     public ProcessoJudicial getProcessoJudicial() {

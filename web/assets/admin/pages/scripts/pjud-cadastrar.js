@@ -245,7 +245,7 @@ var PjudCad = function() {
                 } else {
                     return "";
                 }
-            }
+            },
         });
     }
 
@@ -276,7 +276,7 @@ var PjudCad = function() {
             $.validator.addMethod("cpfOrCnpj", validaExecutado, "Escolha um executado.");
             $.validator.addClassRules({
                 bem: {
-                    required: false
+                    required: true
                 },
                 bemdata: {
                     data: true,

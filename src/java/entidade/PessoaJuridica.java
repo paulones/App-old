@@ -54,6 +54,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridica.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridica p WHERE p.atividadeSecundaria = :atividadeSecundaria"),
     @NamedQuery(name = "PessoaJuridica.findByStatus", query = "SELECT p FROM PessoaJuridica p WHERE p.status = :status")})
 public class PessoaJuridica implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaFk")
+    private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioAFk")
+    private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioBFk")
+    private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection2;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioAFk")
+    private Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioBFk")
+    private Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection1;
     @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuarioFk;
@@ -401,6 +411,51 @@ public class PessoaJuridica implements Serializable {
 
     public void setUsuarioFk(Usuario usuarioFk) {
         this.usuarioFk = usuarioFk;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaJuridicaHistorico> getPessoaJuridicaJuridicaHistoricoCollection() {
+        return pessoaJuridicaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaJuridicaJuridicaHistoricoCollection(Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection) {
+        this.pessoaJuridicaJuridicaHistoricoCollection = pessoaJuridicaJuridicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaJuridicaHistorico> getPessoaJuridicaJuridicaHistoricoCollection1() {
+        return pessoaJuridicaJuridicaHistoricoCollection1;
+    }
+
+    public void setPessoaJuridicaJuridicaHistoricoCollection1(Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection1) {
+        this.pessoaJuridicaJuridicaHistoricoCollection1 = pessoaJuridicaJuridicaHistoricoCollection1;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaJuridicaHistorico> getPessoaJuridicaJuridicaHistoricoCollection2() {
+        return pessoaJuridicaJuridicaHistoricoCollection2;
+    }
+
+    public void setPessoaJuridicaJuridicaHistoricoCollection2(Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection2) {
+        this.pessoaJuridicaJuridicaHistoricoCollection2 = pessoaJuridicaJuridicaHistoricoCollection2;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaJuridica> getPessoaJuridicaJuridicaCollection() {
+        return pessoaJuridicaJuridicaCollection;
+    }
+
+    public void setPessoaJuridicaJuridicaCollection(Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection) {
+        this.pessoaJuridicaJuridicaCollection = pessoaJuridicaJuridicaCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaJuridica> getPessoaJuridicaJuridicaCollection1() {
+        return pessoaJuridicaJuridicaCollection1;
+    }
+
+    public void setPessoaJuridicaJuridicaCollection1(Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection1) {
+        this.pessoaJuridicaJuridicaCollection1 = pessoaJuridicaJuridicaCollection1;
     }
     
 }

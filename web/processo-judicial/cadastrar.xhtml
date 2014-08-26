@@ -473,7 +473,7 @@
                                                         <label class="control-label col-md-4">Fatos Geradores 
                                                         </label>
                                                         <div class="col-md-8">
-                                                            <input type="hidden" class="form-control" id="select2_tags" value="" name="select2tags"/>
+                                                            <h:inputText p:type="hidden" class="form-control" id="select2_tags" value="#{processoJudicialBean.processoJudicial.fatosGeradores}"/>
                                                             <span class="help-block">
                                                                 Escolha datas no formato mm/aaaa e aperte "Enter". Não é necessário digitar "/".</span>
                                                         </div>
@@ -1337,7 +1337,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-2">Descrição do Bem / Data do Ato 
+                                                                <label class="control-label col-md-2">Descrição do Bem <span class="required">*</span>/ Data do Ato 
                                                                 </label>
                                                                 <div class="col-md-7">
                                                                     <div class="input-icon right">
