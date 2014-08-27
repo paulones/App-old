@@ -49,6 +49,15 @@ public class PessoaJuridicaBO implements Serializable{
         return null;
     }
     
+    public PessoaJuridica findByCNPJ (String cnpj){
+        try {
+            return pessoaJuridicaDAO.findByCNPJ(cnpj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public PessoaJuridica findPessoaJuridica(Integer id){
         try { 
             return pessoaJuridicaDAO.findPessoaJuridica(id);

@@ -20,6 +20,13 @@
     <class>entidade.PessoaFisicaHistorico</class>
     <class>entidade.PessoaFisicaJuridicaHistorico</class>
     <class>entidade.PessoaJuridicaHistorico</class>
+    <class>entidade.Bem</class>
+    <class>entidade.PessoaJuridicaJuridica</class>
+    <class>entidade.PessoaJuridicaJuridicaHistorico</class>
+    <class>entidade.ProcessoJudicial</class>
+    <class>entidade.TipoProcesso</class>
+    <class>entidade.TipoRecurso</class>
+    <class>entidade.VinculoProcessual</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <validation-mode>NONE</validation-mode>
     <properties>

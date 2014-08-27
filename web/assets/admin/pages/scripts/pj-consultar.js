@@ -1,18 +1,5 @@
 var PJCon = function() {
 
-    var pessoaJuridicaArray = [];
-    $.each($('.infos'), function() {
-        var pessoaJuridica = [
-            "<span class='row-details row-details-close'></span>",
-            $(this).children(".nome").text(),
-            $(this).children(".cnpj").text(),
-            $(this).children(".nomeFantasia").text(),
-            $(this).children(".tipo").text(),
-            "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>",
-            $(this).children(".detalhes").text(),
-            $(this).children(".pj").text()];
-        pessoaJuridicaArray.push(pessoaJuridica);
-    })
     var element;
 
     var initTable = function() {
@@ -26,16 +13,16 @@ var PJCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
-            "data": pessoaJuridicaArray,
+            "ajax": "/webresources/reaver/getPessoasJuridicaTable",
             "columns": [
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                {"class": "display-hide"},
-                {"class": "display-hide"}
+                {"data": "row-details"},
+                {"data": "nome"},
+                {"data": "cnpj"},
+                {"data": "nomeFantasia"},
+                {"data": "tipoEmpresarial"},
+                {"data": "delete"},
+                {"data": "detalhes", "class": "display-hide"},
+                {"data": "pj", "class": "display-hide"}
             ],
             "orderClasses": false,
             "deferRender": true,
@@ -61,10 +48,6 @@ var PJCon = function() {
 
         tableWrapper.find('.dataTables_length select').select2(); // initialize select2 dropdown
 
-        /* Add event listener for opening and closing details
-         * Note that the indicator for showing which row is open is not controlled by DataTables,
-         * rather it is done here
-         */
         table.on('click', ' tbody td .row-details', function() {
             if ($(this).hasClass('row-details-open')) {
                 /* This row is already open - close it */
@@ -76,6 +59,22 @@ var PJCon = function() {
                 $('.info-refresher').click();
                 element = $(this);
             }
+        });
+        
+        var index;
+        table.on('click', '.button-delete', function(e) {
+            e.preventDefault();
+            index = $('.button-delete').index(this);
+            $('.delete-modal-activator').click();
+        });
+        
+        $('.cancel').click(function(e) {
+            e.preventDefault();
+        });
+        $('.remove').click(function(e) {
+            e.preventDefault();
+            $('#pj-id').val($($('.button-delete').get(index)).parent().next().next().text());
+            $('.info-delete').click();
         });
     }
 
@@ -229,21 +228,6 @@ var PJCon = function() {
                 });
             } else {
                 initTable();
-
-                var index;
-                $('.button-delete').click(function(e) {
-                    e.preventDefault();
-                    index = $('.button-delete').index(this);
-                    $('.delete-modal-activator').click();
-                });
-                $('.cancel').click(function(e) {
-                    e.preventDefault();
-                });
-                $('.remove').click(function(e) {
-                    e.preventDefault();
-                    $('#pj-id').val($($('.button-delete').get(index)).parent().next().next().text());
-                    $('.info-delete').click();
-                });
             }
 
             $('select[name=table_length]').change(function() {

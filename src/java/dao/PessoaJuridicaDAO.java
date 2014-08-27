@@ -792,6 +792,19 @@ public class PessoaJuridicaDAO implements Serializable {
         }
     }
     
+    public PessoaJuridica findByCNPJ(String cnpj) {
+        EntityManager em = getEntityManager();
+        try {
+            PessoaJuridica pj = (PessoaJuridica) em.createNativeQuery("select * from pessoa_juridica "
+                    + "where cnpj = '" + cnpj + "'", PessoaJuridica.class).getSingleResult();
+            return pj;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
     public List<PessoaJuridica> findAllActive(){
         EntityManager em = getEntityManager();
         try {
