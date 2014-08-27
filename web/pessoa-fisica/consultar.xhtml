@@ -600,6 +600,7 @@
                                         <label class="control-label col-md-3">CPF:</label>
                                         <div class="col-md-9">
                                             <p class="form-control-static">
+                                                <ui:param name="cpf" value="#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(0,3)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(3,6)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(6,9)}-#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(9)}" />
                                                 #{pessoaFisicaBean.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf eq '..-' ? '-' : cpf}
                                             </p>
                                         </div>

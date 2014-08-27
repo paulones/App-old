@@ -13,7 +13,7 @@ var PJCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
-            "ajax": "/webresources/reaver/getPessoasJuridicaTable",
+            "ajax": "/webresources/reaver/getPessoasJuridicasTable",
             "columns": [
                 {"data": "row-details"},
                 {"data": "nome"},

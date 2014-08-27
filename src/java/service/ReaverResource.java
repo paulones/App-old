@@ -8,10 +8,14 @@ package service;
 import bo.EnderecoBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
+import bo.ProcessoJudicialBO;
+import entidade.Bem;
 import entidade.Endereco;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
+import entidade.ProcessoJudicial;
+import entidade.VinculoProcessual;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -119,17 +123,18 @@ public class ReaverResource {
                 rg += "/" + pf.getRgUfFk().getUf();
             }
             String detalhes = pf.getApelido() + " " + pf.getTituloDeEleitor() + " " + pf.getInss() + " " + pf.getNomeDoPai() + " " + pf.getNomeDaMae() + " " + pf.getNomeDoConjuge() + " "
-                    + pf.getObservacoes() + " " + (pf.getCidadeFk() == null ? "" : pf.getCidadeFk().getNome()) + " " + (pf.getEstadoFk() == null ? "" : pf.getEstadoFk().getNome()) + " " 
-                    + (pf.getEstadoCivilFk() == null ? "" : pf.getEstadoCivilFk().getSituacao()) + " " + (pf.getNacionalidadeFk()== null ? "" : pf.getNacionalidadeFk().getTipo()) + " "
-                    + (pf.getPaisFk() == null ? "" : pf.getPaisFk().getNome()) + " " + (pf.getCidadeEleitoralFk()== null ? "" : pf.getCidadeEleitoralFk().getNome()) + " "
-                    + (pf.getEstadoEleitoralFk()  == null ? "" : pf.getEstadoEleitoralFk().getNome()) + " " + pf.getZona() + " " + pf.getSecao() + " " + pf.getEndereco() + " "
-                    + pf.getLocal() + " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk()== null ? "" : end.getEstadoFk().getNome()) + " "
+                    + pf.getObservacoes() + " " + (pf.getCidadeFk() == null ? "" : pf.getCidadeFk().getNome()) + " " + (pf.getEstadoFk() == null ? "" : pf.getEstadoFk().getUf()) + " "
+                    + (pf.getEstadoCivilFk() == null ? "" : pf.getEstadoCivilFk().getSituacao()) + " " + (pf.getNacionalidadeFk() == null ? "" : pf.getNacionalidadeFk().getTipo()) + " "
+                    + (pf.getPaisFk() == null ? "" : pf.getPaisFk().getNome()) + " " + (pf.getCidadeEleitoralFk() == null ? "" : pf.getCidadeEleitoralFk().getNome()) + " "
+                    + (pf.getEstadoEleitoralFk() == null ? "" : pf.getEstadoEleitoralFk().getUf()) + " " + pf.getZona() + " " + pf.getSecao() + " " + pf.getEndereco() + " "
+                    + pf.getLocal() + " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk() == null ? "" : end.getEstadoFk().getUf()) + " "
                     + end.getNumero() + " " + end.getComplemento() + " " + end.getEndereco();
-            for (PessoaFisicaJuridica pfj : (List<PessoaFisicaJuridica>) pf.getPessoaFisicaJuridicaCollection()){
-                detalhes += " " + pfj.getPessoaJuridicaFk().getCnpj() + " " + pfj.getPessoaJuridicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
+            for (PessoaFisicaJuridica pfj : (List<PessoaFisicaJuridica>) pf.getPessoaFisicaJuridicaCollection()) {
+                String cnpj = pfj.getPessoaJuridicaFk().getCnpj().substring(0, 2) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(2, 5) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(5, 8) + "/" + pfj.getPessoaJuridicaFk().getCnpj().substring(8, 12) + "-" + pfj.getPessoaJuridicaFk().getCnpj().substring(12);
+                detalhes += " " + cnpj + " " + pfj.getPessoaJuridicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
             }
             detalhes = detalhes.replace("null", "");
-            
+
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("row-details", "<span class='row-details row-details-close'></span>");
             jsonObject.put("nome", pf.getNome());
@@ -147,7 +152,7 @@ public class ReaverResource {
     }
     
     @GET
-    @Path("/getPessoasJuridicaTable")
+    @Path("/getPessoasJuridicasTable")
     @Produces("application/json")
     public String getPessoasJuridicasTable() {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
@@ -188,4 +193,78 @@ public class ReaverResource {
         return json.toString();
     }
 
+    @GET
+    @Path("/getProcessosJudiciaisTable")
+    @Produces("application/json")
+    public String getProcessosJudiciaisTable() {
+        PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
+        PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
+        EnderecoBO enderecoBO = new EnderecoBO();
+        ProcessoJudicialBO processoJudicialBO = new ProcessoJudicialBO();
+        JSONArray jsonArray = new JSONArray();
+        List<ProcessoJudicial> processoJudicialList = processoJudicialBO.findAllActive();
+        for (ProcessoJudicial pjud : processoJudicialList) {
+            Endereco end = new Endereco();
+            PessoaFisica pf = new PessoaFisica();
+            PessoaJuridica pj = new PessoaJuridica();
+            String detalhes = "";
+            String executado = "";
+            if (pjud.getExecutado().equals("PF")) {
+                pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
+                end = enderecoBO.findPFAddress(pf.getId());
+                executado = pf.getNome() + " - " + (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
+                detalhes += (pf.getSexo() == null ? "" : "M".equals(pf.getSexo().toString()) ? "Masculino" : "Feminino") + " " + pf.getApelido() + " " + pf.getTituloDeEleitor() + " " + pf.getInss() + " "
+                        + pf.getNomeDoPai() + " " + pf.getNomeDaMae() + " " + pf.getNomeDoConjuge() + " " + pf.getRg() + " " + pf.getRgOrgaoEmissor() + " " + (pf.getRgUfFk() == null ? "" : pf.getRgUfFk().getUf()) + " "
+                        + pf.getObservacoes() + " " + (pf.getCidadeFk() == null ? "" : pf.getCidadeFk().getNome()) + " " + (pf.getEstadoFk() == null ? "" : pf.getEstadoFk().getUf()) + " "
+                        + (pf.getEstadoCivilFk() == null ? "" : pf.getEstadoCivilFk().getSituacao()) + " " + (pf.getNacionalidadeFk() == null ? "" : pf.getNacionalidadeFk().getTipo()) + " "
+                        + (pf.getPaisFk() == null ? "" : pf.getPaisFk().getNome()) + " " + (pf.getCidadeEleitoralFk() == null ? "" : pf.getCidadeEleitoralFk().getNome()) + " "
+                        + (pf.getEstadoEleitoralFk() == null ? "" : pf.getEstadoEleitoralFk().getUf()) + " " + pf.getZona() + " " + pf.getSecao() + " " + pf.getEndereco() + " "
+                        + pf.getLocal();
+                for (PessoaFisicaJuridica pfj : (List<PessoaFisicaJuridica>) pf.getPessoaFisicaJuridicaCollection()) {
+                    String cnpj = pfj.getPessoaJuridicaFk().getCnpj().substring(0, 2) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(2, 5) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(5, 8) + "/" + pfj.getPessoaJuridicaFk().getCnpj().substring(8, 12) + "-" + pfj.getPessoaJuridicaFk().getCnpj().substring(12);
+                    detalhes += " " + cnpj + " " + pfj.getPessoaJuridicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
+                }
+            } else {
+                pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
+                end = enderecoBO.findPJAddress(pj.getId());
+                executado = pj.getNome() + " - " + pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
+                detalhes += pj.getNomeFantasia() + " " + (pj.getTipoEmpresarialFk() == null ? "" : pj.getTipoEmpresarialFk().getTipo()) + " " + pj.getInscricaoEstadual() + " " + pj.getInscricaoMunicipal() + " "
+                        + (pj.getSituacao() == null ? "" : "A".equals(pj.getSituacao().toString()) ? "Ativo" : "Inativo") + " " + pj.getMotivoDaDesativacao() + " "
+                        + pj.getDataDeCriacao() + " " + pj.getGrupoEconomico() + " " + pj.getCnae() + " " + pj.getNire() + " " + pj.getAtividadePrincipal() + " " + pj.getAtividadeSecundaria();
+                for (PessoaFisicaJuridica pfj : (List<PessoaFisicaJuridica>) pj.getPessoaFisicaJuridicaCollection()) {
+                    String cpf = pfj.getPessoaFisicaFk().getCpf().substring(0, 3) + "." + pfj.getPessoaFisicaFk().getCpf().substring(3, 6) + "." + pfj.getPessoaFisicaFk().getCpf().substring(6, 9) + "-" + pfj.getPessoaFisicaFk().getCpf().substring(9);
+                    detalhes += " " + cpf + " " + pfj.getPessoaFisicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
+                }
+            }
+            detalhes += " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk() == null ? "" : end.getEstadoFk().getUf()) + " "
+                    + end.getNumero() + " " + end.getComplemento() + " " + end.getEndereco();
+            detalhes += " " + pjud.getAtoProcessual() + " " + pjud.getDataDeInscricao() + " " + pjud.getDecisaoDoJuiz() + " " + pjud.getDecisaoDoJuizDataDoAto() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
+                    + pjud.getDiscriminacaoDoCreditoImposto() + " " + pjud.getDiscriminacaoDoCreditoMulta() + " " + pjud.getDistribuicao() + " " + pjud.getDistribuicaoDataDoAto() + " " + pjud.getFatosGeradores().replace(",", "; ") + " "
+                    + pjud.getFundamentacao() + " " + pjud.getGrupoDeEspecializacao() + " " + pjud.getNotificacaoAdministrativa() + " " + pjud.getNotificacaoAdministrativaDataDoAto() + " " + pjud.getNumeroDoProcessoAnterior() + " "
+                    + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesBem() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + pjud.getProcurador() + " "
+                    + pjud.getRecurso() + " " + pjud.getValorAtualizado() + " " + pjud.getValorDaCausa() + " " + pjud.getVara() + " " + pjud.getVaraAnterior() + " " + (pjud.getTipoDeRecursoFk() == null ? "" : pjud.getTipoDeRecursoFk().getTipo());
+            for (Bem bem : pjud.getBemCollection()){
+                detalhes += " " + bem.getDescricao() + " " + bem.getDataDoAto();
+            }
+            for (VinculoProcessual vp : pjud.getVinculoProcessualCollection()){
+                detalhes += " " + vp.getProcesso() + " " + vp.getTipoDeProcessoFk().getTipo();
+            }
+
+            detalhes = detalhes.replace("null", "");
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("row-details", "<span class='row-details row-details-close'></span>");
+            jsonObject.put("numero_do_processo", pjud.getNumeroDoProcesso());
+            jsonObject.put("comarca", pjud.getComarca());
+            jsonObject.put("numero_da_cda", pjud.getNumeroDaCda());
+            jsonObject.put("executado", executado);
+            jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
+            jsonObject.put("detalhes", detalhes);
+            jsonObject.put("pjud", Base64Crypt.encrypt(pjud.getId().toString()));
+            jsonArray.put(jsonObject);
+        }
+        JSONObject json = new JSONObject();
+        json.put("data", jsonArray);
+        return json.toString();
+    }
 }

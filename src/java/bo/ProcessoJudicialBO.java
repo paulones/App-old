@@ -9,6 +9,8 @@ package bo;
 import dao.ProcessoJudicialDAO;
 import entidade.ProcessoJudicial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -53,6 +55,15 @@ public class ProcessoJudicialBO implements Serializable{
             e.printStackTrace();
         }
         return new ProcessoJudicial();
+    }
+    
+    public List<ProcessoJudicial> findAllActive(){
+        try { 
+            return processoJudicialDAO.findAllActive();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<ProcessoJudicial>();
     }
     
     public ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial){
