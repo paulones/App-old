@@ -120,6 +120,7 @@ public class PessoaJuridicaBean implements Serializable {
             endereco = new Endereco();
             pessoaFisica = new PessoaFisica();
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
+            enderecoPessoa = new EnderecoPessoa();
 
             register = "";
             redirect = Cookie.getCookie("FacesMessage");

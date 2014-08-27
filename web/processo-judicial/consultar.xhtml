@@ -135,7 +135,69 @@
                 <f:ajax execute="pjud-id" listener="#{processoJudicialBean.exibirInfo()}" render="info"/>
             </h:commandLink>
             <h:panelGroup id="info" class="display-hide">
-               
+                <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty processoJudicialBean.executado.processoJudicial}">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-legal"></i>Processo Judicial #{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="form-actions top">
+                            <div class="row">
+                                <div class="col-md-5">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="col-md-offset-4 col-md-9">
+                                        <a href="consultar.xhtml?id=#{processoJudicialBean.executado.processoJudicial.id}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</a>
+                                        <a href="cadastrar.xhtml?id=#{processoJudicialBean.executado.processoJudicial.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-body">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_1_1" data-toggle="tab">
+                                        Processo </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_1_2" data-toggle="tab">
+                                        Executado </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_1_3" data-toggle="tab">
+                                        Bens </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_1_4" data-toggle="tab">
+                                        Ato Processual </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="tab_1_1">
+                                    <p>
+                                        Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+                                    </p>
+                                </div>
+                                <div class="tab-pane fade" id="tab_1_2">
+                                    <p>
+                                        Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                                    </p>
+                                </div>
+                                <div class="tab-pane fade" id="tab_1_3">
+                                    <p>
+                                        Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+                                    </p>
+                                </div>
+                                <div class="tab-pane fade" id="tab_1_4">
+                                    <p>
+                                        Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
             </h:panelGroup>
         </h:form>
         <!-- END PAGE CONTENT-->

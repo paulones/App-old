@@ -490,7 +490,7 @@
                 <f:ajax execute="pj-id" listener="#{pessoaJuridicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>
             <h:panelGroup id="info" class="display-hide">
-                <div class="portlet box blue-chambray">
+                <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty pessoaJuridicaBean.enderecoPessoa.pessoa}">
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-user"></i>Dados de #{pessoaJuridicaBean.enderecoPessoa.pessoa.nome}
@@ -820,7 +820,7 @@
                         </div>
                         <!-- END LISTA CONTENT-->
                     </div>
-                </div>
+                </h:panelGroup>
             </h:panelGroup>
         </h:form>
         <!-- END PAGE CONTENT-->

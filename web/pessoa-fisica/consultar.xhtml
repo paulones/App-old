@@ -561,7 +561,7 @@
                 <f:ajax execute="pf-id" listener="#{pessoaFisicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>
             <h:panelGroup id="info" class="display-hide">
-                <div class="portlet box blue-chambray">
+                <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty pessoaFisicaBean.enderecoPessoa.pessoa}">
                     <div class="portlet-title">
                         <div class="caption">
                             <i class="fa fa-user"></i>Dados de #{pessoaFisicaBean.enderecoPessoa.pessoa.nome}
@@ -956,7 +956,7 @@
                         </div>
                         <!-- END LISTA CONTENT-->
                     </div>
-                </div>
+                </h:panelGroup>
             </h:panelGroup>
         </h:form>
         <!-- END PAGE CONTENT-->
