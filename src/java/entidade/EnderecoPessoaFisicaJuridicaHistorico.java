@@ -6,6 +6,7 @@
 
 package entidade;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +14,7 @@ import java.util.Objects;
  *
  * @author paulones
  */
-public class EnderecoPessoaFisicaJuridicaHistorico {
+public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
     
     private Object pessoaHistorico;
     private EnderecoHistorico enderecoHistorico;
