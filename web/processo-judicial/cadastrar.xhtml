@@ -4,7 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:define name="title">Processo Judicial - Cadastro</ui:define>
+    <ui:define name="title">Processo Judicial - #{processoJudicialBean.edit ? 'Alteração' :'Cadastro'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{processoJudicialBean.init()}"/>
     </ui:define>
@@ -24,7 +24,7 @@
             <div class="col-md-12">
                 <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                 <h3 class="page-title">
-                    Processo Judicial <small>Cadastro</small>
+                    Processo Judicial <small>#{processoJudicialBean.edit ? 'Alteração' :'Cadastro'}</small>
                 </h3>
                 <ul class="page-breadcrumb breadcrumb">
                     <li>
@@ -37,9 +37,17 @@
                         <a href="#">Processo Judicial</a>
                         <i class="fa fa-angle-right"></i>
                     </li>
+                    <h:panelGroup rendered="#{processoJudicialBean.edit}">
+                        <li>
+                            <i class="fa fa-search"></i>
+                            <a href="../processo-judicial/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-angle-right"></i>
+                        </li>
+                    </h:panelGroup>
                     <li>
-                        <i class="fa fa-floppy-o"/>
-                        <a href="processo-judicial/cadastrar.xhtml">Cadastrar</a>
+                        <ui:fragment rendered="#{processoJudicialBean.edit}"><i class="fa fa-edit"/></ui:fragment>
+                        <ui:fragment rendered="#{!processoJudicialBean.edit}"><i class="fa fa-floppy-o"/></ui:fragment>
+                        <a href="../processo-judicial/cadastrar.xhtml#{processoJudicialBean.edit ? '?id=' :''}#{processoJudicialBean.edit ? processoJudicialBean.processoJudicial.id : ''}">#{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'}</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->
@@ -52,7 +60,7 @@
                 <div class="portlet box blue-chambray" id="form_wizard">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-files-o"></i> Formulário de Cadastro - <span class="step-title">
+                            <i class="fa fa-files-o"></i> Formulário de #{processoJudicialBean.edit ? 'Alteração do Processo ' :'Cadastro '}#{processoJudicialBean.edit ? processoJudicialBean.processoJudicial.numeroDoProcesso : ''} - <span class="step-title">
                                 Passo 1 de 4 </span>
                         </div>
                     </div>
@@ -1430,7 +1438,7 @@
                                                     Continuar <i class="m-icon-swapright m-icon-white"></i>
                                                 </a>
                                                 <h:commandLink action="#{processoJudicialBean.cadastrar()}" class="btn blue-chambray button-submit">
-                                                    <i class="fa fa-save"></i> Cadastrar 
+                                                    <ui:fragment rendered="#{!processoJudicialBean.edit}"><i class="fa fa-save"></i></ui:fragment><ui:fragment rendered="#{processoJudicialBean.edit}"><i class="fa fa-edit"></i></ui:fragment> #{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'} 
                                                 </h:commandLink>
                                             </div>
                                         </div>

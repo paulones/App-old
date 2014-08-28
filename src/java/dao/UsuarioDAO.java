@@ -15,6 +15,7 @@ import entidade.PessoaFisicaJuridicaHistorico;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaHistorico;
 import entidade.ProcessoJudicial;
+import entidade.ProcessoJudicialHistorico;
 import entidade.RecuperarSenha;
 import entidade.Usuario;
 import java.io.Serializable;
@@ -61,6 +62,9 @@ public class UsuarioDAO implements Serializable {
         if (usuario.getProcessoJudicialCollection() == null) {
             usuario.setProcessoJudicialCollection(new ArrayList<ProcessoJudicial>());
         }
+        if (usuario.getProcessoJudicialHistoricoCollection() == null) {
+            usuario.setProcessoJudicialHistoricoCollection(new ArrayList<ProcessoJudicialHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -99,6 +103,12 @@ public class UsuarioDAO implements Serializable {
                 attachedProcessoJudicialCollection.add(processoJudicialCollectionProcessoJudicialToAttach);
             }
             usuario.setProcessoJudicialCollection(attachedProcessoJudicialCollection);
+            Collection<ProcessoJudicialHistorico> attachedProcessoJudicialHistoricoCollection = new ArrayList<ProcessoJudicialHistorico>();
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach : usuario.getProcessoJudicialHistoricoCollection()) {
+                processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach = em.getReference(processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach.getClass(), processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach.getId());
+                attachedProcessoJudicialHistoricoCollection.add(processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach);
+            }
+            usuario.setProcessoJudicialHistoricoCollection(attachedProcessoJudicialHistoricoCollection);
             em.persist(usuario);
             if (recuperarSenha != null) {
                 Usuario oldUsuarioOfRecuperarSenha = recuperarSenha.getUsuario();
@@ -154,6 +164,15 @@ public class UsuarioDAO implements Serializable {
                     oldUsuarioFkOfProcessoJudicialCollectionProcessoJudicial = em.merge(oldUsuarioFkOfProcessoJudicialCollectionProcessoJudicial);
                 }
             }
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionProcessoJudicialHistorico : usuario.getProcessoJudicialHistoricoCollection()) {
+                Usuario oldUsuarioFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico = processoJudicialHistoricoCollectionProcessoJudicialHistorico.getUsuarioFk();
+                processoJudicialHistoricoCollectionProcessoJudicialHistorico.setUsuarioFk(usuario);
+                processoJudicialHistoricoCollectionProcessoJudicialHistorico = em.merge(processoJudicialHistoricoCollectionProcessoJudicialHistorico);
+                if (oldUsuarioFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico != null) {
+                    oldUsuarioFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistoricoCollectionProcessoJudicialHistorico);
+                    oldUsuarioFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico = em.merge(oldUsuarioFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -186,6 +205,8 @@ public class UsuarioDAO implements Serializable {
             Collection<PessoaFisica> pessoaFisicaCollectionNew = usuario.getPessoaFisicaCollection();
             Collection<ProcessoJudicial> processoJudicialCollectionOld = persistentUsuario.getProcessoJudicialCollection();
             Collection<ProcessoJudicial> processoJudicialCollectionNew = usuario.getProcessoJudicialCollection();
+            Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionOld = persistentUsuario.getProcessoJudicialHistoricoCollection();
+            Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionNew = usuario.getProcessoJudicialHistoricoCollection();
             List<String> illegalOrphanMessages = null;
             if (recuperarSenhaOld != null && !recuperarSenhaOld.equals(recuperarSenhaNew)) {
                 if (illegalOrphanMessages == null) {
@@ -233,6 +254,14 @@ public class UsuarioDAO implements Serializable {
                     illegalOrphanMessages.add("You must retain ProcessoJudicial " + processoJudicialCollectionOldProcessoJudicial + " since its usuarioFk field is not nullable.");
                 }
             }
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionOldProcessoJudicialHistorico : processoJudicialHistoricoCollectionOld) {
+                if (!processoJudicialHistoricoCollectionNew.contains(processoJudicialHistoricoCollectionOldProcessoJudicialHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain ProcessoJudicialHistorico " + processoJudicialHistoricoCollectionOldProcessoJudicialHistorico + " since its usuarioFk field is not nullable.");
+                }
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -275,6 +304,13 @@ public class UsuarioDAO implements Serializable {
             }
             processoJudicialCollectionNew = attachedProcessoJudicialCollectionNew;
             usuario.setProcessoJudicialCollection(processoJudicialCollectionNew);
+            Collection<ProcessoJudicialHistorico> attachedProcessoJudicialHistoricoCollectionNew = new ArrayList<ProcessoJudicialHistorico>();
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach : processoJudicialHistoricoCollectionNew) {
+                processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach = em.getReference(processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach.getClass(), processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach.getId());
+                attachedProcessoJudicialHistoricoCollectionNew.add(processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach);
+            }
+            processoJudicialHistoricoCollectionNew = attachedProcessoJudicialHistoricoCollectionNew;
+            usuario.setProcessoJudicialHistoricoCollection(processoJudicialHistoricoCollectionNew);
             usuario = em.merge(usuario);
             if (recuperarSenhaNew != null && !recuperarSenhaNew.equals(recuperarSenhaOld)) {
                 Usuario oldUsuarioOfRecuperarSenha = recuperarSenhaNew.getUsuario();
@@ -337,6 +373,17 @@ public class UsuarioDAO implements Serializable {
                     if (oldUsuarioFkOfProcessoJudicialCollectionNewProcessoJudicial != null && !oldUsuarioFkOfProcessoJudicialCollectionNewProcessoJudicial.equals(usuario)) {
                         oldUsuarioFkOfProcessoJudicialCollectionNewProcessoJudicial.getProcessoJudicialCollection().remove(processoJudicialCollectionNewProcessoJudicial);
                         oldUsuarioFkOfProcessoJudicialCollectionNewProcessoJudicial = em.merge(oldUsuarioFkOfProcessoJudicialCollectionNewProcessoJudicial);
+                    }
+                }
+            }
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionNewProcessoJudicialHistorico : processoJudicialHistoricoCollectionNew) {
+                if (!processoJudicialHistoricoCollectionOld.contains(processoJudicialHistoricoCollectionNewProcessoJudicialHistorico)) {
+                    Usuario oldUsuarioFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico = processoJudicialHistoricoCollectionNewProcessoJudicialHistorico.getUsuarioFk();
+                    processoJudicialHistoricoCollectionNewProcessoJudicialHistorico.setUsuarioFk(usuario);
+                    processoJudicialHistoricoCollectionNewProcessoJudicialHistorico = em.merge(processoJudicialHistoricoCollectionNewProcessoJudicialHistorico);
+                    if (oldUsuarioFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico != null && !oldUsuarioFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico.equals(usuario)) {
+                        oldUsuarioFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistoricoCollectionNewProcessoJudicialHistorico);
+                        oldUsuarioFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico = em.merge(oldUsuarioFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico);
                     }
                 }
             }
@@ -415,6 +462,13 @@ public class UsuarioDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the ProcessoJudicial " + processoJudicialCollectionOrphanCheckProcessoJudicial + " in its processoJudicialCollection field has a non-nullable usuarioFk field.");
+            }
+            Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionOrphanCheck = usuario.getProcessoJudicialHistoricoCollection();
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionOrphanCheckProcessoJudicialHistorico : processoJudicialHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Usuario (" + usuario + ") cannot be destroyed since the ProcessoJudicialHistorico " + processoJudicialHistoricoCollectionOrphanCheckProcessoJudicialHistorico + " in its processoJudicialHistoricoCollection field has a non-nullable usuarioFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

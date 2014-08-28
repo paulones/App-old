@@ -7,7 +7,6 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,13 +27,13 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author paulones
  */
 @Entity
-@Table(name = "vinculo_processual")
+@Table(name = "vinculo_processual_historico")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "VinculoProcessual.findAll", query = "SELECT v FROM VinculoProcessual v"),
-    @NamedQuery(name = "VinculoProcessual.findById", query = "SELECT v FROM VinculoProcessual v WHERE v.id = :id"),
-    @NamedQuery(name = "VinculoProcessual.findByProcesso", query = "SELECT v FROM VinculoProcessual v WHERE v.processo = :processo")})
-public class VinculoProcessual implements Serializable {
+    @NamedQuery(name = "VinculoProcessualHistorico.findAll", query = "SELECT v FROM VinculoProcessualHistorico v"),
+    @NamedQuery(name = "VinculoProcessualHistorico.findById", query = "SELECT v FROM VinculoProcessualHistorico v WHERE v.id = :id"),
+    @NamedQuery(name = "VinculoProcessualHistorico.findByProcesso", query = "SELECT v FROM VinculoProcessualHistorico v WHERE v.processo = :processo")})
+public class VinculoProcessualHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,21 +45,21 @@ public class VinculoProcessual implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "processo")
     private String processo;
-    @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
+    @JoinColumn(name = "processo_judicial_historico_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private ProcessoJudicial processoJudicialFk;
+    private ProcessoJudicialHistorico processoJudicialHistoricoFk;
     @JoinColumn(name = "tipo_de_processo_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoProcesso tipoDeProcessoFk;
 
-    public VinculoProcessual() {
+    public VinculoProcessualHistorico() {
     }
 
-    public VinculoProcessual(Integer id) {
+    public VinculoProcessualHistorico(Integer id) {
         this.id = id;
     }
 
-    public VinculoProcessual(Integer id, String processo) {
+    public VinculoProcessualHistorico(Integer id, String processo) {
         this.id = id;
         this.processo = processo;
     }
@@ -81,12 +80,12 @@ public class VinculoProcessual implements Serializable {
         this.processo = processo;
     }
 
-    public ProcessoJudicial getProcessoJudicialFk() {
-        return processoJudicialFk;
+    public ProcessoJudicialHistorico getProcessoJudicialHistoricoFk() {
+        return processoJudicialHistoricoFk;
     }
 
-    public void setProcessoJudicialFk(ProcessoJudicial processoJudicialFk) {
-        this.processoJudicialFk = processoJudicialFk;
+    public void setProcessoJudicialHistoricoFk(ProcessoJudicialHistorico processoJudicialHistoricoFk) {
+        this.processoJudicialHistoricoFk = processoJudicialHistoricoFk;
     }
 
     public TipoProcesso getTipoDeProcessoFk() {
@@ -107,28 +106,11 @@ public class VinculoProcessual implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof VinculoProcessual)) {
+        if (!(object instanceof VinculoProcessualHistorico)) {
             return false;
         }
-        VinculoProcessual other = (VinculoProcessual) object;
+        VinculoProcessualHistorico other = (VinculoProcessualHistorico) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-    
-    public boolean equalsValues(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final VinculoProcessual other = (VinculoProcessual) obj;
-        if (!Objects.equals(this.processo, other.processo)) {
-            return false;
-        }
-        if (!Objects.equals(this.tipoDeProcessoFk, other.tipoDeProcessoFk)) {
             return false;
         }
         return true;
@@ -136,7 +118,7 @@ public class VinculoProcessual implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.VinculoProcessual[ id=" + id + " ]";
+        return "entidade.VinculoProcessualHistorico[ id=" + id + " ]";
     }
     
 }

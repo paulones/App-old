@@ -19,6 +19,7 @@ import entidade.VinculoProcessual;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -212,4 +213,16 @@ public class VinculoProcessualDAO implements Serializable {
         }
     }
     
+    public void destroyByPJUD(Integer idPjud){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from vinculo_processual "
+                    + "where processo_judicial_fk = '" + idPjud + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
 }

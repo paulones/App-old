@@ -66,6 +66,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesBem = :outrasInformacoesBem")})
 public class ProcessoJudicial implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollection;
     @Basic(optional = false)
     @NotNull
     @Column(name = "status")
@@ -453,8 +455,8 @@ public class ProcessoJudicial implements Serializable {
         return hash;
     }
 
-
-    public boolean changedValues(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
@@ -462,6 +464,32 @@ public class ProcessoJudicial implements Serializable {
             return false;
         }
         final ProcessoJudicial other = (ProcessoJudicial) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ProcessoJudicial other = (ProcessoJudicial) obj;
+        if (!Objects.equals(this.outrasInformacoesAtoProcessual, other.outrasInformacoesAtoProcessual)) {
+            return false;
+        }
+        if (!Objects.equals(this.atoProcessual, other.atoProcessual)) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoDeRecursoFk, other.tipoDeRecursoFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.recurso, other.recurso)) {
+            return false;
+        }
         if (!Objects.equals(this.numeroDoProcesso, other.numeroDoProcesso)) {
             return false;
         }
@@ -546,17 +574,9 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.outrasInformacoesBem, other.outrasInformacoesBem)) {
             return false;
         }
-        if (!Objects.equals(this.recurso, other.recurso)) {
-            return false;
-        }
-        if (!Objects.equals(this.tipoDeRecursoFk, other.tipoDeRecursoFk)) {
-            return false;
-        }
-        if (!Objects.equals(this.atoProcessual, other.atoProcessual)) {
-            return false;
-        }
         return true;
     }
+
     
 
     @Override
@@ -619,6 +639,15 @@ public class ProcessoJudicial implements Serializable {
 
     public void setUsuarioFk(Usuario usuarioFk) {
         this.usuarioFk = usuarioFk;
+    }
+
+    @XmlTransient
+    public Collection<ProcessoJudicialHistorico> getProcessoJudicialHistoricoCollection() {
+        return processoJudicialHistoricoCollection;
+    }
+
+    public void setProcessoJudicialHistoricoCollection(Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollection) {
+        this.processoJudicialHistoricoCollection = processoJudicialHistoricoCollection;
     }
 
 }

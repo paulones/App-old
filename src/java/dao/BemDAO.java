@@ -18,6 +18,7 @@ import entidade.ProcessoJudicial;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -181,6 +182,32 @@ public class BemDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Bem> findAllByPJUD(ProcessoJudicial processoJudicial){
+        EntityManager em = getEntityManager();
+        try {
+            List<Bem> processoJudicialList = (List<Bem>) em.createNativeQuery("select * from bem "
+                        + "where processo_judicial_fk = '"+processoJudicial.getId()+"' ", Bem.class).getResultList();
+            return processoJudicialList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void destroyByPJUD(Integer idPjud){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from bem "
+                    + "where processo_judicial_fk = '" + idPjud + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
         } finally {
             em.close();
         }

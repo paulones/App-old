@@ -7,7 +7,6 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,41 +26,35 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author paulones
  */
 @Entity
-@Table(name = "bem")
+@Table(name = "bem_historico")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Bem.findAll", query = "SELECT b FROM Bem b"),
-    @NamedQuery(name = "Bem.findById", query = "SELECT b FROM Bem b WHERE b.id = :id"),
-    @NamedQuery(name = "Bem.findByDescricao", query = "SELECT b FROM Bem b WHERE b.descricao = :descricao"),
-    @NamedQuery(name = "Bem.findByDataDoAto", query = "SELECT b FROM Bem b WHERE b.dataDoAto = :dataDoAto")})
-public class Bem implements Serializable {
+    @NamedQuery(name = "BemHistorico.findAll", query = "SELECT b FROM BemHistorico b"),
+    @NamedQuery(name = "BemHistorico.findById", query = "SELECT b FROM BemHistorico b WHERE b.id = :id"),
+    @NamedQuery(name = "BemHistorico.findByDescricao", query = "SELECT b FROM BemHistorico b WHERE b.descricao = :descricao"),
+    @NamedQuery(name = "BemHistorico.findByDataDoAto", query = "SELECT b FROM BemHistorico b WHERE b.dataDoAto = :dataDoAto")})
+public class BemHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Size(min = 1, max = 300)
+    @Size(max = 300)
     @Column(name = "descricao")
     private String descricao;
     @Size(max = 10)
     @Column(name = "data_do_ato")
     private String dataDoAto;
-    @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
+    @JoinColumn(name = "processo_judicial_historico_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private ProcessoJudicial processoJudicialFk;
+    private ProcessoJudicialHistorico processoJudicialHistoricoFk;
 
-    public Bem() {
+    public BemHistorico() {
     }
 
-    public Bem(Integer id) {
+    public BemHistorico(Integer id) {
         this.id = id;
-    }
-
-    public Bem(Integer id, String descricao) {
-        this.id = id;
-        this.descricao = descricao;
     }
 
     public Integer getId() {
@@ -89,12 +81,12 @@ public class Bem implements Serializable {
         this.dataDoAto = dataDoAto;
     }
 
-    public ProcessoJudicial getProcessoJudicialFk() {
-        return processoJudicialFk;
+    public ProcessoJudicialHistorico getProcessoJudicialHistoricoFk() {
+        return processoJudicialHistoricoFk;
     }
 
-    public void setProcessoJudicialFk(ProcessoJudicial processoJudicialFk) {
-        this.processoJudicialFk = processoJudicialFk;
+    public void setProcessoJudicialHistoricoFk(ProcessoJudicialHistorico processoJudicialHistoricoFk) {
+        this.processoJudicialHistoricoFk = processoJudicialHistoricoFk;
     }
 
     @Override
@@ -107,22 +99,11 @@ public class Bem implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bem)) {
+        if (!(object instanceof BemHistorico)) {
             return false;
         }
-        Bem other = (Bem) object;
+        BemHistorico other = (BemHistorico) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
-    public boolean equalsValues(Object obj) {
-        final Bem other = (Bem) obj;
-        if (!Objects.equals(this.descricao, other.descricao)) {
-            return false;
-        }
-        if (!Objects.equals(this.dataDoAto, other.dataDoAto)) {
             return false;
         }
         return true;
@@ -130,7 +111,7 @@ public class Bem implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.Bem[ id=" + id + " ]";
+        return "entidade.BemHistorico[ id=" + id + " ]";
     }
     
 }

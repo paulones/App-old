@@ -84,8 +84,6 @@ public class PessoaFisicaBean implements Serializable {
     private List<Cidade> cidadeEleList;
     private List<Nacionalidade> nacionalidadeList;
     private List<EstadoCivil> estadoCivilList;
-    private List<PessoaFisica> pessoaFisicaList;
-    private List<Endereco> enderecoList;
     private List<PessoaJuridica> pessoaJuridicaList;
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
     private List<Funcao> funcaoList;
@@ -105,7 +103,6 @@ public class PessoaFisicaBean implements Serializable {
     private PaisBO paisBO;
     private EstadoBO estadoBO;
     private CidadeBO cidadeBO;
-    private UsuarioBO usuarioBO;
     private PessoaFisicaHistoricoBO pessoaFisicaHistoricoBO;
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
@@ -256,11 +253,12 @@ public class PessoaFisicaBean implements Serializable {
 
     public void cadastrar() throws IOException {
         UsuarioBO usuarioBO = new UsuarioBO();
+        boolean error = false;
+        PessoaFisica pfDB = pessoaFisicaBO.findDuplicates(pessoaFisica);
         if (!edit) {
             /*  
              Cadastrar nova Pessoa Física
              */
-            PessoaFisica pfDB = pessoaFisicaBO.findDuplicates(pessoaFisica);
             if (pfDB == null || pessoaFisica.getCpf().isEmpty()) { // CPF novo
                 if (pessoaFisica.getRgOrgaoEmissor() != null) {
                     pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
@@ -284,21 +282,13 @@ public class PessoaFisicaBean implements Serializable {
                 endereco = new Endereco();
                 pessoaFisicaJuridicaList = new ArrayList<>();
             } else { // CPF previamente cadastrado
-                register = "fail";
-                String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
-                String message = "Já existe usuário cadastrado com o CPF " + cpf;
-                message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
-                message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+                error = true;
             }
         } else {
             /*  
              Alterar Pessoa Física existente
              */
-            PessoaFisica pfDB = pessoaFisicaBO.findByCPF(pessoaFisica.getCpf());
-            if (pfDB == null || pessoaFisica.equals(pfDB)){ 
-                
-            
+            if (pfDB == null || pessoaFisica.equals(pfDB)) {
                 if (pessoaFisica.getRgOrgaoEmissor() != null) {
                     pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
                 }
@@ -351,13 +341,16 @@ public class PessoaFisicaBean implements Serializable {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 }
             } else { // CPF previamente cadastrado
-                register = "fail";
-                String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
-                String message = "Já existe usuário cadastrado com o CPF " + cpf;
-                message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
-                message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+                error = true;
             }
+        }
+        if (error) {
+            register = "fail";
+            String cpf = pfDB.getCpf().substring(0, 3) + "." + pfDB.getCpf().substring(3, 6) + "." + pfDB.getCpf().substring(6, 9) + "-" + pfDB.getCpf().substring(9);
+            String message = "Já existe usuário cadastrado com o CPF " + cpf;
+            message += pfDB.getNome() != null ? "\nNome: " + pfDB.getNome() : "";
+            message += pfDB.getRg() != null ? "\nRG: " + pfDB.getRg() : "";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
     }
 
@@ -384,7 +377,7 @@ public class PessoaFisicaBean implements Serializable {
         if (edit) {
             pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         }
-        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjId))); 
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjId)));
         pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
