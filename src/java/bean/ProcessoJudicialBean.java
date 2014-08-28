@@ -347,67 +347,36 @@ public class ProcessoJudicialBean implements Serializable {
         if (error) { // Exibição dinâmica de erros
             register = "fail";
             String message = "";
-            if (!edit) {
-                if (pjudDBProcess != null) {
-                    message += "Já existe um processo cadastrado com o número " + pjudDBProcess.getNumeroDoProcesso();
-                    message += "\nComarca: " + pjudDBProcess.getComarca();
-                    message += "\nNº da CDA: " + pjudDBProcess.getNumeroDaCda();
-                    if (pjudDBProcess.getExecutado().equals("PF")) {
-                        PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjudDBProcess.getExecutadoFk());
-                        message += "\nExecutado: " + pf.getNome();
-                        message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
-                    } else {
-                        PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjudDBProcess.getExecutadoFk());
-                        message += "\nExecutado: " + pj.getNome();
-                        message += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
-                    }
-                } else {
-                    message += "Já existe um processo cadastrado com a CDA de número " + pjudDBCDA.getNumeroDaCda();
-                    message += "\nComarca: " + pjudDBCDA.getComarca();
-                    message += "\nNº do Processo: " + pjudDBCDA.getNumeroDoProcesso();
-                    if (pjudDBCDA.getExecutado().equals("PF")) {
-                        PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjudDBCDA.getExecutadoFk());
-                        message += "\nExecutado: " + pf.getNome();
-                        message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
-                    } else {
-                        PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjudDBCDA.getExecutadoFk());
-                        message += "\nExecutado: " + pj.getNome();
-                        message += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
-                    }
-                }
+            if ((pjudDBProcess != null && pjudDBCDA == null) || (edit && processoJudicial.equals(pjudDBCDA))) {
+                message += "Já existe um Processo Judicial cadastrado com o número " + pjudDBProcess.getNumeroDoProcesso();
+                message += "\nNº da CDA: " + pjudDBProcess.getNumeroDaCda();
+                message += prepararMensagemDeErro(pjudDBProcess);
+            } else if ((pjudDBCDA != null && pjudDBProcess == null) || (edit && processoJudicial.equals(pjudDBProcess))) {
+                message += "Já existe um Processo Judicial cadastrado com CDA de número " + pjudDBCDA.getNumeroDaCda();
+                message += "\nNº do Processo: " + pjudDBCDA.getNumeroDoProcesso();
+                message += prepararMensagemDeErro(pjudDBCDA);
+            } else if (pjudDBCDA.equals(pjudDBProcess)){
+                message += "Já existe um Processo Judicial cadastrado com o número " +pjudDBProcess.getNumeroDoProcesso()+ " e CDA de número " + pjudDBProcess.getNumeroDaCda();
+                message += prepararMensagemDeErro(pjudDBProcess);
             } else {
-                if (processoJudicial.equals(pjudDBCDA)) {
-                    message = "Já existe um processo cadastrado com número " + pjudDBProcess.getNumeroDoProcesso();
-                    message += "\nComarca: " + pjudDBProcess.getComarca();
-                    message += "\nNº da CDA: " + pjudDBProcess.getNumeroDaCda();
-                    if (pjudDBProcess.getExecutado().equals("PF")) {
-                        PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjudDBProcess.getExecutadoFk());
-                        message += "\nExecutado: " + pf.getNome();
-                        message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
-                    } else {
-                        PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjudDBProcess.getExecutadoFk());
-                        message += "\nExecutado: " + pj.getNome();
-                        message += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
-                    }
-                } else if (processoJudicial.equals(pjudDBProcess)) {
-                    message = "Já existe um processo cadastrado com a CDA de número " + pjudDBCDA.getNumeroDaCda();
-                    message += "\nComarca: " + pjudDBCDA.getComarca();
-                    message += "\nNº do Processo: " + pjudDBCDA.getNumeroDoProcesso();
-                    if (pjudDBCDA.getExecutado().equals("PF")) {
-                        PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjudDBCDA.getExecutadoFk());
-                        message += "\nExecutado: " + pf.getNome();
-                        message += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
-                    } else {
-                        PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjudDBCDA.getExecutadoFk());
-                        message += "\nExecutado: " + pj.getNome();
-                        message += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
-                    }
-                } else {
-                    message = "Já existe um processo cadastrado com número do processo " + processoJudicial.getNumeroDoProcesso() + " e/ou CDA de número " + processoJudicial.getNumeroDaCda();
-                }
+                message += "Já existem Processos Judiciais cadastrados com número " + processoJudicial.getNumeroDoProcesso() + " e CDA de número " + processoJudicial.getNumeroDaCda();
             }
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
+    }
+    
+    private String prepararMensagemDeErro(ProcessoJudicial processoJudicial){
+        String mensagem = "\nComarca: " + processoJudicial.getComarca();
+        if (processoJudicial.getExecutado().equals("PF")) {
+                    PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+                    mensagem += "\nExecutado: " + pf.getNome();
+                    mensagem += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
+                } else {
+                    PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+                    mensagem += "\nExecutado: " + pj.getNome();
+                    mensagem += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
+                }
+        return mensagem;
     }
 
     public void prepararHistorico(ProcessoJudicial processoJudicial) {
