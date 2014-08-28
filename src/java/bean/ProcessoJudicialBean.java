@@ -153,8 +153,12 @@ public class ProcessoJudicialBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                     } else {
                         edit = true;
-                        bemList = (List<Bem>) processoJudicial.getBemCollection();
-                        vinculoProcessualList = (List<VinculoProcessual>) processoJudicial.getVinculoProcessualCollection();
+                        for (Bem bem : processoJudicial.getBemCollection()){
+                            bemList.add(bem);
+                        }
+                        for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()){
+                            vinculoProcessualList.add(vinculoProcessual);
+                        }
                         vinculos = vinculoProcessualList.size();
                         bens = bemList.size();
                         if (processoJudicial.getExecutado().equals("PF")) {
@@ -369,14 +373,6 @@ public class ProcessoJudicialBean implements Serializable {
                     UtilBO utilBO = new UtilBO();
                     Timestamp timestamp = utilBO.findServerTime();
                     processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-//                    for (Bem bem : bemList) {
-//                        bem.setProcessoJudicialFk(processoJudicial);
-//                    }
-//                    for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
-//                        vinculoProcessual.setProcessoJudicialFk(processoJudicial);
-//                    }
-                    processoJudicial.setBemCollection(bemList);
-                    processoJudicial.setVinculoProcessualCollection(vinculoProcessualList);
                     processoJudicialBO.edit(processoJudicial);
                     processoJudicialHistorico.setDataDeModificacao(timestamp);
                     processoJudicialHistoricoBO.create(processoJudicialHistorico);
