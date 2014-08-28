@@ -335,7 +335,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <h:commandLink class="vinculos btn blue-chambray">
-                                                                <f:ajax execute="vinculos" listener="#{processoJudicialBean.adicionarVinculosProcessuais}" render="vinculo"/>
+                                                                <f:ajax execute="vinculos vinculo" listener="#{processoJudicialBean.adicionarVinculosProcessuais}" render="vinculo"/>
                                                                 <i class="fa fa-plus-circle"> Adicionar Campos</i>
                                                             </h:commandLink>
                                                         </div>
@@ -1343,7 +1343,7 @@
                                                         </div>
                                                         <div class="col-md-3">
                                                             <h:commandLink class="bens btn blue-chambray">
-                                                                <f:ajax execute="bens" listener="#{processoJudicialBean.adicionarBens}" render="bem"/>
+                                                                <f:ajax execute="bens bem" listener="#{processoJudicialBean.adicionarBens}" render="bem"/>
                                                                 <i class="fa fa-plus-circle"> Adicionar Campos</i>
                                                             </h:commandLink>
                                                         </div>

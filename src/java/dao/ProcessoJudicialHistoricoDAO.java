@@ -9,22 +9,23 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import entidade.BemHistorico;
 import entidade.ProcessoJudicial;
+import entidade.ProcessoJudicialHistorico;
 import entidade.TipoRecurso;
 import entidade.Usuario;
-import entidade.BemHistorico;
-import entidade.ProcessoJudicialHistorico;
+import entidade.VinculoProcessualHistorico;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import entidade.VinculoProcessualHistorico;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -360,4 +361,16 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
         }
     }
     
+    public List<ProcessoJudicialHistorico> findAllByPJUD(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<ProcessoJudicialHistorico> processoJudicialHistoricoList = (List<ProcessoJudicialHistorico>) em.createNativeQuery("select * from processo_judicial_historico "
+                        + "where processo_judicial_fk = '"+id+"' order by data_de_modificacao desc", ProcessoJudicialHistorico.class).getResultList();
+            return processoJudicialHistoricoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

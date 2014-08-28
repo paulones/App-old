@@ -9,6 +9,8 @@ package bo;
 import dao.ProcessoJudicialHistoricoDAO;
 import entidade.ProcessoJudicialHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,5 +46,14 @@ public class ProcessoJudicialHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<ProcessoJudicialHistorico> findAllByPJUD(Integer id){
+        try { 
+            return processoJudicialHistoricoDAO.findAllByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<ProcessoJudicialHistorico>();
     }
 }

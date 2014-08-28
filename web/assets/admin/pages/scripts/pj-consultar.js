@@ -103,8 +103,8 @@ var PJCon = function() {
                     "targets": [0, 2, 3]
                 }],
             "order": [
-                [1, 'desc']
             ],
+            "orderClasses": false,
             "language": {
                 "emptyTable": "Nenhum hist&oacute;rico registrado.",
                 "zeroRecords": "Nenhum hist&oacute;rico encontrado.",

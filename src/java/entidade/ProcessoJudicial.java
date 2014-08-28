@@ -559,7 +559,7 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.notificacaoAdministrativaDataDoAto, other.notificacaoAdministrativaDataDoAto)) {
             return false;
         }
-        if (this.executadoFk != other.executadoFk) {
+        if (!Objects.equals(this.executadoFk, other.executadoFk)) {
             return false;
         }
         if (!Objects.equals(this.executado, other.executado)) {

@@ -42,7 +42,6 @@ public class VinculoProcessual implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "processo")
     private String processo;

@@ -23,6 +23,7 @@ import entidade.BemHistorico;
 import entidade.Endereco;
 import entidade.EnderecoPessoa;
 import entidade.Executado;
+import entidade.ExecutadoHistorico;
 import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
@@ -37,6 +38,7 @@ import java.sql.Timestamp;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -64,6 +66,7 @@ public class ProcessoJudicialBean implements Serializable {
     private VinculoProcessual vinculoProcessual;
     private ProcessoJudicial oldProcessoJudicial;
     private ProcessoJudicialHistorico processoJudicialHistorico;
+    private ExecutadoHistorico executadoHistorico;
 
     private List<PessoaFisica> pessoaFisicaList;
     private List<PessoaJuridica> pessoaJuridicaList;
@@ -73,6 +76,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<VinculoProcessual> vinculoProcessualList;
     private List<BemHistorico> bemHistoricoList;
     private List<VinculoProcessualHistorico> vinculoProcessualHistoricoList;
+    private List<ExecutadoHistorico> executadoHistoricoList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -175,6 +179,38 @@ public class ProcessoJudicialBean implements Serializable {
                     history = false;
                 } else {                                    // Consulta histórico
                     Integer id = Integer.valueOf(request.getParameter("id"));
+                    processoJudicial = processoJudicialBO.findProcessoJudicial(id);
+                    if (processoJudicial == null) {
+                        history = false;
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+                    } else {
+                        history = true;
+                        executadoHistoricoList = new ArrayList<>();
+                        EnderecoPessoa enderecoPessoa = new EnderecoPessoa();
+                        // Inserção do registro atual
+                        if (processoJudicial.getExecutado().equals("PF")) {
+                            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+                            enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+                        } else if (processoJudicial.getExecutado().equals("PJ")) {
+                            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+                            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+                        }
+                        executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa);
+                        executadoHistoricoList.add(executadoHistorico);
+                        // Inserção dos históricos
+                        List<ProcessoJudicialHistorico> processoJudicialHistoricoList = processoJudicialHistoricoBO.findAllByPJUD(id);
+                        for (ProcessoJudicialHistorico pjh : processoJudicialHistoricoList) {
+                            if (pjh.getExecutado().equals("PF")) {
+                                PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
+                                enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+                            } else if (pjh.getExecutado().equals("PJ")) {
+                                PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
+                                enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+                            }
+                            executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa);
+                            executadoHistoricoList.add(executadoHistorico);
+                        }
+                    }
                 }
             }
         }
@@ -188,18 +224,29 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void adicionarBens() {
-        bemList = new ArrayList<>();
-        for (int i = 0; i < bens; i++) {
-            bem = new Bem();
-            bemList.add(bem);
+        if (bens > bemList.size()) {
+            for (int i = 0; i < bens - bemList.size(); i++) {
+                bem = new Bem();
+                bemList.add(bem);
+            }
+        } else if (bens < bemList.size()) {
+            while (bemList.size() > bens){
+                bemList.remove(bemList.size()-1);
+            }
         }
+
     }
 
     public void adicionarVinculosProcessuais() {
-        vinculoProcessualList = new ArrayList<>();
-        for (int i = 0; i < vinculos; i++) {
-            vinculoProcessual = new VinculoProcessual();
-            vinculoProcessualList.add(vinculoProcessual);
+        if (vinculos > vinculoProcessualList.size()) {
+            for (int i = 0; i < vinculos - vinculoProcessualList.size(); i++) {
+                vinculoProcessual = new VinculoProcessual();
+                vinculoProcessualList.add(vinculoProcessual);
+            }
+        } else if (vinculos < vinculoProcessualList.size()) {
+            while (vinculoProcessualList.size() > vinculos){
+                vinculoProcessualList.remove(vinculoProcessualList.size()-1);
+            }
         }
     }
 
@@ -238,12 +285,12 @@ public class ProcessoJudicialBean implements Serializable {
         boolean error = false;
         ProcessoJudicial pjudDBCDA = processoJudicialBO.findByCDA(processoJudicial);
         ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial);
+        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
         if (!edit) {
             /*  
              Cadastrar novo Processo Judicial
              */
             if (pjudDBCDA == null && pjudDBProcess == null) { // Processo novo
-                processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
                 processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
                 processoJudicial.setStatus('A');
                 processoJudicialBO.create(processoJudicial);
@@ -272,14 +319,18 @@ public class ProcessoJudicialBean implements Serializable {
              */
             if ((pjudDBCDA == null || processoJudicial.equals(pjudDBCDA)) && (pjudDBProcess == null || processoJudicial.equals(pjudDBProcess))) {
                 boolean identical = true;
-                processoJudicial.setBemCollection(bemList);
-                processoJudicial.setVinculoProcessualCollection(vinculoProcessualList);
-                if (oldProcessoJudicial.getBemCollection().size() != processoJudicial.getBemCollection().size()) {
+                for (Iterator<Bem> iterator = bemList.iterator(); iterator.hasNext();) {
+                    Bem bem = iterator.next();
+                    if (bem.getDescricao() == null && bem.getDataDoAto() == null) {
+                        iterator.remove();
+                    }
+                }
+                if (oldProcessoJudicial.getBemCollection().size() != bemList.size()) {
                     identical = false;
                 } else {
-                    for (Bem bem : processoJudicial.getBemCollection()) {
+                    for (Bem bem : bemList) {
                         for (Bem oldBem : oldProcessoJudicial.getBemCollection()) {
-                            if (bem.getDescricao().equals(oldBem.getDescricao())) {
+                            if (bem.equalsValues(oldBem)) {
                                 identical = true;
                                 break;
                             } else {
@@ -292,10 +343,10 @@ public class ProcessoJudicialBean implements Serializable {
                     }
                 }
                 if (identical) {
-                    if (oldProcessoJudicial.getVinculoProcessualCollection().size() != processoJudicial.getVinculoProcessualCollection().size()) {
+                    if (oldProcessoJudicial.getVinculoProcessualCollection().size() != vinculoProcessualList.size()) {
                         identical = false;
                     } else {
-                        for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()) {
+                        for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
                             for (VinculoProcessual oldVinculoProcessual : oldProcessoJudicial.getVinculoProcessualCollection()) {
                                 if (vinculoProcessual.equalsValues(oldVinculoProcessual)) {
                                     identical = true;
@@ -323,10 +374,12 @@ public class ProcessoJudicialBean implements Serializable {
                     processoJudicialHistoricoBO.create(processoJudicialHistorico);
                     bemBO.destroyByPJUD(processoJudicial.getId());
                     for (Bem bem : bemList) {
+                        bem.setProcessoJudicialFk(processoJudicial);
                         bemBO.create(bem);
                     }
                     vinculoProcessualBO.destroyByPJUD(processoJudicial.getId());
                     for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
+                        vinculoProcessual.setProcessoJudicialFk(processoJudicial);
                         vinculoProcessualBO.create(vinculoProcessual);
                     }
                     for (BemHistorico bh : bemHistoricoList) {
@@ -355,8 +408,8 @@ public class ProcessoJudicialBean implements Serializable {
                 message += "Já existe um Processo Judicial cadastrado com CDA de número " + pjudDBCDA.getNumeroDaCda();
                 message += "\nNº do Processo: " + pjudDBCDA.getNumeroDoProcesso();
                 message += prepararMensagemDeErro(pjudDBCDA);
-            } else if (pjudDBCDA.equals(pjudDBProcess)){
-                message += "Já existe um Processo Judicial cadastrado com o número " +pjudDBProcess.getNumeroDoProcesso()+ " e CDA de número " + pjudDBProcess.getNumeroDaCda();
+            } else if (pjudDBCDA.equals(pjudDBProcess)) {
+                message += "Já existe um Processo Judicial cadastrado com o número " + pjudDBProcess.getNumeroDoProcesso() + " e CDA de número " + pjudDBProcess.getNumeroDaCda();
                 message += prepararMensagemDeErro(pjudDBProcess);
             } else {
                 message += "Já existem Processos Judiciais cadastrados com número " + processoJudicial.getNumeroDoProcesso() + " e CDA de número " + processoJudicial.getNumeroDaCda();
@@ -364,18 +417,18 @@ public class ProcessoJudicialBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }
     }
-    
-    private String prepararMensagemDeErro(ProcessoJudicial processoJudicial){
+
+    private String prepararMensagemDeErro(ProcessoJudicial processoJudicial) {
         String mensagem = "\nComarca: " + processoJudicial.getComarca();
         if (processoJudicial.getExecutado().equals("PF")) {
-                    PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
-                    mensagem += "\nExecutado: " + pf.getNome();
-                    mensagem += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
-                } else {
-                    PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
-                    mensagem += "\nExecutado: " + pj.getNome();
-                    mensagem += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
-                }
+            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+            mensagem += "\nExecutado: " + pf.getNome();
+            mensagem += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
+        } else {
+            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+            mensagem += "\nExecutado: " + pj.getNome();
+            mensagem += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
+        }
         return mensagem;
     }
 
@@ -435,6 +488,72 @@ public class ProcessoJudicialBean implements Serializable {
             vinculoProcessualHistorico.setTipoDeProcessoFk(vinculoProcessual.getTipoDeProcessoFk());
             vinculoProcessualHistoricoList.add(vinculoProcessualHistorico);
         }
+    }
+
+    private ExecutadoHistorico prepararRegistroAtual(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa) {
+        /*
+         Montar registro atual como uma entidade de histórico para facilitar o ui:repeat do form
+         */
+        ExecutadoHistorico executadoHistorico = new ExecutadoHistorico();
+        processoJudicialHistorico = new ProcessoJudicialHistorico();
+        bemHistoricoList = new ArrayList<>();
+        vinculoProcessualHistoricoList = new ArrayList<>();
+
+        processoJudicialHistorico.setAtoProcessual(processoJudicial.getAtoProcessual());
+        processoJudicialHistorico.setComarca(processoJudicial.getComarca());
+        processoJudicialHistorico.setDataDeInscricao(processoJudicial.getDataDeInscricao());
+        processoJudicialHistorico.setDecisaoDoJuiz(processoJudicial.getDecisaoDoJuiz());
+        processoJudicialHistorico.setDecisaoDoJuizDataDoAto(processoJudicial.getDecisaoDoJuizDataDoAto());
+        processoJudicialHistorico.setDespachoInicial(processoJudicial.getDespachoInicial());
+        processoJudicialHistorico.setDespachoInicialDataDoAto(processoJudicial.getDespachoInicialDataDoAto());
+        processoJudicialHistorico.setDiscriminacaoDoCreditoImposto(processoJudicial.getDiscriminacaoDoCreditoImposto());
+        processoJudicialHistorico.setDiscriminacaoDoCreditoMulta(processoJudicial.getDiscriminacaoDoCreditoMulta());
+        processoJudicialHistorico.setDistribuicao(processoJudicial.getDistribuicao());
+        processoJudicialHistorico.setDistribuicaoDataDoAto(processoJudicial.getDistribuicaoDataDoAto());
+        processoJudicialHistorico.setExecutado(processoJudicial.getExecutado());
+        processoJudicialHistorico.setExecutadoFk(processoJudicial.getExecutadoFk());
+        processoJudicialHistorico.setFatosGeradores(processoJudicial.getFatosGeradores());
+        processoJudicialHistorico.setFundamentacao(processoJudicial.getFundamentacao());
+        processoJudicialHistorico.setGrupoDeEspecializacao(processoJudicial.getGrupoDeEspecializacao());
+        processoJudicialHistorico.setNotificacaoAdministrativa(processoJudicial.getNotificacaoAdministrativa());
+        processoJudicialHistorico.setNotificacaoAdministrativaDataDoAto(processoJudicial.getNotificacaoAdministrativaDataDoAto());
+        processoJudicialHistorico.setNumeroDaCda(processoJudicial.getNumeroDaCda());
+        processoJudicialHistorico.setNumeroDoProcesso(processoJudicial.getNumeroDoProcesso());
+        processoJudicialHistorico.setNumeroDoProcessoAnterior(processoJudicial.getNumeroDoProcessoAnterior());
+        processoJudicialHistorico.setOutrasInformacoesAtoProcessual(processoJudicial.getOutrasInformacoesAtoProcessual());
+        processoJudicialHistorico.setOutrasInformacoesBem(processoJudicial.getOutrasInformacoesBem());
+        processoJudicialHistorico.setOutrasInformacoesExecutado(processoJudicial.getOutrasInformacoesExecutado());
+        processoJudicialHistorico.setOutrasInformacoesProcesso(processoJudicial.getOutrasInformacoesProcesso());
+        processoJudicialHistorico.setProcessoJudicialFk(processoJudicial);
+        processoJudicialHistorico.setProcurador(processoJudicial.getProcurador());
+        processoJudicialHistorico.setRecurso(processoJudicial.getRecurso());
+        processoJudicialHistorico.setTipoDeRecursoFk(processoJudicial.getTipoDeRecursoFk());
+        processoJudicialHistorico.setUsuarioFk(processoJudicial.getUsuarioFk());
+        processoJudicialHistorico.setValorAtualizado(processoJudicial.getValorAtualizado());
+        processoJudicialHistorico.setValorDaCausa(processoJudicial.getValorDaCausa());
+        processoJudicialHistorico.setVara(processoJudicial.getVara());
+        processoJudicialHistorico.setVaraAnterior(processoJudicial.getVaraAnterior());
+
+        for (Bem bem : (List<Bem>) processoJudicial.getBemCollection()) {
+            BemHistorico bemHistorico = new BemHistorico();
+            bemHistorico.setDataDoAto(bem.getDataDoAto());
+            bemHistorico.setDescricao(bem.getDescricao());
+            bemHistoricoList.add(bemHistorico);
+        }
+        processoJudicialHistorico.setBemHistoricoCollection(bemHistoricoList);
+
+        for (VinculoProcessual vinculoProcessual : (List<VinculoProcessual>) processoJudicial.getVinculoProcessualCollection()) {
+            VinculoProcessualHistorico vinculoProcessualHistorico = new VinculoProcessualHistorico();
+            vinculoProcessualHistorico.setProcesso(vinculoProcessual.getProcesso());
+            vinculoProcessualHistorico.setTipoDeProcessoFk(vinculoProcessual.getTipoDeProcessoFk());
+            vinculoProcessualHistoricoList.add(vinculoProcessualHistorico);
+        }
+        processoJudicialHistorico.setVinculoProcessualHistoricoCollection(vinculoProcessualHistoricoList);
+
+        executadoHistorico.setProcessoJudicialHistorico(processoJudicialHistorico);
+        executadoHistorico.setEnderecoPessoa(enderecoPessoa);
+
+        return executadoHistorico;
     }
 
     public ProcessoJudicial getProcessoJudicial() {
@@ -603,6 +722,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setRedirect(String redirect) {
         this.redirect = redirect;
+    }
+
+    public List<ExecutadoHistorico> getExecutadoHistoricoList() {
+        return executadoHistoricoList;
+    }
+
+    public void setExecutadoHistoricoList(List<ExecutadoHistorico> executadoHistoricoList) {
+        this.executadoHistoricoList = executadoHistoricoList;
     }
 
 }
