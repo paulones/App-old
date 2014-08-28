@@ -369,6 +369,14 @@ public class ProcessoJudicialBean implements Serializable {
                     UtilBO utilBO = new UtilBO();
                     Timestamp timestamp = utilBO.findServerTime();
                     processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+//                    for (Bem bem : bemList) {
+//                        bem.setProcessoJudicialFk(processoJudicial);
+//                    }
+//                    for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
+//                        vinculoProcessual.setProcessoJudicialFk(processoJudicial);
+//                    }
+                    processoJudicial.setBemCollection(bemList);
+                    processoJudicial.setVinculoProcessualCollection(vinculoProcessualList);
                     processoJudicialBO.edit(processoJudicial);
                     processoJudicialHistorico.setDataDeModificacao(timestamp);
                     processoJudicialHistoricoBO.create(processoJudicialHistorico);

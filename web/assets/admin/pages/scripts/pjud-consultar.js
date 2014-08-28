@@ -1,5 +1,5 @@
 var PjudCon = function() {
-    
+
     var element;
 
     var initTable = function() {
@@ -59,14 +59,14 @@ var PjudCon = function() {
                 element = $(this);
             }
         });
-        
+
         var index;
         table.on('click', '.button-delete', function(e) {
             e.preventDefault();
             index = $('.button-delete').index(this);
             $('.delete-modal-activator').click();
         });
-        
+
         $('.cancel').click(function(e) {
             e.preventDefault();
         });
@@ -77,7 +77,7 @@ var PjudCon = function() {
         });
 
     }
-    
+
     var initHistoryTable = function() {
         var table = $('#table');
         var tableDetails = $('.vinculations');
@@ -145,23 +145,24 @@ var PjudCon = function() {
             }
         });
     }
-    
+
     return {
         init: function() {
-            
+
             if (window.location.search != "") {
                 var atual;
                 initHistoryTable();
                 $.each($('.data-de-modificacao'), function() {
                     if ($(this).html().indexOf('Atual') !== -1) {
-                        $(this).parent().find('.form-body').addClass('current');
+                        $(this).parent().find('.main').addClass('current');
                         $(this).parent().children('.description').removeClass('description');
                         atual = $(this).parent().find('.form-body');
                     } else {
-                        $(this).parent().find('.form-body').addClass('past');
+                        $(this).parent().find('.main').addClass('past');
                     }
                 });
                 $.each($('.past'), function() {
+                    var history = this; 
                     var description = "";
                     var processo = false;
                     var executado = false;
@@ -181,49 +182,87 @@ var PjudCon = function() {
                             }
                         }
                     });
-//                    var upper = this;
-//                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length) {
-//                        bens = true;
-//                    }
-//                    $.each($(atual).find('.rows tr'), function() {
-//                        var atual = this;
-//                        var exists = false;
-//                        $.each($(upper).find('.rows tr'), function() {
-//                            $(this).find('td').children().css("color", "#a94442");
-//                            $(this).find('td').css("color", "#a94442");
-//                            var cnpjAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
-//                            var cnpjHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
-//                            if (cnpjAtual === cnpjHistorico) {
-//                                $(this).find('td').children().css("color", "black");
-//                                $(this).find('td').css("color", "black");
-//                                exists = true;
-//                                $.each($(this).find('td'), function(index) {
-//                                    if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
-//                                        $(this).css("color", "#a94442");
-//                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
-//                                        bens = true;
-//                                    }
-//                                });
-//                            } else {
-//                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
-//                                    bens = true;
-//                                }
-//                            }
-//                        });
-//                        if (!exists) {
-//                            bens = true;
-//                        }
-//                    });
+                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length) {
+                        executado = true;
+                    }
+                    $.each($(atual).find('.rows tr'), function() {
+                        var atual = this;
+                        var exists = false;
+                        $.each($(history).find('.rows tr'), function() {
+                            $(this).find('td').children().css("color", "#a94442");
+                            $(this).find('td').css("color", "#a94442");
+                            var cpfcnpjAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
+                            var cpfcnpjHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
+                            if (cpfcnpjAtual === cpfcnpjHistorico) {
+                                $(this).find('td').children().css("color", "black");
+                                $(this).find('td').css("color", "black");
+                                exists = true;
+                                $.each($(this).find('td'), function(index) {
+                                    if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                        $(this).css("color", "#a94442");
+                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                        executado = true;
+                                    }
+                                });
+                            } else {
+                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                    executado = true;
+                                }
+                            }
+                        });
+                        if (!exists) {
+                            executado = true;
+                        }
+                    });
+
+                    bens = checkChanges('.form-control-bem-static', '.tab3', history);
+                    processo = checkChanges('.form-control-vinculo-static', '.tab1', history);
+
+                    function checkChanges(label, tab, history) {
+                        var changed = false;
+                        if ($(atual).find(label).length !== $(history).find(label).length) {
+                            changed = true;
+                            if ($(history).find(label).length === 0) {
+                                $(history).find(tab).find('.alert').css("color", "#a94442");
+                            } else if ($(atual).find(label).length === 0) {
+                                $(label).parent().parent().css("color", "#a94442");
+                            }
+                        }
+                        $(history).find(label).parent().parent().css("color", "#a94442");
+                        $.each($(atual).find(label), function() {
+                            var atual = this;
+                            var exists = false;
+                            $.each($(history).find(label), function() {
+                                if ($(atual).text().trim() === $(this).text().trim()) {
+                                    $(this).parent().parent().css("color", "black");
+                                    exists = true;
+                                }
+                            });
+                            if (!exists) {
+                                changed = true;
+                            }
+                        });
+                        if (changed) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+
                     if (processo) {
+                        $(this).find('.processo-tab').css("color", "#a94442");
                         description += "Processo, ";
                     }
                     if (executado) {
+                        $(this).find('.executado-tab').css("color", "#a94442");
                         description += "Executado, ";
                     }
                     if (bens) {
+                        $(this).find('.bens-tab').css("color", "#a94442");
                         description += "Bens, ";
                     }
                     if (atoProcessual) {
+                        $(this).find('.atoprocessual-tab').css("color", "#a94442");
                         description += "Ato Processual, "
                     }
                     description = description.substring(0, description.length - 2) + ".";
@@ -234,10 +273,10 @@ var PjudCon = function() {
                     }
                     $(this).closest('.detail').parent().children('.description').append(description);
                 });
-            } else{
+            } else {
                 initTable();
             }
-            
+
             $('select[name=table_length]').change(function() {
                 $.each($('.row-details'), function() {
                     if ($(this).hasClass("row-details-open")) {
@@ -255,7 +294,7 @@ var PjudCon = function() {
                 });
                 $('.detailed-info').remove();
             });
-            
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("class") === "pj-info") {
@@ -282,7 +321,7 @@ var PjudCon = function() {
                     }
                 }
             });
-            
+
             $('.menu-pjud').addClass('active open');
             $('.menu-pjud a').append('<span class="selected"></span>');
             $('.menu-pjud a .arrow').addClass('open');

@@ -14,6 +14,8 @@
         <!-- BEGIN PAGE STYLES -->
         <style>
             .control-label{margin-top:6px !important}
+            .form-control-bem-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
+            .form-control-vinculo-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -159,22 +161,22 @@
                                                         </div>
                                                     </div>
                                                     <div class="portlet-body form">
-                                                        <div class="form-body">
+                                                        <div class="form-body main">
                                                             <ul class="nav nav-tabs">
                                                                 <li class="active">
-                                                                    <a href="#tab_1_1_#{status.index}" data-toggle="tab">
+                                                                    <a href="#tab_1_1_#{status.index}" class="processo-tab" data-toggle="tab">
                                                                         <i class="fa fa-file-text"></i>  Processo </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#tab_1_2_#{status.index}" data-toggle="tab">
+                                                                    <a href="#tab_1_2_#{status.index}" class="executado-tab" data-toggle="tab">
                                                                         <i class="fa fa-male"></i> Executado </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#tab_1_3_#{status.index}" data-toggle="tab">
+                                                                    <a href="#tab_1_3_#{status.index}" class="bens-tab" data-toggle="tab">
                                                                         <i class="fa fa-car"></i> Bens </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a href="#tab_1_4_#{status.index}" data-toggle="tab">
+                                                                    <a href="#tab_1_4_#{status.index}" class="atoprocessual-tab" data-toggle="tab">
                                                                         <i class="fa fa-pencil"></i> Ato Processual </a>
                                                                 </li>
                                                             </ul>
@@ -385,7 +387,7 @@
                                                                                             <div class="form-group">
                                                                                                 <label class="control-label col-md-4">Nº do Processo Vinculado:</label>
                                                                                                 <div class="col-md-8">
-                                                                                                    <p class="form-control-static">
+                                                                                                    <p class="form-control-vinculo-static">
                                                                                                         #{vinculoProcessualHistorico.processo}
                                                                                                     </p>
                                                                                                 </div>
@@ -396,7 +398,7 @@
                                                                                             <div class="form-group">
                                                                                                 <label class="control-label col-md-4">Tipo do Processo Vinculado:</label>
                                                                                                 <div class="col-md-8">
-                                                                                                    <p class="form-control-static ">
+                                                                                                    <p class="form-control-vinculo-static ">
                                                                                                         #{vinculoProcessualHistorico.tipoDeProcessoFk.tipo}
                                                                                                     </p>
                                                                                                 </div>
@@ -1293,7 +1295,7 @@
                                                                                             <div class="form-group">
                                                                                                 <label class="control-label col-md-2">Descrição:</label>
                                                                                                 <div class="col-md-10">
-                                                                                                    <p class="form-control-static text-justify">
+                                                                                                    <p class="form-control-bem-static text-justify">
                                                                                                         #{bemHistorico.descricao eq null ? '-' : bemHistorico.descricao}
                                                                                                     </p>
                                                                                                 </div>
@@ -1304,7 +1306,7 @@
                                                                                             <div class="form-group">
                                                                                                 <label class="control-label col-md-5">Data do Ato:</label>
                                                                                                 <div class="col-md-5">
-                                                                                                    <p class="form-control-static">
+                                                                                                    <p class="form-control-bem-static">
                                                                                                         #{bemHistorico.dataDoAto eq null ? '-' : bemHistorico.dataDoAto}
                                                                                                     </p>
                                                                                                 </div>
