@@ -50,6 +50,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Base64Crypt;
 import util.Cookie;
+import util.GeradorLog;
 
 /**
  *
@@ -278,6 +279,7 @@ public class PessoaFisicaBean implements Serializable {
                 }
                 register = "success";
                 pjId = "";
+                GeradorLog.criar(pessoaFisica.getId(), "PF", 'C');
                 pessoaFisica = new PessoaFisica();
                 endereco = new Endereco();
                 pessoaFisicaJuridicaList = new ArrayList<>();
@@ -337,6 +339,7 @@ public class PessoaFisicaBean implements Serializable {
                         pfjh.setIdFk(pessoaFisicaHistorico.getId());
                         pessoaFisicaJuridicaHistoricoBO.create(pfjh);
                     }
+                    GeradorLog.criar(pessoaFisica.getId(), "PF", 'U');
                     Cookie.addCookie("FacesMessage", "success", 10);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 }
@@ -369,6 +372,7 @@ public class PessoaFisicaBean implements Serializable {
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         pessoaFisica.setStatus('I');
         pessoaFisicaBO.edit(pessoaFisica);
+        GeradorLog.criar(pessoaFisica.getId(), "PF", 'D');
         redirect = "";
         register = "success";
     }

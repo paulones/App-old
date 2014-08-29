@@ -47,6 +47,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Base64Crypt;
 import util.Cookie;
+import util.GeradorLog;
 
 /**
  *
@@ -281,6 +282,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
         processoJudicial.setStatus('I');
         processoJudicialBO.edit(processoJudicial);
+        GeradorLog.criar(processoJudicial.getId(), "PJUD", 'D');
         redirect = "";
         register = "success";
     }
@@ -309,6 +311,7 @@ public class ProcessoJudicialBean implements Serializable {
                     vinculoProcessualBO.create(vinculoProcessual);
                 }
                 register = "success";
+                GeradorLog.criar(processoJudicial.getId(), "PJUD", 'C');
                 processoJudicial = new ProcessoJudicial();
                 bemList = new ArrayList<>();
                 vinculoProcessual = new VinculoProcessual();
@@ -394,6 +397,7 @@ public class ProcessoJudicialBean implements Serializable {
                         vph.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
                         vinculoProcessualHistoricoBO.create(vph);
                     }
+                    GeradorLog.criar(processoJudicial.getId(), "PJUD", 'U');
                     Cookie.addCookie("FacesMessage", "success", 10);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 }
