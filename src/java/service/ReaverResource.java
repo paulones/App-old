@@ -18,7 +18,11 @@ import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
 import entidade.VinculoProcessual;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -31,6 +35,7 @@ import javax.ws.rs.core.UriInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.Base64Crypt;
+import util.TimestampUtils;
 
 /**
  * REST Web Service
@@ -278,6 +283,7 @@ public class ReaverResource {
         LogBO logBO = new LogBO();
         List<Log> logList = logBO.findLogEntities(quantidade, indice);
         JSONArray jsonArray = new JSONArray();
+
         for (int i = 0; i < logList.size(); i++) {
             String message = loadMessage(logList.get(i));
             JSONObject jsonObject = new JSONObject();
@@ -285,7 +291,8 @@ public class ReaverResource {
             jsonObject.put("mensagem", message);
             jsonObject.put("idfk", Base64Crypt.encrypt(String.valueOf(logList.get(i).getIdFk())));
             jsonObject.put("tabela", logList.get(i).getTabela());
-            jsonObject.put("data", logList.get(i).getDataDeCriacao());
+            jsonObject.put("operacao", logList.get(i).getOperacao());
+            jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));
             jsonArray.put(jsonObject);
         }
         return jsonArray.toString();
@@ -301,25 +308,26 @@ public class ReaverResource {
         if (log.getTabela().equals("PF")) {
             PessoaFisica pf = pfBO.findPessoaFisica(log.getIdFk());
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
-            tabela += "Pessoa Física ";
+            tabela += "<span class='feed-label'>Pessoa Física ";
             detalhes += pf.getNome() + " - " + cpf;
         } else if (log.getTabela().equals("PJ")) {
             PessoaJuridica pj = pjBO.findPessoaJuridica(log.getIdFk());
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
-            tabela += "Pessoa Juridica ";
+            tabela += "<span class='feed-label'>Pessoa Juridica ";
             detalhes += pj.getNome() + " - " + cnpj;
         } else if (log.getTabela().equals("PJUD")) {
             ProcessoJudicial pjud = pjudBO.findProcessoJudicial(log.getIdFk());
-            tabela += "Processo Judicial ";
+            tabela += "<span class='feed-label'>Processo Judicial ";
             detalhes += pjud.getNumeroDoProcesso();
         }
         if (log.getOperacao().equals('C')) {
-            operacao += "cadastrada: ";
+            operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "cadastrada: ";
         } else if (log.getOperacao().equals('U')) {
-            operacao += "alterada: ";
+            operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "alterada: ";
         } else if (log.getOperacao().equals('D')) {
-            operacao += "desativada: ";
+            operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "desativada: ";
         }
+        operacao += "</span>";
         return tabela + operacao + detalhes;
     }
 }
