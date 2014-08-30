@@ -306,11 +306,21 @@ var PJCad = function() {
                         $('.endcity').select2();
                     } else if ($(data.source).attr("class") === "pf-info") {
                         $('.modal-pf').click();
+                    } else if ($(data.source).attr("class") === "pj-info") {
+                        $('.modal-pj').click();
                     } else if ($(data.source).attr("class") === "delete") {
                         $('.table-refresher').click();
-                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
+                    } else if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "table-refresher") {
                         $('.date').mask("99/99/9999");
                         $('.funcao').select2();
+                        $('.capital').keyup(checkCapital);
+                        $('.initial-date,.final-date').keyup(checkDates);
+                        $('.date-error').hide();
+                        if ($('.rows').children().length == 0) {
+                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        }
+                    } else if ($(data.source).attr("class") === "vinculatePJ" || $(data.source).attr("class") === "table-refresher") {
+                        $('.date').mask("99/99/9999");
                         $('.capital').keyup(checkCapital);
                         $('.initial-date,.final-date').keyup(checkDates);
                         $('.date-error').hide();
@@ -327,7 +337,7 @@ var PJCad = function() {
                 cache: false
             })
                     .done(function(data) {
-                        $('.cpf').select2({
+                        $('.cpfVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {
                                     return metric.id === element.val();
@@ -356,16 +366,62 @@ var PJCad = function() {
                                 });
                             },
                             placeholder: "Selecione...",
-                            allowClear:true,
+                            allowClear: true,
+                        });
+                    });
+
+            $.ajax({
+                url: "/webresources/reaver/getPessoasJuridicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $('.cnpjVinculate').select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
                         });
                     });
 
             $('.initial-date,.final-date').keyup(checkDates);
 
-            $('#vinculate').click(function(e) {
+            $('#vinculatePF').click(function(e) {
                 e.preventDefault();
                 if ($('#pessoafisica').val() !== "") {
-                    $('.vinculate').click();
+                    $('.vinculatePF').click();
+                }
+            });
+            
+            $('#vinculatePJ').click(function(e) {
+                e.preventDefault();
+                if ($('#pessoajuridica').val() !== "") {
+                    $('.vinculatePJ').click();
                 }
             });
 

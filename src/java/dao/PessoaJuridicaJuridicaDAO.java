@@ -18,6 +18,7 @@ import entidade.PessoaJuridicaJuridica;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -206,6 +207,71 @@ public class PessoaJuridicaJuridicaDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void destroyByPJA(Integer idPj){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from pessoa_juridica_juridica "
+                    + "where pessoa_juridica_socio_a_fk = '" + idPj + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void destroyByPJB(Integer idPj){
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from pessoa_juridica_juridica "
+                    + "where pessoa_juridica_socio_b_fk = '" + idPj + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaJuridicaJuridica> findAllByPJA(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList = (List<PessoaJuridicaJuridica>) em.createNativeQuery("select * from pessoa_juridica_juridica "
+                        + "where pessoa_juridica_socio_a_fk = '"+id+"'", PessoaJuridicaJuridica.class).getResultList();
+            return pessoaJuridicaJuridicaList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaJuridicaJuridica> findAllByPJB(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList = (List<PessoaJuridicaJuridica>) em.createNativeQuery("select * from pessoa_juridica_juridica "
+                        + "where pessoa_juridica_socio_b_fk = '"+id+"'", PessoaJuridicaJuridica.class).getResultList();
+            return pessoaJuridicaJuridicaList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public PessoaJuridicaJuridica findByPJAndPJ(Integer idPja, Integer idPjb){
+        EntityManager em = getEntityManager();
+        try {
+            PessoaJuridicaJuridica pessoaJuridicaJuridica = (PessoaJuridicaJuridica) em.createNativeQuery("select * from pessoa_juridica_juridica "
+                    + "where pessoa_juridica_socio_a_fk = '" + idPja + "' pessoa_juridica_socio_b_fk = '" + idPjb + "'", PessoaJuridicaJuridica.class).getSingleResult();
+            return pessoaJuridicaJuridica;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

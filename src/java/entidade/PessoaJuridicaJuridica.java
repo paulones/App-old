@@ -7,6 +7,9 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -110,6 +113,27 @@ public class PessoaJuridicaJuridica implements Serializable {
 
     public void setPessoaJuridicaSocioBFk(PessoaJuridica pessoaJuridicaSocioBFk) {
         this.pessoaJuridicaSocioBFk = pessoaJuridicaSocioBFk;
+    }
+    
+    public List<String> changedValues(Object obj) {
+        List<String> list = new ArrayList<>();
+        final PessoaJuridicaJuridica other = (PessoaJuridicaJuridica) obj;
+        if (!Objects.equals(this.capitalDeParticipacao, other.capitalDeParticipacao)) {
+            list.add("capitalDeParticipacao");
+        }
+        if (!Objects.equals(this.dataDeInicio, other.dataDeInicio)) {
+            list.add("dataDeInicio");
+        }
+        if (!Objects.equals(this.dataDeTermino, other.dataDeTermino)) {
+            list.add("dataDeTermino");
+        }
+        if (!Objects.equals(this.pessoaJuridicaSocioBFk, other.pessoaJuridicaSocioBFk)) {
+            list.add("pessoaFisicaFk");
+        }
+        if (!Objects.equals(this.pessoaJuridicaSocioAFk, other.pessoaJuridicaSocioAFk)) {
+            list.add("pessoaJuridicaFk");
+        }
+        return list;
     }
 
     @Override
