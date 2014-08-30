@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidade.VinculoProcessual;
+import entidade.VinculoProcessualHistorico;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -41,6 +42,9 @@ public class TipoProcessoDAO implements Serializable {
         if (tipoProcesso.getVinculoProcessualCollection() == null) {
             tipoProcesso.setVinculoProcessualCollection(new ArrayList<VinculoProcessual>());
         }
+        if (tipoProcesso.getVinculoProcessualHistoricoCollection() == null) {
+            tipoProcesso.setVinculoProcessualHistoricoCollection(new ArrayList<VinculoProcessualHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -50,6 +54,12 @@ public class TipoProcessoDAO implements Serializable {
                 attachedVinculoProcessualCollection.add(vinculoProcessualCollectionVinculoProcessualToAttach);
             }
             tipoProcesso.setVinculoProcessualCollection(attachedVinculoProcessualCollection);
+            Collection<VinculoProcessualHistorico> attachedVinculoProcessualHistoricoCollection = new ArrayList<VinculoProcessualHistorico>();
+            for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach : tipoProcesso.getVinculoProcessualHistoricoCollection()) {
+                vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach = em.getReference(vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach.getClass(), vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach.getId());
+                attachedVinculoProcessualHistoricoCollection.add(vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach);
+            }
+            tipoProcesso.setVinculoProcessualHistoricoCollection(attachedVinculoProcessualHistoricoCollection);
             em.persist(tipoProcesso);
             for (VinculoProcessual vinculoProcessualCollectionVinculoProcessual : tipoProcesso.getVinculoProcessualCollection()) {
                 TipoProcesso oldTipoDeProcessoFkOfVinculoProcessualCollectionVinculoProcessual = vinculoProcessualCollectionVinculoProcessual.getTipoDeProcessoFk();
@@ -58,6 +68,15 @@ public class TipoProcessoDAO implements Serializable {
                 if (oldTipoDeProcessoFkOfVinculoProcessualCollectionVinculoProcessual != null) {
                     oldTipoDeProcessoFkOfVinculoProcessualCollectionVinculoProcessual.getVinculoProcessualCollection().remove(vinculoProcessualCollectionVinculoProcessual);
                     oldTipoDeProcessoFkOfVinculoProcessualCollectionVinculoProcessual = em.merge(oldTipoDeProcessoFkOfVinculoProcessualCollectionVinculoProcessual);
+                }
+            }
+            for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionVinculoProcessualHistorico : tipoProcesso.getVinculoProcessualHistoricoCollection()) {
+                TipoProcesso oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionVinculoProcessualHistorico = vinculoProcessualHistoricoCollectionVinculoProcessualHistorico.getTipoDeProcessoFk();
+                vinculoProcessualHistoricoCollectionVinculoProcessualHistorico.setTipoDeProcessoFk(tipoProcesso);
+                vinculoProcessualHistoricoCollectionVinculoProcessualHistorico = em.merge(vinculoProcessualHistoricoCollectionVinculoProcessualHistorico);
+                if (oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionVinculoProcessualHistorico != null) {
+                    oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionVinculoProcessualHistorico.getVinculoProcessualHistoricoCollection().remove(vinculoProcessualHistoricoCollectionVinculoProcessualHistorico);
+                    oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionVinculoProcessualHistorico = em.merge(oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionVinculoProcessualHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -82,6 +101,8 @@ public class TipoProcessoDAO implements Serializable {
             TipoProcesso persistentTipoProcesso = em.find(TipoProcesso.class, tipoProcesso.getId());
             Collection<VinculoProcessual> vinculoProcessualCollectionOld = persistentTipoProcesso.getVinculoProcessualCollection();
             Collection<VinculoProcessual> vinculoProcessualCollectionNew = tipoProcesso.getVinculoProcessualCollection();
+            Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionOld = persistentTipoProcesso.getVinculoProcessualHistoricoCollection();
+            Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionNew = tipoProcesso.getVinculoProcessualHistoricoCollection();
             List<String> illegalOrphanMessages = null;
             for (VinculoProcessual vinculoProcessualCollectionOldVinculoProcessual : vinculoProcessualCollectionOld) {
                 if (!vinculoProcessualCollectionNew.contains(vinculoProcessualCollectionOldVinculoProcessual)) {
@@ -89,6 +110,14 @@ public class TipoProcessoDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain VinculoProcessual " + vinculoProcessualCollectionOldVinculoProcessual + " since its tipoDeProcessoFk field is not nullable.");
+                }
+            }
+            for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionOld) {
+                if (!vinculoProcessualHistoricoCollectionNew.contains(vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain VinculoProcessualHistorico " + vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico + " since its tipoDeProcessoFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -101,6 +130,13 @@ public class TipoProcessoDAO implements Serializable {
             }
             vinculoProcessualCollectionNew = attachedVinculoProcessualCollectionNew;
             tipoProcesso.setVinculoProcessualCollection(vinculoProcessualCollectionNew);
+            Collection<VinculoProcessualHistorico> attachedVinculoProcessualHistoricoCollectionNew = new ArrayList<VinculoProcessualHistorico>();
+            for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach : vinculoProcessualHistoricoCollectionNew) {
+                vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach = em.getReference(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach.getClass(), vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach.getId());
+                attachedVinculoProcessualHistoricoCollectionNew.add(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach);
+            }
+            vinculoProcessualHistoricoCollectionNew = attachedVinculoProcessualHistoricoCollectionNew;
+            tipoProcesso.setVinculoProcessualHistoricoCollection(vinculoProcessualHistoricoCollectionNew);
             tipoProcesso = em.merge(tipoProcesso);
             for (VinculoProcessual vinculoProcessualCollectionNewVinculoProcessual : vinculoProcessualCollectionNew) {
                 if (!vinculoProcessualCollectionOld.contains(vinculoProcessualCollectionNewVinculoProcessual)) {
@@ -110,6 +146,17 @@ public class TipoProcessoDAO implements Serializable {
                     if (oldTipoDeProcessoFkOfVinculoProcessualCollectionNewVinculoProcessual != null && !oldTipoDeProcessoFkOfVinculoProcessualCollectionNewVinculoProcessual.equals(tipoProcesso)) {
                         oldTipoDeProcessoFkOfVinculoProcessualCollectionNewVinculoProcessual.getVinculoProcessualCollection().remove(vinculoProcessualCollectionNewVinculoProcessual);
                         oldTipoDeProcessoFkOfVinculoProcessualCollectionNewVinculoProcessual = em.merge(oldTipoDeProcessoFkOfVinculoProcessualCollectionNewVinculoProcessual);
+                    }
+                }
+            }
+            for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionNew) {
+                if (!vinculoProcessualHistoricoCollectionOld.contains(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico)) {
+                    TipoProcesso oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico = vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico.getTipoDeProcessoFk();
+                    vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico.setTipoDeProcessoFk(tipoProcesso);
+                    vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico = em.merge(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico);
+                    if (oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico != null && !oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico.equals(tipoProcesso)) {
+                        oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico.getVinculoProcessualHistoricoCollection().remove(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico);
+                        oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico = em.merge(oldTipoDeProcessoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico);
                     }
                 }
             }
@@ -153,6 +200,13 @@ public class TipoProcessoDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This TipoProcesso (" + tipoProcesso + ") cannot be destroyed since the VinculoProcessual " + vinculoProcessualCollectionOrphanCheckVinculoProcessual + " in its vinculoProcessualCollection field has a non-nullable tipoDeProcessoFk field.");
+            }
+            Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionOrphanCheck = tipoProcesso.getVinculoProcessualHistoricoCollection();
+            for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionOrphanCheckVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This TipoProcesso (" + tipoProcesso + ") cannot be destroyed since the VinculoProcessualHistorico " + vinculoProcessualHistoricoCollectionOrphanCheckVinculoProcessualHistorico + " in its vinculoProcessualHistoricoCollection field has a non-nullable tipoDeProcessoFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

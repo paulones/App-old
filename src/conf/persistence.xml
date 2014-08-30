@@ -27,6 +27,10 @@
     <class>entidade.TipoProcesso</class>
     <class>entidade.TipoRecurso</class>
     <class>entidade.VinculoProcessual</class>
+    <class>entidade.BemHistorico</class>
+    <class>entidade.Log</class>
+    <class>entidade.ProcessoJudicialHistorico</class>
+    <class>entidade.VinculoProcessualHistorico</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <validation-mode>NONE</validation-mode>
     <properties>

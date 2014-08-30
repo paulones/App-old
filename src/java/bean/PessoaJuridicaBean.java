@@ -48,6 +48,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Base64Crypt;
 import util.Cookie;
+import util.GeradorLog;
 
 /**
  *
@@ -277,6 +278,7 @@ public class PessoaJuridicaBean implements Serializable {
                 register = "success";
                 pfVId = "";
                 pjVId = "";
+                GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'C');
                 pessoaJuridica = new PessoaJuridica();
                 endereco = new Endereco();
                 pessoaFisicaJuridicaList = new ArrayList<>();
@@ -354,9 +356,7 @@ public class PessoaJuridicaBean implements Serializable {
                     for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
                         pessoaJuridicaJuridicaBO.create(pjj);
                     }
-                    /*for (PessoaJuridicaJuridicaHistorico pjjh : pessoaJuridicaJuridicaHistoricoList) {
-                     pessoaJuridicaJuridicaHistoricoBO.create(pjjh);
-                     }*/
+                    GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'U');
                     Cookie.addCookie("FacesMessage", "success", 10);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 }
@@ -403,6 +403,7 @@ public class PessoaJuridicaBean implements Serializable {
         if (edit) {
             pessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
         }
+        System.out.println("pjVId: "+Base64Crypt.decrypt(pjVId));
         pessoaJuridicaVinculo = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjVId)));
         pessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridicaVinculo);
         boolean exists = false;
@@ -436,6 +437,7 @@ public class PessoaJuridicaBean implements Serializable {
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
         pessoaJuridica.setStatus('I');
         pessoaJuridicaBO.edit(pessoaJuridica);
+        GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'D');
         redirect = "";
         register = "success";
     }
@@ -498,7 +500,7 @@ public class PessoaJuridicaBean implements Serializable {
         }
     }
 
-    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
+    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaJuridicaJuridica> pessoaJuridicaJuridicasList) {
         /*
          Montar registro atual como uma entidade de histórico para facilitar o ui:repeat do form
          */
@@ -506,6 +508,7 @@ public class PessoaJuridicaBean implements Serializable {
         PessoaJuridicaHistorico pessoaJuridicaHistorico = new PessoaJuridicaHistorico();
         EnderecoHistorico enderecoHistorico = new EnderecoHistorico();
         List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+        List<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoList = new ArrayList<>();
 
         pessoaJuridicaHistorico.setNome(pessoaJuridica.getNome());
         pessoaJuridicaHistorico.setCnpj(pessoaJuridica.getCnpj());
@@ -542,7 +545,7 @@ public class PessoaJuridicaBean implements Serializable {
             pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
 
-        for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
+        for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicasList) {
             PessoaJuridicaJuridicaHistorico pjjh = new PessoaJuridicaJuridicaHistorico();
             pjjh.setCapitalDeParticipacao(pjj.getCapitalDeParticipacao());
             pjjh.setDataDeInicio(pjj.getDataDeInicio());
@@ -554,6 +557,7 @@ public class PessoaJuridicaBean implements Serializable {
         enderecoPessoaFisicaJuridicaHistorico.setPessoaHistorico(pessoaJuridicaHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setEnderecoHistorico(enderecoHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaFisicaJuridicaHistoricoList(pessoaFisicaJuridicaHistoricoList);
+        enderecoPessoaFisicaJuridicaHistorico.setPessoaJuridicaJuridicaHistoricosList(pessoaJuridicaJuridicaHistoricoList);
         return enderecoPessoaFisicaJuridicaHistorico;
     }
 

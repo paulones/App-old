@@ -45,4 +45,12 @@ public class VinculoProcessualBO implements Serializable{
             e.printStackTrace();
         }
     }
+    
+    public void destroyByPJUD(Integer idPjud){
+        try {
+            vinculoProcessualDAO.destroyByPJUD(idPjud);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

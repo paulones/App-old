@@ -8,7 +8,10 @@ package bo;
 
 import dao.BemDAO;
 import entidade.Bem;
+import entidade.ProcessoJudicial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,6 +47,23 @@ public class BemBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void destroyByPJUD(Integer idPjud){
+        try {
+            bemDAO.destroyByPJUD(idPjud);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<Bem> findAllByPJUD(ProcessoJudicial processoJudicial){
+        try { 
+            return bemDAO.findAllByPJUD(processoJudicial);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Bem>();
     }
     
 }

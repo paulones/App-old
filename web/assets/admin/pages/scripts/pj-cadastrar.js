@@ -132,7 +132,8 @@ var PJCad = function() {
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit
-                $(".date-error").hide();
+                $(".date-error-pfj").hide();
+                $(".date-error-pjj").hide();
                 success.hide();
                 error.show();
                 Metronic.scrollTo(error, -200);
@@ -170,7 +171,8 @@ var PJCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                $(".date-error").hide();
+                $(".date-error-pfj").hide();
+                $(".date-error-pjj").hide();
                 error.hide();
                 $(".register").click();
             }
@@ -178,6 +180,12 @@ var PJCad = function() {
     }
 
     var checkDates = function() {
+        var dateError;
+        if ($(this).parents("#pessoaJuridicaJuridica").length > 0){
+            dateError = ".date-error-pjj";
+        } else{
+            dateError = ".date-error-pfj";
+        }
         if ($(this).val().length == 10) {
             var result;
             var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
@@ -190,29 +198,29 @@ var PJCad = function() {
                         var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
                         if (final < initial) {
                             $(this).closest('tr').children('td').children('.final-date').val("");
-                            $('.date-error').html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
-                            $('.date-error').show();
+                            $(dateError).html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                            $(dateError).show();
                             return result = false;
                         } else {
-                            $('.date-error').hide();
+                            $(dateError).hide();
                             return result = true;
                         }
                     } else if (initialdate != "") {
-                        $('.date-error').hide();
+                        $(dateError).hide();
                         return result = true;
                     }
                 } else if (initialdate != "" && !initialdate.match(reg)) {
                     $(this).val("");
-                    $('.date-error').html("Digite uma data de in&iacute;cio v&aacute;lida.");
-                    $('.date-error').show();
+                    $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                    $(dateError).show();
                     return result = false;
                 } else if (finaldate != "" && !finaldate.match(reg)) {
                     $(this).closest('tr').children('td').children('.final-date').val("");
-                    $('.date-error').html("Digite uma data de t&eacute;rmino v&aacute;lida.");
-                    $('.date-error').show();
+                    $(dateError).html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                    $(dateError).show();
                     return result = false;
                 } else {
-                    $('.date-error').hide();
+                    $(dateError).hide();
                     return result = true;
                 }
             });
@@ -220,26 +228,33 @@ var PJCad = function() {
         }
     };
 
+
     var checkCapital = function() {
+        var dateError;
+        if ($(this).parents("#pessoaJuridicaJuridica").length > 0){
+            dateError = ".date-error-pjj";
+        } else if ($(this).parents("#pessoaFisicaJuridica").length > 0){
+            dateError = ".date-error-pfj";
+        }
         $(this).val($(this).val().replace(/,/g, "."));
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
             if ($(this).val() > 100) {
-                $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
-                $('.date-error').show();
+                $(dateError).html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+                $(dateError).show();
                 $(this).val("");
             } else {
-                $('.date-error').hide();
+                $(dateError).hide();
             }
         } else {
-            $('.date-error').html("Digite um percentual v&aacute;lido.");
-            $('.date-error').show();
+            $(dateError).html("Digite um percentual v&aacute;lido.");
+            $(dateError).show();
             $(this).val("");
         }
     }
 
     var handleTable = function() {
 
-        var table = $('#vinculations');
+        var table = $('.vinculations');
 
         var oTable = table.dataTable({
             paginate: false,
@@ -254,13 +269,14 @@ var PJCad = function() {
             "ordering": false
         });
 
-        var tableWrapper = $("#vinculations_wrapper");
+        var tableWrapper = $(".vinculations_wrapper");
 
         tableWrapper.find(".dataTables_length select").select2({
             showSearchInput: false //hide search box with special css class
         }); // initialize select2 dropdown
 
-        table.on('keyup', '.capital', checkCapital);
+        table.on('keyup', '.capital-pfj', checkCapital);
+        table.on('keyup', '.capital-pjj', checkCapital);
     }
 
     return {
@@ -308,25 +324,28 @@ var PJCad = function() {
                         $('.modal-pf').click();
                     } else if ($(data.source).attr("class") === "pj-info") {
                         $('.modal-pj').click();
-                    } else if ($(data.source).attr("class") === "delete") {
-                        $('.table-refresher').click();
-                    } else if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "table-refresher") {
+                    } else if ($(data.source).attr("class") === "delete-pfj") {
+                        $('.pfj-refresher').click();
+                    } else if ($(data.source).attr("class") === "delete-pjj") {
+                        $('.pjj-refresher').click();
+                    } else if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "vinculatePJ" || $(data.source).attr("class") === "pfj-refresher" || $(data.source).attr("class") === "pjj-refresher") {
                         $('.date').mask("99/99/9999");
-                        $('.funcao').select2();
-                        $('.capital').keyup(checkCapital);
-                        $('.initial-date,.final-date').keyup(checkDates);
-                        $('.date-error').hide();
-                        if ($('.rows').children().length == 0) {
-                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "pfj-refresher") {
+                            $('.funcao').select2();
+                            $('.date-error-pfj').hide();
+                            if ($('.rows-pfj').children().length === 0) {
+                                $('.rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                            }
+                            $('.capital-pfj').keyup(checkCapital);
+                        } else {
+                            $('.date-error-pjj').hide();
+                            if ($('.rows-pjj').children().length === 0) {
+                                $('.rows-pjj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                            }
+                            $('.capital-pjj').keyup(checkCapital);
                         }
-                    } else if ($(data.source).attr("class") === "vinculatePJ" || $(data.source).attr("class") === "table-refresher") {
-                        $('.date').mask("99/99/9999");
-                        $('.capital').keyup(checkCapital);
+                        
                         $('.initial-date,.final-date').keyup(checkDates);
-                        $('.date-error').hide();
-                        if ($('.rows').children().length == 0) {
-                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
-                        }
                     }
                 }
             });
@@ -417,7 +436,7 @@ var PJCad = function() {
                     $('.vinculatePF').click();
                 }
             });
-            
+
             $('#vinculatePJ').click(function(e) {
                 e.preventDefault();
                 if ($('#pessoajuridica').val() !== "") {

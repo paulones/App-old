@@ -386,13 +386,13 @@
                                 </div>
                                 <!--/row-->
                                 <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
-                                <h:commandLink class="table-refresher">
+                                <h:commandLink class="pfj-refresher">
                                     <f:ajax render="pessoaFisicaJuridica"/>
                                 </h:commandLink>
                                 <h:panelGroup id="pessoaFisicaJuridica">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table class="table table-striped table-hover table-bordered">
+                                            <table class="vinculations table table-striped table-hover table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:20%">
@@ -414,7 +414,7 @@
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="rows">
+                                                <tbody class="rows-pfj">
                                                     <ui:repeat value="#{pessoaJuridicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                         <tr>
@@ -431,7 +431,7 @@
                                                                 </h:selectOneMenu>
                                                             </td>
                                                             <td>
-                                                                <h:inputText class="form-control input-small capital" value="#{pessoaFisicaJuridica.capitalDeParticipacao}" p:placeholder="%"/>
+                                                                <h:inputText class="form-control input-small capital-pfj" value="#{pessoaFisicaJuridica.capitalDeParticipacao}" p:placeholder="%"/>
                                                             </td>
                                                             <td>
                                                                 <h:inputText class="form-control input-small date initial-date" value="#{pessoaFisicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
@@ -440,7 +440,7 @@
                                                                 <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaFisicaJuridica.dataDeTermino}"/>
                                                             </td>
                                                             <td>
-                                                                <h:commandLink class="delete">
+                                                                <h:commandLink class="delete-pfj">
                                                                     <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculoFisico(status.index)}"/>
                                                                     <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
                                                             </td>
@@ -451,6 +451,9 @@
                                         </div>
                                     </div>
                                 </h:panelGroup>
+                                <div class="alert alert-danger date-error-pfj display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                </div>
                                 <!--/row-->
                                 <h3 class="form-section">Vínculos Empresariais</h3>
                                 <!--/row-->
@@ -473,13 +476,13 @@
                                 </div>
                                 <!--/row-->
                                 <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
-                                <h:commandLink class="table-refresher">
+                                <h:commandLink class="pjj-refresher">
                                     <f:ajax render="pessoaJuridicaJuridica"/>
                                 </h:commandLink>
                                 <h:panelGroup id="pessoaJuridicaJuridica">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table class="table table-striped table-hover table-bordered">
+                                            <table class="vinculations table table-striped table-hover table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:20%">
@@ -498,7 +501,7 @@
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="rows">
+                                                <tbody class="rows-pjj">
                                                     <ui:repeat value="#{pessoaJuridicaBean.pessoaJuridicaJuridicaList}" var="pessoaJuridicaJuridica" varStatus="status">
                                                         <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                         <tr>
@@ -509,7 +512,7 @@
                                                                 </h:commandLink>
                                                             </td>
                                                             <td>
-                                                                <h:inputText class="form-control input-small capital" value="#{pessoaJuridicaJuridica.capitalDeParticipacao}" p:placeholder="%" />
+                                                                <h:inputText class="form-control input-small capital-pjj" value="#{pessoaJuridicaJuridica.capitalDeParticipacao}" p:placeholder="%" />
                                                             </td>
                                                             <td>
                                                                 <h:inputText class="form-control input-small date initial-date" value="#{pessoaJuridicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
@@ -518,7 +521,7 @@
                                                                 <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaJuridica.dataDeTermino}"/>
                                                             </td>
                                                             <td>
-                                                                <h:commandLink class="delete">
+                                                                <h:commandLink class="delete-pjj">
                                                                     <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculoJuridico(status.index)}"/>
                                                                     <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
                                                             </td>
@@ -529,7 +532,7 @@
                                         </div>
                                     </div>
                                 </h:panelGroup>
-                                <div class="alert alert-danger date-error display-hide">
+                                <div class="alert alert-danger date-error-pjj display-hide">
                                     <button class="close" data-close="alert"></button>
                                 </div>
                             </div>
@@ -539,7 +542,10 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn blue-chambray"><i class="fa fa-floppy-o"></i> Cadastrar</button>
+                                            <button type="submit" class="btn blue-chambray">
+                                                <ui:fragment rendered="#{!pessoaJuridicaBean.edit}"><i class="fa fa-save"></i> Cadastrar</ui:fragment>
+                                                <ui:fragment rendered="#{pessoaJuridicaBean.edit}"><i class="fa fa-edit"></i> Alterar</ui:fragment>
+                                            </button>
                                         </div>
                                         <h:commandLink styleClass="register" action="#{pessoaJuridicaBean.cadastrar}"/>
                                     </div>

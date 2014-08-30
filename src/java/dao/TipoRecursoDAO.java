@@ -14,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidade.ProcessoJudicial;
+import entidade.ProcessoJudicialHistorico;
 import entidade.TipoRecurso;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +41,9 @@ public class TipoRecursoDAO implements Serializable {
         if (tipoRecurso.getProcessoJudicialCollection() == null) {
             tipoRecurso.setProcessoJudicialCollection(new ArrayList<ProcessoJudicial>());
         }
+        if (tipoRecurso.getProcessoJudicialHistoricoCollection() == null) {
+            tipoRecurso.setProcessoJudicialHistoricoCollection(new ArrayList<ProcessoJudicialHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -49,14 +53,29 @@ public class TipoRecursoDAO implements Serializable {
                 attachedProcessoJudicialCollection.add(processoJudicialCollectionProcessoJudicialToAttach);
             }
             tipoRecurso.setProcessoJudicialCollection(attachedProcessoJudicialCollection);
+            Collection<ProcessoJudicialHistorico> attachedProcessoJudicialHistoricoCollection = new ArrayList<ProcessoJudicialHistorico>();
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach : tipoRecurso.getProcessoJudicialHistoricoCollection()) {
+                processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach = em.getReference(processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach.getClass(), processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach.getId());
+                attachedProcessoJudicialHistoricoCollection.add(processoJudicialHistoricoCollectionProcessoJudicialHistoricoToAttach);
+            }
+            tipoRecurso.setProcessoJudicialHistoricoCollection(attachedProcessoJudicialHistoricoCollection);
             em.persist(tipoRecurso);
             for (ProcessoJudicial processoJudicialCollectionProcessoJudicial : tipoRecurso.getProcessoJudicialCollection()) {
-                TipoRecurso oldTipoDeRecursoOfProcessoJudicialCollectionProcessoJudicial = processoJudicialCollectionProcessoJudicial.getTipoDeRecursoFk();
+                TipoRecurso oldTipoDeRecursoFkOfProcessoJudicialCollectionProcessoJudicial = processoJudicialCollectionProcessoJudicial.getTipoDeRecursoFk();
                 processoJudicialCollectionProcessoJudicial.setTipoDeRecursoFk(tipoRecurso);
                 processoJudicialCollectionProcessoJudicial = em.merge(processoJudicialCollectionProcessoJudicial);
-                if (oldTipoDeRecursoOfProcessoJudicialCollectionProcessoJudicial != null) {
-                    oldTipoDeRecursoOfProcessoJudicialCollectionProcessoJudicial.getProcessoJudicialCollection().remove(processoJudicialCollectionProcessoJudicial);
-                    oldTipoDeRecursoOfProcessoJudicialCollectionProcessoJudicial = em.merge(oldTipoDeRecursoOfProcessoJudicialCollectionProcessoJudicial);
+                if (oldTipoDeRecursoFkOfProcessoJudicialCollectionProcessoJudicial != null) {
+                    oldTipoDeRecursoFkOfProcessoJudicialCollectionProcessoJudicial.getProcessoJudicialCollection().remove(processoJudicialCollectionProcessoJudicial);
+                    oldTipoDeRecursoFkOfProcessoJudicialCollectionProcessoJudicial = em.merge(oldTipoDeRecursoFkOfProcessoJudicialCollectionProcessoJudicial);
+                }
+            }
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionProcessoJudicialHistorico : tipoRecurso.getProcessoJudicialHistoricoCollection()) {
+                TipoRecurso oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico = processoJudicialHistoricoCollectionProcessoJudicialHistorico.getTipoDeRecursoFk();
+                processoJudicialHistoricoCollectionProcessoJudicialHistorico.setTipoDeRecursoFk(tipoRecurso);
+                processoJudicialHistoricoCollectionProcessoJudicialHistorico = em.merge(processoJudicialHistoricoCollectionProcessoJudicialHistorico);
+                if (oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico != null) {
+                    oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistoricoCollectionProcessoJudicialHistorico);
+                    oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico = em.merge(oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionProcessoJudicialHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -81,6 +100,8 @@ public class TipoRecursoDAO implements Serializable {
             TipoRecurso persistentTipoRecurso = em.find(TipoRecurso.class, tipoRecurso.getId());
             Collection<ProcessoJudicial> processoJudicialCollectionOld = persistentTipoRecurso.getProcessoJudicialCollection();
             Collection<ProcessoJudicial> processoJudicialCollectionNew = tipoRecurso.getProcessoJudicialCollection();
+            Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionOld = persistentTipoRecurso.getProcessoJudicialHistoricoCollection();
+            Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionNew = tipoRecurso.getProcessoJudicialHistoricoCollection();
             Collection<ProcessoJudicial> attachedProcessoJudicialCollectionNew = new ArrayList<ProcessoJudicial>();
             for (ProcessoJudicial processoJudicialCollectionNewProcessoJudicialToAttach : processoJudicialCollectionNew) {
                 processoJudicialCollectionNewProcessoJudicialToAttach = em.getReference(processoJudicialCollectionNewProcessoJudicialToAttach.getClass(), processoJudicialCollectionNewProcessoJudicialToAttach.getId());
@@ -88,6 +109,13 @@ public class TipoRecursoDAO implements Serializable {
             }
             processoJudicialCollectionNew = attachedProcessoJudicialCollectionNew;
             tipoRecurso.setProcessoJudicialCollection(processoJudicialCollectionNew);
+            Collection<ProcessoJudicialHistorico> attachedProcessoJudicialHistoricoCollectionNew = new ArrayList<ProcessoJudicialHistorico>();
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach : processoJudicialHistoricoCollectionNew) {
+                processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach = em.getReference(processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach.getClass(), processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach.getId());
+                attachedProcessoJudicialHistoricoCollectionNew.add(processoJudicialHistoricoCollectionNewProcessoJudicialHistoricoToAttach);
+            }
+            processoJudicialHistoricoCollectionNew = attachedProcessoJudicialHistoricoCollectionNew;
+            tipoRecurso.setProcessoJudicialHistoricoCollection(processoJudicialHistoricoCollectionNew);
             tipoRecurso = em.merge(tipoRecurso);
             for (ProcessoJudicial processoJudicialCollectionOldProcessoJudicial : processoJudicialCollectionOld) {
                 if (!processoJudicialCollectionNew.contains(processoJudicialCollectionOldProcessoJudicial)) {
@@ -97,12 +125,29 @@ public class TipoRecursoDAO implements Serializable {
             }
             for (ProcessoJudicial processoJudicialCollectionNewProcessoJudicial : processoJudicialCollectionNew) {
                 if (!processoJudicialCollectionOld.contains(processoJudicialCollectionNewProcessoJudicial)) {
-                    TipoRecurso oldTipoDeRecursoOfProcessoJudicialCollectionNewProcessoJudicial = processoJudicialCollectionNewProcessoJudicial.getTipoDeRecursoFk();
+                    TipoRecurso oldTipoDeRecursoFkOfProcessoJudicialCollectionNewProcessoJudicial = processoJudicialCollectionNewProcessoJudicial.getTipoDeRecursoFk();
                     processoJudicialCollectionNewProcessoJudicial.setTipoDeRecursoFk(tipoRecurso);
                     processoJudicialCollectionNewProcessoJudicial = em.merge(processoJudicialCollectionNewProcessoJudicial);
-                    if (oldTipoDeRecursoOfProcessoJudicialCollectionNewProcessoJudicial != null && !oldTipoDeRecursoOfProcessoJudicialCollectionNewProcessoJudicial.equals(tipoRecurso)) {
-                        oldTipoDeRecursoOfProcessoJudicialCollectionNewProcessoJudicial.getProcessoJudicialCollection().remove(processoJudicialCollectionNewProcessoJudicial);
-                        oldTipoDeRecursoOfProcessoJudicialCollectionNewProcessoJudicial = em.merge(oldTipoDeRecursoOfProcessoJudicialCollectionNewProcessoJudicial);
+                    if (oldTipoDeRecursoFkOfProcessoJudicialCollectionNewProcessoJudicial != null && !oldTipoDeRecursoFkOfProcessoJudicialCollectionNewProcessoJudicial.equals(tipoRecurso)) {
+                        oldTipoDeRecursoFkOfProcessoJudicialCollectionNewProcessoJudicial.getProcessoJudicialCollection().remove(processoJudicialCollectionNewProcessoJudicial);
+                        oldTipoDeRecursoFkOfProcessoJudicialCollectionNewProcessoJudicial = em.merge(oldTipoDeRecursoFkOfProcessoJudicialCollectionNewProcessoJudicial);
+                    }
+                }
+            }
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionOldProcessoJudicialHistorico : processoJudicialHistoricoCollectionOld) {
+                if (!processoJudicialHistoricoCollectionNew.contains(processoJudicialHistoricoCollectionOldProcessoJudicialHistorico)) {
+                    processoJudicialHistoricoCollectionOldProcessoJudicialHistorico.setTipoDeRecursoFk(null);
+                    processoJudicialHistoricoCollectionOldProcessoJudicialHistorico = em.merge(processoJudicialHistoricoCollectionOldProcessoJudicialHistorico);
+                }
+            }
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionNewProcessoJudicialHistorico : processoJudicialHistoricoCollectionNew) {
+                if (!processoJudicialHistoricoCollectionOld.contains(processoJudicialHistoricoCollectionNewProcessoJudicialHistorico)) {
+                    TipoRecurso oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico = processoJudicialHistoricoCollectionNewProcessoJudicialHistorico.getTipoDeRecursoFk();
+                    processoJudicialHistoricoCollectionNewProcessoJudicialHistorico.setTipoDeRecursoFk(tipoRecurso);
+                    processoJudicialHistoricoCollectionNewProcessoJudicialHistorico = em.merge(processoJudicialHistoricoCollectionNewProcessoJudicialHistorico);
+                    if (oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico != null && !oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico.equals(tipoRecurso)) {
+                        oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistoricoCollectionNewProcessoJudicialHistorico);
+                        oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico = em.merge(oldTipoDeRecursoFkOfProcessoJudicialHistoricoCollectionNewProcessoJudicialHistorico);
                     }
                 }
             }
@@ -143,6 +188,11 @@ public class TipoRecursoDAO implements Serializable {
             for (ProcessoJudicial processoJudicialCollectionProcessoJudicial : processoJudicialCollection) {
                 processoJudicialCollectionProcessoJudicial.setTipoDeRecursoFk(null);
                 processoJudicialCollectionProcessoJudicial = em.merge(processoJudicialCollectionProcessoJudicial);
+            }
+            Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollection = tipoRecurso.getProcessoJudicialHistoricoCollection();
+            for (ProcessoJudicialHistorico processoJudicialHistoricoCollectionProcessoJudicialHistorico : processoJudicialHistoricoCollection) {
+                processoJudicialHistoricoCollectionProcessoJudicialHistorico.setTipoDeRecursoFk(null);
+                processoJudicialHistoricoCollectionProcessoJudicialHistorico = em.merge(processoJudicialHistoricoCollectionProcessoJudicialHistorico);
             }
             em.remove(tipoRecurso);
             em.getTransaction().commit();

@@ -60,14 +60,14 @@ var PJCon = function() {
                 element = $(this);
             }
         });
-        
+
         var index;
         table.on('click', '.button-delete', function(e) {
             e.preventDefault();
             index = $('.button-delete').index(this);
             $('.delete-modal-activator').click();
         });
-        
+
         $('.cancel').click(function(e) {
             e.preventDefault();
         });
@@ -103,8 +103,8 @@ var PJCon = function() {
                     "targets": [0, 2, 3]
                 }],
             "order": [
-                [1, 'desc']
             ],
+            "orderClasses": false,
             "language": {
                 "emptyTable": "Nenhum hist&oacute;rico registrado.",
                 "zeroRecords": "Nenhum hist&oacute;rico encontrado.",
@@ -177,7 +177,7 @@ var PJCon = function() {
                         }
                     });
                     var upper = this;
-                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length){
+                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length) {
                         vinculo = true;
                     }
                     $.each($(atual).find('.rows tr'), function() {
@@ -205,7 +205,7 @@ var PJCon = function() {
                                 }
                             }
                         });
-                        if (!exists){
+                        if (!exists) {
                             vinculo = true;
                         }
                     });
@@ -252,6 +252,20 @@ var PJCon = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("class") === "pf-info") {
                         $('.modal-pf').click();
+                    } else if ($(data.source).attr("class") === "pj-info") {
+                        $('.modal-pj').click();
+                        $('#modal-pj').find('table').dataTable({
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem V&iacute;nculos."
+                            },
+                            "ordering": false
+                        });
                     } else if ($(element).hasClass("row-details")) {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
                         $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
