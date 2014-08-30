@@ -10,12 +10,8 @@
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
-        <link rel="stylesheet" type="text/css" href="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
-        <style>
-            #modal .control-label{margin-top:7px !important}
-        </style>
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
@@ -39,7 +35,7 @@
                     </li>
                     <li>
                         <i class="fa fa-exchange"></i>
-                        <a href="#">Sucessão</a>
+                        <a href="sucessao.xhtml">Sucessão</a>
                     </li>
                 </ul>
                 <!-- END PAGE TITLE e BREADCRUMB-->
@@ -59,7 +55,7 @@
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
                         <h:form prependId="false" id="form" class="form-horizontal">
-                            <h:panelGroup layout="block" class="alert alert-info" rendered="#{sucessaoBean.succeed eq 'fail'}">
+                            <h:panelGroup layout="block" class="alert alert-danger" rendered="#{sucessaoBean.succeed eq 'fail'}">
                                 <button class="close" data-close="alert"></button>
                                 <h:messages layout="table" class="p-info"/> 
                             </h:panelGroup>
@@ -67,7 +63,7 @@
                                 <button class="close" data-close="alert"></button>
                                 Sucessão realizada com sucesso!
                             </h:panelGroup>
-                            <span class="help-block">Se faz necessário que tanto a empresa sucedida e a sucessora estejam cadastradas no sistema.</span>
+                            <span class="help-block">É necessário que tanto a empresa sucedida quanto a sucessora estejam cadastradas no sistema.</span>
                             <h3 class="form-section">Empresa Sucedida</h3>
                             <!--/row-->
                             <div class="row">
@@ -75,20 +71,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
                                         <div class="col-md-9">
-                                            <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="sucedida" value="#{sucessaoBean.sucedida}" tabindex="1" converter="entityConverter">
-                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
-                                                <f:selectItems value="#{sucessaoBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica}"/>
-                                            </h:selectOneMenu>
+                                            <h:inputText class="select2_category form-control cnpj" id="sucedida" value="#{sucessaoBean.sucedida}" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button  class="btn blue-chambray" id="vinculate">
-                                        <i class="fa fa-plus-circle"></i> Cadastrar Sucedida</button>
-                                    <h:commandLink styleClass="vinculate">
-                                        <f:ajax event="click" listener="#{sucessaoBean.cadastrarSucedida}"/>
-                                    </h:commandLink>
+                                    <a href="cadastrar.xhtml" class="btn blue-chambray" id="vinculate">
+                                        <i class="fa fa-plus-circle"></i> Cadastrar Sucedida</a>
                                 </div>
                             </div>
                             <!--/row-->
@@ -99,20 +88,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
                                         <div class="col-md-9">
-                                            <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="Selecione..." id="sucessora" value="#{sucessaoBean.sucessora}" tabindex="1" converter="entityConverter">
-                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                <ui:param value="#{pessoaJuridica.cnpj.substring(0,2)}.#{pessoaJuridica.cnpj.substring(2,5)}.#{pessoaJuridica.cnpj.substring(5,8)}/#{pessoaJuridica.cnpj.substring(8,12)}-#{pessoaJuridica.cnpj.substring(12)}" name="cnpj"/>
-                                                <f:selectItems value="#{sucessaoBean.pessoaJuridicaList}" var="pessoaJuridica" itemLabel="#{cnpj} - #{pessoaJuridica.nome}" itemValue="#{pessoaJuridica}"/>
-                                            </h:selectOneMenu>
+                                            <h:inputText class="select2_category form-control cnpj" id="sucessora" value="#{sucessaoBean.sucessora}" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button  class="btn blue-chambray" id="vinculate">
-                                        <i class="fa fa-plus-circle"></i> Cadastrar Sucessora</button>
-                                    <h:commandLink styleClass="vinculate">
-                                        <f:ajax event="click" listener="#{sucessaoBean.cadastrarSucessora}"/>
-                                    </h:commandLink>
+                                    <a href="cadastrar.xhtml" class="btn blue-chambray" id="vinculate">
+                                        <i class="fa fa-plus-circle"></i> Cadastrar Sucessora</a>
                                 </div>
                             </div>
                             <br/>
@@ -120,11 +102,10 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <button type="submit" class="btn blue-chambray">
-                                                <ui:fragment><i class="fa fa-exchange"></i> Suceder</ui:fragment>
-                                            </button>
+                                            <h:commandLink class="btn blue-chambray" action="#{sucessaoBean.suceder}">
+                                                <i class="fa fa-exchange"></i> Suceder
+                                            </h:commandLink>
                                         </div>
-                                        <h:commandLink styleClass="register" action="#{sucessaoBean.suceder}"/>
                                     </div>
                                 </div>
                             </div>
@@ -139,11 +120,9 @@
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" type="text/javascript"></script>
-        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/jquery.validate.js"></script>
-        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/localization/messages_pt_BR.js"></script>
         <script src="../assets/admin/pages/scripts/pj-sucessao.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL SCRIPTS -->
         <script>
