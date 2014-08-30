@@ -43,6 +43,9 @@ public class TemplateBean implements Serializable{
     private EnderecoPessoa enderecoPessoaModalJuridica;
     private Executado executado;
     
+    private String idfk;
+    private String tabela;
+    
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
             usuarioBO = new UsuarioBO();
@@ -68,15 +71,19 @@ public class TemplateBean implements Serializable{
         }
     }
     
-    public void exibirModal(String id, String tabela) {
+    public void exibirModalLog() {
         if (tabela.equals("PF")) {
-            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(id)));
+            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(idfk)));
             enderecoPessoaModalFisica = new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()));
+            enderecoPessoaModalJuridica = new EnderecoPessoa();
+            executado = new Executado();
         } else if (tabela.equals("PJ")) {
-            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(id)));
+            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(idfk)));
             enderecoPessoaModalJuridica = new EnderecoPessoa(pj, enderecoBO.findPJAddress(pj.getId()));
+            enderecoPessoaModalFisica = new EnderecoPessoa();
+            executado = new Executado();
         } else if (tabela.equals("PJUD")){
-            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(id)));
+            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(idfk)));
             if (pjud.getExecutado().equals("PF")){
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
                 executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId())));
@@ -84,6 +91,8 @@ public class TemplateBean implements Serializable{
                 PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
                 executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId())));
             }
+            enderecoPessoaModalFisica = new EnderecoPessoa();
+            enderecoPessoaModalJuridica = new EnderecoPessoa();
         }
     }
 
@@ -111,4 +120,27 @@ public class TemplateBean implements Serializable{
         this.enderecoPessoaModalJuridica = enderecoPessoaModalJuridica;
     }
 
+    public Executado getExecutado() {
+        return executado;
+    }
+
+    public void setExecutado(Executado executado) {
+        this.executado = executado;
+    }
+
+    public String getIdfk() {
+        return idfk;
+    }
+
+    public void setIdfk(String idfk) {
+        this.idfk = idfk;
+    }
+
+    public String getTabela() {
+        return tabela;
+    }
+
+    public void setTabela(String tabela) {
+        this.tabela = tabela;
+    }
 }
