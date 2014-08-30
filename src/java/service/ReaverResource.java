@@ -323,9 +323,9 @@ public class ReaverResource {
         if (log.getOperacao().equals('C')) {
             operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "cadastrada: ";
         } else if (log.getOperacao().equals('U')) {
-            operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "alterada: ";
+            operacao += log.getTabela().equals("PJUD") ? "alterado: " : "alterada: ";
         } else if (log.getOperacao().equals('D')) {
-            operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "desativada: ";
+            operacao += log.getTabela().equals("PJUD") ? "desativado: " : "desativada: ";
         }
         operacao += "</span>";
         return tabela + operacao + detalhes;
