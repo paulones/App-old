@@ -167,12 +167,12 @@ public class PessoaJuridicaBean implements Serializable {
                         edit = true;
                         endereco = enderecoBO.findPJAddress(id);
                         pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJB(id);
+                        pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
 
                         oldPessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
                         oldEndereco = enderecoBO.findPJAddress(id);
                         oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        oldPessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJB(id);
+                        oldPessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
                         prepararHistorico(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList);
 
                         carregarFormulario();
@@ -197,7 +197,7 @@ public class PessoaJuridicaBean implements Serializable {
                         history = true;
                         endereco = enderecoBO.findPJAddress(id);
                         pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJB(id);
+                        pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
 
                         pessoaJuridicaHistoricoList = new ArrayList<>();
                         enderecoHistoricoList = new ArrayList<>();
@@ -403,7 +403,7 @@ public class PessoaJuridicaBean implements Serializable {
         if (edit) {
             pessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
         }
-        System.out.println("pjVId: "+Base64Crypt.decrypt(pjVId));
+        System.out.println("pjVId: " + Base64Crypt.decrypt(pjVId));
         pessoaJuridicaVinculo = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjVId)));
         pessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridicaVinculo);
         boolean exists = false;

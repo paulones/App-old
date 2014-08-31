@@ -16,6 +16,7 @@ import entidade.Log;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaJuridica;
 import entidade.ProcessoJudicial;
 import entidade.VinculoProcessual;
 import java.text.DateFormat;

@@ -83,4 +83,13 @@ public class PessoaJuridicaJuridicaBO implements Serializable{
         return new ArrayList<PessoaJuridicaJuridica>();
     }
     
+    public List<PessoaJuridicaJuridica> findAllByPJAOrPJB(Integer id){
+        try { 
+            return pessoaJuridicaJuridicaDAO.findAllByPJAOrPJB(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaJuridicaJuridica>();
+    }
+    
 }
