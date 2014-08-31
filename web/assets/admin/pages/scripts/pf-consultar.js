@@ -258,6 +258,19 @@ var PFCon = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("class") === "pj-info") {
                         $('.modal-pj').click();
+                        $('.vinculations').dataTable({
+                            destroy:true,
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem V&iacute;nculos."
+                            },
+                            "ordering": false
+                        });
                     } else if ($(element).hasClass("row-details")) {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
                         $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
