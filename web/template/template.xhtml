@@ -220,7 +220,7 @@
                             <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
                             <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
                             <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
-                            <form class="sidebar-search sidebar-search-bordered sidebar-search-solid" action="extra_search.html" method="POST">
+                            <form class="sidebar-search sidebar-search-bordered sidebar-search-solid" method="POST">
                                 <a href="javascript:;" class="remove">
                                     <i class="icon-close"></i>
                                 </a>
@@ -2603,6 +2603,11 @@
             $('.logout').click(function() {
                 $.removeCookie('usuario', {path: '/'});
             });
+            
+            $('.sidebar-search').submit(function(e){
+                e.preventDefault();
+                window.location = "../procura-geral.xhtml?valor="+$(this).find('.form-control').val();
+            })
         </script>
 
     </h:body>

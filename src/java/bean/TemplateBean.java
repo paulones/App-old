@@ -17,6 +17,7 @@ import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
 import entidade.Usuario;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -30,7 +31,7 @@ import util.Cookie;
  * @author ipti004
  */
 @ManagedBean(name = "templateBean")
-@ViewScoped
+@SessionScoped
 public class TemplateBean implements Serializable{
     
     private Usuario usuario;
@@ -45,6 +46,7 @@ public class TemplateBean implements Serializable{
     
     private String idfk;
     private String tabela;
+    private String searchValue;
     
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
@@ -57,6 +59,8 @@ public class TemplateBean implements Serializable{
             
             enderecoPessoa = new EnderecoPessoa();
             executado = new Executado();
+            
+            searchValue = "";
         }
     }
     
@@ -92,6 +96,11 @@ public class TemplateBean implements Serializable{
             }
             enderecoPessoa = new EnderecoPessoa();
         }
+    }
+    
+    public void search() throws IOException{
+        System.out.println("aea");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/procura-geral.xhtml?value="+searchValue);
     }
 
     public Usuario getUsuario() {
@@ -133,4 +142,13 @@ public class TemplateBean implements Serializable{
     public void setTabela(String tabela) {
         this.tabela = tabela;
     }
+
+    public String getSearchValue() {
+        return searchValue;
+    }
+
+    public void setSearchValue(String searchValue) {
+        this.searchValue = searchValue;
+    }
+    
 }
