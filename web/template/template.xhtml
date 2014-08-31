@@ -767,6 +767,23 @@
                                                                     </td>
                                                                 </tr>
                                                             </ui:repeat>
+                                                            <ui:repeat value="#{templateBean.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
+                                                                <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                <tr>
+                                                                    <td style="text-align:center">
+                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
+                                                                    </td>
+                                                                    <td style="text-align:center">
+                                                                        #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                    </td>
+                                                                    <td style="text-align:center">
+                                                                        #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                    </td>
+                                                                    <td style="text-align:center">
+                                                                        #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                    </td>
+                                                                </tr>
+                                                            </ui:repeat>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -2347,12 +2364,28 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody class="rows">
-
                                                                                     <ui:repeat value="#{templateBean.executado.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
                                                                                         <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
                                                                                                 #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </ui:repeat>
+                                                                                    <ui:repeat value="#{templateBean.executado.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
+                                                                                        <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        <tr>
+                                                                                            <td style="text-align:center">
+                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
                                                                                             </td>
                                                                                             <td style="text-align:center">
                                                                                                 #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
