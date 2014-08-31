@@ -78,6 +78,23 @@ var PjudCon = function() {
 
     }
 
+    var initVinculationsTable = function() {
+        var table = $('.vinculations');
+        table.dataTable({
+            destroy: true,
+            paginate: false,
+            lengthMenu: false,
+            info: false,
+            filter: false,
+            // set the initial value
+            "pageLength": 10,
+            "language": {
+                "emptyTable": "Sem V&iacute;nculos."
+            },
+            "ordering": false
+        });
+    }
+
     var initHistoryTable = function() {
         var table = $('#table');
         var tableDetails = $('.vinculations');
@@ -162,7 +179,7 @@ var PjudCon = function() {
                     }
                 });
                 $.each($('.past'), function() {
-                    var history = this; 
+                    var history = this;
                     var description = "";
                     var processo = false;
                     var executado = false;
@@ -299,25 +316,16 @@ var PjudCon = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("class") === "pj-info") {
                         $('.modal-pj').click();
+                        initVinculationsTable();
                     } else if ($(data.source).attr("class") === "pf-info") {
                         $('.modal-pf').click();
+                        initVinculationsTable();
                     } else if ($(element).hasClass("row-details")) {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
                         $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
                         $('#info').children().clone().appendTo($(element).parent().parent().next().children());
                         $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
-                        $(element).parent().parent().next().find('table').dataTable({
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
+                        initVinculationsTable();
                     }
                 }
             });

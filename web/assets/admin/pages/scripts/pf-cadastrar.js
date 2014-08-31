@@ -241,7 +241,7 @@ var PFCad = function() {
     var handleTable = function() {
 
 
-        var table = $('#vinculations');
+        var table = $('.vinculations');
 
         var oTable = table.dataTable({
             paginate: false,
@@ -256,7 +256,7 @@ var PFCad = function() {
             "ordering": false
         });
 
-        var tableWrapper = $("#vinculations_wrapper");
+        var tableWrapper = $(".vinculations_wrapper");
 
         tableWrapper.find(".dataTables_length select").select2({
             showSearchInput: false //hide search box with special css class
@@ -319,6 +319,19 @@ var PFCad = function() {
                         $('.elecity').select2();
                     } else if ($(data.source).attr("class") === "pj-info"){
                         $('.modal-pj').click();
+                        $('.vinculations').dataTable({
+                            destroy:true,
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem V&iacute;nculos."
+                            },
+                            "ordering": false
+                        });
                     } else if ($(data.source).attr("class") === "delete"){
                         $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
