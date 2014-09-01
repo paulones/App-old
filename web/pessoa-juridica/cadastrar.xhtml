@@ -3,7 +3,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">Pessoa Jurídica - #{pessoaJuridicaBean.edit ? 'Alteração' :'Cadastro'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaJuridicaBean.init()}"/>
@@ -503,29 +504,56 @@
                                                 </thead>
                                                 <tbody class="rows-pjj">
                                                     <ui:repeat value="#{pessoaJuridicaBean.pessoaJuridicaJuridicaList}" var="pessoaJuridicaJuridica" varStatus="status">
-                                                        <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
-                                                        <tr>
-                                                            <td>
-                                                                <h:commandLink class="pj-info">
-                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
-                                                                    #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
-                                                                </h:commandLink>
-                                                            </td>
-                                                            <td>
-                                                                <h:inputText class="form-control input-small capital-pjj" value="#{pessoaJuridicaJuridica.capitalDeParticipacao}" p:placeholder="%" />
-                                                            </td>
-                                                            <td>
-                                                                <h:inputText class="form-control input-small date initial-date" value="#{pessoaJuridicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
-                                                            </td>
-                                                            <td>
-                                                                <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaJuridica.dataDeTermino}"/>
-                                                            </td>
-                                                            <td>
-                                                                <h:commandLink class="delete-pjj">
-                                                                    <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculoJuridico(status.index)}"/>
-                                                                    <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
-                                                            </td>
-                                                        </tr>
+                                                        <ui:fragment rendered="#{pessoaJuridicaBean.pessoaJuridica.id eq pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}">
+                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
+                                                            <tr>
+                                                                <td>
+                                                                    <h:commandLink class="pj-info">
+                                                                        <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
+                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
+                                                                    </h:commandLink>
+                                                                </td>
+                                                                <td>
+                                                                    <h:inputText class="form-control input-small capital-pjj" value="#{pessoaJuridicaJuridica.capitalDeParticipacao}" p:placeholder="%" />
+                                                                </td>
+                                                                <td>
+                                                                    <h:inputText class="form-control input-small date initial-date" value="#{pessoaJuridicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
+                                                                </td>
+                                                                <td>
+                                                                    <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaJuridica.dataDeTermino}"/>
+                                                                </td>
+                                                                <td>
+                                                                    <h:commandLink class="delete-pjj">
+                                                                        <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculoJuridico(status.index)}"/>
+                                                                        <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:fragment>
+                                                        <ui:fragment rendered="#{pessoaJuridicaBean.pessoaJuridica.id eq pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}">
+                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                            <tr>
+                                                                <td>
+                                                                    <h:commandLink class="pj-info">
+                                                                        <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
+                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
+                                                                    </h:commandLink>
+                                                                </td>
+                                                                <td>
+                                                                    <h:inputText class="form-control input-small capital-pjj" value="#{pessoaJuridicaJuridica.capitalDeParticipacao}" p:placeholder="%" />
+                                                                </td>
+                                                                <td>
+                                                                    <h:inputText class="form-control input-small date initial-date" value="#{pessoaJuridicaJuridica.dataDeInicio}" p:placeholder="dd/mm/aaaa" />
+                                                                </td>
+                                                                <td>
+                                                                    <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaJuridica.dataDeTermino}"/>
+                                                                </td>
+                                                                <td>
+                                                                    <h:commandLink class="delete-pjj">
+                                                                        <f:ajax execute="@this" listener="#{pessoaJuridicaBean.removerVinculoJuridico(status.index)}"/>
+                                                                        <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:fragment>
                                                     </ui:repeat>
                                                 </tbody>
                                             </table>

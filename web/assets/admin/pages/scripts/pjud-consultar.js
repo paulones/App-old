@@ -199,43 +199,54 @@ var PjudCon = function() {
                             }
                         }
                     });
-                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length) {
-                        executado = true;
-                    }
-                    $.each($(atual).find('.rows tr'), function() {
-                        var atual = this;
-                        var exists = false;
-                        $.each($(history).find('.rows tr'), function() {
-                            $(this).find('td').children().css("color", "#a94442");
-                            $(this).find('td').css("color", "#a94442");
-                            var cpfcnpjAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
-                            var cpfcnpjHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
-                            if (cpfcnpjAtual === cpfcnpjHistorico) {
-                                $(this).find('td').children().css("color", "black");
-                                $(this).find('td').css("color", "black");
-                                exists = true;
-                                $.each($(this).find('td'), function(index) {
-                                    if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
-                                        $(this).css("color", "#a94442");
-                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
-                                        executado = true;
+                    
+                    executado = (!executado) ? checkChangesTable('.rows-pfj tr') : true;
+                    executado = (!executado) ? checkChangesTable('.rows-pjj tr') : true;
+                    bens = (!bens) ? checkChangesLabel('.form-control-bem-static', '.tab3') : true;
+                    processo = (!processo) ? checkChangesLabel('.form-control-vinculo-static', '.tab1') : true;
+
+                    function checkChangesTable(tr) {
+                        var changed = false;
+                        if ($(atual).find(tr).length !== $(history).find(tr).length) {
+                            changed = true;
+                        }
+                        $.each($(atual).find(tr), function() {
+                            var atual = this;
+                            var exists = false;
+                            $.each($(history).find(tr), function() {
+                                $(this).find('td').children().css("color", "#a94442");
+                                $(this).find('td').css("color", "#a94442");
+                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
+                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
+                                if (cpfAtual === cpfHistorico) {
+                                    $(this).find('td').children().css("color", "black");
+                                    $(this).find('td').css("color", "black");
+                                    exists = true;
+                                    $.each($(this).find('td'), function(index) {
+                                        if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                            $(this).css("color", "#a94442");
+                                            $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                            changed = true;
+                                        }
+                                    })
+                                } else {
+                                    if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                        changed = true;
                                     }
-                                });
-                            } else {
-                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
-                                    executado = true;
                                 }
+                            });
+                            if (!exists) {
+                                changed = true;
                             }
                         });
-                        if (!exists) {
-                            executado = true;
+                        if (changed) {
+                            return true;
+                        } else {
+                            return false;
                         }
-                    });
-
-                    bens = checkChanges('.form-control-bem-static', '.tab3', history);
-                    processo = checkChanges('.form-control-vinculo-static', '.tab1', history);
-
-                    function checkChanges(label, tab, history) {
+                    };
+                    
+                    function checkChangesLabel(label, tab) {
                         var changed = false;
                         if ($(atual).find(label).length !== $(history).find(label).length) {
                             changed = true;

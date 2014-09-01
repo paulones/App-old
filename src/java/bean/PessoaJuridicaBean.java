@@ -125,7 +125,7 @@ public class PessoaJuridicaBean implements Serializable {
             pessoaJuridicaHistoricoBO = new PessoaJuridicaHistoricoBO();
             enderecoHistoricoBO = new EnderecoHistoricoBO();
             pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
-            //pessoaJuridicaJuridicaHistoricoBO = new PessoaJuridicaJuridicaHistoricoBO();
+            pessoaJuridicaJuridicaHistoricoBO = new PessoaJuridicaJuridicaHistoricoBO();
             estadoBO = new EstadoBO();
             cidadeBO = new CidadeBO();
             funcaoBO = new FuncaoBO();
@@ -207,7 +207,6 @@ public class PessoaJuridicaBean implements Serializable {
                         pessoaJuridicaHistoricoList = pessoaJuridicaHistoricoBO.findAllByPJ(id);
                         enderecoHistoricoList = enderecoHistoricoBO.findAllByPJ(id);
                         pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoBO.findAllByPJ(id);
-                        //pessoaJuridicaJuridicaHistoricoList = pessoaJuridicaJuridicaHistoricoBO.findAllByPJ(id);
 
                         enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
                         EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
@@ -496,7 +495,7 @@ public class PessoaJuridicaBean implements Serializable {
         }
     }
 
-    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaJuridicaJuridica> pessoaJuridicaJuridicasList) {
+    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
         /*
          Montar registro atual como uma entidade de histórico para facilitar o ui:repeat do form
          */
@@ -521,6 +520,7 @@ public class PessoaJuridicaBean implements Serializable {
         pessoaJuridicaHistorico.setAtividadePrincipal(pessoaJuridica.getAtividadePrincipal());
         pessoaJuridicaHistorico.setAtividadeSecundaria(pessoaJuridica.getAtividadeSecundaria());
         pessoaJuridicaHistorico.setUsuarioFk(pessoaJuridica.getUsuarioFk());
+        pessoaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
 
         enderecoHistorico.setBairro(endereco.getBairro());
         enderecoHistorico.setCep(endereco.getCep());
@@ -541,7 +541,7 @@ public class PessoaJuridicaBean implements Serializable {
             pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
 
-        for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicasList) {
+        for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
             PessoaJuridicaJuridicaHistorico pjjh = new PessoaJuridicaJuridicaHistorico();
             pjjh.setCapitalDeParticipacao(pjj.getCapitalDeParticipacao());
             pjjh.setDataDeInicio(pjj.getDataDeInicio());

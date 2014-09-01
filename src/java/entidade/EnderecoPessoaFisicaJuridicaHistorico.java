@@ -19,7 +19,6 @@ public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
     private Object pessoaHistorico;
     private EnderecoHistorico enderecoHistorico;
     private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
-    private List<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricosList;
 
     public EnderecoPessoaFisicaJuridicaHistorico() {
     }
@@ -54,13 +53,6 @@ public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
         this.pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoList;
     }
 
-    public List<PessoaJuridicaJuridicaHistorico> getPessoaJuridicaJuridicaHistoricosList() {
-        return pessoaJuridicaJuridicaHistoricosList;
-    }
-
-    public void setPessoaJuridicaJuridicaHistoricosList(List<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricosList) {
-        this.pessoaJuridicaJuridicaHistoricosList = pessoaJuridicaJuridicaHistoricosList;
-    }
 
     @Override
     public int hashCode() {

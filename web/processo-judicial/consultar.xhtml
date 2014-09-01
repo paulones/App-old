@@ -899,7 +899,7 @@
                                                                                                     </th>
                                                                                                 </tr>
                                                                                             </thead>
-                                                                                            <tbody class="rows">
+                                                                                            <tbody class="rows-pfj">
                                                                                                 <ui:repeat value="#{executadoHistorico.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                                                     <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                     <tr>
@@ -1231,7 +1231,7 @@
                                                                                                     </th>
                                                                                                 </tr>
                                                                                             </thead>
-                                                                                            <tbody class="rows">
+                                                                                            <tbody class="rows-pfj">
                                                                                                 <ui:repeat value="#{executadoHistorico.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                                                     <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                                                     <tr>
@@ -1252,6 +1252,72 @@
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </ui:repeat>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <h3 class="form-section">Vínculos Empresariais</h3>
+                                                                                <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th style="width:20%;text-align:center">
+                                                                                                        CNPJ
+                                                                                                    </th>
+                                                                                                    <th style="width:20%;text-align:center">
+                                                                                                        Capital de Participação
+                                                                                                    </th>
+                                                                                                    <th style="width:18%;text-align:center">
+                                                                                                        Data de Início
+                                                                                                    </th>
+                                                                                                    <th style="width:18%;text-align:center">
+                                                                                                        Data de Término
+                                                                                                    </th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody class="rows-pjj">
+                                                                                                <ui:repeat value="#{executadoHistorico.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
+                                                                                                    <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                    <tr>
+                                                                                                        <td style="text-align:center">
+                                                                                                            <h:commandLink class="pj-info">
+                                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
+                                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
+                                                                                                            </h:commandLink>
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </ui:repeat>
+                                                                                                <ui:repeat value="#{executadoHistorico.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
+                                                                                                    <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                    <tr>
+                                                                                                        <td style="text-align:center">
+                                                                                                            <h:commandLink class="pj-info">
+                                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
+                                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
+                                                                                                            </h:commandLink>
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
                                                                                                         </td>
                                                                                                     </tr>
                                                                                                 </ui:repeat>

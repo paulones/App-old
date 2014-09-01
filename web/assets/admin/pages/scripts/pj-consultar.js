@@ -162,10 +162,12 @@ var PJCon = function() {
                     }
                 });
                 $.each($('.past'), function() {
+                    var history = this;
                     var description = "";
                     var informacoes = false;
                     var endereco = false;
-                    var vinculo = false;
+                    var vinculoAdministrativo = false;
+                    var vinculoEmpresarial = false;
                     $.each($(this).find('.form-control-static'), function(index) {
                         if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                             $(this).parent().parent().css("color", "#a94442");
@@ -176,47 +178,62 @@ var PJCon = function() {
                             }
                         }
                     });
-                    var upper = this;
-                    if ($(atual).find('.rows tr').length !== $(this).find('.rows tr').length) {
-                        vinculo = true;
-                    }
-                    $.each($(atual).find('.rows tr'), function() {
-                        var atual = this;
-                        var exists = false;
-                        $.each($(upper).find('.rows tr'), function() {
-                            $(this).find('td').children().css("color", "#a94442");
-                            $(this).find('td').css("color", "#a94442");
-                            var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
-                            var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
-                            if (cpfAtual === cpfHistorico) {
-                                $(this).find('td').children().css("color", "black");
-                                $(this).find('td').css("color", "black");
-                                exists = true;
-                                $.each($(this).find('td'), function(index) {
-                                    if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
-                                        $(this).css("color", "#a94442");
-                                        $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
-                                        vinculo = true;
+
+                    vinculoAdministrativo = checkChanges('.rows-pfj tr');
+                    vinculoEmpresarial = checkChanges('.rows-pjj tr');
+
+                    function checkChanges(tr) {
+                        var changed = false;
+                        if ($(atual).find(tr).length !== $(history).find(tr).length) {
+                            changed = true;
+                        }
+                        $.each($(atual).find(tr), function() {
+                            var atual = this;
+                            var exists = false;
+                            $.each($(history).find(tr), function() {
+                                $(this).find('td').children().css("color", "#a94442");
+                                $(this).find('td').css("color", "#a94442");
+                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
+                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
+                                if (cpfAtual === cpfHistorico) {
+                                    $(this).find('td').children().css("color", "black");
+                                    $(this).find('td').css("color", "black");
+                                    exists = true;
+                                    $.each($(this).find('td'), function(index) {
+                                        if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                            $(this).css("color", "#a94442");
+                                            $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                            changed = true;
+                                        }
+                                    })
+                                } else {
+                                    if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                        changed = true;
                                     }
-                                })
-                            } else {
-                                if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
-                                    vinculo = true;
                                 }
+                            });
+                            if (!exists) {
+                                changed = true;
                             }
                         });
-                        if (!exists) {
-                            vinculo = true;
+                        if (changed) {
+                            return true;
+                        } else {
+                            return false;
                         }
-                    });
+                    };
+
                     if (informacoes) {
                         description += "Informa&ccedil;&otilde;es Empresariais, ";
                     }
                     if (endereco) {
                         description += "Endere&ccedil;o, ";
                     }
-                    if (vinculo) {
+                    if (vinculoAdministrativo) {
                         description += "V&iacute;nculos Administrativos, "
+                    }
+                    if (vinculoEmpresarial) {
+                        description += "V&iacute;nculos Empresariais, "
                     }
                     description = description.substring(0, description.length - 2) + ".";
                     if (description.indexOf(",") !== -1) {
