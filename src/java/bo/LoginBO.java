@@ -32,7 +32,8 @@ public class LoginBO implements Serializable {
         Boolean ok = false;
         try {
             //Consulta em uma persistênca a string de licença
-            String licenca = Base64Crypt.decrypt(crypt);
+            Base64Crypt base64Crypt = new Base64Crypt();
+            String licenca = base64Crypt.decrypt(crypt);
             //System.out.println("chave: "+crypt);
             //System.out.println("licenca: "+licenca);
             if (licenca != null && licenca.length() >= 31) {
@@ -77,7 +78,8 @@ public class LoginBO implements Serializable {
             String descriptografia;
             //System.out.println("config: "+config.getChave()+", "+config.getCnpj()+", "+config.getUltimoLogin().toString());
             if (config != null) {
-                descriptografia = Base64Crypt.decrypt(config.getChave());
+                Base64Crypt base64Crypt = new Base64Crypt();
+                descriptografia = base64Crypt.decrypt(config.getChave());
                 String endData = descriptografia.substring(9, 17);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Date dataChave = sdf.parse(endData);

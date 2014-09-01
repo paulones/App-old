@@ -29,6 +29,8 @@ public class sucessaoBean implements Serializable {
     private String sucessora;
 
     private PessoaJuridicaBO pessoaJuridicaBO;
+    
+    private Base64Crypt base64Crypt;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -36,13 +38,15 @@ public class sucessaoBean implements Serializable {
             sucessora = "";
             succeed = "";
             pessoaJuridicaBO = new PessoaJuridicaBO();
+            
+            base64Crypt = new Base64Crypt();
         }
     }
 
     public void suceder() {
         if (sucedida != null && sucessora != null) {
-            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(sucedida)));
-            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(sucessora)));
+            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(sucedida)));
+            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(sucessora)));
             if (pjSucessora.getSucessaoFk() != null && pjSucessora.getSucessaoFk().getId().equals(pjSucedida.getId())) {
                 succeed = "fail";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A empresa escolhida já possui um vínculo de Sucessão Empresarial.", null));

@@ -48,6 +48,8 @@ public class TemplateBean implements Serializable{
     private String tabela;
     private String searchValue;
     
+    private Base64Crypt base64Crypt;
+    
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
             usuarioBO = new UsuarioBO();
@@ -61,6 +63,8 @@ public class TemplateBean implements Serializable{
             executado = new Executado();
             
             searchValue = "";
+            
+            base64Crypt = new Base64Crypt();
         }
     }
     
@@ -78,15 +82,15 @@ public class TemplateBean implements Serializable{
     
     public void exibirModalLog() {
         if (tabela.equals("PF")) {
-            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(idfk)));
+            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(base64Crypt.decrypt(idfk)));
             enderecoPessoa = new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()));
             executado = new Executado();
         } else if (tabela.equals("PJ")) {
-            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(idfk)));
+            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(idfk)));
             enderecoPessoa = new EnderecoPessoa(pj, enderecoBO.findPJAddress(pj.getId()));
             executado = new Executado();
         } else if (tabela.equals("PJUD")){ 
-            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(idfk)));
+            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(base64Crypt.decrypt(idfk)));
             if (pjud.getExecutado().equals("PF")){
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
                 executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId())));
@@ -100,7 +104,7 @@ public class TemplateBean implements Serializable{
     
     public void redirecionar(String tela, String id) throws IOException{
         String queryString = "";
-        queryString =  (id.equals("")) ? "" : "?id=" + Base64Crypt.encrypt(id);
+        queryString =  (id.equals("")) ? "" : "?id=" + base64Crypt.encrypt(id);
         FacesContext.getCurrentInstance().getExternalContext().redirect(tela + ".xhtml" + queryString);
     }
     

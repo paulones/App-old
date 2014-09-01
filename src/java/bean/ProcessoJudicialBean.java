@@ -101,6 +101,8 @@ public class ProcessoJudicialBean implements Serializable {
     private String pjudId;
     private boolean edit;
     private boolean history;
+    
+    private Base64Crypt base64Crypt;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -137,6 +139,8 @@ public class ProcessoJudicialBean implements Serializable {
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
+            
+            base64Crypt = new Base64Crypt();
 
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
@@ -149,7 +153,7 @@ public class ProcessoJudicialBean implements Serializable {
                     carregarFormulario();
                 } else {                                    // Alteração
                     try {
-                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        Integer id = Integer.valueOf(base64Crypt.decrypt(request.getParameter("id")));
                         processoJudicial = processoJudicialBO.findProcessoJudicial(id);
                         if (processoJudicial == null) {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
@@ -164,9 +168,9 @@ public class ProcessoJudicialBean implements Serializable {
                             vinculos = vinculoProcessualList.size();
                             bens = bemList.size();
                             if (processoJudicial.getExecutado().equals("PF")) {
-                                executadoPF = Base64Crypt.encrypt(String.valueOf(processoJudicial.getExecutadoFk()));
+                                executadoPF = base64Crypt.encrypt(String.valueOf(processoJudicial.getExecutadoFk()));
                             } else {
-                                executadoPJ = Base64Crypt.encrypt(String.valueOf(processoJudicial.getExecutadoFk()));
+                                executadoPJ = base64Crypt.encrypt(String.valueOf(processoJudicial.getExecutadoFk()));
                             }
 
                             oldProcessoJudicial = processoJudicialBO.findProcessoJudicial(id);
@@ -188,7 +192,7 @@ public class ProcessoJudicialBean implements Serializable {
                     history = false;
                 } else {                                    // Consulta histórico
                     try {
-                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        Integer id = Integer.valueOf(base64Crypt.decrypt(request.getParameter("id")));
                         processoJudicial = processoJudicialBO.findProcessoJudicial(id);
                         if (processoJudicial == null) {
                             history = false;
@@ -267,16 +271,16 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void exibirExecutado() {
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(executadoPF)));
+            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(base64Crypt.decrypt(executadoPF)));
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
         } else if (processoJudicial.getExecutado().equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(executadoPJ)));
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
     }
 
     public void exibirInfo() {
-        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
+        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(base64Crypt.decrypt(pjudId)));
         if (processoJudicial.getExecutado().equals("PF")) {
             PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
@@ -289,7 +293,7 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void removerProcessoJudicial() {
-        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
+        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(base64Crypt.decrypt(pjudId)));
         processoJudicial.setStatus('I');
         processoJudicialBO.edit(processoJudicial);
         GeradorLog.criar(processoJudicial.getId(), "PJUD", 'D');
@@ -305,7 +309,7 @@ public class ProcessoJudicialBean implements Serializable {
         boolean error = false;
         ProcessoJudicial pjudDBCDA = processoJudicialBO.findByCDA(processoJudicial);
         ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial);
-        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(base64Crypt.decrypt(executadoPF)) : Integer.valueOf(base64Crypt.decrypt(executadoPJ)));
         if (!edit) {
             /*  
              Cadastrar novo Processo Judicial

@@ -107,6 +107,8 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaFisicaHistoricoBO pessoaFisicaHistoricoBO;
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
+    
+    Base64Crypt base64Crypt;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -140,6 +142,8 @@ public class PessoaFisicaBean implements Serializable {
             cidadeEndList = new ArrayList<>();
             cidadeEleList = new ArrayList<>();
             pessoaFisicaJuridicaList = new ArrayList<>();
+            
+            base64Crypt = new Base64Crypt();
 
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             pessoaFisica = new PessoaFisica();
@@ -154,7 +158,7 @@ public class PessoaFisicaBean implements Serializable {
                     carregarFormulario();
                 } else {                                    // Alteração
                     try {
-                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        Integer id = Integer.valueOf(base64Crypt.decrypt(request.getParameter("id")));
                         pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
                         if (pessoaFisica == null) {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
@@ -185,7 +189,7 @@ public class PessoaFisicaBean implements Serializable {
                     history = false;
                 } else {                                    // Consulta histórico
                     try {
-                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        Integer id = Integer.valueOf(base64Crypt.decrypt(request.getParameter("id")));
                         pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
                         if (pessoaFisica == null) {
                             history = false;
@@ -367,7 +371,7 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void exibirInfo() {
-        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(pfId)));
+        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(base64Crypt.decrypt(pfId)));
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaFisica, endereco);
     }
@@ -377,7 +381,7 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void removerPessoaFisica() {
-        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(pfId)));
+        pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(base64Crypt.decrypt(pfId)));
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         pessoaFisica.setStatus('I');
         pessoaFisicaBO.edit(pessoaFisica);
@@ -390,7 +394,7 @@ public class PessoaFisicaBean implements Serializable {
         if (edit) {
             pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         }
-        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjId)));
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(pjId)));
         pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
