@@ -280,11 +280,10 @@ public class PessoaJuridicaJuridicaDAO implements Serializable {
     public List<PessoaJuridicaJuridica> findAllByPJAOrPJB(Integer id){
         EntityManager em = getEntityManager();
         try {
-            List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList = (List<PessoaJuridicaJuridica>) em.createNativeQuery("select pjj.pessoa_juridica_socio_a_fk, pjj.pessoa_juridica_socio_b_fk, pjj.capital_de_participacao, pjj.data_de_inicio, data_de_termino "
+            List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList = (List<PessoaJuridicaJuridica>) em.createNativeQuery("select pjj.id, pjj.pessoa_juridica_socio_a_fk, pjj.pessoa_juridica_socio_b_fk, pjj.capital_de_participacao, pjj.data_de_inicio, data_de_termino "
                         + "from pessoa_juridica_juridica pjj, pessoa_juridica pj where pj.id = '"+id+"' and "
                         + "(pjj.pessoa_juridica_socio_a_fk = pj.id or pjj.pessoa_juridica_socio_b_fk = pj.id) "
-                        + "group by pjj.pessoa_juridica_socio_a_fk, pjj.pessoa_juridica_socio_b_fk, pjj.capital_de_participacao, pjj.data_de_inicio, data_de_termino", PessoaJuridicaJuridica.class).getResultList();
-            System.out.println("size: "+pessoaJuridicaJuridicaList.size());
+                        + "group by pjj.id, pjj.pessoa_juridica_socio_a_fk, pjj.pessoa_juridica_socio_b_fk, pjj.capital_de_participacao, pjj.data_de_inicio, data_de_termino", PessoaJuridicaJuridica.class).getResultList();
             return pessoaJuridicaJuridicaList;
         } catch (NoResultException e) {
             return null;

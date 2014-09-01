@@ -16,6 +16,7 @@ import bo.PessoaFisicaJuridicaHistoricoBO;
 import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaHistoricoBO;
 import bo.PessoaJuridicaJuridicaBO;
+import bo.PessoaJuridicaJuridicaHistoricoBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
@@ -93,7 +94,6 @@ public class PessoaJuridicaBean implements Serializable {
     private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
     private List<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoList;
     private List<EnderecoPessoaFisicaJuridicaHistorico> enderecoPessoaFisicaJuridicaHistoricoList;
-    private List<EnderecoPessoaJuridicaJuridicaHistorico> enderecoPessoaJuridicaJuridicaHistoricoList;
     private List<PessoaJuridicaHistorico> pessoaJuridicaHistoricoList;
     private List<EnderecoHistorico> enderecoHistoricoList;
 
@@ -110,7 +110,7 @@ public class PessoaJuridicaBean implements Serializable {
     private PessoaJuridicaHistoricoBO pessoaJuridicaHistoricoBO;
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
-    //private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
+    private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -226,14 +226,6 @@ public class PessoaJuridicaBean implements Serializable {
                                     }
                                     epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
                                     enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
-
-                                    EnderecoPessoaJuridicaJuridicaHistorico epjjh = new EnderecoPessoaJuridicaJuridicaHistorico(pjh, eh);
-                                    List<PessoaJuridicaJuridicaHistorico> pjjhList = new ArrayList<>();
-                                    for (PessoaJuridicaJuridicaHistorico pjjh : pessoaJuridicaJuridicaHistoricoList) {
-                                        pjjhList.add(pjjh);
-                                    }
-                                    epjjh.setPessoaJuridicaJuridicaHistoricoList(pjjhList);
-                                    enderecoPessoaJuridicaJuridicaHistoricoList.add(epjjh);
                                     break;
                                 }
                             }
@@ -355,6 +347,10 @@ public class PessoaJuridicaBean implements Serializable {
                     pessoaJuridicaJuridicaBO.destroyByPJB(pessoaJuridica.getId());
                     for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
                         pessoaJuridicaJuridicaBO.create(pjj);
+                    }
+                    for (PessoaJuridicaJuridicaHistorico pjjh : pessoaJuridicaJuridicaHistoricoList) {
+                        pjjh.setPessoaJuridicaHistoricoFk(pessoaJuridicaHistorico);
+                        pessoaJuridicaJuridicaHistoricoBO.create(pjjh);
                     }
                     GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'U');
                     Cookie.addCookie("FacesMessage", "success", 10);
@@ -554,10 +550,10 @@ public class PessoaJuridicaBean implements Serializable {
             pjjh.setPessoaJuridicaSocioAFk(pjj.getPessoaJuridicaSocioAFk());
             pessoaJuridicaJuridicaHistoricoList.add(pjjh);
         }
+        pessoaJuridicaHistorico.setPessoaJuridicaJuridicaHistoricoCollection(pessoaJuridicaJuridicaHistoricoList);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaHistorico(pessoaJuridicaHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setEnderecoHistorico(enderecoHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaFisicaJuridicaHistoricoList(pessoaFisicaJuridicaHistoricoList);
-        enderecoPessoaFisicaJuridicaHistorico.setPessoaJuridicaJuridicaHistoricosList(pessoaJuridicaJuridicaHistoricoList);
         return enderecoPessoaFisicaJuridicaHistorico;
     }
 

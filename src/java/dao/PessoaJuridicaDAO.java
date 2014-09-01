@@ -48,17 +48,8 @@ public class PessoaJuridicaDAO implements Serializable {
         if (pessoaJuridica.getPessoaJuridicaCollection() == null) {
             pessoaJuridica.setPessoaJuridicaCollection(new ArrayList<PessoaJuridica>());
         }
-        if (pessoaJuridica.getPessoaJuridicaHistoricoCollection() == null) {
-            pessoaJuridica.setPessoaJuridicaHistoricoCollection(new ArrayList<PessoaJuridicaHistorico>());
-        }
-        if (pessoaJuridica.getPessoaJuridicaHistoricoCollection1() == null) {
-            pessoaJuridica.setPessoaJuridicaHistoricoCollection1(new ArrayList<PessoaJuridicaHistorico>());
-        }
         if (pessoaJuridica.getPessoaFisicaJuridicaCollection() == null) {
             pessoaJuridica.setPessoaFisicaJuridicaCollection(new ArrayList<PessoaFisicaJuridica>());
-        }
-        if (pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection() == null) {
-            pessoaJuridica.setPessoaFisicaJuridicaHistoricoCollection(new ArrayList<PessoaFisicaJuridicaHistorico>());
         }
         if (pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection() == null) {
             pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection(new ArrayList<PessoaJuridicaJuridicaHistorico>());
@@ -66,14 +57,20 @@ public class PessoaJuridicaDAO implements Serializable {
         if (pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection1() == null) {
             pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection1(new ArrayList<PessoaJuridicaJuridicaHistorico>());
         }
-        if (pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection2() == null) {
-            pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection2(new ArrayList<PessoaJuridicaJuridicaHistorico>());
-        }
         if (pessoaJuridica.getPessoaJuridicaJuridicaCollection() == null) {
             pessoaJuridica.setPessoaJuridicaJuridicaCollection(new ArrayList<PessoaJuridicaJuridica>());
         }
         if (pessoaJuridica.getPessoaJuridicaJuridicaCollection1() == null) {
             pessoaJuridica.setPessoaJuridicaJuridicaCollection1(new ArrayList<PessoaJuridicaJuridica>());
+        }
+        if (pessoaJuridica.getPessoaJuridicaHistoricoCollection() == null) {
+            pessoaJuridica.setPessoaJuridicaHistoricoCollection(new ArrayList<PessoaJuridicaHistorico>());
+        }
+        if (pessoaJuridica.getPessoaJuridicaHistoricoCollection1() == null) {
+            pessoaJuridica.setPessoaJuridicaHistoricoCollection1(new ArrayList<PessoaJuridicaHistorico>());
+        }
+        if (pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection() == null) {
+            pessoaJuridica.setPessoaFisicaJuridicaHistoricoCollection(new ArrayList<PessoaFisicaJuridicaHistorico>());
         }
         EntityManager em = null;
         try {
@@ -99,30 +96,12 @@ public class PessoaJuridicaDAO implements Serializable {
                 attachedPessoaJuridicaCollection.add(pessoaJuridicaCollectionPessoaJuridicaToAttach);
             }
             pessoaJuridica.setPessoaJuridicaCollection(attachedPessoaJuridicaCollection);
-            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection = new ArrayList<PessoaJuridicaHistorico>();
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaJuridicaHistoricoCollection()) {
-                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getId());
-                attachedPessoaJuridicaHistoricoCollection.add(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridica.setPessoaJuridicaHistoricoCollection(attachedPessoaJuridicaHistoricoCollection);
-            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection1 = new ArrayList<PessoaJuridicaHistorico>();
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaJuridicaHistoricoCollection1()) {
-                pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach.getId());
-                attachedPessoaJuridicaHistoricoCollection1.add(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridica.setPessoaJuridicaHistoricoCollection1(attachedPessoaJuridicaHistoricoCollection1);
             Collection<PessoaFisicaJuridica> attachedPessoaFisicaJuridicaCollection = new ArrayList<PessoaFisicaJuridica>();
             for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach : pessoaJuridica.getPessoaFisicaJuridicaCollection()) {
                 pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach = em.getReference(pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach.getClass(), pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach.getId());
                 attachedPessoaFisicaJuridicaCollection.add(pessoaFisicaJuridicaCollectionPessoaFisicaJuridicaToAttach);
             }
             pessoaJuridica.setPessoaFisicaJuridicaCollection(attachedPessoaFisicaJuridicaCollection);
-            Collection<PessoaFisicaJuridicaHistorico> attachedPessoaFisicaJuridicaHistoricoCollection = new ArrayList<PessoaFisicaJuridicaHistorico>();
-            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection()) {
-                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach = em.getReference(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach.getClass(), pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach.getId());
-                attachedPessoaFisicaJuridicaHistoricoCollection.add(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridica.setPessoaFisicaJuridicaHistoricoCollection(attachedPessoaFisicaJuridicaHistoricoCollection);
             Collection<PessoaJuridicaJuridicaHistorico> attachedPessoaJuridicaJuridicaHistoricoCollection = new ArrayList<PessoaJuridicaJuridicaHistorico>();
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection()) {
                 pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach.getId());
@@ -135,12 +114,6 @@ public class PessoaJuridicaDAO implements Serializable {
                 attachedPessoaJuridicaJuridicaHistoricoCollection1.add(pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistoricoToAttach);
             }
             pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection1(attachedPessoaJuridicaJuridicaHistoricoCollection1);
-            Collection<PessoaJuridicaJuridicaHistorico> attachedPessoaJuridicaJuridicaHistoricoCollection2 = new ArrayList<PessoaJuridicaJuridicaHistorico>();
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection2()) {
-                pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistoricoToAttach.getId());
-                attachedPessoaJuridicaJuridicaHistoricoCollection2.add(pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection2(attachedPessoaJuridicaJuridicaHistoricoCollection2);
             Collection<PessoaJuridicaJuridica> attachedPessoaJuridicaJuridicaCollection = new ArrayList<PessoaJuridicaJuridica>();
             for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionPessoaJuridicaJuridicaToAttach : pessoaJuridica.getPessoaJuridicaJuridicaCollection()) {
                 pessoaJuridicaJuridicaCollectionPessoaJuridicaJuridicaToAttach = em.getReference(pessoaJuridicaJuridicaCollectionPessoaJuridicaJuridicaToAttach.getClass(), pessoaJuridicaJuridicaCollectionPessoaJuridicaJuridicaToAttach.getId());
@@ -153,6 +126,24 @@ public class PessoaJuridicaDAO implements Serializable {
                 attachedPessoaJuridicaJuridicaCollection1.add(pessoaJuridicaJuridicaCollection1PessoaJuridicaJuridicaToAttach);
             }
             pessoaJuridica.setPessoaJuridicaJuridicaCollection1(attachedPessoaJuridicaJuridicaCollection1);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaJuridicaHistoricoCollection()) {
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollection.add(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridica.setPessoaJuridicaHistoricoCollection(attachedPessoaJuridicaHistoricoCollection);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection1 = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaJuridicaHistoricoCollection1()) {
+                pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollection1.add(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridica.setPessoaJuridicaHistoricoCollection1(attachedPessoaJuridicaHistoricoCollection1);
+            Collection<PessoaFisicaJuridicaHistorico> attachedPessoaFisicaJuridicaHistoricoCollection = new ArrayList<PessoaFisicaJuridicaHistorico>();
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach : pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection()) {
+                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach = em.getReference(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach.getClass(), pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach.getId());
+                attachedPessoaFisicaJuridicaHistoricoCollection.add(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridica.setPessoaFisicaJuridicaHistoricoCollection(attachedPessoaFisicaJuridicaHistoricoCollection);
             em.persist(pessoaJuridica);
             if (sucessaoFk != null) {
                 sucessaoFk.getPessoaJuridicaCollection().add(pessoaJuridica);
@@ -175,24 +166,6 @@ public class PessoaJuridicaDAO implements Serializable {
                     oldSucessaoFkOfPessoaJuridicaCollectionPessoaJuridica = em.merge(oldSucessaoFkOfPessoaJuridicaCollectionPessoaJuridica);
                 }
             }
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaHistoricoCollection()) {
-                PessoaJuridica oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getPessoaJuridicaFk();
-                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
-                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
-                if (oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico != null) {
-                    oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
-                    oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
-                }
-            }
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaHistoricoCollection1()) {
-                PessoaJuridica oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico = pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico.getSucessaoFk();
-                pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico.setSucessaoFk(pessoaJuridica);
-                pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico);
-                if (oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico != null) {
-                    oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection1().remove(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico);
-                    oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico = em.merge(oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico);
-                }
-            }
             for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionPessoaFisicaJuridica : pessoaJuridica.getPessoaFisicaJuridicaCollection()) {
                 PessoaJuridica oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica = pessoaFisicaJuridicaCollectionPessoaFisicaJuridica.getPessoaJuridicaFk();
                 pessoaFisicaJuridicaCollectionPessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
@@ -202,40 +175,22 @@ public class PessoaJuridicaDAO implements Serializable {
                     oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica = em.merge(oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionPessoaFisicaJuridica);
                 }
             }
-            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico : pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection()) {
-                PessoaJuridica oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.getPessoaJuridicaFk();
-                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
-                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = em.merge(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
-                if (oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico != null) {
-                    oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.getPessoaFisicaJuridicaHistoricoCollection().remove(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
-                    oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
-                }
-            }
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection()) {
-                PessoaJuridica oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.getPessoaJuridicaFk();
-                pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
+                PessoaJuridica oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
+                pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioAFk(pessoaJuridica);
                 pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
-                if (oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico != null) {
-                    oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
-                    oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
+                if (oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico != null) {
+                    oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
+                    oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
                 }
             }
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection1()) {
-                PessoaJuridica oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
-                pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioAFk(pessoaJuridica);
+                PessoaJuridica oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioBFk();
+                pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioBFk(pessoaJuridica);
                 pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico);
-                if (oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico != null) {
-                    oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection1().remove(pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico);
-                    oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico);
-                }
-            }
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection2()) {
-                PessoaJuridica oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioBFk();
-                pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioBFk(pessoaJuridica);
-                pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico);
-                if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico != null) {
-                    oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection2().remove(pessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico);
-                    oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2PessoaJuridicaJuridicaHistorico);
+                if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico != null) {
+                    oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection1().remove(pessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico);
+                    oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1PessoaJuridicaJuridicaHistorico);
                 }
             }
             for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionPessoaJuridicaJuridica : pessoaJuridica.getPessoaJuridicaJuridicaCollection()) {
@@ -254,6 +209,33 @@ public class PessoaJuridicaDAO implements Serializable {
                 if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1PessoaJuridicaJuridica != null) {
                     oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1PessoaJuridicaJuridica.getPessoaJuridicaJuridicaCollection1().remove(pessoaJuridicaJuridicaCollection1PessoaJuridicaJuridica);
                     oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1PessoaJuridicaJuridica = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1PessoaJuridicaJuridica);
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaHistoricoCollection()) {
+                PessoaJuridica oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getPessoaJuridicaFk();
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
+                pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                if (oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico != null) {
+                    oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                    oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionPessoaJuridicaHistorico);
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico : pessoaJuridica.getPessoaJuridicaHistoricoCollection1()) {
+                PessoaJuridica oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico = pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico.getSucessaoFk();
+                pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico.setSucessaoFk(pessoaJuridica);
+                pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico = em.merge(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico);
+                if (oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico != null) {
+                    oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico.getPessoaJuridicaHistoricoCollection1().remove(pessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico);
+                    oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico = em.merge(oldSucessaoFkOfPessoaJuridicaHistoricoCollection1PessoaJuridicaHistorico);
+                }
+            }
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico : pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection()) {
+                PessoaJuridica oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.getPessoaJuridicaFk();
+                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
+                pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = em.merge(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
+                if (oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico != null) {
+                    oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico.getPessoaFisicaJuridicaHistoricoCollection().remove(pessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
+                    oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionPessoaFisicaJuridicaHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -284,33 +266,23 @@ public class PessoaJuridicaDAO implements Serializable {
             Usuario usuarioFkNew = pessoaJuridica.getUsuarioFk();
             Collection<PessoaJuridica> pessoaJuridicaCollectionOld = persistentPessoaJuridica.getPessoaJuridicaCollection();
             Collection<PessoaJuridica> pessoaJuridicaCollectionNew = pessoaJuridica.getPessoaJuridicaCollection();
-            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOld = persistentPessoaJuridica.getPessoaJuridicaHistoricoCollection();
-            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionNew = pessoaJuridica.getPessoaJuridicaHistoricoCollection();
-            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection1Old = persistentPessoaJuridica.getPessoaJuridicaHistoricoCollection1();
-            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection1New = pessoaJuridica.getPessoaJuridicaHistoricoCollection1();
             Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionOld = persistentPessoaJuridica.getPessoaFisicaJuridicaCollection();
             Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionNew = pessoaJuridica.getPessoaFisicaJuridicaCollection();
-            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionOld = persistentPessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection();
-            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionNew = pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection();
             Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollectionOld = persistentPessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection();
             Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollectionNew = pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection();
             Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection1Old = persistentPessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection1();
             Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection1New = pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection1();
-            Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection2Old = persistentPessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection2();
-            Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection2New = pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection2();
             Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollectionOld = persistentPessoaJuridica.getPessoaJuridicaJuridicaCollection();
             Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollectionNew = pessoaJuridica.getPessoaJuridicaJuridicaCollection();
             Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection1Old = persistentPessoaJuridica.getPessoaJuridicaJuridicaCollection1();
             Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection1New = pessoaJuridica.getPessoaJuridicaJuridicaCollection1();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOld = persistentPessoaJuridica.getPessoaJuridicaHistoricoCollection();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionNew = pessoaJuridica.getPessoaJuridicaHistoricoCollection();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection1Old = persistentPessoaJuridica.getPessoaJuridicaHistoricoCollection1();
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection1New = pessoaJuridica.getPessoaJuridicaHistoricoCollection1();
+            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionOld = persistentPessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection();
+            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionNew = pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection();
             List<String> illegalOrphanMessages = null;
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOld) {
-                if (!pessoaJuridicaHistoricoCollectionNew.contains(pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain PessoaJuridicaHistorico " + pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico + " since its pessoaJuridicaFk field is not nullable.");
-                }
-            }
             for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionOldPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionOld) {
                 if (!pessoaFisicaJuridicaCollectionNew.contains(pessoaFisicaJuridicaCollectionOldPessoaFisicaJuridica)) {
                     if (illegalOrphanMessages == null) {
@@ -319,20 +291,12 @@ public class PessoaJuridicaDAO implements Serializable {
                     illegalOrphanMessages.add("You must retain PessoaFisicaJuridica " + pessoaFisicaJuridicaCollectionOldPessoaFisicaJuridica + " since its pessoaJuridicaFk field is not nullable.");
                 }
             }
-            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionOld) {
-                if (!pessoaFisicaJuridicaHistoricoCollectionNew.contains(pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain PessoaFisicaJuridicaHistorico " + pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico + " since its pessoaJuridicaFk field is not nullable.");
-                }
-            }
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionOld) {
                 if (!pessoaJuridicaJuridicaHistoricoCollectionNew.contains(pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico + " since its pessoaJuridicaFk field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico + " since its pessoaJuridicaSocioAFk field is not nullable.");
                 }
             }
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection1OldPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection1Old) {
@@ -340,15 +304,7 @@ public class PessoaJuridicaDAO implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollection1OldPessoaJuridicaJuridicaHistorico + " since its pessoaJuridicaSocioAFk field is not nullable.");
-                }
-            }
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection2OldPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection2Old) {
-                if (!pessoaJuridicaJuridicaHistoricoCollection2New.contains(pessoaJuridicaJuridicaHistoricoCollection2OldPessoaJuridicaJuridicaHistorico)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollection2OldPessoaJuridicaJuridicaHistorico + " since its pessoaJuridicaSocioBFk field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollection1OldPessoaJuridicaJuridicaHistorico + " since its pessoaJuridicaSocioBFk field is not nullable.");
                 }
             }
             for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionOldPessoaJuridicaJuridica : pessoaJuridicaJuridicaCollectionOld) {
@@ -365,6 +321,22 @@ public class PessoaJuridicaDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain PessoaJuridicaJuridica " + pessoaJuridicaJuridicaCollection1OldPessoaJuridicaJuridica + " since its pessoaJuridicaSocioBFk field is not nullable.");
+                }
+            }
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOld) {
+                if (!pessoaJuridicaHistoricoCollectionNew.contains(pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaJuridicaHistorico " + pessoaJuridicaHistoricoCollectionOldPessoaJuridicaHistorico + " since its pessoaJuridicaFk field is not nullable.");
+                }
+            }
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionOld) {
+                if (!pessoaFisicaJuridicaHistoricoCollectionNew.contains(pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaFisicaJuridicaHistorico " + pessoaFisicaJuridicaHistoricoCollectionOldPessoaFisicaJuridicaHistorico + " since its pessoaJuridicaFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -389,20 +361,6 @@ public class PessoaJuridicaDAO implements Serializable {
             }
             pessoaJuridicaCollectionNew = attachedPessoaJuridicaCollectionNew;
             pessoaJuridica.setPessoaJuridicaCollection(pessoaJuridicaCollectionNew);
-            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollectionNew = new ArrayList<PessoaJuridicaHistorico>();
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach : pessoaJuridicaHistoricoCollectionNew) {
-                pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getId());
-                attachedPessoaJuridicaHistoricoCollectionNew.add(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridicaHistoricoCollectionNew = attachedPessoaJuridicaHistoricoCollectionNew;
-            pessoaJuridica.setPessoaJuridicaHistoricoCollection(pessoaJuridicaHistoricoCollectionNew);
-            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection1New = new ArrayList<PessoaJuridicaHistorico>();
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach : pessoaJuridicaHistoricoCollection1New) {
-                pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach.getId());
-                attachedPessoaJuridicaHistoricoCollection1New.add(pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridicaHistoricoCollection1New = attachedPessoaJuridicaHistoricoCollection1New;
-            pessoaJuridica.setPessoaJuridicaHistoricoCollection1(pessoaJuridicaHistoricoCollection1New);
             Collection<PessoaFisicaJuridica> attachedPessoaFisicaJuridicaCollectionNew = new ArrayList<PessoaFisicaJuridica>();
             for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach : pessoaFisicaJuridicaCollectionNew) {
                 pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach = em.getReference(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach.getClass(), pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridicaToAttach.getId());
@@ -410,13 +368,6 @@ public class PessoaJuridicaDAO implements Serializable {
             }
             pessoaFisicaJuridicaCollectionNew = attachedPessoaFisicaJuridicaCollectionNew;
             pessoaJuridica.setPessoaFisicaJuridicaCollection(pessoaFisicaJuridicaCollectionNew);
-            Collection<PessoaFisicaJuridicaHistorico> attachedPessoaFisicaJuridicaHistoricoCollectionNew = new ArrayList<PessoaFisicaJuridicaHistorico>();
-            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach : pessoaFisicaJuridicaHistoricoCollectionNew) {
-                pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach = em.getReference(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach.getClass(), pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach.getId());
-                attachedPessoaFisicaJuridicaHistoricoCollectionNew.add(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach);
-            }
-            pessoaFisicaJuridicaHistoricoCollectionNew = attachedPessoaFisicaJuridicaHistoricoCollectionNew;
-            pessoaJuridica.setPessoaFisicaJuridicaHistoricoCollection(pessoaFisicaJuridicaHistoricoCollectionNew);
             Collection<PessoaJuridicaJuridicaHistorico> attachedPessoaJuridicaJuridicaHistoricoCollectionNew = new ArrayList<PessoaJuridicaJuridicaHistorico>();
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach : pessoaJuridicaJuridicaHistoricoCollectionNew) {
                 pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach.getId());
@@ -431,13 +382,6 @@ public class PessoaJuridicaDAO implements Serializable {
             }
             pessoaJuridicaJuridicaHistoricoCollection1New = attachedPessoaJuridicaJuridicaHistoricoCollection1New;
             pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection1(pessoaJuridicaJuridicaHistoricoCollection1New);
-            Collection<PessoaJuridicaJuridicaHistorico> attachedPessoaJuridicaJuridicaHistoricoCollection2New = new ArrayList<PessoaJuridicaJuridicaHistorico>();
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistoricoToAttach : pessoaJuridicaJuridicaHistoricoCollection2New) {
-                pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistoricoToAttach.getId());
-                attachedPessoaJuridicaJuridicaHistoricoCollection2New.add(pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistoricoToAttach);
-            }
-            pessoaJuridicaJuridicaHistoricoCollection2New = attachedPessoaJuridicaJuridicaHistoricoCollection2New;
-            pessoaJuridica.setPessoaJuridicaJuridicaHistoricoCollection2(pessoaJuridicaJuridicaHistoricoCollection2New);
             Collection<PessoaJuridicaJuridica> attachedPessoaJuridicaJuridicaCollectionNew = new ArrayList<PessoaJuridicaJuridica>();
             for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridicaToAttach : pessoaJuridicaJuridicaCollectionNew) {
                 pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridicaToAttach = em.getReference(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridicaToAttach.getClass(), pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridicaToAttach.getId());
@@ -452,6 +396,27 @@ public class PessoaJuridicaDAO implements Serializable {
             }
             pessoaJuridicaJuridicaCollection1New = attachedPessoaJuridicaJuridicaCollection1New;
             pessoaJuridica.setPessoaJuridicaJuridicaCollection1(pessoaJuridicaJuridicaCollection1New);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollectionNew = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach : pessoaJuridicaHistoricoCollectionNew) {
+                pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollectionNew.add(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridicaHistoricoCollectionNew = attachedPessoaJuridicaHistoricoCollectionNew;
+            pessoaJuridica.setPessoaJuridicaHistoricoCollection(pessoaJuridicaHistoricoCollectionNew);
+            Collection<PessoaJuridicaHistorico> attachedPessoaJuridicaHistoricoCollection1New = new ArrayList<PessoaJuridicaHistorico>();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach : pessoaJuridicaHistoricoCollection1New) {
+                pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaHistoricoCollection1New.add(pessoaJuridicaHistoricoCollection1NewPessoaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridicaHistoricoCollection1New = attachedPessoaJuridicaHistoricoCollection1New;
+            pessoaJuridica.setPessoaJuridicaHistoricoCollection1(pessoaJuridicaHistoricoCollection1New);
+            Collection<PessoaFisicaJuridicaHistorico> attachedPessoaFisicaJuridicaHistoricoCollectionNew = new ArrayList<PessoaFisicaJuridicaHistorico>();
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach : pessoaFisicaJuridicaHistoricoCollectionNew) {
+                pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach = em.getReference(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach.getClass(), pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach.getId());
+                attachedPessoaFisicaJuridicaHistoricoCollectionNew.add(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistoricoToAttach);
+            }
+            pessoaFisicaJuridicaHistoricoCollectionNew = attachedPessoaFisicaJuridicaHistoricoCollectionNew;
+            pessoaJuridica.setPessoaFisicaJuridicaHistoricoCollection(pessoaFisicaJuridicaHistoricoCollectionNew);
             pessoaJuridica = em.merge(pessoaJuridica);
             if (sucessaoFkOld != null && !sucessaoFkOld.equals(sucessaoFkNew)) {
                 sucessaoFkOld.getPessoaJuridicaCollection().remove(pessoaJuridica);
@@ -494,6 +459,61 @@ public class PessoaJuridicaDAO implements Serializable {
                     }
                 }
             }
+            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionNew) {
+                if (!pessoaFisicaJuridicaCollectionOld.contains(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica)) {
+                    PessoaJuridica oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.getPessoaJuridicaFk();
+                    pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
+                    pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = em.merge(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
+                    if (oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica != null && !oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.equals(pessoaJuridica)) {
+                        oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.getPessoaFisicaJuridicaCollection().remove(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
+                        oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = em.merge(oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
+                    }
+                }
+            }
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionNew) {
+                if (!pessoaJuridicaJuridicaHistoricoCollectionOld.contains(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico)) {
+                    PessoaJuridica oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
+                    pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioAFk(pessoaJuridica);
+                    pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
+                    if (oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico != null && !oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.equals(pessoaJuridica)) {
+                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
+                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
+                    }
+                }
+            }
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection1New) {
+                if (!pessoaJuridicaJuridicaHistoricoCollection1Old.contains(pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico)) {
+                    PessoaJuridica oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioBFk();
+                    pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioBFk(pessoaJuridica);
+                    pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico);
+                    if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico != null && !oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.equals(pessoaJuridica)) {
+                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection1().remove(pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico);
+                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico);
+                    }
+                }
+            }
+            for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica : pessoaJuridicaJuridicaCollectionNew) {
+                if (!pessoaJuridicaJuridicaCollectionOld.contains(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica)) {
+                    PessoaJuridica oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica = pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.getPessoaJuridicaSocioAFk();
+                    pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
+                    pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica = em.merge(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica);
+                    if (oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica != null && !oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.equals(pessoaJuridica)) {
+                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.getPessoaJuridicaJuridicaCollection().remove(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica);
+                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica = em.merge(oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica);
+                    }
+                }
+            }
+            for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica : pessoaJuridicaJuridicaCollection1New) {
+                if (!pessoaJuridicaJuridicaCollection1Old.contains(pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica)) {
+                    PessoaJuridica oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica = pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.getPessoaJuridicaSocioBFk();
+                    pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridica);
+                    pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica = em.merge(pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica);
+                    if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica != null && !oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.equals(pessoaJuridica)) {
+                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.getPessoaJuridicaJuridicaCollection1().remove(pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica);
+                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica);
+                    }
+                }
+            }
             for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionNew) {
                 if (!pessoaJuridicaHistoricoCollectionOld.contains(pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico)) {
                     PessoaJuridica oldPessoaJuridicaFkOfPessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico = pessoaJuridicaHistoricoCollectionNewPessoaJuridicaHistorico.getPessoaJuridicaFk();
@@ -522,17 +542,6 @@ public class PessoaJuridicaDAO implements Serializable {
                     }
                 }
             }
-            for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionNew) {
-                if (!pessoaFisicaJuridicaCollectionOld.contains(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica)) {
-                    PessoaJuridica oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.getPessoaJuridicaFk();
-                    pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
-                    pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = em.merge(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
-                    if (oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica != null && !oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.equals(pessoaJuridica)) {
-                        oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica.getPessoaFisicaJuridicaCollection().remove(pessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
-                        oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica = em.merge(oldPessoaJuridicaFkOfPessoaFisicaJuridicaCollectionNewPessoaFisicaJuridica);
-                    }
-                }
-            }
             for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionNew) {
                 if (!pessoaFisicaJuridicaHistoricoCollectionOld.contains(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico)) {
                     PessoaJuridica oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico = pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.getPessoaJuridicaFk();
@@ -541,61 +550,6 @@ public class PessoaJuridicaDAO implements Serializable {
                     if (oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico != null && !oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.equals(pessoaJuridica)) {
                         oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico.getPessoaFisicaJuridicaHistoricoCollection().remove(pessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico);
                         oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaFisicaJuridicaHistoricoCollectionNewPessoaFisicaJuridicaHistorico);
-                    }
-                }
-            }
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionNew) {
-                if (!pessoaJuridicaJuridicaHistoricoCollectionOld.contains(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico)) {
-                    PessoaJuridica oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaFk();
-                    pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridica);
-                    pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
-                    if (oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico != null && !oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.equals(pessoaJuridica)) {
-                        oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
-                        oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
-                    }
-                }
-            }
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection1New) {
-                if (!pessoaJuridicaJuridicaHistoricoCollection1Old.contains(pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico)) {
-                    PessoaJuridica oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
-                    pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioAFk(pessoaJuridica);
-                    pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico);
-                    if (oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico != null && !oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.equals(pessoaJuridica)) {
-                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection1().remove(pessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico);
-                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaHistoricoCollection1NewPessoaJuridicaJuridicaHistorico);
-                    }
-                }
-            }
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection2New) {
-                if (!pessoaJuridicaJuridicaHistoricoCollection2Old.contains(pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico)) {
-                    PessoaJuridica oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioBFk();
-                    pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioBFk(pessoaJuridica);
-                    pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico);
-                    if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico != null && !oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico.equals(pessoaJuridica)) {
-                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection2().remove(pessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico);
-                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaHistoricoCollection2NewPessoaJuridicaJuridicaHistorico);
-                    }
-                }
-            }
-            for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica : pessoaJuridicaJuridicaCollectionNew) {
-                if (!pessoaJuridicaJuridicaCollectionOld.contains(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica)) {
-                    PessoaJuridica oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica = pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.getPessoaJuridicaSocioAFk();
-                    pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
-                    pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica = em.merge(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica);
-                    if (oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica != null && !oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.equals(pessoaJuridica)) {
-                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica.getPessoaJuridicaJuridicaCollection().remove(pessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica);
-                        oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica = em.merge(oldPessoaJuridicaSocioAFkOfPessoaJuridicaJuridicaCollectionNewPessoaJuridicaJuridica);
-                    }
-                }
-            }
-            for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica : pessoaJuridicaJuridicaCollection1New) {
-                if (!pessoaJuridicaJuridicaCollection1Old.contains(pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica)) {
-                    PessoaJuridica oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica = pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.getPessoaJuridicaSocioBFk();
-                    pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridica);
-                    pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica = em.merge(pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica);
-                    if (oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica != null && !oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.equals(pessoaJuridica)) {
-                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica.getPessoaJuridicaJuridicaCollection1().remove(pessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica);
-                        oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica = em.merge(oldPessoaJuridicaSocioBFkOfPessoaJuridicaJuridicaCollection1NewPessoaJuridicaJuridica);
                     }
                 }
             }
@@ -633,13 +587,6 @@ public class PessoaJuridicaDAO implements Serializable {
                 throw new NonexistentEntityException("The pessoaJuridica with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOrphanCheck = pessoaJuridica.getPessoaJuridicaHistoricoCollection();
-            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaHistorico " + pessoaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaHistorico + " in its pessoaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaFk field.");
-            }
             Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollectionOrphanCheck = pessoaJuridica.getPessoaFisicaJuridicaCollection();
             for (PessoaFisicaJuridica pessoaFisicaJuridicaCollectionOrphanCheckPessoaFisicaJuridica : pessoaFisicaJuridicaCollectionOrphanCheck) {
                 if (illegalOrphanMessages == null) {
@@ -647,33 +594,19 @@ public class PessoaJuridicaDAO implements Serializable {
                 }
                 illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaFisicaJuridica " + pessoaFisicaJuridicaCollectionOrphanCheckPessoaFisicaJuridica + " in its pessoaFisicaJuridicaCollection field has a non-nullable pessoaJuridicaFk field.");
             }
-            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionOrphanCheck = pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection();
-            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionOrphanCheckPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaFisicaJuridicaHistorico " + pessoaFisicaJuridicaHistoricoCollectionOrphanCheckPessoaFisicaJuridicaHistorico + " in its pessoaFisicaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaFk field.");
-            }
             Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollectionOrphanCheck = pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection();
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaJuridicaHistorico + " in its pessoaJuridicaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaFk field.");
+                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaJuridicaHistorico + " in its pessoaJuridicaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaSocioAFk field.");
             }
             Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection1OrphanCheck = pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection1();
             for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection1OrphanCheckPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection1OrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollection1OrphanCheckPessoaJuridicaJuridicaHistorico + " in its pessoaJuridicaJuridicaHistoricoCollection1 field has a non-nullable pessoaJuridicaSocioAFk field.");
-            }
-            Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection2OrphanCheck = pessoaJuridica.getPessoaJuridicaJuridicaHistoricoCollection2();
-            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollection2OrphanCheckPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollection2OrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollection2OrphanCheckPessoaJuridicaJuridicaHistorico + " in its pessoaJuridicaJuridicaHistoricoCollection2 field has a non-nullable pessoaJuridicaSocioBFk field.");
+                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollection1OrphanCheckPessoaJuridicaJuridicaHistorico + " in its pessoaJuridicaJuridicaHistoricoCollection1 field has a non-nullable pessoaJuridicaSocioBFk field.");
             }
             Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollectionOrphanCheck = pessoaJuridica.getPessoaJuridicaJuridicaCollection();
             for (PessoaJuridicaJuridica pessoaJuridicaJuridicaCollectionOrphanCheckPessoaJuridicaJuridica : pessoaJuridicaJuridicaCollectionOrphanCheck) {
@@ -688,6 +621,20 @@ public class PessoaJuridicaDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaJuridica " + pessoaJuridicaJuridicaCollection1OrphanCheckPessoaJuridicaJuridica + " in its pessoaJuridicaJuridicaCollection1 field has a non-nullable pessoaJuridicaSocioBFk field.");
+            }
+            Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOrphanCheck = pessoaJuridica.getPessoaJuridicaHistoricoCollection();
+            for (PessoaJuridicaHistorico pessoaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaHistorico : pessoaJuridicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaJuridicaHistorico " + pessoaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaHistorico + " in its pessoaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaFk field.");
+            }
+            Collection<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoCollectionOrphanCheck = pessoaJuridica.getPessoaFisicaJuridicaHistoricoCollection();
+            for (PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistoricoCollectionOrphanCheckPessoaFisicaJuridicaHistorico : pessoaFisicaJuridicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This PessoaJuridica (" + pessoaJuridica + ") cannot be destroyed since the PessoaFisicaJuridicaHistorico " + pessoaFisicaJuridicaHistoricoCollectionOrphanCheckPessoaFisicaJuridicaHistorico + " in its pessoaFisicaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

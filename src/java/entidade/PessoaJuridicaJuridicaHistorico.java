@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaJuridicaJuridicaHistorico.findByDataDeInicio", query = "SELECT p FROM PessoaJuridicaJuridicaHistorico p WHERE p.dataDeInicio = :dataDeInicio"),
     @NamedQuery(name = "PessoaJuridicaJuridicaHistorico.findByDataDeTermino", query = "SELECT p FROM PessoaJuridicaJuridicaHistorico p WHERE p.dataDeTermino = :dataDeTermino")})
 public class PessoaJuridicaJuridicaHistorico implements Serializable {
+    @JoinColumn(name = "pessoa_juridica_historico_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private PessoaJuridicaHistorico pessoaJuridicaHistoricoFk;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,9 +53,6 @@ public class PessoaJuridicaJuridicaHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_de_termino")
     private String dataDeTermino;
-    @JoinColumn(name = "pessoa_juridica_fk", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private PessoaJuridica pessoaJuridicaFk;
     @JoinColumn(name = "pessoa_juridica_socio_a_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaJuridica pessoaJuridicaSocioAFk;
@@ -99,14 +99,6 @@ public class PessoaJuridicaJuridicaHistorico implements Serializable {
         this.dataDeTermino = dataDeTermino;
     }
 
-    public PessoaJuridica getPessoaJuridicaFk() {
-        return pessoaJuridicaFk;
-    }
-
-    public void setPessoaJuridicaFk(PessoaJuridica pessoaJuridicaFk) {
-        this.pessoaJuridicaFk = pessoaJuridicaFk;
-    }
-
     public PessoaJuridica getPessoaJuridicaSocioAFk() {
         return pessoaJuridicaSocioAFk;
     }
@@ -146,6 +138,14 @@ public class PessoaJuridicaJuridicaHistorico implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaJuridicaJuridicaHistorico[ id=" + id + " ]";
+    }
+
+    public PessoaJuridicaHistorico getPessoaJuridicaHistoricoFk() {
+        return pessoaJuridicaHistoricoFk;
+    }
+
+    public void setPessoaJuridicaHistoricoFk(PessoaJuridicaHistorico pessoaJuridicaHistoricoFk) {
+        this.pessoaJuridicaHistoricoFk = pessoaJuridicaHistoricoFk;
     }
     
 }

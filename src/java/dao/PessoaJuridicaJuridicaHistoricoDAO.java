@@ -8,16 +8,18 @@ package dao;
 
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaHistorico;
 import entidade.PessoaJuridicaJuridicaHistorico;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -38,11 +40,6 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
-            PessoaJuridica pessoaJuridicaFk = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaFk();
-            if (pessoaJuridicaFk != null) {
-                pessoaJuridicaFk = em.getReference(pessoaJuridicaFk.getClass(), pessoaJuridicaFk.getId());
-                pessoaJuridicaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridicaFk);
-            }
             PessoaJuridica pessoaJuridicaSocioAFk = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
             if (pessoaJuridicaSocioAFk != null) {
                 pessoaJuridicaSocioAFk = em.getReference(pessoaJuridicaSocioAFk.getClass(), pessoaJuridicaSocioAFk.getId());
@@ -53,11 +50,12 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
                 pessoaJuridicaSocioBFk = em.getReference(pessoaJuridicaSocioBFk.getClass(), pessoaJuridicaSocioBFk.getId());
                 pessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioBFk(pessoaJuridicaSocioBFk);
             }
-            em.persist(pessoaJuridicaJuridicaHistorico);
-            if (pessoaJuridicaFk != null) {
-                pessoaJuridicaFk.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
-                pessoaJuridicaFk = em.merge(pessoaJuridicaFk);
+            PessoaJuridicaHistorico pessoaJuridicaHistoricoFk = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaHistoricoFk();
+            if (pessoaJuridicaHistoricoFk != null) {
+                pessoaJuridicaHistoricoFk = em.getReference(pessoaJuridicaHistoricoFk.getClass(), pessoaJuridicaHistoricoFk.getId());
+                pessoaJuridicaJuridicaHistorico.setPessoaJuridicaHistoricoFk(pessoaJuridicaHistoricoFk);
             }
+            em.persist(pessoaJuridicaJuridicaHistorico);
             if (pessoaJuridicaSocioAFk != null) {
                 pessoaJuridicaSocioAFk.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
                 pessoaJuridicaSocioAFk = em.merge(pessoaJuridicaSocioAFk);
@@ -65,6 +63,10 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
             if (pessoaJuridicaSocioBFk != null) {
                 pessoaJuridicaSocioBFk.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
                 pessoaJuridicaSocioBFk = em.merge(pessoaJuridicaSocioBFk);
+            }
+            if (pessoaJuridicaHistoricoFk != null) {
+                pessoaJuridicaHistoricoFk.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
+                pessoaJuridicaHistoricoFk = em.merge(pessoaJuridicaHistoricoFk);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -86,16 +88,12 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
         try {
             em = getEntityManager();em.getTransaction().begin();
             PessoaJuridicaJuridicaHistorico persistentPessoaJuridicaJuridicaHistorico = em.find(PessoaJuridicaJuridicaHistorico.class, pessoaJuridicaJuridicaHistorico.getId());
-            PessoaJuridica pessoaJuridicaFkOld = persistentPessoaJuridicaJuridicaHistorico.getPessoaJuridicaFk();
-            PessoaJuridica pessoaJuridicaFkNew = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaFk();
             PessoaJuridica pessoaJuridicaSocioAFkOld = persistentPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
             PessoaJuridica pessoaJuridicaSocioAFkNew = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
             PessoaJuridica pessoaJuridicaSocioBFkOld = persistentPessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioBFk();
             PessoaJuridica pessoaJuridicaSocioBFkNew = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioBFk();
-            if (pessoaJuridicaFkNew != null) {
-                pessoaJuridicaFkNew = em.getReference(pessoaJuridicaFkNew.getClass(), pessoaJuridicaFkNew.getId());
-                pessoaJuridicaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridicaFkNew);
-            }
+            PessoaJuridicaHistorico pessoaJuridicaHistoricoFkOld = persistentPessoaJuridicaJuridicaHistorico.getPessoaJuridicaHistoricoFk();
+            PessoaJuridicaHistorico pessoaJuridicaHistoricoFkNew = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaHistoricoFk();
             if (pessoaJuridicaSocioAFkNew != null) {
                 pessoaJuridicaSocioAFkNew = em.getReference(pessoaJuridicaSocioAFkNew.getClass(), pessoaJuridicaSocioAFkNew.getId());
                 pessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioAFk(pessoaJuridicaSocioAFkNew);
@@ -104,15 +102,11 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
                 pessoaJuridicaSocioBFkNew = em.getReference(pessoaJuridicaSocioBFkNew.getClass(), pessoaJuridicaSocioBFkNew.getId());
                 pessoaJuridicaJuridicaHistorico.setPessoaJuridicaSocioBFk(pessoaJuridicaSocioBFkNew);
             }
+            if (pessoaJuridicaHistoricoFkNew != null) {
+                pessoaJuridicaHistoricoFkNew = em.getReference(pessoaJuridicaHistoricoFkNew.getClass(), pessoaJuridicaHistoricoFkNew.getId());
+                pessoaJuridicaJuridicaHistorico.setPessoaJuridicaHistoricoFk(pessoaJuridicaHistoricoFkNew);
+            }
             pessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistorico);
-            if (pessoaJuridicaFkOld != null && !pessoaJuridicaFkOld.equals(pessoaJuridicaFkNew)) {
-                pessoaJuridicaFkOld.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
-                pessoaJuridicaFkOld = em.merge(pessoaJuridicaFkOld);
-            }
-            if (pessoaJuridicaFkNew != null && !pessoaJuridicaFkNew.equals(pessoaJuridicaFkOld)) {
-                pessoaJuridicaFkNew.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
-                pessoaJuridicaFkNew = em.merge(pessoaJuridicaFkNew);
-            }
             if (pessoaJuridicaSocioAFkOld != null && !pessoaJuridicaSocioAFkOld.equals(pessoaJuridicaSocioAFkNew)) {
                 pessoaJuridicaSocioAFkOld.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
                 pessoaJuridicaSocioAFkOld = em.merge(pessoaJuridicaSocioAFkOld);
@@ -128,6 +122,14 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
             if (pessoaJuridicaSocioBFkNew != null && !pessoaJuridicaSocioBFkNew.equals(pessoaJuridicaSocioBFkOld)) {
                 pessoaJuridicaSocioBFkNew.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
                 pessoaJuridicaSocioBFkNew = em.merge(pessoaJuridicaSocioBFkNew);
+            }
+            if (pessoaJuridicaHistoricoFkOld != null && !pessoaJuridicaHistoricoFkOld.equals(pessoaJuridicaHistoricoFkNew)) {
+                pessoaJuridicaHistoricoFkOld.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
+                pessoaJuridicaHistoricoFkOld = em.merge(pessoaJuridicaHistoricoFkOld);
+            }
+            if (pessoaJuridicaHistoricoFkNew != null && !pessoaJuridicaHistoricoFkNew.equals(pessoaJuridicaHistoricoFkOld)) {
+                pessoaJuridicaHistoricoFkNew.getPessoaJuridicaJuridicaHistoricoCollection().add(pessoaJuridicaJuridicaHistorico);
+                pessoaJuridicaHistoricoFkNew = em.merge(pessoaJuridicaHistoricoFkNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -162,11 +164,6 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pessoaJuridicaJuridicaHistorico with id " + id + " no longer exists.", enfe);
             }
-            PessoaJuridica pessoaJuridicaFk = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaFk();
-            if (pessoaJuridicaFk != null) {
-                pessoaJuridicaFk.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
-                pessoaJuridicaFk = em.merge(pessoaJuridicaFk);
-            }
             PessoaJuridica pessoaJuridicaSocioAFk = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaSocioAFk();
             if (pessoaJuridicaSocioAFk != null) {
                 pessoaJuridicaSocioAFk.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
@@ -176,6 +173,11 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
             if (pessoaJuridicaSocioBFk != null) {
                 pessoaJuridicaSocioBFk.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
                 pessoaJuridicaSocioBFk = em.merge(pessoaJuridicaSocioBFk);
+            }
+            PessoaJuridicaHistorico pessoaJuridicaHistoricoFk = pessoaJuridicaJuridicaHistorico.getPessoaJuridicaHistoricoFk();
+            if (pessoaJuridicaHistoricoFk != null) {
+                pessoaJuridicaHistoricoFk.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistorico);
+                pessoaJuridicaHistoricoFk = em.merge(pessoaJuridicaHistoricoFk);
             }
             em.remove(pessoaJuridicaJuridicaHistorico);
             em.getTransaction().commit();
@@ -234,6 +236,19 @@ public class PessoaJuridicaJuridicaHistoricoDAO implements Serializable {
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaJuridicaJuridicaHistorico> findAllByPJH(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistorico = (List<PessoaJuridicaJuridicaHistorico>) em.createNativeQuery("select pjjh.* from pessoa_juridica_juridica_historico pjjh "
+                        + "where pjjh.pessoa_juridica_historico_fk = '"+id+"'", PessoaJuridicaJuridicaHistorico.class).getResultList();
+            return pessoaJuridicaJuridicaHistorico;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

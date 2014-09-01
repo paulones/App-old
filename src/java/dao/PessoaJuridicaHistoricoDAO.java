@@ -6,13 +6,17 @@
 
 package dao;
 
+import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaHistorico;
+import entidade.PessoaJuridicaJuridicaHistorico;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -38,6 +42,9 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
     }
 
     public void create(PessoaJuridicaHistorico pessoaJuridicaHistorico) throws RollbackFailureException, Exception {
+        if (pessoaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection() == null) {
+            pessoaJuridicaHistorico.setPessoaJuridicaJuridicaHistoricoCollection(new ArrayList<PessoaJuridicaJuridicaHistorico>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -61,6 +68,12 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
                 usuarioFk = em.getReference(usuarioFk.getClass(), usuarioFk.getId());
                 pessoaJuridicaHistorico.setUsuarioFk(usuarioFk);
             }
+            Collection<PessoaJuridicaJuridicaHistorico> attachedPessoaJuridicaJuridicaHistoricoCollection = new ArrayList<PessoaJuridicaJuridicaHistorico>();
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach : pessoaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection()) {
+                pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaJuridicaHistoricoCollection.add(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridicaHistorico.setPessoaJuridicaJuridicaHistoricoCollection(attachedPessoaJuridicaJuridicaHistoricoCollection);
             em.persist(pessoaJuridicaHistorico);
             if (pessoaJuridicaFk != null) {
                 pessoaJuridicaFk.getPessoaJuridicaHistoricoCollection().add(pessoaJuridicaHistorico);
@@ -78,6 +91,15 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
                 usuarioFk.getPessoaJuridicaHistoricoCollection().add(pessoaJuridicaHistorico);
                 usuarioFk = em.merge(usuarioFk);
             }
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico : pessoaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection()) {
+                PessoaJuridicaHistorico oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.getPessoaJuridicaHistoricoFk();
+                pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.setPessoaJuridicaHistoricoFk(pessoaJuridicaHistorico);
+                pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
+                if (oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico != null) {
+                    oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
+                    oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionPessoaJuridicaJuridicaHistorico);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -93,7 +115,7 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
         }
     }
 
-    public void edit(PessoaJuridicaHistorico pessoaJuridicaHistorico) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(PessoaJuridicaHistorico pessoaJuridicaHistorico) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -106,6 +128,20 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
             TipoEmpresarial tipoEmpresarialFkNew = pessoaJuridicaHistorico.getTipoEmpresarialFk();
             Usuario usuarioFkOld = persistentPessoaJuridicaHistorico.getUsuarioFk();
             Usuario usuarioFkNew = pessoaJuridicaHistorico.getUsuarioFk();
+            Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollectionOld = persistentPessoaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection();
+            Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollectionNew = pessoaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection();
+            List<String> illegalOrphanMessages = null;
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionOld) {
+                if (!pessoaJuridicaJuridicaHistoricoCollectionNew.contains(pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollectionOldPessoaJuridicaJuridicaHistorico + " since its pessoaJuridicaHistoricoFk field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (pessoaJuridicaFkNew != null) {
                 pessoaJuridicaFkNew = em.getReference(pessoaJuridicaFkNew.getClass(), pessoaJuridicaFkNew.getId());
                 pessoaJuridicaHistorico.setPessoaJuridicaFk(pessoaJuridicaFkNew);
@@ -122,6 +158,13 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
                 usuarioFkNew = em.getReference(usuarioFkNew.getClass(), usuarioFkNew.getId());
                 pessoaJuridicaHistorico.setUsuarioFk(usuarioFkNew);
             }
+            Collection<PessoaJuridicaJuridicaHistorico> attachedPessoaJuridicaJuridicaHistoricoCollectionNew = new ArrayList<PessoaJuridicaJuridicaHistorico>();
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach : pessoaJuridicaJuridicaHistoricoCollectionNew) {
+                pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach = em.getReference(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach.getClass(), pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach.getId());
+                attachedPessoaJuridicaJuridicaHistoricoCollectionNew.add(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistoricoToAttach);
+            }
+            pessoaJuridicaJuridicaHistoricoCollectionNew = attachedPessoaJuridicaJuridicaHistoricoCollectionNew;
+            pessoaJuridicaHistorico.setPessoaJuridicaJuridicaHistoricoCollection(pessoaJuridicaJuridicaHistoricoCollectionNew);
             pessoaJuridicaHistorico = em.merge(pessoaJuridicaHistorico);
             if (pessoaJuridicaFkOld != null && !pessoaJuridicaFkOld.equals(pessoaJuridicaFkNew)) {
                 pessoaJuridicaFkOld.getPessoaJuridicaHistoricoCollection().remove(pessoaJuridicaHistorico);
@@ -155,6 +198,17 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
                 usuarioFkNew.getPessoaJuridicaHistoricoCollection().add(pessoaJuridicaHistorico);
                 usuarioFkNew = em.merge(usuarioFkNew);
             }
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionNew) {
+                if (!pessoaJuridicaJuridicaHistoricoCollectionOld.contains(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico)) {
+                    PessoaJuridicaHistorico oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaHistoricoFk();
+                    pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.setPessoaJuridicaHistoricoFk(pessoaJuridicaHistorico);
+                    pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = em.merge(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
+                    if (oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico != null && !oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.equals(pessoaJuridicaHistorico)) {
+                        oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection().remove(pessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
+                        oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico = em.merge(oldPessoaJuridicaHistoricoFkOfPessoaJuridicaJuridicaHistoricoCollectionNewPessoaJuridicaJuridicaHistorico);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -177,7 +231,7 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -187,6 +241,17 @@ public class PessoaJuridicaHistoricoDAO implements Serializable {
                 pessoaJuridicaHistorico.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pessoaJuridicaHistorico with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollectionOrphanCheck = pessoaJuridicaHistorico.getPessoaJuridicaJuridicaHistoricoCollection();
+            for (PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaJuridicaHistorico : pessoaJuridicaJuridicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This PessoaJuridicaHistorico (" + pessoaJuridicaHistorico + ") cannot be destroyed since the PessoaJuridicaJuridicaHistorico " + pessoaJuridicaJuridicaHistoricoCollectionOrphanCheckPessoaJuridicaJuridicaHistorico + " in its pessoaJuridicaJuridicaHistoricoCollection field has a non-nullable pessoaJuridicaHistoricoFk field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             PessoaJuridica pessoaJuridicaFk = pessoaJuridicaHistorico.getPessoaJuridicaFk();
             if (pessoaJuridicaFk != null) {

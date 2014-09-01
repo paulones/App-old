@@ -3,7 +3,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:define name="title">Processo Judicial - #{processoJudicialBean.edit ? 'Alteração' :'Cadastro'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{processoJudicialBean.init()}"/>
@@ -595,10 +596,11 @@
                                                 </div>
                                             </div>
                                             <!-- /row -->
+                                            <c:if test="#{not empty processoJudicialBean.enderecoPessoaFisica.pessoa}">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h:panelGroup id="pessoa-fisica" class="pessoa">
-                                                        <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty processoJudicialBean.enderecoPessoaFisica.pessoa}">
+                                                        <h:panelGroup layout="block" class="portlet box blue-chambray">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
                                                                     <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaFisica.pessoa.nome}
@@ -985,11 +987,13 @@
                                                     </h:panelGroup>
                                                 </div>
                                             </div>
+                                            </c:if> 
                                             <!-- /row -->
-                                            <div class="row">
+                                            <c:if test="#{not empty processoJudicialBean.enderecoPessoaJuridica.pessoa}">
+                                                <div class="row">
                                                 <div class="col-md-12">
                                                     <h:panelGroup id="pessoa-juridica" class="pessoa">
-                                                        <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty processoJudicialBean.enderecoPessoaJuridica.pessoa}">
+                                                        <h:panelGroup layout="block" class="portlet box blue-chambray">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
                                                                     <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaJuridica.pessoa.nome}
@@ -1304,6 +1308,73 @@
                                                                             </table>
                                                                         </div>
                                                                     </div>
+                                                                    <!--/row-->
+                                                                    <h3 class="form-section">Vínculos Empresariais</h3>
+                                                                    <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th style="width:20%;text-align:center">
+                                                                                            CNPJ
+                                                                                        </th>
+                                                                                        <th style="width:20%;text-align:center">
+                                                                                            Capital de Participação
+                                                                                        </th>
+                                                                                        <th style="width:18%;text-align:center">
+                                                                                            Data de Início
+                                                                                        </th>
+                                                                                        <th style="width:18%;text-align:center">
+                                                                                            Data de Término
+                                                                                        </th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody class="rows">
+                                                                                    <ui:repeat value="#{processoJudicialBean.enderecoPessoaJuridica.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
+                                                                                        <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        <tr>
+                                                                                            <td style="text-align:center">
+                                                                                                <h:commandLink class="pj-info">
+                                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
+                                                                                                    #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
+                                                                                                </h:commandLink>
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </ui:repeat>
+                                                                                    <ui:repeat value="#{processoJudicialBean.enderecoPessoaJuridica.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
+                                                                                        <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        <tr>
+                                                                                            <td style="text-align:center">
+                                                                                                <h:commandLink class="pj-info">
+                                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
+                                                                                                    #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
+                                                                                                </h:commandLink>
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                            </td>
+                                                                                            <td style="text-align:center">
+                                                                                                #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </ui:repeat>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                                 <!-- END LISTA CONTENT-->
                                                             </div>
@@ -1311,6 +1382,8 @@
                                                     </h:panelGroup>
                                                 </div>
                                             </div>
+                                            </c:if>
+                                            
                                             <!-- /row -->
                                             <h3 class="form-section"></h3>
                                             <div class="row">

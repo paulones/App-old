@@ -7,8 +7,10 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +20,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -50,6 +54,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaJuridicaHistorico.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.atividadeSecundaria = :atividadeSecundaria"),
     @NamedQuery(name = "PessoaJuridicaHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaJuridicaHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
 public class PessoaJuridicaHistorico implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaHistoricoFk")
+    private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -305,6 +311,15 @@ public class PessoaJuridicaHistorico implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaJuridicaHistorico[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaJuridicaHistorico> getPessoaJuridicaJuridicaHistoricoCollection() {
+        return pessoaJuridicaJuridicaHistoricoCollection;
+    }
+
+    public void setPessoaJuridicaJuridicaHistoricoCollection(Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection) {
+        this.pessoaJuridicaJuridicaHistoricoCollection = pessoaJuridicaJuridicaHistoricoCollection;
     }
     
 }
