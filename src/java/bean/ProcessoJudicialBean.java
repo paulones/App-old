@@ -154,10 +154,10 @@ public class ProcessoJudicialBean implements Serializable {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                     } else {
                         edit = true;
-                        for (Bem bem : processoJudicial.getBemCollection()){
+                        for (Bem bem : processoJudicial.getBemCollection()) {
                             bemList.add(bem);
                         }
-                        for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()){
+                        for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()) {
                             vinculoProcessualList.add(vinculoProcessual);
                         }
                         vinculos = vinculoProcessualList.size();
@@ -208,11 +208,12 @@ public class ProcessoJudicialBean implements Serializable {
                             if (pjh.getExecutado().equals("PF")) {
                                 PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
                                 enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+                                executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null);
                             } else if (pjh.getExecutado().equals("PJ")) {
                                 PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
                                 enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+                                executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa);
                             }
-                            executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa);
                             executadoHistoricoList.add(executadoHistorico);
                         }
                     }
@@ -235,8 +236,8 @@ public class ProcessoJudicialBean implements Serializable {
                 bemList.add(bem);
             }
         } else if (bens < bemList.size()) {
-            while (bemList.size() > bens){
-                bemList.remove(bemList.size()-1);
+            while (bemList.size() > bens) {
+                bemList.remove(bemList.size() - 1);
             }
         }
 
@@ -249,8 +250,8 @@ public class ProcessoJudicialBean implements Serializable {
                 vinculoProcessualList.add(vinculoProcessual);
             }
         } else if (vinculos < vinculoProcessualList.size()) {
-            while (vinculoProcessualList.size() > vinculos){
-                vinculoProcessualList.remove(vinculoProcessualList.size()-1);
+            while (vinculoProcessualList.size() > vinculos) {
+                vinculoProcessualList.remove(vinculoProcessualList.size() - 1);
             }
         }
     }
@@ -559,8 +560,11 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setVinculoProcessualHistoricoCollection(vinculoProcessualHistoricoList);
 
         executadoHistorico.setProcessoJudicialHistorico(processoJudicialHistorico);
-        executadoHistorico.setEnderecoPessoa(enderecoPessoa);
-
+        if (processoJudicial.getExecutado().equals("PF")) {
+            executadoHistorico.setEnderecoPessoaFisica(enderecoPessoa);
+        } else {
+            executadoHistorico.setEnderecoPessoaJuridica(enderecoPessoa);
+        }
         return executadoHistorico;
     }
 

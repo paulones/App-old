@@ -596,11 +596,10 @@
                                                 </div>
                                             </div>
                                             <!-- /row -->
-                                            <c:if test="#{not empty processoJudicialBean.enderecoPessoaFisica.pessoa}">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <h:panelGroup id="pessoa-fisica" class="pessoa">
-                                                        <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                        <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty processoJudicialBean.enderecoPessoaFisica.pessoa}">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
                                                                     <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaFisica.pessoa.nome}
@@ -987,13 +986,11 @@
                                                     </h:panelGroup>
                                                 </div>
                                             </div>
-                                            </c:if> 
                                             <!-- /row -->
-                                            <c:if test="#{not empty processoJudicialBean.enderecoPessoaJuridica.pessoa}">
                                                 <div class="row">
                                                 <div class="col-md-12">
                                                     <h:panelGroup id="pessoa-juridica" class="pessoa">
-                                                        <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                        <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty processoJudicialBean.enderecoPessoaFisica.pessoa}">
                                                             <div class="portlet-title">
                                                                 <div class="caption">
                                                                     <i class="fa fa-user"></i>Dados de #{processoJudicialBean.enderecoPessoaJuridica.pessoa.nome}
@@ -1382,7 +1379,6 @@
                                                     </h:panelGroup>
                                                 </div>
                                             </div>
-                                            </c:if>
                                             
                                             <!-- /row -->
                                             <h3 class="form-section"></h3>

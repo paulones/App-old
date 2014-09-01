@@ -15,15 +15,17 @@ import java.io.Serializable;
 public class ExecutadoHistorico implements Serializable {
     
     private ProcessoJudicialHistorico processoJudicialHistorico;
-    private EnderecoPessoa enderecoPessoa;
+    private EnderecoPessoa enderecoPessoaFisica;
+    private EnderecoPessoa enderecoPessoaJuridica;
 
     public ExecutadoHistorico() {
     }
 
-    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoa) {
+    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica) {
         this.processoJudicialHistorico = processoJudicialHistorico;
-        this.enderecoPessoa = enderecoPessoa;
-    }
+        this.enderecoPessoaFisica = enderecoPessoaFisica;
+        this.enderecoPessoaJuridica = enderecoPessoaJuridica;
+    }   
     
     public ProcessoJudicialHistorico getProcessoJudicialHistorico() {
         return processoJudicialHistorico;
@@ -33,12 +35,22 @@ public class ExecutadoHistorico implements Serializable {
         this.processoJudicialHistorico = processoJudicialHistorico;
     }
 
-    public EnderecoPessoa getEnderecoPessoa() {
-        return enderecoPessoa;
+    public EnderecoPessoa getEnderecoPessoaFisica() {
+        return enderecoPessoaFisica;
     }
 
-    public void setEnderecoPessoa(EnderecoPessoa enderecoPessoa) {
-        this.enderecoPessoa = enderecoPessoa;
+    public void setEnderecoPessoaFisica(EnderecoPessoa enderecoPessoaFisica) {
+        this.enderecoPessoaFisica = enderecoPessoaFisica;
     }
+
+    public EnderecoPessoa getEnderecoPessoaJuridica() {
+        return enderecoPessoaJuridica;
+    }
+
+    public void setEnderecoPessoaJuridica(EnderecoPessoa enderecoPessoaJuridica) {
+        this.enderecoPessoaJuridica = enderecoPessoaJuridica;
+    }
+
+    
     
 }
