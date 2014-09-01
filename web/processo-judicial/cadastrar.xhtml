@@ -20,54 +20,61 @@
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
-        <!-- BEGIN PAGE HEADER-->
-        <div class="row">
-            <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE e BREADCRUMB-->
-                <h3 class="page-title">
-                    Processo Judicial <small>#{processoJudicialBean.edit ? 'Alteração' :'Cadastro'}</small>
-                </h3>
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <i class="fa fa-home"></i>
-                        <a href="../home.xhtml">Home</a>
-                        <i class="fa fa-angle-right"/>
-                    </li>
-                    <li>
-                        <i class="fa fa-legal"></i>
-                        <a href="#">Processo Judicial</a>
-                        <i class="fa fa-angle-right"></i>
-                    </li>
-                    <h:panelGroup rendered="#{processoJudicialBean.edit}">
+        <!-- BEGIN FORM-->
+        <h:form prependId="false" id="submit_form" class="form-horizontal">
+            <!-- BEGIN PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE e BREADCRUMB-->
+                    <h3 class="page-title">
+                        Processo Judicial <small>#{processoJudicialBean.edit ? 'Alteração' :'Cadastro'}</small>
+                    </h3>
+                    <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <i class="fa fa-search"></i>
-                            <a href="../processo-judicial/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-home"></i>
+                            <a href="../home.xhtml">Home</a>
+                            <i class="fa fa-angle-right"/>
+                        </li>
+                        <li>
+                            <i class="fa fa-legal"></i>
+                            <a href="#">Processo Judicial</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                    </h:panelGroup>
-                    <li>
-                        <ui:fragment rendered="#{processoJudicialBean.edit}"><i class="fa fa-edit"/></ui:fragment>
-                        <ui:fragment rendered="#{!processoJudicialBean.edit}"><i class="fa fa-floppy-o"/></ui:fragment>
-                        <a href="../processo-judicial/cadastrar.xhtml#{processoJudicialBean.edit ? '?id=' :''}#{processoJudicialBean.edit ? processoJudicialBean.processoJudicial.id : ''}">#{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'}</a>
-                    </li>
-                </ul>
-                <!-- END PAGE TITLE e BREADCRUMB-->
+                        <h:panelGroup rendered="#{processoJudicialBean.edit}">
+                            <li>
+                                <i class="fa fa-search"></i>
+                                <a href="../processo-judicial/consultar.xhtml">Consultar</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                        </h:panelGroup>
+                        <li>
+                            <ui:fragment rendered="#{processoJudicialBean.edit}">
+                                <i class="fa fa-edit"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar',processoJudicialBean.processoJudicial.id)}">Alterar</h:commandLink>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!processoJudicialBean.edit}">
+                                <i class="fa fa-floppy-o"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar','')}">Cadastrar
+                                    <f:ajax listener="#{processoJudicialBean.evitarAvisosIndevidosNoForm}" />
+                                </h:commandLink>
+                            </ui:fragment>
+                        </li>
+                    </ul>
+                    <!-- END PAGE TITLE e BREADCRUMB-->
+                </div>
             </div>
-        </div>
-        <!-- END PAGE HEADER-->
-        <!-- BEGIN PAGE CONTENT-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="portlet box blue-chambray" id="form_wizard">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-files-o"></i> Formulário de #{processoJudicialBean.edit ? 'Alteração do Processo ' :'Cadastro '}#{processoJudicialBean.edit ? processoJudicialBean.processoJudicial.numeroDoProcesso : ''} - <span class="step-title">
-                                Passo 1 de 4 </span>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="portlet box blue-chambray" id="form_wizard">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-files-o"></i> Formulário de #{processoJudicialBean.edit ? 'Alteração do Processo ' :'Cadastro '}#{processoJudicialBean.edit ? processoJudicialBean.processoJudicial.numeroDoProcesso : ''} - <span class="step-title">
+                                    Passo 1 de 4 </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <!-- BEGIN FORM-->
-                        <h:form prependId="false" id="submit_form" class="form-horizontal">
+                        <div class="portlet-body form">
                             <div class="form-wizard">
                                 <div class="form-body">
                                     <ul class="nav nav-pills nav-justified steps">
@@ -987,7 +994,7 @@
                                                 </div>
                                             </div>
                                             <!-- /row -->
-                                                <div class="row">
+                                            <div class="row">
                                                 <div class="col-md-12">
                                                     <h:panelGroup id="pessoa-juridica" class="pessoa">
                                                         <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty processoJudicialBean.enderecoPessoaFisica.pessoa}">
@@ -1379,7 +1386,7 @@
                                                     </h:panelGroup>
                                                 </div>
                                             </div>
-                                            
+
                                             <!-- /row -->
                                             <h3 class="form-section"></h3>
                                             <div class="row">
@@ -1514,12 +1521,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </h:form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- END PAGE CONTENT-->
+            <!-- END PAGE CONTENT-->
+        </h:form>
+        <!-- END FORM -->
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->

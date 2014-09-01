@@ -21,42 +21,47 @@
     </ui:define>
     <ui:define name="content">
         <!-- BEGIN PAGE HEADER-->
-        <div class="row">
-            <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE e BREADCRUMB-->
-                <h3 class="page-title">
-                    Pessoa Física <small>Consulta #{!pessoaFisicaBean.history ? '':'de Histórico'}</small>
-                </h3>
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <i class="fa fa-home"></i>
-                        <a href="../home.xhtml">Home</a>
-                        <i class="fa fa-angle-right"/>
-                    </li>
-                    <li>
-                        <i class="fa fa-user"/>
-                        <a href="#">Pessoa Física</a>
-                        <i class="fa fa-angle-right"></i>
-                    </li>
-                    <h:panelGroup rendered="#{pessoaFisicaBean.history}">
+        <h:form  id="form" prependId="false">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE e BREADCRUMB-->
+                    <h3 class="page-title">
+                        Pessoa Física <small>Consulta #{!pessoaFisicaBean.history ? '':'de Histórico'}</small>
+                    </h3>
+                    <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <i class="fa fa-search"/>
-                            <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-home"></i>
+                            <a href="../home.xhtml">Home</a>
+                            <i class="fa fa-angle-right"/>
+                        </li>
+                        <li>
+                            <i class="fa fa-user"/>
+                            <a href="#">Pessoa Física</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                    </h:panelGroup>
-                    <li>
-                        <ui:fragment rendered="#{pessoaFisicaBean.history}"><i class="fa fa-history"/></ui:fragment>
-                        <ui:fragment rendered="#{!pessoaFisicaBean.history}"><i class="fa fa-search"/></ui:fragment>
-                        <a href="../pessoa-fisica/consultar.xhtml#{pessoaFisicaBean.history ? '?id=' :''}#{pessoaFisicaBean.history ? pessoaFisicaBean.pessoaFisica.id : ''}">Consultar #{!pessoaFisicaBean.history ? '':'Histórico'}</a>
-                    </li>
-                </ul>
-                <!-- END PAGE TITLE e BREADCRUMB-->
+                        <h:panelGroup rendered="#{pessoaFisicaBean.history}">
+                            <li>
+                                <i class="fa fa-search"/>
+                                <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                        </h:panelGroup>
+                        <li>
+                            <ui:fragment rendered="#{pessoaFisicaBean.history}">
+                                <i class="fa fa-history"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar',pessoaFisicaBean.pessoaFisica.id)}">Consultar Histórico</h:commandLink>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!pessoaFisicaBean.history}">
+                                <i class="fa fa-search"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar','')}">Consultar</h:commandLink>
+                            </ui:fragment>
+                        </li>
+                    </ul>
+                    <!-- END PAGE TITLE e BREADCRUMB-->
+                </div>
             </div>
-        </div>
-        <!-- END PAGE HEADER-->
-        <!-- BEGIN PAGE CONTENT-->
-        <h:form  id="form" prependId="false">
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
             <div class="row">
                 <div class="col-md-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -554,7 +559,7 @@
                     <!-- END EXAMPLE TABLE PORTLET-->
                 </div>
             </div>
-            
+
             <h:inputHidden id="pf-id" value="#{pessoaFisicaBean.pfId}"/>
             <h:commandLink class="info-delete" action="#{pessoaFisicaBean.removerPessoaFisica()}" />
             <h:commandLink class="info-refresher">
@@ -575,8 +580,8 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="col-md-offset-4 col-md-9">
-                                        <a href="consultar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</a>
-                                        <a href="cadastrar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
+                                        <h:commandLink action="#{templateBean.redirecionar('consultar',pessoaFisicaBean.enderecoPessoa.pessoa.id)}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</h:commandLink>
+                                        <h:commandLink action="#{templateBean.redirecionar('cadastrar',pessoaFisicaBean.enderecoPessoa.pessoa.id)}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</h:commandLink>
                                     </div>
                                 </div>
                             </div>

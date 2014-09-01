@@ -21,43 +21,48 @@
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
-        <!-- BEGIN PAGE HEADER-->
-        <div class="row">
-            <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE e BREADCRUMB-->
-                <h3 class="page-title">
-                    Processo Judicial <small>Consulta #{!processoJudicialBean.history ? '':'de Histórico'}</small>
-                </h3>
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <i class="fa fa-home"></i>
-                        <a href="../home.xhtml">Home</a>
-                        <i class="fa fa-angle-right"/>
-                    </li>
-                    <li>
-                        <i class="fa fa-legal"></i>
-                        <a href="#">Processo Judicial</a>
-                        <i class="fa fa-angle-right"></i>
-                    </li>
-                    <h:panelGroup rendered="#{processoJudicialBean.history}">
+        <h:form  id="form" prependId="false">
+            <!-- BEGIN PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE e BREADCRUMB-->
+                    <h3 class="page-title">
+                        Processo Judicial <small>Consulta #{!processoJudicialBean.history ? '':'de Histórico'}</small>
+                    </h3>
+                    <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <i class="fa fa-search"/>
-                            <a href="../processo-judicial/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-home"></i>
+                            <a href="../home.xhtml">Home</a>
+                            <i class="fa fa-angle-right"/>
+                        </li>
+                        <li>
+                            <i class="fa fa-legal"></i>
+                            <a href="#">Processo Judicial</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                    </h:panelGroup>
-                    <li>
-                        <ui:fragment rendered="#{processoJudicialBean.history}"><i class="fa fa-history"/></ui:fragment>
-                        <ui:fragment rendered="#{!processoJudicialBean.history}"><i class="fa fa-search"/></ui:fragment>
-                        <a href="../processo-judicial/consultar.xhtml#{processoJudicialBean.history ? '?id=' :''}#{processoJudicialBean.history ? processoJudicialBean.processoJudicial.id : ''}">Consultar #{!processoJudicialBean.history ? '':'Histórico'}</a>
-                    </li>
-                </ul>
-                <!-- END PAGE TITLE e BREADCRUMB-->
+                        <h:panelGroup rendered="#{processoJudicialBean.history}">
+                            <li>
+                                <i class="fa fa-search"/>
+                                <a href="../processo-judicial/consultar.xhtml">Consultar</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                        </h:panelGroup>
+                        <li>
+                            <ui:fragment rendered="#{processoJudicialBean.history}">
+                                <i class="fa fa-history"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar',processoJudicialBean.processoJudicial.id)}">Consultar Histórico</h:commandLink>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!processoJudicialBean.history}">
+                                <i class="fa fa-search"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar','')}">Consultar</h:commandLink>
+                            </ui:fragment>
+                        </li>
+                    </ul>
+                    <!-- END PAGE TITLE e BREADCRUMB-->
+                </div>
             </div>
-        </div>
-        <!-- END PAGE HEADER-->
-        <!-- BEGIN PAGE CONTENT-->
-        <h:form  id="form" prependId="false">
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
             <div class="row">
                 <div class="col-md-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -947,7 +952,7 @@
                                                                     <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{executadoHistorico.processoJudicialHistorico.executado eq 'PJ'}">
                                                                         <div class="portlet-title">
                                                                             <div class="caption">
-                                                                                <i class="fa fa-building"></i>Pessoa Jurídica
+                                                                                <i class="fa fa-institution"></i>Pessoa Jurídica
                                                                             </div>
                                                                         </div>
                                                                         <div class="portlet-body form">
@@ -1477,8 +1482,8 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="col-md-offset-4 col-md-9">
-                                        <a href="consultar.xhtml?id=#{processoJudicialBean.executado.processoJudicial.id}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</a>
-                                        <a href="cadastrar.xhtml?id=#{processoJudicialBean.executado.processoJudicial.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
+                                        <h:commandLink action="#{templateBean.redirecionar('consultar',processoJudicialBean.executado.processoJudicial.id)}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</h:commandLink>
+                                        <h:commandLink action="#{templateBean.redirecionar('cadastrar',processoJudicialBean.executado.processoJudicial.id)}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</h:commandLink>
                                     </div>
                                 </div>
                             </div>
@@ -2271,7 +2276,7 @@
                                         <h:panelGroup layout="block" class="portlet box blue-chambray">
                                             <div class="portlet-title">
                                                 <div class="caption">
-                                                    <i class="fa fa-building"></i>Pessoa Jurídica
+                                                    <i class="fa fa-institution"></i>Pessoa Jurídica
                                                 </div>
                                             </div>
                                             <div class="portlet-body form">

@@ -16,53 +16,58 @@
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
-        <!-- BEGIN PAGE HEADER-->
-        <div class="row">
-            <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE e BREADCRUMB-->
-                <h3 class="page-title">
-                    Pessoa Física <small>#{pessoaFisicaBean.edit ? 'Alteração' :'Cadastro'}</small>
-                </h3>
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <i class="fa fa-home"></i>
-                        <a href="../home.xhtml">Home</a>
-                        <i class="fa fa-angle-right"/>
-                    </li>
-                    <li>
-                        <i class="fa fa-user"></i>
-                        <a href="#">Pessoa Física</a>
-                        <i class="fa fa-angle-right"></i>
-                    </li>
-                    <h:panelGroup rendered="#{pessoaFisicaBean.edit}">
+        <!-- BEGIN FORM-->
+        <h:form  prependId="false" id="form" class="form-horizontal">
+            <!-- BEGIN PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE e BREADCRUMB-->
+                    <h3 class="page-title">
+                        Pessoa Física <small>#{pessoaFisicaBean.edit ? 'Alteração' :'Cadastro'}</small>
+                    </h3>
+                    <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <i class="fa fa-search"></i>
-                            <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-home"></i>
+                            <a href="../home.xhtml">Home</a>
+                            <i class="fa fa-angle-right"/>
+                        </li>
+                        <li>
+                            <i class="fa fa-user"></i>
+                            <a href="#">Pessoa Física</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                    </h:panelGroup>
-                    <li>
-                        <ui:fragment rendered="#{pessoaFisicaBean.edit}"><i class="fa fa-edit"/></ui:fragment>
-                        <ui:fragment rendered="#{!pessoaFisicaBean.edit}"><i class="fa fa-floppy-o"/></ui:fragment>
-                        <a href="../pessoa-fisica/cadastrar.xhtml#{pessoaFisicaBean.edit ? '?id=' :''}#{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.id : ''}">#{pessoaFisicaBean.edit ? 'Alterar' : 'Cadastrar'}</a>
-                    </li>
-                </ul>
-                <!-- END PAGE TITLE e BREADCRUMB-->
+                        <h:panelGroup rendered="#{pessoaFisicaBean.edit}">
+                            <li>
+                                <i class="fa fa-search"></i>
+                                <a href="../pessoa-fisica/consultar.xhtml">Consultar</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                        </h:panelGroup>
+                        <li>
+                            <ui:fragment rendered="#{pessoaFisicaBean.edit}">
+                                <i class="fa fa-edit"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar',pessoaFisicaBean.pessoaFisica.id)}">Alterar</h:commandLink>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!pessoaFisicaBean.edit}">
+                                <i class="fa fa-floppy-o"/>
+                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar','')}">Cadastrar</h:commandLink>
+                            </ui:fragment>
+                        </li>
+                    </ul>
+                    <!-- END PAGE TITLE e BREADCRUMB-->
+                </div>
             </div>
-        </div>
-        <!-- END PAGE HEADER-->
-        <!-- BEGIN PAGE CONTENT -->
-        <div class="tab-content">
-            <div class="tab-pane active" id="tab_0">
-                <div class="portlet box blue-chambray">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-user"></i>Dados #{pessoaFisicaBean.edit ? 'de ' :'da '} #{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.nome : 'Pessoa Física'}
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_0">
+                    <div class="portlet box blue-chambray">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="fa fa-user"></i>Dados #{pessoaFisicaBean.edit ? 'de ' :'da '} #{pessoaFisicaBean.edit ? pessoaFisicaBean.pessoaFisica.nome : 'Pessoa Física'}
+                            </div>
                         </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <!-- BEGIN FORM-->
-                        <h:form  prependId="false" id="form" class="form-horizontal">
+                        <div class="portlet-body form">
                             <div class="form-body">
                                 <div class="alert alert-danger form-error display-hide">
                                     <button class="close" data-close="alert"></button>
@@ -580,13 +585,14 @@
                                     </div>
                                 </div>
                             </div>
-                        </h:form>
-                        <!-- END FORM-->
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- END PAGE CONTENT-->
+            <!-- END PAGE CONTENT-->
+        </h:form>
+        <!-- END FORM-->
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->

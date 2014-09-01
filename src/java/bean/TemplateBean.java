@@ -98,8 +98,13 @@ public class TemplateBean implements Serializable{
         }
     }
     
+    public void redirecionar(String tela, String id) throws IOException{
+        String queryString = "";
+        queryString =  (id.equals("")) ? "" : "?id=" + Base64Crypt.encrypt(id);
+        FacesContext.getCurrentInstance().getExternalContext().redirect(tela + ".xhtml" + queryString);
+    }
+    
     public void search() throws IOException{
-        System.out.println("aea");
         FacesContext.getCurrentInstance().getExternalContext().redirect("/procura-geral.xhtml?value="+searchValue);
     }
 

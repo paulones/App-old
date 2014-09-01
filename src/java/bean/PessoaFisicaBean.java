@@ -153,22 +153,26 @@ public class PessoaFisicaBean implements Serializable {
                     edit = false;
                     carregarFormulario();
                 } else {                                    // Alteração
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
-                    if (pessoaFisica == null) {
+                    try {
+                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
+                        if (pessoaFisica == null) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
+                        } else {
+                            edit = true;
+                            endereco = enderecoBO.findPFAddress(id);
+                            pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+
+                            oldPessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
+                            oldEndereco = enderecoBO.findPFAddress(id);
+                            oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+                            prepararHistorico(pessoaFisica, endereco, pessoaFisicaJuridicaList);
+
+                            carregarFormulario();
+                            getCidadesPeloEstado();
+                        }
+                    } catch (Exception e) {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
-                    } else {
-                        edit = true;
-                        endereco = enderecoBO.findPFAddress(id);
-                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
-
-                        oldPessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
-                        oldEndereco = enderecoBO.findPFAddress(id);
-                        oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
-                        prepararHistorico(pessoaFisica, endereco, pessoaFisicaJuridicaList);
-
-                        carregarFormulario();
-                        getCidadesPeloEstado();
                     }
                 }
             } else if (isSearchPage) {
@@ -180,44 +184,49 @@ public class PessoaFisicaBean implements Serializable {
                     pfId = "";
                     history = false;
                 } else {                                    // Consulta histórico
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
-                    if (pessoaFisica == null) {
-                        history = false;
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
-                    } else {
-                        history = true;
-                        endereco = enderecoBO.findPFAddress(id);
-                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
+                    try {
+                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        pessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
+                        if (pessoaFisica == null) {
+                            history = false;
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+                        } else {
+                            history = true;
+                            endereco = enderecoBO.findPFAddress(id);
+                            pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
 
-                        pessoaFisicaHistoricoList = new ArrayList<>();
-                        enderecoHistoricoList = new ArrayList<>();
-                        pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+                            pessoaFisicaHistoricoList = new ArrayList<>();
+                            enderecoHistoricoList = new ArrayList<>();
+                            pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
 
-                        pessoaFisicaHistoricoList = pessoaFisicaHistoricoBO.findAllByPF(id);
-                        enderecoHistoricoList = enderecoHistoricoBO.findAllByPF(id);
-                        pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoBO.findAllByPF(id);
+                            pessoaFisicaHistoricoList = pessoaFisicaHistoricoBO.findAllByPF(id);
+                            enderecoHistoricoList = enderecoHistoricoBO.findAllByPF(id);
+                            pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoBO.findAllByPF(id);
 
-                        enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
-                        EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
-                        enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaFisica, endereco, pessoaFisicaJuridicaList);
-                        enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
-                        for (PessoaFisicaHistorico pfh : pessoaFisicaHistoricoList) {
-                            for (EnderecoHistorico eh : enderecoHistoricoList) {
-                                if (pfh.getId() == eh.getIdFk()) {
-                                    EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pfh, eh);
-                                    List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
-                                    for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
-                                        if (pfh.getId() == pfjh.getIdFk()) {
-                                            pfjhList.add(pfjh);
+                            enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+                            EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
+                            enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaFisica, endereco, pessoaFisicaJuridicaList);
+                            enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
+                            for (PessoaFisicaHistorico pfh : pessoaFisicaHistoricoList) {
+                                for (EnderecoHistorico eh : enderecoHistoricoList) {
+                                    if (pfh.getId() == eh.getIdFk()) {
+                                        EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pfh, eh);
+                                        List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
+                                        for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
+                                            if (pfh.getId() == pfjh.getIdFk()) {
+                                                pfjhList.add(pfjh);
+                                            }
                                         }
+                                        epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
+                                        enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
+                                        break;
                                     }
-                                    epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
-                                    enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
-                                    break;
                                 }
                             }
                         }
+                    } catch (Exception e) {
+                        history = false;
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                     }
                 }
             }

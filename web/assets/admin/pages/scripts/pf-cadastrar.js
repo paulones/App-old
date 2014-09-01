@@ -241,7 +241,7 @@ var PFCad = function() {
     var handleTable = function() {
 
 
-        var table = $('.vinculations');
+        var table = $('#vinculations');
 
         var oTable = table.dataTable({
             paginate: false,
@@ -256,7 +256,7 @@ var PFCad = function() {
             "ordering": false
         });
 
-        var tableWrapper = $(".vinculations_wrapper");
+        var tableWrapper = $("#vinculations_wrapper");
 
         tableWrapper.find(".dataTables_length select").select2({
             showSearchInput: false //hide search box with special css class

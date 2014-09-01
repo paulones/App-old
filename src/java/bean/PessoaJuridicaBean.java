@@ -159,24 +159,28 @@ public class PessoaJuridicaBean implements Serializable {
                     edit = false;
                     carregarFormulario();
                 } else {
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
-                    if (pessoaJuridica == null) {
+                    try {
+                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
+                        if (pessoaJuridica == null) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
+                        } else {
+                            edit = true;
+                            endereco = enderecoBO.findPJAddress(id);
+                            pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
+                            pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
+
+                            oldPessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
+                            oldEndereco = enderecoBO.findPJAddress(id);
+                            oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
+                            oldPessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
+                            prepararHistorico(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList);
+
+                            carregarFormulario();
+                            getCidadesPeloEstado();
+                        }
+                    } catch (Exception e) {
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
-                    } else {
-                        edit = true;
-                        endereco = enderecoBO.findPJAddress(id);
-                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
-
-                        oldPessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
-                        oldEndereco = enderecoBO.findPJAddress(id);
-                        oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        oldPessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
-                        prepararHistorico(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList);
-
-                        carregarFormulario();
-                        getCidadesPeloEstado();
                     }
                 }
             } else if (isSearchPage) {
@@ -188,48 +192,53 @@ public class PessoaJuridicaBean implements Serializable {
                     pjId = "";
                     history = false;
                 } else { // Consulta histórico
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
-                    if (pessoaJuridica == null) {
-                        history = false;
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
-                    } else {
-                        history = true;
-                        endereco = enderecoBO.findPJAddress(id);
-                        pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
-                        pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
+                    try {
+                        Integer id = Integer.valueOf(Base64Crypt.decrypt(request.getParameter("id")));
+                        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
+                        if (pessoaJuridica == null) {
+                            history = false;
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+                        } else {
+                            history = true;
+                            endereco = enderecoBO.findPJAddress(id);
+                            pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPJ(id);
+                            pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
 
-                        pessoaJuridicaHistoricoList = new ArrayList<>();
-                        enderecoHistoricoList = new ArrayList<>();
-                        pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
-                        pessoaJuridicaJuridicaHistoricoList = new ArrayList<>();
+                            pessoaJuridicaHistoricoList = new ArrayList<>();
+                            enderecoHistoricoList = new ArrayList<>();
+                            pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+                            pessoaJuridicaJuridicaHistoricoList = new ArrayList<>();
 
-                        pessoaJuridicaHistoricoList = pessoaJuridicaHistoricoBO.findAllByPJ(id);
-                        enderecoHistoricoList = enderecoHistoricoBO.findAllByPJ(id);
-                        pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoBO.findAllByPJ(id);
+                            pessoaJuridicaHistoricoList = pessoaJuridicaHistoricoBO.findAllByPJ(id);
+                            enderecoHistoricoList = enderecoHistoricoBO.findAllByPJ(id);
+                            pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoBO.findAllByPJ(id);
 
-                        enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
-                        EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
-                        enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList);
-                        enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
+                            enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+                            EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
+                            enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList);
+                            enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
 
-                        for (PessoaJuridicaHistorico pjh : pessoaJuridicaHistoricoList) {
-                            for (EnderecoHistorico eh : enderecoHistoricoList) {
-                                if (pjh.getId() == eh.getIdFk()) {
-                                    EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pjh, eh);
-                                    List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
-                                    for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
-                                        if (pjh.getId() == pfjh.getIdFk()) {
-                                            pfjhList.add(pfjh);
+                            for (PessoaJuridicaHistorico pjh : pessoaJuridicaHistoricoList) {
+                                for (EnderecoHistorico eh : enderecoHistoricoList) {
+                                    if (pjh.getId() == eh.getIdFk()) {
+                                        EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pjh, eh);
+                                        List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
+                                        for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
+                                            if (pjh.getId() == pfjh.getIdFk()) {
+                                                pfjhList.add(pfjh);
+                                            }
                                         }
+                                        epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
+                                        enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
+                                        break;
                                     }
-                                    epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
-                                    enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
-                                    break;
                                 }
                             }
-                        }
 
+                        }
+                    } catch (Exception e) {
+                        history = false;
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                     }
                 }
             }
