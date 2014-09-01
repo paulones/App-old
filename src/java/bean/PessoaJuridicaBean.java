@@ -395,21 +395,22 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
-        if (edit) {
-            pessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
-        }
-        System.out.println("pjVId: " + Base64Crypt.decrypt(pjVId));
-        pessoaJuridicaVinculo = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjVId)));
-        pessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridicaVinculo);
-        boolean exists = false;
-        for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
-            if (pjj.getPessoaJuridicaSocioBFk().getId().equals(pessoaJuridicaVinculo.getId())) {
-                exists = true;
+        if (!Integer.valueOf(Base64Crypt.decrypt(pjVId)).equals(pessoaJuridica.getId())) {
+            if (edit) {
+                pessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
             }
-        }
-        if (!exists) {
-            pessoaJuridicaJuridicaList.add(pessoaJuridicaJuridica);
-            pessoaJuridicaJuridica = new PessoaJuridicaJuridica();
+            pessoaJuridicaVinculo = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(pjVId)));
+            pessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridicaVinculo);
+            boolean exists = false;
+            for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
+                if (pjj.getPessoaJuridicaSocioBFk().getId().equals(pessoaJuridicaVinculo.getId())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                pessoaJuridicaJuridicaList.add(pessoaJuridicaJuridica);
+                pessoaJuridicaJuridica = new PessoaJuridicaJuridica();
+            }
         }
     }
 
