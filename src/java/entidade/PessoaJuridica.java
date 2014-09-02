@@ -106,11 +106,6 @@ public class PessoaJuridica implements Serializable {
     @NotNull
     @Column(name = "status")
     private Character status;
-    @OneToMany(mappedBy = "sucessaoFk")
-    private Collection<PessoaJuridica> pessoaJuridicaCollection;
-    @JoinColumn(name = "sucessao_fk", referencedColumnName = "id")
-    @ManyToOne
-    private PessoaJuridica sucessaoFk;
     @JoinColumn(name = "tipo_empresarial_fk", referencedColumnName = "id")
     @ManyToOne
     private TipoEmpresarial tipoEmpresarialFk;
@@ -119,6 +114,10 @@ public class PessoaJuridica implements Serializable {
     private Usuario usuarioFk;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaFk")
     private Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucedidaFk")
+    private Collection<PessoaJuridicaSucessao> pessoaJuridicaSucessaoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucessoraFk")
+    private Collection<PessoaJuridicaSucessao> pessoaJuridicaSucessaoCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioAFk")
     private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioBFk")
@@ -268,23 +267,6 @@ public class PessoaJuridica implements Serializable {
         this.status = status;
     }
 
-    @XmlTransient
-    public Collection<PessoaJuridica> getPessoaJuridicaCollection() {
-        return pessoaJuridicaCollection;
-    }
-
-    public void setPessoaJuridicaCollection(Collection<PessoaJuridica> pessoaJuridicaCollection) {
-        this.pessoaJuridicaCollection = pessoaJuridicaCollection;
-    }
-
-    public PessoaJuridica getSucessaoFk() {
-        return sucessaoFk;
-    }
-
-    public void setSucessaoFk(PessoaJuridica sucessaoFk) {
-        this.sucessaoFk = sucessaoFk;
-    }
-
     public TipoEmpresarial getTipoEmpresarialFk() {
         return tipoEmpresarialFk;
     }
@@ -308,6 +290,24 @@ public class PessoaJuridica implements Serializable {
 
     public void setPessoaFisicaJuridicaCollection(Collection<PessoaFisicaJuridica> pessoaFisicaJuridicaCollection) {
         this.pessoaFisicaJuridicaCollection = pessoaFisicaJuridicaCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaSucessao> getPessoaJuridicaSucessaoCollection() {
+        return pessoaJuridicaSucessaoCollection;
+    }
+
+    public void setPessoaJuridicaSucessaoCollection(Collection<PessoaJuridicaSucessao> pessoaJuridicaSucessaoCollection) {
+        this.pessoaJuridicaSucessaoCollection = pessoaJuridicaSucessaoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaSucessao> getPessoaJuridicaSucessaoCollection1() {
+        return pessoaJuridicaSucessaoCollection1;
+    }
+
+    public void setPessoaJuridicaSucessaoCollection1(Collection<PessoaJuridicaSucessao> pessoaJuridicaSucessaoCollection1) {
+        this.pessoaJuridicaSucessaoCollection1 = pessoaJuridicaSucessaoCollection1;
     }
 
     @XmlTransient
@@ -392,7 +392,7 @@ public class PessoaJuridica implements Serializable {
         }
         return true;
     }
-    
+
     public List<String> changedValues(Object obj) {
         List<String> list = new ArrayList<>();
         final PessoaJuridica other = (PessoaJuridica) obj;
@@ -434,9 +434,6 @@ public class PessoaJuridica implements Serializable {
         }
         if (!Objects.equals(this.atividadeSecundaria, other.atividadeSecundaria)) {
             list.add("atividadeSecundaria");
-        }
-        if (!Objects.equals(this.sucessaoFk, other.sucessaoFk)) {
-            list.add("sucessaoFk");
         }
         if (!Objects.equals(this.tipoEmpresarialFk, other.tipoEmpresarialFk)) {
             list.add("tipoEmpresarialFk");

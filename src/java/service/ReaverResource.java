@@ -35,7 +35,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import util.Base64Crypt;
 import util.TimestampUtils;
 
 /**
@@ -88,7 +87,7 @@ public class ReaverResource {
         for (PessoaFisica pf : pessoaFisicaList) {
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", Base64Crypt.encrypt(pf.getId().toString()));
+            jsonObject.put("id", pf.getId().toString());
             jsonObject.put("text", cpf + " - " + pf.getNome());
             jsonArray.put(jsonObject);
         }
@@ -105,7 +104,7 @@ public class ReaverResource {
         for (PessoaJuridica pj : pessoaJuridicaList) {
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", Base64Crypt.encrypt(pj.getId().toString()));
+            jsonObject.put("id", pj.getId().toString());
             jsonObject.put("text", cnpj + " - " + pj.getNome());
             jsonArray.put(jsonObject);
         }
@@ -152,7 +151,7 @@ public class ReaverResource {
             jsonObject.put("rg", rg);
             jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
             jsonObject.put("detalhes", detalhes);
-            jsonObject.put("pf", Base64Crypt.encrypt(pf.getId().toString()));
+            jsonObject.put("pf", pf.getId().toString());
             jsonArray.put(jsonObject);
         }
         JSONObject json = new JSONObject();
@@ -194,7 +193,7 @@ public class ReaverResource {
             jsonObject.put("tipoEmpresarial", tipoEmpresarial);
             jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
             jsonObject.put("detalhes", detalhes);
-            jsonObject.put("pj", Base64Crypt.encrypt(pj.getId().toString()));
+            jsonObject.put("pj", pj.getId().toString());
             jsonArray.put(jsonObject);
         }
         JSONObject json = new JSONObject();
@@ -269,7 +268,7 @@ public class ReaverResource {
             jsonObject.put("executado", executado);
             jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
             jsonObject.put("detalhes", detalhes);
-            jsonObject.put("pjud", Base64Crypt.encrypt(pjud.getId().toString()));
+            jsonObject.put("pjud", pjud.getId().toString());
             jsonArray.put(jsonObject);
         }
         JSONObject json = new JSONObject();
@@ -290,7 +289,7 @@ public class ReaverResource {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", i);
             jsonObject.put("mensagem", message);
-            jsonObject.put("idfk", Base64Crypt.encrypt(String.valueOf(logList.get(i).getIdFk())));
+            jsonObject.put("idfk", logList.get(i).getIdFk());
             jsonObject.put("tabela", logList.get(i).getTabela());
             jsonObject.put("operacao", logList.get(i).getOperacao());
             jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));

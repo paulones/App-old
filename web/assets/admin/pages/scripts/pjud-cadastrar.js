@@ -478,7 +478,7 @@ var PjudCad = function() {
                     });
 
             jsf.ajax.addOnEvent(function(data) {
-                if (data.status == "success") {
+                if (data.status === "success") {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
                     } else if ($(data.source).hasClass("vinculos")) {
@@ -492,12 +492,6 @@ var PjudCad = function() {
                         initTable();
                     } else if ($(data.source).hasClass("button-pessoa-juridica")) {
                         $('#pessoa-juridica').show();
-                        initTable();
-                    } else if ($(data.source).attr("class") === "pj-info") {
-                        $('.modal-pj').click();
-                        initTable();
-                    } else if ($(data.source).attr("class") === "pf-info") {
-                        $('.modal-pf').click();
                         initTable();
                     }
                 }

@@ -399,11 +399,11 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
     
-    public ProcessoJudicial findByProcessNumber(ProcessoJudicial processoJudicial){
+    public ProcessoJudicial findByProcessNumber(String processNumber){
         EntityManager em = getEntityManager();
         try {
             ProcessoJudicial usuario = (ProcessoJudicial) em.createNativeQuery("select * from processo_judicial "
-                    + "where numero_do_processo = '" + processoJudicial.getNumeroDoProcesso() + "'", ProcessoJudicial.class).getSingleResult();
+                    + "where numero_do_processo = '" + processNumber + "'", ProcessoJudicial.class).getSingleResult();
             return usuario;
         } catch (NoResultException e) {
             return null;

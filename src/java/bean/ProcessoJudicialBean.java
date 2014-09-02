@@ -43,9 +43,9 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import util.Base64Crypt;
 import util.Cookie;
 import util.GeradorLog;
 
@@ -53,7 +53,7 @@ import util.GeradorLog;
  *
  * @author paulones
  */
-@SessionScoped
+@ViewScoped
 @ManagedBean(name = "processoJudicialBean")
 public class ProcessoJudicialBean implements Serializable {
 
@@ -101,7 +101,7 @@ public class ProcessoJudicialBean implements Serializable {
     private String pjudId;
     private boolean edit;
     private boolean history;
-
+    
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
@@ -137,7 +137,7 @@ public class ProcessoJudicialBean implements Serializable {
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
-
+            
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
                 /*
@@ -148,31 +148,35 @@ public class ProcessoJudicialBean implements Serializable {
                     edit = false;
                     carregarFormulario();
                 } else {                                    // Alteração
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    processoJudicial = processoJudicialBO.findProcessoJudicial(id);
-                    if (processoJudicial == null) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
-                    } else {
-                        edit = true;
-                        for (Bem bem : processoJudicial.getBemCollection()) {
-                            bemList.add(bem);
-                        }
-                        for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()) {
-                            vinculoProcessualList.add(vinculoProcessual);
-                        }
-                        vinculos = vinculoProcessualList.size();
-                        bens = bemList.size();
-                        if (processoJudicial.getExecutado().equals("PF")) {
-                            executadoPF = Base64Crypt.encrypt(String.valueOf(processoJudicial.getExecutadoFk()));
+                    try {
+                        Integer id = Integer.valueOf(request.getParameter("id"));
+                        processoJudicial = processoJudicialBO.findProcessoJudicial(id);
+                        if (processoJudicial == null) {
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                         } else {
-                            executadoPJ = Base64Crypt.encrypt(String.valueOf(processoJudicial.getExecutadoFk()));
+                            edit = true;
+                            for (Bem bem : processoJudicial.getBemCollection()) {
+                                bemList.add(bem);
+                            }
+                            for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()) {
+                                vinculoProcessualList.add(vinculoProcessual);
+                            }
+                            vinculos = vinculoProcessualList.size();
+                            bens = bemList.size();
+                            if (processoJudicial.getExecutado().equals("PF")) {
+                                executadoPF = String.valueOf(processoJudicial.getExecutadoFk());
+                            } else {
+                                executadoPJ = String.valueOf(processoJudicial.getExecutadoFk());
+                            }
+
+                            oldProcessoJudicial = processoJudicialBO.findProcessoJudicial(id);
+
+                            prepararHistorico(processoJudicial);
+
+                            carregarFormulario();
                         }
-
-                        oldProcessoJudicial = processoJudicialBO.findProcessoJudicial(id);
-
-                        prepararHistorico(processoJudicial);
-
-                        carregarFormulario();
+                    } catch (Exception e) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                     }
                 }
             } else if (isSearchPage) {
@@ -183,39 +187,44 @@ public class ProcessoJudicialBean implements Serializable {
                 if (request.getParameter("id") == null) {   // Consulta geral
                     history = false;
                 } else {                                    // Consulta histórico
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    processoJudicial = processoJudicialBO.findProcessoJudicial(id);
-                    if (processoJudicial == null) {
+                    try {
+                        Integer id = Integer.valueOf(request.getParameter("id"));
+                        processoJudicial = processoJudicialBO.findProcessoJudicial(id);
+                        if (processoJudicial == null) {
+                            history = false;
+                            FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
+                        } else {
+                            history = true;
+                            executadoHistoricoList = new ArrayList<>();
+                            EnderecoPessoa enderecoPessoa = new EnderecoPessoa();
+                            // Inserção do registro atual
+                            if (processoJudicial.getExecutado().equals("PF")) {
+                                PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+                                enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+                            } else if (processoJudicial.getExecutado().equals("PJ")) {
+                                PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+                                enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+                            }
+                            executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa);
+                            executadoHistoricoList.add(executadoHistorico);
+                            // Inserção dos históricos
+                            List<ProcessoJudicialHistorico> processoJudicialHistoricoList = processoJudicialHistoricoBO.findAllByPJUD(id);
+                            for (ProcessoJudicialHistorico pjh : processoJudicialHistoricoList) {
+                                if (pjh.getExecutado().equals("PF")) {
+                                    PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
+                                    enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+                                    executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null);
+                                } else if (pjh.getExecutado().equals("PJ")) {
+                                    PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
+                                    enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+                                    executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa);
+                                }
+                                executadoHistoricoList.add(executadoHistorico);
+                            }
+                        }
+                    } catch (Exception e) {
                         history = false;
                         FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
-                    } else {
-                        history = true;
-                        executadoHistoricoList = new ArrayList<>();
-                        EnderecoPessoa enderecoPessoa = new EnderecoPessoa();
-                        // Inserção do registro atual
-                        if (processoJudicial.getExecutado().equals("PF")) {
-                            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
-                            enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
-                        } else if (processoJudicial.getExecutado().equals("PJ")) {
-                            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
-                            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
-                        }
-                        executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa);
-                        executadoHistoricoList.add(executadoHistorico);
-                        // Inserção dos históricos
-                        List<ProcessoJudicialHistorico> processoJudicialHistoricoList = processoJudicialHistoricoBO.findAllByPJUD(id);
-                        for (ProcessoJudicialHistorico pjh : processoJudicialHistoricoList) {
-                            if (pjh.getExecutado().equals("PF")) {
-                                PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
-                                enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
-                                executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null);
-                            } else if (pjh.getExecutado().equals("PJ")) {
-                                PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
-                                enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
-                                executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa);
-                            }
-                            executadoHistoricoList.add(executadoHistorico);
-                        }
                     }
                 }
             }
@@ -258,16 +267,16 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void exibirExecutado() {
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(Base64Crypt.decrypt(executadoPF)));
+            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(executadoPF));
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
         } else if (processoJudicial.getExecutado().equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(executadoPJ));
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
     }
 
     public void exibirInfo() {
-        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
+        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
         if (processoJudicial.getExecutado().equals("PF")) {
             PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
@@ -280,19 +289,24 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void removerProcessoJudicial() {
-        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(Base64Crypt.decrypt(pjudId)));
+        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
         processoJudicial.setStatus('I');
         processoJudicialBO.edit(processoJudicial);
         GeradorLog.criar(processoJudicial.getId(), "PJUD", 'D');
         redirect = "";
         register = "success";
     }
+    
+    public void evitarAvisosIndevidosNoForm() throws IOException{
+        register = "none";
+        FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
+    }
 
     public void cadastrar() throws IOException {
         boolean error = false;
         ProcessoJudicial pjudDBCDA = processoJudicialBO.findByCDA(processoJudicial);
-        ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial);
-        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(Base64Crypt.decrypt(executadoPF)) : Integer.valueOf(Base64Crypt.decrypt(executadoPJ)));
+        ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial.getNumeroDoProcesso());
+        processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(executadoPF) : Integer.valueOf(executadoPJ));
         if (!edit) {
             /*  
              Cadastrar novo Processo Judicial

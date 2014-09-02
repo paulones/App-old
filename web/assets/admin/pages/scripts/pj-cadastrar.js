@@ -181,9 +181,9 @@ var PJCad = function() {
 
     var checkDates = function() {
         var dateError;
-        if ($(this).parents("#pessoaJuridicaJuridica").length > 0){
+        if ($(this).parents("#pessoaJuridicaJuridica").length > 0) {
             dateError = ".date-error-pjj";
-        } else{
+        } else {
             dateError = ".date-error-pfj";
         }
         if ($(this).val().length == 10) {
@@ -231,9 +231,9 @@ var PJCad = function() {
 
     var checkCapital = function() {
         var dateError;
-        if ($(this).parents("#pessoaJuridicaJuridica").length > 0){
+        if ($(this).parents("#pessoaJuridicaJuridica").length > 0) {
             dateError = ".date-error-pjj";
-        } else if ($(this).parents("#pessoaFisicaJuridica").length > 0){
+        } else if ($(this).parents("#pessoaFisicaJuridica").length > 0) {
             dateError = ".date-error-pfj";
         }
         $(this).val($(this).val().replace(/,/g, "."));
@@ -320,10 +320,6 @@ var PJCad = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
                         $('.endcity').select2();
-                    } else if ($(data.source).attr("class") === "pf-info") {
-                        $('.modal-pf').click();
-                    } else if ($(data.source).attr("class") === "pj-info") {
-                        $('.modal-pj').click();
                     } else if ($(data.source).attr("class") === "delete-pfj") {
                         $('.pfj-refresher').click();
                     } else if ($(data.source).attr("class") === "delete-pjj") {
@@ -344,7 +340,7 @@ var PJCad = function() {
                             }
                             $('.capital-pjj').keyup(checkCapital);
                         }
-                        
+
                         $('.initial-date,.final-date').keyup(checkDates);
                     }
                 }

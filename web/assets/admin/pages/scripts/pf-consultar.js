@@ -59,14 +59,14 @@ var PFCon = function() {
                 element = $(this);
             }
         });
-        
+
         var index;
         table.on('click', '.button-delete', function(e) {
             e.preventDefault();
             index = $('.button-delete').index(this);
             $('.delete-modal-activator').click();
         });
-        
+
         $('.cancel').click(function(e) {
             e.preventDefault();
         });
@@ -189,8 +189,8 @@ var PFCon = function() {
                         $.each($(upper).find('.rows tr'), function() {
                             $(this).find('td').children().css("color", "#a94442");
                             $(this).find('td').css("color", "#a94442");
-                            var cnpjAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
-                            var cnpjHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
+                            var cnpjAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().children('span').html().trim() : $(atual).find('td').eq(0).html().trim();
+                            var cnpjHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().children('span').html().trim() : $(this).find('td').eq(0).html().trim();
                             if (cnpjAtual === cnpjHistorico) {
                                 $(this).find('td').children().css("color", "black");
                                 $(this).find('td').css("color", "black");
@@ -253,25 +253,10 @@ var PFCon = function() {
                 });
                 $('.detailed-info').remove();
             });
-
+            
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
-                    if ($(data.source).attr("class") === "pj-info") {
-                        $('.modal-pj').click();
-                        $('.vinculations').dataTable({
-                            destroy:true,
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
-                    } else if ($(element).hasClass("row-details")) {
+                    if ($(data.source).attr('class') === 'info-refresher') {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
                         $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
                         $('#info').children().clone().appendTo($(element).parent().parent().next().children());

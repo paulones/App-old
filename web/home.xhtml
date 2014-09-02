@@ -40,7 +40,7 @@
         </div>
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT -->
-        <div class="row ">
+        <div class="row">
             <div class="col-md-12 col-sm-6">
                 <!--/row-->
                 <div class="portlet box green">
@@ -122,7 +122,7 @@
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-bell-o"></i>Atividades Recentes
+                            <i class="fa fa-bell-o"></i>Últimas Atividades
                         </div>
                         <div class="actions">
                             <div class="btn-group">
@@ -138,6 +138,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="portlet-body">
                         <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible="0">
                             <ul class="feeds">
@@ -147,16 +148,125 @@
                 </div>
                 <!--/row-->
             </div>
-            <div class="col-md-4 col-sm-6"></div>
         </div>
+        <!-- BEGIN CHART PORTLETS-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN INTERACTIVE CHART PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-gift"></i>Interactive Chart
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="interactive_chart" class="chart">
+                        </div>
+                    </div>
+                </div>
+                <!-- END INTERACTIVE CHART PORTLET-->
+            </div>
+        </div>
+        <!-- END CHART PORTLETS-->
+        <!-- BEGIN PIE CHART PORTLET-->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="portlet box blue">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-gift"></i>Graph2
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <h4>Added a semi-transparent background to the labels and a custom labelFormatter function.</h4>
+                        <div id="pizza_chart" class="chart">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- BEGIN PORTLET-->
+                <div class="portlet solid grey-cararra bordered">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-bullhorn"></i>Revenue
+                        </div>
+                        <div class="tools">
+                            <div class="btn-group pull-right">
+                                <a href="" class="btn grey-steel btn-sm dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    Filter <span class="fa fa-angle-down">
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li>
+                                        <a href="javascript:;">
+                                            Q1 2014 <span class="label label-sm label-default">
+                                                past </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            Q2 2014 <span class="label label-sm label-default">
+                                                past </span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a href="javascript:;">
+                                            Q3 2014 <span class="label label-sm label-success">
+                                                current </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            Q4 2014 <span class="label label-sm label-warning">
+                                                upcoming </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div id="site_activities_loading">
+                            <img src="../../assets/admin/layout/img/loading.gif" alt="loading"/>
+                        </div>
+                        <div id="site_activities_content" class="display-none">
+                            <div id="site_activities" style="height: 228px;">
+                            </div>
+                        </div>
+                        <div style="margin: 20px 0 10px 30px">
+                            <div class="row">
+                                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                    <span class="label label-sm label-success">
+                                        Revenue: </span>
+                                    <h3>$13,234</h3>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                    <span class="label label-sm label-info">
+                                        Tax: </span>
+                                    <h3>$134,900</h3>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                    <span class="label label-sm label-danger">
+                                        Shipment: </span>
+                                    <h3>$1,134</h3>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-6 text-stat">
+                                    <span class="label label-sm label-warning">
+                                        Orders: </span>
+                                    <h3>235090</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PORTLET-->
+            </div>
+        </div>
+        <!-- END PIE CHART PORTLET-->
+        <!-- END PAGE CONTENT-->
+        <!-- END INTERACTIVE CHART PORTLET-->
         <!-- END PAGE CONTENT -->
-        <h:form prependId="false">
-            <h:inputHidden id="idfk" value="#{templateBean.idfk}"/>
-            <h:inputHidden id="tabela" value="#{templateBean.tabela}"/>
-            <h:commandLink class="info-refresher">
-                <f:ajax execute="idfk tabela" listener="#{templateBean.exibirModalLog()}" render=":modal-pf :modal-pj :modal-pjud"/>
-            </h:commandLink>
-        </h:form>
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -165,8 +275,13 @@
         <script src="assets/global/plugins/jquery.timeago.pt-br.js" charset="UTF-8" type="text/javascript"></script>
         <script type="text/javascript" src="assets/global/plugins/datatables/media/js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
-        <script type="text/javascript" src="../assets/admin/pages/scripts/charts.js"></script>
-        <script type="text/javascript" src="../assets/global/plugins/flot/jquery.flot.categories.min.js"></script>
+
+        <script src="assets/global/plugins/flot/jquery.flot.min.js"></script>
+        <script src="assets/global/plugins/flot/jquery.flot.resize.min.js"></script>
+        <script src="assets/global/plugins/flot/jquery.flot.pie.min.js"></script>
+        <script src="assets/global/plugins/flot/jquery.flot.stack.min.js"></script>
+        <script src="assets/global/plugins/flot/jquery.flot.crosshair.min.js"></script>
+        <script src="assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="assets/admin/pages/scripts/home.js" type="text/javascript"></script>

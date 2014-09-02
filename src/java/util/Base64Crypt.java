@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.security.spec.KeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -7,7 +8,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
-public class Base64Crypt {
+public class Base64Crypt implements Serializable{
 
     private static final String CRYPT_KEY = "deadwood8986deadwood8986";
     private static final String UNICODE_FORMAT = "UTF8";
@@ -20,7 +21,7 @@ public class Base64Crypt {
     private static String myEncryptionScheme;
     private static SecretKey key;
     
-    private static void crypt(){
+    public Base64Crypt(){
         try {
             myEncryptionKey = CRYPT_KEY;
             myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
@@ -34,8 +35,7 @@ public class Base64Crypt {
         }
     }
 
-    public static String encrypt(String unencryptedString) {
-        crypt();
+    public String encrypt(String unencryptedString) {
         String encryptedString = null;
         try {
             cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -48,8 +48,7 @@ public class Base64Crypt {
         return encryptedString;
     }
 
-    public static String decrypt(String encryptedString) {
-        crypt();
+    public String decrypt(String encryptedString) {
         String decryptedText = null;
         try {
             cipher.init(Cipher.DECRYPT_MODE, key);

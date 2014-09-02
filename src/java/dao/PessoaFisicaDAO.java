@@ -588,11 +588,11 @@ public class PessoaFisicaDAO implements Serializable {
         }
     }
 
-    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica) {
+    public PessoaFisica findByCPF(String cpf) {
         EntityManager em = getEntityManager();
         try {
             PessoaFisica pf = (PessoaFisica) em.createNativeQuery("select * from pessoa_fisica "
-                    + "where cpf = '" + pessoaFisica.getCpf() + "'", PessoaFisica.class).getSingleResult();
+                    + "where cpf = '" + cpf + "'", PessoaFisica.class).getSingleResult();
             return pf;
         } catch (NoResultException e) {
             return null;

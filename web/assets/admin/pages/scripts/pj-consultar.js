@@ -193,8 +193,8 @@ var PJCon = function() {
                             $.each($(history).find(tr), function() {
                                 $(this).find('td').children().css("color", "#a94442");
                                 $(this).find('td').css("color", "#a94442");
-                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().html().trim() : $(atual).find('td').eq(0).html().trim();
-                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().html().trim() : $(this).find('td').eq(0).html().trim();
+                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().children('span').html().trim() : $(atual).find('td').eq(0).html().trim();
+                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().children('span').html().trim() : $(this).find('td').eq(0).html().trim();
                                 if (cpfAtual === cpfHistorico) {
                                     $(this).find('td').children().css("color", "black");
                                     $(this).find('td').css("color", "black");
@@ -221,7 +221,8 @@ var PJCon = function() {
                         } else {
                             return false;
                         }
-                    };
+                    }
+                    ;
 
                     if (informacoes) {
                         description += "Informa&ccedil;&otilde;es Empresariais, ";
@@ -267,23 +268,7 @@ var PJCon = function() {
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
-                    if ($(data.source).attr("class") === "pf-info") {
-                        $('.modal-pf').click();
-                    } else if ($(data.source).attr("class") === "pj-info") {
-                        $('.modal-pj').click();
-                        $('#modal-pj').find('table').dataTable({
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
-                    } else if ($(element).hasClass("row-details")) {
+                    if ($(data.source).attr('class') === 'info-refresher') {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
                         $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
                         $('#info').children().clone().appendTo($(element).parent().parent().next().children());

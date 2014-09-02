@@ -18,43 +18,48 @@
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
-        <!-- BEGIN PAGE HEADER-->
-        <div class="row">
-            <div class="col-md-12">
-                <!-- BEGIN PAGE TITLE e BREADCRUMB-->
-                <h3 class="page-title">
-                    Pessoa Jurídica <small>Consulta #{!pessoaJuridicaBean.history ? '':'de Histórico'}</small>
-                </h3>
-                <ul class="page-breadcrumb breadcrumb">
-                    <li>
-                        <i class="fa fa-home"></i>
-                        <a href="../home.xhtml">Home</a>
-                        <i class="fa fa-angle-right"/>
-                    </li>
-                    <li>
-                        <i class="fa fa-institution"></i>
-                        <a href="#">Pessoa Jurídica</a>
-                        <i class="fa fa-angle-right"></i>
-                    </li>
-                    <h:panelGroup rendered="#{pessoaJuridicaBean.history}">
+        <h:form  id="form" prependId="false">
+            <!-- BEGIN PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE e BREADCRUMB-->
+                    <h3 class="page-title">
+                        Pessoa Jurídica <small>Consulta #{!pessoaJuridicaBean.history ? '':'de Histórico'}</small>
+                    </h3>
+                    <ul class="page-breadcrumb breadcrumb">
                         <li>
-                            <i class="fa fa-search"/>
-                            <a href="../pessoa-juridica/consultar.xhtml">Consultar</a>
+                            <i class="fa fa-home"></i>
+                            <a href="../home.xhtml">Home</a>
+                            <i class="fa fa-angle-right"/>
+                        </li>
+                        <li>
+                            <i class="fa fa-institution"></i>
+                            <a href="#">Pessoa Jurídica</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                    </h:panelGroup>
-                    <li>
-                        <ui:fragment rendered="#{pessoaJuridicaBean.history}"><i class="fa fa-history"/></ui:fragment>
-                        <ui:fragment rendered="#{!pessoaJuridicaBean.history}"><i class="fa fa-search"/></ui:fragment>
-                        <a href="../pessoa-juridica/consultar.xhtml#{pessoaJuridicaBean.history ? '?id=' :''}#{pessoaJuridicaBean.history ? pessoaJuridicaBean.pessoaJuridica.id : ''}">Consultar #{!pessoaJuridicaBean.history ? '':'Histórico'}</a>
-                    </li>
-                </ul>
-                <!-- END PAGE TITLE e BREADCRUMB-->
+                        <h:panelGroup rendered="#{pessoaJuridicaBean.history}">
+                            <li>
+                                <i class="fa fa-search"/>
+                                <a href="../pessoa-juridica/consultar.xhtml">Consultar</a>
+                                <i class="fa fa-angle-right"></i>
+                            </li>
+                        </h:panelGroup>
+                        <li>
+                            <ui:fragment rendered="#{pessoaJuridicaBean.history}">
+                                <i class="fa fa-history"/>
+                                <a href="consultar.xhtml?id=#{pessoaJuridicaBean.pessoaJuridica.id}">Consultar Histórico</a>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
+                                <i class="fa fa-search"/>
+                                <a href="consultar.xhtml">Consultar</a>
+                            </ui:fragment>
+                        </li>
+                    </ul>
+                    <!-- END PAGE TITLE e BREADCRUMB-->
+                </div>
             </div>
-        </div>
-        <!-- END PAGE HEADER-->
-        <!-- BEGIN PAGE CONTENT-->
-        <h:form  id="form" prependId="false">
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN PAGE CONTENT-->
             <div class="row">
                 <div class="col-md-12">
                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
@@ -113,7 +118,7 @@
                                             <th style="width:15%">
                                                 Registro
                                             </th>
-                                            <th style="width:44%">
+                                            <th style="width:48%">
                                                 Alterações
                                             </th>
                                             <th style="width:40%">
@@ -446,10 +451,10 @@
                                                                                 <ui:param value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
                                                                                 <tr>
                                                                                     <td style="text-align:center">
-                                                                                        <h:commandLink class="pf-info">
-                                                                                            <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridicaHistorico.pessoaFisicaFk, 'PF')}" render=":modal-pf"/>
-                                                                                            #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}
-                                                                                        </h:commandLink>
+                                                                                        <a href="javascript:;" class="pf-info">
+                                                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.id}"/>
+                                                                                            <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}</span>
+                                                                                        </a>
                                                                                     </td>
                                                                                     <td style="text-align:center">
                                                                                         #{pessoaFisicaJuridicaHistorico.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridicaHistorico.funcaoFk.funcao}
@@ -497,10 +502,10 @@
                                                                                     <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                     <tr>
                                                                                         <td style="text-align:center">
-                                                                                            <h:commandLink class="pj-info">
-                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
-                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
-                                                                                            </h:commandLink>
+                                                                                            <a href="javascript:;" class="pj-info">
+                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
+                                                                                                <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}</span>
+                                                                                            </a>
                                                                                         </td>
                                                                                         <td style="text-align:center">
                                                                                             #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -517,10 +522,10 @@
                                                                                     <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                     <tr>
                                                                                         <td style="text-align:center">
-                                                                                            <h:commandLink class="pj-info">
-                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
-                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
-                                                                                            </h:commandLink>
+                                                                                            <a href="javascript:;" class="pj-info">
+                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
+                                                                                                <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}</span>
+                                                                                            </a>
                                                                                         </td>
                                                                                         <td style="text-align:center">
                                                                                             #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -562,7 +567,7 @@
                 <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty pessoaJuridicaBean.enderecoPessoa.pessoa}">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-building"></i>Dados de #{pessoaJuridicaBean.enderecoPessoa.pessoa.nome}
+                            <i class="fa fa-institution"></i>Dados de #{pessoaJuridicaBean.enderecoPessoa.pessoa.nome}
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -863,10 +868,10 @@
                                                 <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                 <tr>
                                                     <td style="text-align:center">
-                                                        <h:commandLink class="pf-info">
-                                                            <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaFisicaFk, 'PF')}" render=":modal-pf"/>
+                                                        <a href="javascript:;" class="pf-info">
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.id}"/>
                                                             #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
-                                                        </h:commandLink>
+                                                        </a>
                                                     </td>
                                                     <td style="text-align:center">
                                                         #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -913,10 +918,10 @@
                                                 <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                 <tr>
                                                     <td style="text-align:center">
-                                                        <h:commandLink class="pj-info">
-                                                            <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
+                                                        <a href="javascript:;" class="pj-info">
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
                                                             #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
-                                                        </h:commandLink>
+                                                        </a>
                                                     </td>
                                                     <td style="text-align:center">
                                                         #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -933,10 +938,10 @@
                                                 <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
                                                 <tr>
                                                     <td style="text-align:center">
-                                                        <h:commandLink class="pj-info">
-                                                            <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
+                                                        <a href="javascript:;" class="pj-info">
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
                                                             #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
-                                                        </h:commandLink>
+                                                        </a>
                                                     </td>
                                                     <td style="text-align:center">
                                                         #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}

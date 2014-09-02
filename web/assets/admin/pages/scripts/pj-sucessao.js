@@ -3,7 +3,20 @@ var PJSuc = function() {
 
     return {
         init: function() {
-            
+
+            verPessoaJuridica();
+            $('.cnpj').change(verPessoaJuridica);
+            function verPessoaJuridica() {
+                $.each($('.cnpj'), function() {
+                    if ($(this).val() !== '') {
+                        $(this).closest('.row').find('.btn').show();
+                        $(this).closest('.row').find('.pj-info').children('.object-id').val($(this).val());
+                    } else {
+                        $(this).closest('.row').find('.btn').hide();
+                    }
+                })
+            }
+
             $.ajax({
                 url: "/webresources/reaver/getPessoasJuridicas",
                 dataType: "json",
@@ -39,10 +52,10 @@ var PJSuc = function() {
                                 });
                             },
                             placeholder: "Selecione...",
-                            allowClear:true,
+                            allowClear: true,
                         });
                     });
-            
+
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
             $('.menu-pj a .arrow').addClass('open');
