@@ -288,6 +288,8 @@ var PJCon = function() {
                     }
                 }
             });
+            
+            $('#nestable_list_3').nestable();
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');
