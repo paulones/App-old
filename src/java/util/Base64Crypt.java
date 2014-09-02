@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.security.spec.KeySpec;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -7,7 +8,7 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import org.apache.commons.codec.binary.Base64;
 
-public class Base64Crypt {
+public class Base64Crypt implements Serializable{
 
     private static final String CRYPT_KEY = "deadwood8986deadwood8986";
     private static final String UNICODE_FORMAT = "UTF8";

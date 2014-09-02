@@ -224,12 +224,14 @@
                                 <a href="javascript:;" class="remove">
                                     <i class="icon-close"></i>
                                 </a>
+                                <!--
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Procurar..."/>
                                     <span class="input-group-btn">
                                         <a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
                                     </span>
                                 </div>
+                                -->
                             </form>
                             <!-- END RESPONSIVE QUICK SEARCH FORM -->
                         </li>
@@ -410,7 +412,13 @@
             </div>
         </div>
         <!-- END FOOTER -->
-
+        <h:form prependId="false">
+            <h:inputText id="id-modal" class="display-hide" value="#{templateBean.idfk}"/>
+            <h:inputText id="tabela-modal" class="display-hide" value="#{templateBean.tabela}"/>
+            <h:commandLink class="show-modal">
+                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModalPorIdentificadores()}" render=":modal-pf :modal-pj :modal-pjud"/>
+            </h:commandLink>
+        </h:form>
         <a class="btn default modal-pj display-hide" data-toggle="modal" href="#largepj"></a>
         <h:panelGroup id="modal-pj">
             <c:if test="#{not empty templateBean.enderecoPessoa.pessoa and templateBean.tabela eq 'PJ'}">
@@ -2636,11 +2644,11 @@
             $('.logout').click(function() {
                 $.removeCookie('usuario', {path: '/'});
             });
-            
-            $('.sidebar-search').submit(function(e){
+
+            $('.sidebar-search').submit(function(e) {
                 e.preventDefault();
-                window.location = "../procura-geral.xhtml?valor="+$(this).find('.form-control').val();
-            })
+                window.location = "../procura-geral.xhtml?valor=" + $(this).find('.form-control').val();
+            });
         </script>
 
     </h:body>

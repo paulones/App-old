@@ -527,10 +527,10 @@
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                         <tr>
                                                             <td>
-                                                                <h:commandLink class="pj-info">
-                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaJuridicaFk, 'PJ')}" render=":modal-pj"/>
+                                                                <a href="javascript:;" class="pj-info">
+                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj}"/>
                                                                     #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
-                                                                </h:commandLink>
+                                                                </a>
                                                             </td>
                                                             <td>
                                                                 <h:selectOneMenu styleClass="select2_category select2me form-control funcao" p:placeholder="Selecione..." value="#{pessoaFisicaJuridica.funcaoFk}" tabindex="1" converter="entityConverter">

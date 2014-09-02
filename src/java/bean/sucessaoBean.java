@@ -6,7 +6,11 @@
 package bean;
 
 import bo.PessoaJuridicaBO;
+import bo.PessoaJuridicaSucessaoBO;
+import bo.UsuarioBO;
+import bo.UtilBO;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaSucessao;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.application.FacesMessage;
@@ -15,6 +19,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.codec.binary.Base64;
 import util.Base64Crypt;
+import util.Cookie;
 
 /**
  *
@@ -28,8 +33,12 @@ public class sucessaoBean implements Serializable {
     private String sucedida;
     private String sucessora;
 
+    private PessoaJuridicaSucessao pessoaJuridicaSucessao;
+
     private PessoaJuridicaBO pessoaJuridicaBO;
-    
+    private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
+    private UsuarioBO usuarioBO;
+
     private Base64Crypt base64Crypt;
 
     public void init() {
@@ -38,7 +47,11 @@ public class sucessaoBean implements Serializable {
             sucessora = "";
             succeed = "";
             pessoaJuridicaBO = new PessoaJuridicaBO();
-            
+            pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+            usuarioBO = new UsuarioBO();
+
+            pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
+
             base64Crypt = new Base64Crypt();
         }
     }
@@ -47,15 +60,27 @@ public class sucessaoBean implements Serializable {
         if (sucedida != null && sucessora != null) {
             PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(sucedida)));
             PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(sucessora)));
-            if (pjSucessora.getSucessaoFk() != null && pjSucessora.getSucessaoFk().getId().equals(pjSucedida.getId())) {
+            if (pjSucedida.equals(pjSucessora)) {
                 succeed = "fail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "A empresa escolhida já possui um vínculo de Sucessão Empresarial.", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
             } else {
-                pjSucedida.setSucessaoFk(pjSucessora);
-                pessoaJuridicaBO.edit(pjSucedida);
-                succeed = "success";
-                sucedida = "";
-                sucessora = "";
+                UtilBO utilBO = new UtilBO();
+                pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+                if (pessoaJuridicaSucessao == null) {
+                    pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
+                    pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                    pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
+                    pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
+                    pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
+                    pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
+                    pessoaJuridicaBO.edit(pjSucedida);
+                    succeed = "success";
+                    sucedida = "";
+                    sucessora = "";
+                } else {
+                    succeed = "fail";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um vínculo entre as duas empresas selecionadas.", null));
+                }
             }
         } else {
             succeed = "fail";
@@ -88,4 +113,5 @@ public class sucessaoBean implements Serializable {
     public void setSucessora(String sucessora) {
         this.sucessora = sucessora;
     }
+
 }

@@ -268,7 +268,7 @@ public class PessoaFisicaBean implements Serializable {
     public void cadastrar() throws IOException {
         UsuarioBO usuarioBO = new UsuarioBO();
         boolean error = false;
-        PessoaFisica pfDB = pessoaFisicaBO.findDuplicates(pessoaFisica);
+        PessoaFisica pfDB = pessoaFisicaBO.findByCPF(pessoaFisica.getCpf());
         if (!edit) {
             /*  
              Cadastrar nova Pessoa Física
@@ -707,5 +707,4 @@ public class PessoaFisicaBean implements Serializable {
     public void setPjId(String pjId) {
         this.pjId = pjId;
     }
-
 }

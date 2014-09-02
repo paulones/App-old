@@ -45,7 +45,7 @@
                 <div class="portlet box blue-chambray">
                     <div class="portlet-title">
                         <div class="caption">
-                            <i class="fa fa-bell-o"></i>Atividades Recentes
+                            <i class="fa fa-bell-o"></i>Últimas Atividades
                         </div>
                         <div class="actions">
                             <div class="btn-group">
@@ -61,6 +61,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="portlet-body">
                         <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible="0">
                             <ul class="feeds">
@@ -76,7 +77,7 @@
             <h:inputHidden id="idfk" value="#{templateBean.idfk}"/>
             <h:inputHidden id="tabela" value="#{templateBean.tabela}"/>
             <h:commandLink class="info-refresher">
-                <f:ajax execute="idfk tabela" listener="#{templateBean.exibirModalLog()}" render=":modal-pf :modal-pj :modal-pjud"/>
+                <f:ajax execute="idfk tabela" listener="#{templateBean.exibirModalPorIdEncriptado()}" render=":modal-pf :modal-pj :modal-pjud"/>
             </h:commandLink>
         </h:form>
     </ui:define>

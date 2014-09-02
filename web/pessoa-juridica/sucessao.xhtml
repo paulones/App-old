@@ -12,6 +12,8 @@
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
+        <style>
+        </style>
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
@@ -65,19 +67,25 @@
                             </h:panelGroup>
                             <span class="help-block">É necessário que tanto a empresa sucedida quanto a sucessora estejam cadastradas no sistema.</span>
                             <h3 class="form-section">Empresa Sucedida</h3>
+                            <h:inputHidden id="tabela" value="#{templateBean.tabela}"/>
                             <!--/row-->
                             <div class="row">
                                 <div class="col-md-9">
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-10">
                                             <h:inputText class="select2_category form-control cnpj" id="sucedida" value="#{sucessaoBean.sucedida}" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="cadastrar.xhtml" class="btn blue-chambray" id="vinculate">
-                                        <i class="fa fa-plus-circle"></i> Cadastrar Sucedida</a>
+                                    <h:inputText id="pj-sucedida" class="display-hide" value="#{templateBean.idfk}"/>
+                                    <a href="javascript:;" class="btn blue-chambray view-pj" id="view-sucedida">
+                                        <i class="fa fa-plus-circle"></i> Visualizar Sucedida
+                                    </a>
+                                    <h:commandLink class="execute-ajax">
+                                        <f:ajax execute="pj-sucedida tabela" listener="#{templateBean.exibirModalPorIdEncriptado()}" render=":modal-pj" />
+                                    </h:commandLink>
                                 </div>
                             </div>
                             <!--/row-->
@@ -87,14 +95,19 @@
                                 <div class="col-md-9">
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
-                                        <div class="col-md-9">
+                                        <div class="col-md-10">
                                             <h:inputText class="select2_category form-control cnpj" id="sucessora" value="#{sucessaoBean.sucessora}" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <a href="cadastrar.xhtml" class="btn blue-chambray" id="vinculate">
-                                        <i class="fa fa-plus-circle"></i> Cadastrar Sucessora</a>
+                                    <h:inputText id="pj-sucessora" class="display-hide" value="#{templateBean.idfk}"/>
+                                    <a href="javascript:;" class="btn blue-chambray view-pj" id="view-sucessora">
+                                        <i class="fa fa-plus-circle"></i> Visualizar Sucedida
+                                    </a>
+                                    <h:commandLink class="execute-ajax">
+                                        <f:ajax execute="pj-sucessora tabela" listener="#{templateBean.exibirModalPorIdEncriptado()}" render=":modal-pj" />
+                                    </h:commandLink>
                                 </div>
                             </div>
                             <br/>

@@ -181,9 +181,9 @@ var PJCad = function() {
 
     var checkDates = function() {
         var dateError;
-        if ($(this).parents("#pessoaJuridicaJuridica").length > 0){
+        if ($(this).parents("#pessoaJuridicaJuridica").length > 0) {
             dateError = ".date-error-pjj";
-        } else{
+        } else {
             dateError = ".date-error-pfj";
         }
         if ($(this).val().length == 10) {
@@ -231,9 +231,9 @@ var PJCad = function() {
 
     var checkCapital = function() {
         var dateError;
-        if ($(this).parents("#pessoaJuridicaJuridica").length > 0){
+        if ($(this).parents("#pessoaJuridicaJuridica").length > 0) {
             dateError = ".date-error-pjj";
-        } else if ($(this).parents("#pessoaFisicaJuridica").length > 0){
+        } else if ($(this).parents("#pessoaFisicaJuridica").length > 0) {
             dateError = ".date-error-pfj";
         }
         $(this).val($(this).val().replace(/,/g, "."));
@@ -316,14 +316,40 @@ var PJCad = function() {
                 });
             });
 
+            $(document).on('click', '.pf-info', function() {
+                $('#id-modal').val($(this).children('.cpf').val());
+                $('#tabela-modal').val('PF');
+                $('.show-modal').click();
+            });
+
+            $(document).on('click', '.pj-info', function() {
+                $('#id-modal').val($(this).children('.cnpj').val());
+                $('#tabela-modal').val('PJ');
+                $('.show-modal').click();
+            });
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
                         $('.endcity').select2();
-                    } else if ($(data.source).attr("class") === "pf-info") {
-                        $('.modal-pf').click();
-                    } else if ($(data.source).attr("class") === "pj-info") {
-                        $('.modal-pj').click();
+                    } else if ($(data.source).attr("class") === "show-modal") {
+                        if ($('#tabela-modal').val() === "PF") {
+                            $('.modal-pf').click();
+                        } else {
+                            $('.modal-pj').click();
+                            $('#modal-pj').find('table').dataTable({
+                                paginate: false,
+                                lengthMenu: false,
+                                info: false,
+                                filter: false,
+                                // set the initial value
+                                "pageLength": 10,
+                                "language": {
+                                    "emptyTable": "Sem V&iacute;nculos."
+                                },
+                                "ordering": false
+                            });
+                        }
                     } else if ($(data.source).attr("class") === "delete-pfj") {
                         $('.pfj-refresher').click();
                     } else if ($(data.source).attr("class") === "delete-pjj") {
@@ -344,7 +370,7 @@ var PJCad = function() {
                             }
                             $('.capital-pjj').keyup(checkCapital);
                         }
-                        
+
                         $('.initial-date,.final-date').keyup(checkDates);
                     }
                 }

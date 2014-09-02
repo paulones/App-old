@@ -48,9 +48,9 @@ public class PessoaFisicaBO implements Serializable {
         }
     }
     
-    public PessoaFisica findDuplicates(PessoaFisica pessoaFisica){
+    public PessoaFisica findByCPF(String cpf){
         try {
-            return pessoaFisicaDAO.findDuplicates(pessoaFisica);
+            return pessoaFisicaDAO.findByCPF(cpf);
         } catch (Exception e) {
             e.printStackTrace();
         }

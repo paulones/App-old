@@ -17,6 +17,7 @@
             .control-label{margin-top:6px !important}
             .form-control-bem-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
             .form-control-vinculo-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
+            .form-control-executado-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -567,7 +568,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Nome:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.nome}
                                                                                                 </p>
                                                                                             </div>
@@ -578,7 +579,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">CPF:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     <ui:param name="cpf" value="#{executadoHistorico.enderecoPessoaFisica.pessoa.cpf.substring(0,3)}.#{executadoHistorico.enderecoPessoaFisica.pessoa.cpf.substring(3,6)}.#{executadoHistorico.enderecoPessoaFisica.pessoa.cpf.substring(6,9)}-#{executadoHistorico.enderecoPessoaFisica.pessoa.cpf.substring(9)}" />
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.cpf eq null ? '-' : cpf eq '..-' ? '-' : cpf}
                                                                                                 </p>
@@ -593,7 +594,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Apelido:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.apelido eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.apelido}
                                                                                                 </p>
                                                                                             </div>
@@ -604,7 +605,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">RG:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.rg eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.rg} #{executadoHistorico.enderecoPessoaFisica.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{executadoHistorico.enderecoPessoaFisica.pessoa.rgOrgaoEmissor}#{executadoHistorico.enderecoPessoaFisica.pessoa.rgUfFk.uf eq null ? '' : '/'}#{executadoHistorico.enderecoPessoaFisica.pessoa.rgUfFk.uf}
                                                                                                 </p>
                                                                                             </div>
@@ -618,7 +619,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Sexo:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.sexo eq 'M' ? 'Masculino' : executadoHistorico.enderecoPessoaFisica.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
                                                                                                 </p>
                                                                                             </div>
@@ -629,7 +630,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">T. de Eleitor:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.tituloDeEleitor eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.tituloDeEleitor}
                                                                                                 </p>
                                                                                             </div>
@@ -643,7 +644,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Pai:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.nomeDoPai eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.nomeDoPai}
                                                                                                 </p>
                                                                                             </div>
@@ -654,7 +655,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Nacionalidade:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.nacionalidadeFk eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.nacionalidadeFk.tipo}
                                                                                                 </p>
                                                                                             </div>
@@ -668,7 +669,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Mãe:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.nomeDaMae eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.nomeDaMae}
                                                                                                 </p>
                                                                                             </div>
@@ -679,7 +680,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Naturalidade:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.cidadeFk eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.cidadeFk.nome} #{executadoHistorico.enderecoPessoaFisica.pessoa.estadoFk eq null ? '' : '/'} #{executadoHistorico.enderecoPessoaFisica.pessoa.estadoFk eq null ? '' : executadoHistorico.enderecoPessoaFisica.pessoa.estadoFk.uf}
                                                                                                 </p>
                                                                                             </div>
@@ -693,7 +694,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Estado Civil:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.estadoCivilFk eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.estadoCivilFk.situacao}
                                                                                                 </p>
                                                                                             </div>
@@ -704,7 +705,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">INSS:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.inss eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.inss}
                                                                                                 </p>
                                                                                             </div>
@@ -717,7 +718,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Cônjuge:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.nomeDoConjuge eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.nomeDoConjuge}
                                                                                                 </p>
                                                                                             </div>
@@ -733,7 +734,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-2">Observações:</label>
                                                                                             <div class="col-md-10">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.observacoes eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.observacoes}
                                                                                                 </p>
                                                                                             </div>
@@ -747,7 +748,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Zona:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.zona eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.zona}
                                                                                                 </p>
                                                                                             </div>
@@ -758,7 +759,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Seção:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.secao eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.secao}
                                                                                                 </p>
                                                                                             </div>
@@ -771,7 +772,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Local:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.local eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.local}
                                                                                                 </p>
                                                                                             </div>
@@ -782,7 +783,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.cidadeEleitoralFk eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.cidadeEleitoralFk.nome} #{executadoHistorico.enderecoPessoaFisica.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{executadoHistorico.enderecoPessoaFisica.pessoa.estadoEleitoralFk eq null ? '' : executadoHistorico.enderecoPessoaFisica.pessoa.estadoEleitoralFk.uf}
                                                                                                 </p>
                                                                                             </div>
@@ -796,7 +797,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Endereço:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaFisica.pessoa.endereco eq null ? '-' : executadoHistorico.enderecoPessoaFisica.pessoa.endereco}
                                                                                                 </p>
                                                                                             </div>
@@ -909,10 +910,10 @@
                                                                                                     <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <h:commandLink class="pj-info">
-                                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaJuridicaFk, 'PJ')}"  render=":modal-pj"/>
-                                                                                                                #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
-                                                                                                            </h:commandLink>
+                                                                                                            <a href="javascript:;" class="pj-info">
+                                                                                                                <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj}"/>
+                                                                                                                <span>#{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</span>
+                                                                                                            </a>
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -964,7 +965,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Nome:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.nome}
                                                                                                 </p>
                                                                                             </div>
@@ -975,7 +976,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">CNPJ:</label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     <ui:param value="#{executadoHistorico.enderecoPessoaJuridica.pessoa.cnpj.substring(0,2)}.#{executadoHistorico.enderecoPessoaJuridica.pessoa.cnpj.substring(2,5)}.#{executadoHistorico.enderecoPessoaJuridica.pessoa.cnpj.substring(5,8)}/#{executadoHistorico.enderecoPessoaJuridica.pessoa.cnpj.substring(8,12)}-#{executadoHistorico.enderecoPessoaJuridica.pessoa.cnpj.substring(12)}" name="cnpj"/>
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.cnpj eq null ? '-' : cnpj}
                                                                                                 </p>
@@ -990,7 +991,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Nome Fantasia: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.nomeFantasia eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.nomeFantasia}
                                                                                                 </p>
                                                                                             </div>
@@ -1001,7 +1002,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Tipo Empresarial: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.tipoEmpresarialFk.tipo}
                                                                                                 </p>
                                                                                             </div>
@@ -1015,7 +1016,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Inscrição Estadual: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.inscricaoEstadual eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.inscricaoEstadual}
                                                                                                 </p>
                                                                                             </div>
@@ -1026,7 +1027,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Inscrição Municipal: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.inscricaoMunicipal eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.inscricaoMunicipal}
                                                                                                 </p>
                                                                                             </div>
@@ -1040,7 +1041,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Situação: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.situacao eq null ? '-' : 'A' ? 'Ativo' : 'Inativo'}
                                                                                                 </p>
                                                                                             </div>
@@ -1051,7 +1052,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Motivo da Desativação: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
                                                                                                 </p>
                                                                                             </div>
@@ -1065,7 +1066,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Data de Criação: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.dataDeCriacao eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.dataDeCriacao}
                                                                                                 </p>
                                                                                             </div>
@@ -1076,7 +1077,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">Grupo Econômico: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.grupoEconomico eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.grupoEconomico}
                                                                                                 </p>
                                                                                             </div>
@@ -1090,7 +1091,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">NIRE: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.nire eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.nire}
                                                                                                 </p>
                                                                                             </div>
@@ -1101,7 +1102,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-3">CNAE: </label>
                                                                                             <div class="col-md-9">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.cnae eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.cnae}
                                                                                                 </p>
                                                                                             </div>
@@ -1115,7 +1116,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-2">Atividade Principal:</label>
                                                                                             <div class="col-md-10">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.atividadePrincipal eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.atividadePrincipal}
                                                                                                 </p>
                                                                                             </div>
@@ -1128,7 +1129,7 @@
                                                                                         <div class="form-group">
                                                                                             <label class="control-label col-md-2">Atividades Secundarias</label>
                                                                                             <div class="col-md-10">
-                                                                                                <p class="form-control-static">
+                                                                                                <p class="form-control-executado-static">
                                                                                                     #{executadoHistorico.enderecoPessoaJuridica.pessoa.atividadeSecundaria eq null ? '-' : executadoHistorico.enderecoPessoaJuridica.pessoa.atividadeSecundaria}
                                                                                                 </p>
                                                                                             </div>
@@ -1241,10 +1242,10 @@
                                                                                                     <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <h:commandLink class="pf-info">
-                                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaFisicaFk, 'PF')}" render=":modal-pf"/>
-                                                                                                                #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
-                                                                                                            </h:commandLink>
+                                                                                                            <a href="javascript:;" class="pf-info">
+                                                                                                                <h:inputText class="cpf display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf}"/>
+                                                                                                                <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}</span>
+                                                                                                            </a>
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -1290,10 +1291,10 @@
                                                                                                     <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <h:commandLink class="pj-info">
-                                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
-                                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
-                                                                                                            </h:commandLink>
+                                                                                                            <a href="javascript:;" class="pj-info">
+                                                                                                                <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj}"/>
+                                                                                                                <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}</span>
+                                                                                                            </a>
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -1310,10 +1311,10 @@
                                                                                                     <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <h:commandLink class="pj-info">
-                                                                                                                <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
-                                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
-                                                                                                            </h:commandLink>
+                                                                                                            <a href="javascript:;" class="pj-info">
+                                                                                                                <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj}"/>
+                                                                                                                <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}</span>
+                                                                                                            </a>
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -1491,24 +1492,24 @@
                         <div class="form-body">
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">
+                                    <a href="#tab_1_1_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}" data-toggle="tab">
                                         <i class="fa fa-file-text"></i>  Processo </a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_2" data-toggle="tab">
+                                    <a href="#tab_1_2_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}" data-toggle="tab">
                                         <i class="fa fa-male"></i> Executado </a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_3" data-toggle="tab">
+                                    <a href="#tab_1_3_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}" data-toggle="tab">
                                         <i class="fa fa-car"></i> Bens </a>
                                 </li>
                                 <li>
-                                    <a href="#tab_1_4" data-toggle="tab">
+                                    <a href="#tab_1_4_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}" data-toggle="tab">
                                         <i class="fa fa-pencil"></i> Ato Processual </a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane fade active in" id="tab_1_1">
+                                <div class="tab-pane fade active in" id="tab_1_1_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}">
                                     <h:panelGroup layout="block" class="portlet box blue-chambray">
                                         <div class="portlet-title">
                                             <div class="caption">
@@ -1872,7 +1873,7 @@
                                         </div>
                                     </h:panelGroup>
                                 </div>
-                                <div class="tab-pane fade" id="tab_1_2">
+                                <div class="tab-pane fade" id="tab_1_2_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}">
                                     <c:if test="#{processoJudicialBean.executado.processoJudicial.executado eq 'PF'}">
                                         <h:panelGroup layout="block" class="portlet box blue-chambray">
                                             <div class="portlet-title">
@@ -2231,10 +2232,10 @@
                                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                         <tr>
                                                                             <td style="text-align:center">
-                                                                                <h:commandLink class="pj-info">
-                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaJuridicaFk, 'PJ')}" render=":modal-pj"/>
+                                                                                <a href="javascript:;" class="pj-info">
+                                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj}"/>
                                                                                     #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
-                                                                                </h:commandLink>
+                                                                                </a>
                                                                             </td>
                                                                             <td style="text-align:center">
                                                                                 #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -2565,10 +2566,10 @@
                                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                         <tr>
                                                                             <td style="text-align:center">
-                                                                                <h:commandLink class="pf-info">
-                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaFisicaFk, 'PF')}" render=":modal-pf"/>
+                                                                                <a href="javascript:;" class="pf-info">
+                                                                                    <h:inputText class="cpf display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf}"/>
                                                                                     #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
-                                                                                </h:commandLink>
+                                                                                </a>
                                                                             </td>
                                                                             <td style="text-align:center">
                                                                                 #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -2615,10 +2616,10 @@
                                                                         <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                                         <tr>
                                                                             <td style="text-align:center">
-                                                                                <h:commandLink class="pj-info">
-                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
+                                                                                <a href="javascript:;" class="pj-info">
+                                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj}"/>
                                                                                     #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
-                                                                                </h:commandLink>
+                                                                                </a>
                                                                             </td>
                                                                             <td style="text-align:center">
                                                                                 #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -2635,10 +2636,10 @@
                                                                         <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
                                                                         <tr>
                                                                             <td style="text-align:center">
-                                                                                <h:commandLink class="pj-info">
-                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
+                                                                                <a href="javascript:;" class="pj-info">
+                                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj}"/>
                                                                                     #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
-                                                                                </h:commandLink>
+                                                                                </a>
                                                                             </td>
                                                                             <td style="text-align:center">
                                                                                 #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -2675,7 +2676,7 @@
                                     </c:if>
 
                                 </div>
-                                <div class="tab-pane fade" id="tab_1_3">
+                                <div class="tab-pane fade" id="tab_1_3_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}">
                                     <h:panelGroup layout="block" class="portlet box blue-chambray">
                                         <div class="portlet-title">
                                             <div class="caption">
@@ -2732,7 +2733,7 @@
                                         </div>
                                     </h:panelGroup>
                                 </div>
-                                <div class="tab-pane fade" id="tab_1_4">
+                                <div class="tab-pane fade" id="tab_1_4_#{processoJudicialBean.executado.processoJudicial.numeroDoProcesso}">
                                     <h:panelGroup layout="block" class="portlet box blue-chambray">
                                         <div class="portlet-title">
                                             <div class="caption">

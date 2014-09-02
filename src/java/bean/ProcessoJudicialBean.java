@@ -308,7 +308,7 @@ public class ProcessoJudicialBean implements Serializable {
     public void cadastrar() throws IOException {
         boolean error = false;
         ProcessoJudicial pjudDBCDA = processoJudicialBO.findByCDA(processoJudicial);
-        ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial);
+        ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial.getNumeroDoProcesso());
         processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(base64Crypt.decrypt(executadoPF)) : Integer.valueOf(base64Crypt.decrypt(executadoPJ)));
         if (!edit) {
             /*  

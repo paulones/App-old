@@ -963,10 +963,10 @@
                                                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
-                                                                                                <h:commandLink class="pj-info">
-                                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaJuridicaFk,'PJ')}" render=":modal-pj"/>
+                                                                                                <a href="javascript:;" class="pj-info">
+                                                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj}"/>
                                                                                                     #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
-                                                                                                </h:commandLink>
+                                                                                                </a>
                                                                                             </td>
                                                                                             <td style="text-align:center">
                                                                                                 #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -1289,10 +1289,10 @@
                                                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
-                                                                                                <h:commandLink class="pf-info">
-                                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaFisicaJuridica.pessoaFisicaFk, 'PF')}" render=":modal-pf"/>
+                                                                                                <a href="javascript:;" class="pf-info">
+                                                                                                    <h:inputText class="cpf display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf}"/>
                                                                                                     #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
-                                                                                                </h:commandLink>
+                                                                                                </a>
                                                                                             </td>
                                                                                             <td style="text-align:center">
                                                                                                 #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -1339,10 +1339,10 @@
                                                                                         <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
-                                                                                                <h:commandLink class="pj-info">
-                                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioBFk, 'PJ')}" render=":modal-pj"/>
+                                                                                                <a href="javascript:;" class="pj-info">
+                                                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj}"/>
                                                                                                     #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
-                                                                                                </h:commandLink>
+                                                                                                </a>
                                                                                             </td>
                                                                                             <td style="text-align:center">
                                                                                                 #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -1359,10 +1359,10 @@
                                                                                         <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         <tr>
                                                                                             <td style="text-align:center">
-                                                                                                <h:commandLink class="pj-info">
-                                                                                                    <f:ajax listener="#{templateBean.exibirModal(pessoaJuridicaJuridica.pessoaJuridicaSocioAFk, 'PJ')}" render=":modal-pj"/>
+                                                                                                <a href="javascript:;" class="pj-info">
+                                                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj}"/>
                                                                                                     #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
-                                                                                                </h:commandLink>
+                                                                                                </a>
                                                                                             </td>
                                                                                             <td style="text-align:center">
                                                                                                 #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
