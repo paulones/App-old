@@ -234,15 +234,16 @@ var Home = function() {
             series: {
                 pie: {
                     show: true,
-                    radius: 1,
+                    radius: 3 / 4,
                     label: {
                         show: true,
-                        radius: 1,
+                        radius: 3 / 4,
                         formatter: function(label, series) {
                             return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
                         },
                         background: {
-                            opacity: 0.8
+                            opacity: 0.5,
+                            color: '#000'
                         }
                     }
                 }
@@ -376,7 +377,7 @@ var Home = function() {
 
     return {
         init: function() {
-            
+
             $('.menu-home').addClass('active');
             $('.menu-home a').append('<span class="selected"></span>');
 
