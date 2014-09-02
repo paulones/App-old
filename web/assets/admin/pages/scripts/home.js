@@ -12,7 +12,7 @@ var Home = function() {
             function randValue() {
                 return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
             }
-            var pageviews = [
+            var proc = [
                 [1, randValue()],
                 [2, randValue()],
                 [3, 2 + randValue()],
@@ -44,7 +44,39 @@ var Home = function() {
                 [29, 90 + randValue()],
                 [30, 95 + randValue()]
             ];
-            var visitors = [
+            var pf = [
+                [1, randValue() - 8],
+                [2, randValue() - 7],
+                [3, randValue() - 9],
+                [4, 3 + randValue()],
+                [5, 7 + randValue()],
+                [6, 24 + randValue()],
+                [7, 26 + randValue()],
+                [8, 38 + randValue()],
+                [9, 24 + randValue()],
+                [10, 36 + randValue()],
+                [11, 43 + randValue()],
+                [12, 53 + randValue()],
+                [13, 50 + randValue()],
+                [14, 12 + randValue()],
+                [15, 14 + randValue()],
+                [16, 16 + randValue()],
+                [17, 16 + randValue()],
+                [18, 13 + randValue()],
+                [19, 14 + randValue()],
+                [20, 18 + randValue()],
+                [21, 10 + randValue()],
+                [22, 12 + randValue()],
+                [23, 15 + randValue()],
+                [24, 26 + randValue()],
+                [25, 15 + randValue()],
+                [26, 25 + randValue()],
+                [27, 27 + randValue()],
+                [28, 29 + randValue()],
+                [29, 23 + randValue()],
+                [30, 32 + randValue()]
+            ];
+            var pj = [
                 [1, randValue() - 5],
                 [2, randValue() - 5],
                 [3, randValue() - 5],
@@ -78,7 +110,7 @@ var Home = function() {
             ];
 
             var plot = $.plot($("#interactive_chart"), [{
-                    data: pageviews,
+                    data: proc,
                     label: "Processos",
                     lines: {
                         lineWidth: 1,
@@ -86,8 +118,15 @@ var Home = function() {
                     shadowSize: 0
 
                 }, {
-                    data: visitors,
-                    label: "Cadastros",
+                    data: pf,
+                    label: "P. F&iacute;sicas",
+                    lines: {
+                        lineWidth: 1,
+                    },
+                    shadowSize: 0
+                }, {
+                    data: pj,
+                    label: "P. Jur&iacute;dicas",
                     lines: {
                         lineWidth: 1,
                     },
