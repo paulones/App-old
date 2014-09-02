@@ -308,12 +308,6 @@ var PFCad = function() {
                     $('.vinculate').click();
                 }
             });
-            
-            $(document).on('click', '.pj-info', function(){
-                $('#id-modal').val($(this).children('.cnpj').val());
-                $('#tabela-modal').val('PJ');
-                $('.show-modal').click();
-            });
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
@@ -323,21 +317,6 @@ var PFCad = function() {
                         $('.natcity').select2();
                     } else if ($(data.source).attr("id") === "eleuf") {
                         $('.elecity').select2();
-                    } else if ($(data.source).attr("class") === "show-modal"){
-                        $('.modal-pj').click();
-                        $('.vinculations').dataTable({
-                            destroy:true,
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
                     } else if ($(data.source).attr("class") === "delete"){
                         $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {

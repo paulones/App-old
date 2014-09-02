@@ -73,13 +73,6 @@
             <div class="col-md-4 col-sm-6"></div>
         </div>
         <!-- END PAGE CONTENT -->
-        <h:form prependId="false">
-            <h:inputHidden id="idfk" value="#{templateBean.idfk}"/>
-            <h:inputHidden id="tabela" value="#{templateBean.tabela}"/>
-            <h:commandLink class="info-refresher">
-                <f:ajax execute="idfk tabela" listener="#{templateBean.exibirModalPorIdEncriptado()}" render=":modal-pf :modal-pj :modal-pjud"/>
-            </h:commandLink>
-        </h:form>
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->

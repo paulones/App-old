@@ -47,11 +47,11 @@
                         <li>
                             <ui:fragment rendered="#{pessoaJuridicaBean.history}">
                                 <i class="fa fa-history"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar',pessoaJuridicaBean.pessoaJuridica.id)}">Consultar Histórico</h:commandLink>
+                                <a href="consultar.xhtml?id=#{pessoaJuridicaBean.pessoaJuridica.id}">Consultar Histórico</a>
                             </ui:fragment>
                             <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
                                 <i class="fa fa-search"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar','')}">Consultar</h:commandLink>
+                                <a href="consultar.xhtml">Consultar</a>
                             </ui:fragment>
                         </li>
                     </ul>
@@ -452,7 +452,7 @@
                                                                                 <tr>
                                                                                     <td style="text-align:center">
                                                                                         <a href="javascript:;" class="pf-info">
-                                                                                            <h:inputText class="cpf display-hide" value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf}"/>
+                                                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.id}"/>
                                                                                             <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}</span>
                                                                                         </a>
                                                                                     </td>
@@ -503,7 +503,7 @@
                                                                                     <tr>
                                                                                         <td style="text-align:center">
                                                                                             <a href="javascript:;" class="pj-info">
-                                                                                                <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj}"/>
+                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
                                                                                                 <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}</span>
                                                                                             </a>
                                                                                         </td>
@@ -523,7 +523,7 @@
                                                                                     <tr>
                                                                                         <td style="text-align:center">
                                                                                             <a href="javascript:;" class="pj-info">
-                                                                                                <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj}"/>
+                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
                                                                                                 <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}</span>
                                                                                             </a>
                                                                                         </td>
@@ -578,8 +578,8 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="col-md-offset-4 col-md-9">
-                                        <h:commandLink action="#{templateBean.redirecionar('consultar',pessoaJuridicaBean.enderecoPessoa.pessoa.id)}" class="btn default right"><i class="fa fa-history"></i> Histórico de Alterações</h:commandLink>
-                                        <h:commandLink action="#{templateBean.redirecionar('cadastrar',pessoaJuridicaBean.enderecoPessoa.pessoa.id)}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</h:commandLink>
+                                        <a href="consultar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Alterações</a>
+                                        <a href="cadastrar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
                                     </div>
                                 </div>
                             </div>
@@ -869,7 +869,7 @@
                                                 <tr>
                                                     <td style="text-align:center">
                                                         <a href="javascript:;" class="pf-info">
-                                                            <h:inputText class="cpf display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf}"/>
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.id}"/>
                                                             #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                         </a>
                                                     </td>
@@ -919,7 +919,7 @@
                                                 <tr>
                                                     <td style="text-align:center">
                                                         <a href="javascript:;" class="pj-info">
-                                                            <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj}"/>
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
                                                             #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
                                                         </a>
                                                     </td>
@@ -939,7 +939,7 @@
                                                 <tr>
                                                     <td style="text-align:center">
                                                         <a href="javascript:;" class="pj-info">
-                                                            <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj}"/>
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
                                                             #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
                                                         </a>
                                                     </td>

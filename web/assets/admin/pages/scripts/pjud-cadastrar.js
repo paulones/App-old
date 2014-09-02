@@ -477,20 +477,8 @@ var PjudCad = function() {
                         });
                     });
 
-            $(document).on('click', '.pf-info', function() {
-                $('#id-modal').val($(this).children('.cpf').val());
-                $('#tabela-modal').val('PF');
-                $('.show-modal').click();
-            });
-
-            $(document).on('click', '.pj-info', function() {
-                $('#id-modal').val($(this).children('.cnpj').val());
-                $('#tabela-modal').val('PJ');
-                $('.show-modal').click();
-            });
-
             jsf.ajax.addOnEvent(function(data) {
-                if (data.status == "success") {
+                if (data.status === "success") {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
                     } else if ($(data.source).hasClass("vinculos")) {
@@ -504,13 +492,6 @@ var PjudCad = function() {
                         initTable();
                     } else if ($(data.source).hasClass("button-pessoa-juridica")) {
                         $('#pessoa-juridica').show();
-                        initTable();
-                    } else if ($(data.source).attr("class") === "show-modal") {
-                        if ($('#tabela-modal').val() === "PF") {
-                            $('.modal-pf').click();
-                        } else {
-                            $('.modal-pj').click();
-                        }
                         initTable();
                     }
                 }

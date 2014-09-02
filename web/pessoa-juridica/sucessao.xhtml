@@ -10,6 +10,7 @@
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
+        <link rel="stylesheet" type="text/css" href="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
         <style>
@@ -67,7 +68,6 @@
                             </h:panelGroup>
                             <span class="help-block">É necessário que tanto a empresa sucedida quanto a sucessora estejam cadastradas no sistema.</span>
                             <h3 class="form-section">Empresa Sucedida</h3>
-                            <h:inputHidden id="tabela" value="#{templateBean.tabela}"/>
                             <!--/row-->
                             <div class="row">
                                 <div class="col-md-9">
@@ -79,13 +79,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <h:inputText id="pj-sucedida" class="display-hide" value="#{templateBean.idfk}"/>
-                                    <a href="javascript:;" class="btn blue-chambray view-pj" id="view-sucedida">
+                                    <a href="javascript:;" class="btn blue-chambray pj-info" id="view-sucedida">
+                                        <h:inputText class="object-id display-hide"/>
                                         <i class="fa fa-plus-circle"></i> Visualizar Sucedida
                                     </a>
-                                    <h:commandLink class="execute-ajax">
-                                        <f:ajax execute="pj-sucedida tabela" listener="#{templateBean.exibirModalPorIdEncriptado()}" render=":modal-pj" />
-                                    </h:commandLink>
                                 </div>
                             </div>
                             <!--/row-->
@@ -101,13 +98,10 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <h:inputText id="pj-sucessora" class="display-hide" value="#{templateBean.idfk}"/>
-                                    <a href="javascript:;" class="btn blue-chambray view-pj" id="view-sucessora">
+                                    <a href="javascript:;" class="btn blue-chambray pj-info" id="view-sucessora">
+                                        <h:inputText class="object-id display-hide"/>
                                         <i class="fa fa-plus-circle"></i> Visualizar Sucedida
                                     </a>
-                                    <h:commandLink class="execute-ajax">
-                                        <f:ajax execute="pj-sucessora tabela" listener="#{templateBean.exibirModalPorIdEncriptado()}" render=":modal-pj" />
-                                    </h:commandLink>
                                 </div>
                             </div>
                             <br/>
@@ -134,6 +128,8 @@
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="../assets/admin/pages/scripts/pj-sucessao.js" type="text/javascript"></script>

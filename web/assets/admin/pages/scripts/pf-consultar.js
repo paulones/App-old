@@ -254,30 +254,9 @@ var PFCon = function() {
                 $('.detailed-info').remove();
             });
             
-            $(document).on('click', '.pj-info', function(){
-                $('#id-modal').val($(this).children('.cnpj').val());
-                $('#tabela-modal').val('PJ');
-                $('.show-modal').click();
-            });
-
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
-                    if ($(data.source).attr("class") === "show-modal") {
-                        $('.modal-pj').click();
-                        $('.vinculations').dataTable({
-                            destroy: true,
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
-                    } else if ($(element).hasClass("row-details")) {
+                    if ($(data.source).attr('class') === 'info-refresher') {
                         $(element).addClass("row-details-open").removeClass("row-details-close");
                         $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
                         $('#info').children().clone().appendTo($(element).parent().parent().next().children());

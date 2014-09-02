@@ -45,9 +45,9 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import util.Base64Crypt;
 import util.Cookie;
 import util.GeradorLog;
 
@@ -55,7 +55,7 @@ import util.GeradorLog;
  *
  * @author Pedro
  */
-@SessionScoped
+@ViewScoped
 @ManagedBean(name = "pessoaJuridicaBean")
 public class PessoaJuridicaBean implements Serializable {
 
@@ -112,7 +112,6 @@ public class PessoaJuridicaBean implements Serializable {
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
     private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
 
-    private Base64Crypt base64Crypt;    
     
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -148,8 +147,6 @@ public class PessoaJuridicaBean implements Serializable {
             pessoaFisicaJuridicaList = new ArrayList<>();
             pessoaJuridicaJuridicaList = new ArrayList<>();
             
-            base64Crypt = new Base64Crypt();
-
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             pessoaJuridica = new PessoaJuridica();
             if (isRegisterPage) {
@@ -164,7 +161,7 @@ public class PessoaJuridicaBean implements Serializable {
                     carregarFormulario();
                 } else {
                     try {
-                        Integer id = Integer.valueOf(base64Crypt.decrypt(request.getParameter("id")));
+                        Integer id = Integer.valueOf(request.getParameter("id"));
                         pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
                         if (pessoaJuridica == null) {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
@@ -197,7 +194,7 @@ public class PessoaJuridicaBean implements Serializable {
                     history = false;
                 } else { // Consulta histórico
                     try {
-                        Integer id = Integer.valueOf(base64Crypt.decrypt(request.getParameter("id")));
+                        Integer id = Integer.valueOf(request.getParameter("id"));
                         pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(id);
                         if (pessoaJuridica == null) {
                             history = false;
@@ -393,7 +390,7 @@ public class PessoaJuridicaBean implements Serializable {
         if (edit) {
             pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         }
-        pessoaFisicaVinculo = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(base64Crypt.decrypt(pfVId)));
+        pessoaFisicaVinculo = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfVId));
         pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisicaVinculo);
         boolean exists = false;
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
@@ -408,11 +405,11 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
-        if (!Integer.valueOf(base64Crypt.decrypt(pjVId)).equals(pessoaJuridica.getId())) {
+        if (!Integer.valueOf(pjVId).equals(pessoaJuridica.getId())) {
             if (edit) {
                 pessoaJuridicaJuridica.setPessoaJuridicaSocioAFk(pessoaJuridica);
             }
-            pessoaJuridicaVinculo = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(pjVId)));
+            pessoaJuridicaVinculo = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjVId));
             pessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridicaVinculo);
             boolean exists = false;
             for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
@@ -436,13 +433,13 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void exibirInfo() {
-        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(pjId)));
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaJuridica, endereco);
     }
 
     public void removerPessoaJuridica() {
-        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(pjId)));
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
         pessoaJuridica.setStatus('I');
         pessoaJuridicaBO.edit(pessoaJuridica);

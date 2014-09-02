@@ -24,7 +24,6 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import util.Base64Crypt;
 import util.Cookie;
 
 /**
@@ -49,8 +48,6 @@ public class TemplateBean implements Serializable{
     private String tabela;
     private String searchValue;
     
-    private Base64Crypt base64Crypt;
-    
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
             usuarioBO = new UsuarioBO();
@@ -67,21 +64,20 @@ public class TemplateBean implements Serializable{
             
             idfk = "";
             tabela = "";
-            base64Crypt = new Base64Crypt();
         }
     }
     
-    public void exibirModalPorIdentificadores() {
+    public void exibirModal() {
         if (tabela.equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findByCPF(idfk);
+            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(idfk));
             enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
             executado = new Executado();
         } else if (tabela.equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findByCNPJ(idfk);
+            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(idfk));
             enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
             executado = new Executado();
         } else if (tabela.equals("PJUD")){ 
-            ProcessoJudicial pjud = processoJudicialBO.findByProcessNumber(idfk);
+            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")){
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
                 executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId())));
@@ -91,34 +87,6 @@ public class TemplateBean implements Serializable{
             }
             enderecoPessoa = new EnderecoPessoa();
         }
-    }
-    
-    public void exibirModalPorIdEncriptado() {
-        if (tabela.equals("PF")) {
-            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(base64Crypt.decrypt(idfk)));
-            enderecoPessoa = new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()));
-            executado = new Executado();
-        } else if (tabela.equals("PJ")) {
-            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(idfk)));
-            enderecoPessoa = new EnderecoPessoa(pj, enderecoBO.findPJAddress(pj.getId()));
-            executado = new Executado();
-        } else if (tabela.equals("PJUD")){ 
-            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(base64Crypt.decrypt(idfk)));
-            if (pjud.getExecutado().equals("PF")){
-                PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId())));
-            } else {
-                PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId())));
-            }
-            enderecoPessoa = new EnderecoPessoa();
-        }
-    }
-    
-    public void redirecionar(String tela, String id) throws IOException{
-        String queryString = "";
-        queryString =  (id.equals("")) ? "" : "?id=" + base64Crypt.encrypt(id);
-        FacesContext.getCurrentInstance().getExternalContext().redirect(tela + ".xhtml" + queryString);
     }
     
     public void search() throws IOException{

@@ -17,8 +17,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import org.apache.commons.codec.binary.Base64;
-import util.Base64Crypt;
 import util.Cookie;
 
 /**
@@ -39,8 +37,6 @@ public class sucessaoBean implements Serializable {
     private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
     private UsuarioBO usuarioBO;
 
-    private Base64Crypt base64Crypt;
-
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             sucedida = "";
@@ -52,14 +48,13 @@ public class sucessaoBean implements Serializable {
 
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
 
-            base64Crypt = new Base64Crypt();
         }
     }
 
     public void suceder() {
         if (sucedida != null && sucessora != null) {
-            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(sucedida)));
-            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(base64Crypt.decrypt(sucessora)));
+            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
             if (pjSucedida.equals(pjSucessora)) {
                 succeed = "fail";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));

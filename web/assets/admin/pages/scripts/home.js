@@ -27,7 +27,7 @@ var Home = function() {
                                 html += "<li class='" + $(this).attr("tabela") + "'><div class='col1'><div class='cont'><div class='cont-col1'><div class='label label-sm label-" + operacao + "'>";
                                 html += ($(this).attr("tabela") === "PF") ? "<i class='fa fa-user'></i>" : ($(this).attr("tabela") === "PJ") ? "<i class='fa fa-institution'></i>" : "<i class='fa fa-legal'></i>";
                                 html += "</div></div><div class='cont-col2'><div class='desc'>" + $(this).attr("mensagem") + "</div></div></div><a href='javascript:;' class='cont-search show-feed'>";
-                                html += "<div class='cont-col1'><div class='label label-sm label-default'><i class='fa fa-search'></i><input type='hidden' class='idfk' value='" + $(this).attr("idfk") + "'> Visualizar</input>";
+                                html += "<div class='cont-col1'><div class='label label-sm label-default'><i class='fa fa-search'></i><input type='hidden' class='object-id' value='" + $(this).attr("idfk") + "'> Visualizar</input>";
                                 html += "</div></div></a></div><div class='col2'><time class='date timeago' datetime='" + $(this).attr("data") + "'></time></div></a></li>";
                             });
                         }
@@ -42,34 +42,6 @@ var Home = function() {
                         $('.' + $(this).val()).show();
                     }
                 });
-            });
-
-            var search;
-            $(document).on('click', '.show-feed', function() {
-                $('#idfk').val($(this).find('.idfk').val());
-                $('#tabela').val($(this).parent().parent().attr("class"));
-                $('.info-refresher').click();
-                search = this;
-            });
-
-            jsf.ajax.addOnEvent(function(data) {
-                if (data.status === 'success') {
-                    if ($(data.source).attr("class") === "info-refresher") {
-                        $('.modal-' + $(search).parent().parent().attr("class").toLowerCase()).click();
-                        $('.vinculations').dataTable({
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
-                    }
-                }
             });
         }
     };

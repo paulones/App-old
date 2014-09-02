@@ -35,7 +35,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import util.Base64Crypt;
 import util.TimestampUtils;
 
 /**
@@ -82,14 +81,13 @@ public class ReaverResource {
     @Path("/getPessoasFisicas")
     @Produces("application/json")
     public String getPessoasFisicas() {
-        Base64Crypt base64Crypt = new Base64Crypt();
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         JSONArray jsonArray = new JSONArray();
         List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive();
         for (PessoaFisica pf : pessoaFisicaList) {
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", base64Crypt.encrypt(pf.getId().toString()));
+            jsonObject.put("id", pf.getId().toString());
             jsonObject.put("text", cpf + " - " + pf.getNome());
             jsonArray.put(jsonObject);
         }
@@ -100,14 +98,13 @@ public class ReaverResource {
     @Path("/getPessoasJuridicas")
     @Produces("application/json")
     public String getPessoasJuridicas() {
-        Base64Crypt base64Crypt = new Base64Crypt();
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         JSONArray jsonArray = new JSONArray();
         List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
         for (PessoaJuridica pj : pessoaJuridicaList) {
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", base64Crypt.encrypt(pj.getId().toString()));
+            jsonObject.put("id", pj.getId().toString());
             jsonObject.put("text", cnpj + " - " + pj.getNome());
             jsonArray.put(jsonObject);
         }
@@ -118,7 +115,6 @@ public class ReaverResource {
     @Path("/getPessoasFisicasTable")
     @Produces("application/json")
     public String getPessoasFisicasTable() {
-        Base64Crypt base64Crypt = new Base64Crypt();
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         JSONArray jsonArray = new JSONArray();
@@ -155,7 +151,7 @@ public class ReaverResource {
             jsonObject.put("rg", rg);
             jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
             jsonObject.put("detalhes", detalhes);
-            jsonObject.put("pf", base64Crypt.encrypt(pf.getId().toString()));
+            jsonObject.put("pf", pf.getId().toString());
             jsonArray.put(jsonObject);
         }
         JSONObject json = new JSONObject();
@@ -167,7 +163,6 @@ public class ReaverResource {
     @Path("/getPessoasJuridicasTable")
     @Produces("application/json")
     public String getPessoasJuridicasTable() {
-        Base64Crypt base64Crypt = new Base64Crypt();
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         JSONArray jsonArray = new JSONArray();
@@ -198,7 +193,7 @@ public class ReaverResource {
             jsonObject.put("tipoEmpresarial", tipoEmpresarial);
             jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
             jsonObject.put("detalhes", detalhes);
-            jsonObject.put("pj", base64Crypt.encrypt(pj.getId().toString()));
+            jsonObject.put("pj", pj.getId().toString());
             jsonArray.put(jsonObject);
         }
         JSONObject json = new JSONObject();
@@ -210,7 +205,6 @@ public class ReaverResource {
     @Path("/getProcessosJudiciaisTable")
     @Produces("application/json")
     public String getProcessosJudiciaisTable() {
-        Base64Crypt base64Crypt = new Base64Crypt();
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
@@ -274,7 +268,7 @@ public class ReaverResource {
             jsonObject.put("executado", executado);
             jsonObject.put("delete", "<a class='button-delete' href='javascript:;'><i class='glyphicon glyphicon-remove' style='color:red'></i></a>");
             jsonObject.put("detalhes", detalhes);
-            jsonObject.put("pjud", base64Crypt.encrypt(pjud.getId().toString()));
+            jsonObject.put("pjud", pjud.getId().toString());
             jsonArray.put(jsonObject);
         }
         JSONObject json = new JSONObject();
@@ -286,7 +280,6 @@ public class ReaverResource {
     @Path("/getLogs")
     @Produces("application/json")
     public String getLogs(@QueryParam("quantidade") Integer quantidade, @QueryParam("indice") Integer indice) {
-        Base64Crypt base64Crypt = new Base64Crypt();
         LogBO logBO = new LogBO();
         List<Log> logList = logBO.findLogEntities(quantidade, indice);
         JSONArray jsonArray = new JSONArray();
@@ -296,7 +289,7 @@ public class ReaverResource {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", i);
             jsonObject.put("mensagem", message);
-            jsonObject.put("idfk", base64Crypt.encrypt(String.valueOf(logList.get(i).getIdFk())));
+            jsonObject.put("idfk", logList.get(i).getIdFk());
             jsonObject.put("tabela", logList.get(i).getTabela());
             jsonObject.put("operacao", logList.get(i).getOperacao());
             jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));

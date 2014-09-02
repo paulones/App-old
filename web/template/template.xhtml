@@ -416,7 +416,7 @@
             <h:inputText id="id-modal" class="display-hide" value="#{templateBean.idfk}"/>
             <h:inputText id="tabela-modal" class="display-hide" value="#{templateBean.tabela}"/>
             <h:commandLink class="show-modal">
-                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModalPorIdentificadores()}" render=":modal-pf :modal-pj :modal-pjud"/>
+                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModal}" render=":modal-pf :modal-pj :modal-pjud"/>
             </h:commandLink>
         </h:form>
         <a class="btn default modal-pj display-hide" data-toggle="modal" href="#largepj"></a>
@@ -2648,6 +2648,51 @@
             $('.sidebar-search').submit(function(e) {
                 e.preventDefault();
                 window.location = "../procura-geral.xhtml?valor=" + $(this).find('.form-control').val();
+            });
+            
+            $(document).on('click', '.pf-info', function() {
+                $('#id-modal').val($(this).children('.object-id').val());
+                $('#tabela-modal').val('PF');
+                $('.show-modal').click();
+            });
+
+            $(document).on('click', '.pj-info', function() {
+                $('#id-modal').val($(this).children('.object-id').val());
+                $('#tabela-modal').val('PJ');
+                $('.show-modal').click();
+            });
+            
+            $(document).on('click', '.show-feed', function() {
+                $('#id-modal').val($(this).find('.object-id').val());
+                $('#tabela-modal').val($(this).parent().parent().attr("class"));
+                $('.show-modal').click();
+            });
+
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr("class") === "show-modal") {
+                        if ($('#tabela-modal').val() === "PF") {
+                            $('.modal-pf').click();
+                        } else if ($('#tabela-modal').val() === "PJ") {
+                            $('.modal-pj').click();
+                        } else if ($('#tabela-modal').val() === "PJUD") {
+                            $('.modal-pjud').click();
+                        }
+                        $('.modal').find('table').dataTable({
+                            destroy: true,
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem Vínculos."
+                            },
+                            "ordering": false
+                        });
+                    }
+                }
             });
         </script>
 

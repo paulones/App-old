@@ -47,11 +47,11 @@
                         <li>
                             <ui:fragment rendered="#{pessoaJuridicaBean.edit}">
                                 <i class="fa fa-edit"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar',pessoaJuridicaBean.pessoaJuridica.id)}">Alterar</h:commandLink>
+                                <a href="cadastrar.xhtml?id=#{pessoaJuridicaBean.pessoaJuridica.id}">Alterar</a>
                             </ui:fragment>
                             <ui:fragment rendered="#{!pessoaJuridicaBean.edit}">
                                 <i class="fa fa-floppy-o"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar','')}">Cadastrar</h:commandLink>
+                                <a href="cadastrar.xhtml">Cadastrar</a>
                             </ui:fragment>
                         </li>
                     </ul>
@@ -426,7 +426,7 @@
                                                         <tr>
                                                             <td>
                                                                 <a href="javascript:;" class="pf-info">
-                                                                    <h:inputText class="cpf display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf}"/>
+                                                                    <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.id}"/>
                                                                     #{cpf  eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                                 </a>
                                                             </td>
@@ -514,7 +514,7 @@
                                                             <tr>
                                                                 <td>
                                                                     <a href="javascript:;" class="pj-info">
-                                                                        <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj}"/>
+                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
                                                                         #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
                                                                     </a>
                                                                 </td>
@@ -539,7 +539,7 @@
                                                             <tr>
                                                                 <td>
                                                                     <a href="javascript:;" class="pj-info">
-                                                                        <h:inputText class="cnpj display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj}"/>
+                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
                                                                         #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
                                                                     </a>
                                                                 </td>

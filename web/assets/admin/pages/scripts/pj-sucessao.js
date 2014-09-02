@@ -4,32 +4,13 @@ var PJSuc = function() {
     return {
         init: function() {
 
-            $('#tabela').val('PJ');
-            
-            jsf.ajax.addOnEvent(function(data) {
-                if (data.status == "success") {
-                    if ($(data.source).hasClass("execute-ajax")) {
-                        $('.modal-pj').click();
-                    }
-                }
-            });
-
-            $('.view-pj').click(function() {
-                if ($(this).parent().parent().find('#sucedida').val() !== '') {
-                    $(this).parent().find('#pj-sucedida').val($(this).parent().parent().find('#sucedida').val());
-                    $(this).parent().find('.execute-ajax').click();
-                } else {
-                    $(this).parent().find('#pj-sucessora').val($(this).parent().parent().find('#sucessora').val());
-                    $(this).parent().find('.execute-ajax').click();
-                }
-            });
-
             verPessoaJuridica();
             $('.cnpj').change(verPessoaJuridica);
             function verPessoaJuridica() {
                 $.each($('.cnpj'), function() {
                     if ($(this).val() !== '') {
                         $(this).closest('.row').find('.btn').show();
+                        $(this).closest('.row').find('.pj-info').children('.object-id').val($(this).val());
                     } else {
                         $(this).closest('.row').find('.btn').hide();
                     }

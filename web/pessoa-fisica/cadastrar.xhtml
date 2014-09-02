@@ -46,11 +46,11 @@
                         <li>
                             <ui:fragment rendered="#{pessoaFisicaBean.edit}">
                                 <i class="fa fa-edit"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar',pessoaFisicaBean.pessoaFisica.id)}">Alterar</h:commandLink>
+                                <a href="cadastrar.xhtml?id=#{pessoaFisicaBean.pessoaFisica.id}">Alterar</a>
                             </ui:fragment>
                             <ui:fragment rendered="#{!pessoaFisicaBean.edit}">
                                 <i class="fa fa-floppy-o"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('cadastrar','')}">Cadastrar</h:commandLink>
+                                <a href="cadastrar.xhtml">Cadastrar</a>
                             </ui:fragment>
                         </li>
                     </ul>
@@ -528,7 +528,7 @@
                                                         <tr>
                                                             <td>
                                                                 <a href="javascript:;" class="pj-info">
-                                                                    <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj}"/>
+                                                                    <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.id}"/>
                                                                     #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
                                                                 </a>
                                                             </td>

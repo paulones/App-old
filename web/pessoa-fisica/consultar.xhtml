@@ -49,11 +49,11 @@
                         <li>
                             <ui:fragment rendered="#{pessoaFisicaBean.history}">
                                 <i class="fa fa-history"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar',pessoaFisicaBean.pessoaFisica.id)}">Consultar Histórico</h:commandLink>
+                                <a href="consultar.xhtml?id=#{pessoaFisicaBean.pessoaFisica.id}">Consultar Histórico</a>
                             </ui:fragment>
                             <ui:fragment rendered="#{!pessoaFisicaBean.history}">
                                 <i class="fa fa-search"/>
-                                <h:commandLink styleClass="breadcrumb-jsf" action="#{templateBean.redirecionar('consultar','')}">Consultar</h:commandLink>
+                                <a href="consultar.xhtml">Consultar</a>
                             </ui:fragment>
                         </li>
                     </ul>
@@ -522,7 +522,7 @@
                                                                                 <tr>
                                                                                     <td style="text-align:center">
                                                                                         <a href="javascript:;" class="pj-info">
-                                                                                            <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridicaHistorico.pessoaJuridicaFk.cnpj}"/>
+                                                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridicaHistorico.pessoaJuridicaFk.id}"/>
                                                                                             <span>#{cnpj}<br/>#{pessoaFisicaJuridicaHistorico.pessoaJuridicaFk.nome}</span>
                                                                                         </a>
                                                                                     </td>
@@ -580,8 +580,8 @@
                                 </div>
                                 <div class="col-md-7">
                                     <div class="col-md-offset-4 col-md-9">
-                                        <h:commandLink action="#{templateBean.redirecionar('consultar',pessoaFisicaBean.enderecoPessoa.pessoa.id)}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</h:commandLink>
-                                        <h:commandLink action="#{templateBean.redirecionar('cadastrar',pessoaFisicaBean.enderecoPessoa.pessoa.id)}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</h:commandLink>
+                                        <a href="consultar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</a>
+                                        <a href="cadastrar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
                                     </div>
                                 </div>
                             </div>
@@ -937,7 +937,7 @@
                                                 <tr>
                                                     <td style="text-align:center">
                                                         <a href="javascript:;" class="pj-info">
-                                                            <h:inputText class="cnpj display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj}"/>
+                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.id}"/>
                                                             #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
                                                         </a>
                                                     </td>
