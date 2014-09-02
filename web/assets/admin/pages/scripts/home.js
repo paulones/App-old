@@ -79,7 +79,7 @@ var Home = function() {
 
             var plot = $.plot($("#interactive_chart"), [{
                     data: pageviews,
-                    label: "Unique Visits",
+                    label: "Processos",
                     lines: {
                         lineWidth: 1,
                     },
@@ -87,7 +87,7 @@ var Home = function() {
 
                 }, {
                     data: visitors,
-                    label: "Page Views",
+                    label: "Cadastros",
                     lines: {
                         lineWidth: 1,
                     },
@@ -238,16 +238,18 @@ var Home = function() {
             $('#site_activities_content').show();
 
             var data = [
-                ['DEC', 300],
                 ['JAN', 600],
-                ['FEB', 1100],
+                ['FEV', 1100],
                 ['MAR', 1200],
-                ['APR', 860],
-                ['MAY', 1200],
+                ['ABR', 860],
+                ['MAI', 1200],
                 ['JUN', 1450],
                 ['JUL', 1800],
-                ['AUG', 1200],
-                ['SEP', 600]
+                ['AGO', 1200],
+                ['SET', 600],
+                ['OUT', 900],
+                ['NOV', 700],
+                ['DEZ', 300],
             ];
 
 
