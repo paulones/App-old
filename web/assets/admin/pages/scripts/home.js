@@ -1,5 +1,363 @@
 var Home = function() {
 
+    var initInteractiveChart = function() {
+
+        if (!jQuery.plot) {
+            return;
+        }
+
+        var data = [];
+        var totalPoints = 250;
+
+        // random data generator for plot charts
+
+        function getRandomData() {
+            if (data.length > 0)
+                data = data.slice(1);
+            // do a random walk
+            while (data.length < totalPoints) {
+                var prev = data.length > 0 ? data[data.length - 1] : 50;
+                var y = prev + Math.random() * 10 - 5;
+                if (y < 0)
+                    y = 0;
+                if (y > 100)
+                    y = 100;
+                data.push(y);
+            }
+            // zip the generated y values with the x values
+            var res = [];
+            for (var i = 0; i < data.length; ++i)
+                res.push([i, data[i]])
+            return res;
+        }
+
+        //Interactive Chart
+
+        function interactiveChart() {
+            function randValue() {
+                return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
+            }
+            var pageviews = [
+                [1, randValue()],
+                [2, randValue()],
+                [3, 2 + randValue()],
+                [4, 3 + randValue()],
+                [5, 5 + randValue()],
+                [6, 10 + randValue()],
+                [7, 15 + randValue()],
+                [8, 20 + randValue()],
+                [9, 25 + randValue()],
+                [10, 30 + randValue()],
+                [11, 35 + randValue()],
+                [12, 25 + randValue()],
+                [13, 15 + randValue()],
+                [14, 20 + randValue()],
+                [15, 45 + randValue()],
+                [16, 50 + randValue()],
+                [17, 65 + randValue()],
+                [18, 70 + randValue()],
+                [19, 85 + randValue()],
+                [20, 80 + randValue()],
+                [21, 75 + randValue()],
+                [22, 80 + randValue()],
+                [23, 75 + randValue()],
+                [24, 70 + randValue()],
+                [25, 65 + randValue()],
+                [26, 75 + randValue()],
+                [27, 80 + randValue()],
+                [28, 85 + randValue()],
+                [29, 90 + randValue()],
+                [30, 95 + randValue()]
+            ];
+            var visitors = [
+                [1, randValue() - 5],
+                [2, randValue() - 5],
+                [3, randValue() - 5],
+                [4, 6 + randValue()],
+                [5, 5 + randValue()],
+                [6, 20 + randValue()],
+                [7, 25 + randValue()],
+                [8, 36 + randValue()],
+                [9, 26 + randValue()],
+                [10, 38 + randValue()],
+                [11, 39 + randValue()],
+                [12, 50 + randValue()],
+                [13, 51 + randValue()],
+                [14, 12 + randValue()],
+                [15, 13 + randValue()],
+                [16, 14 + randValue()],
+                [17, 15 + randValue()],
+                [18, 15 + randValue()],
+                [19, 16 + randValue()],
+                [20, 17 + randValue()],
+                [21, 18 + randValue()],
+                [22, 19 + randValue()],
+                [23, 20 + randValue()],
+                [24, 21 + randValue()],
+                [25, 14 + randValue()],
+                [26, 24 + randValue()],
+                [27, 25 + randValue()],
+                [28, 26 + randValue()],
+                [29, 27 + randValue()],
+                [30, 31 + randValue()]
+            ];
+
+            var plot = $.plot($("#interactive_chart"), [{
+                    data: pageviews,
+                    label: "Unique Visits",
+                    lines: {
+                        lineWidth: 1,
+                    },
+                    shadowSize: 0
+
+                }, {
+                    data: visitors,
+                    label: "Page Views",
+                    lines: {
+                        lineWidth: 1,
+                    },
+                    shadowSize: 0
+                }
+            ], {
+                series: {
+                    lines: {
+                        show: true,
+                        lineWidth: 2,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
+                                    opacity: 0.05
+                                }, {
+                                    opacity: 0.01
+                                }
+                            ]
+                        }
+                    },
+                    points: {
+                        show: true,
+                        radius: 3,
+                        lineWidth: 1
+                    },
+                    shadowSize: 2
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true,
+                    tickColor: "#eee",
+                    borderColor: "#eee",
+                    borderWidth: 1
+                },
+                colors: ["#d12610", "#37b7f3", "#52e136"],
+                xaxis: {
+                    ticks: 11,
+                    tickDecimals: 0,
+                    tickColor: "#eee",
+                },
+                yaxis: {
+                    ticks: 11,
+                    tickDecimals: 0,
+                    tickColor: "#eee",
+                }
+            });
+
+
+            function showTooltip(x, y, contents) {
+                $('<div id="tooltip">' + contents + '</div>').css({
+                    position: 'absolute',
+                    display: 'none',
+                    top: y + 5,
+                    left: x + 15,
+                    border: '1px solid #333',
+                    padding: '4px',
+                    color: '#fff',
+                    'border-radius': '3px',
+                    'background-color': '#333',
+                    opacity: 0.80
+                }).appendTo("body").fadeIn(200);
+            }
+
+            var previousPoint = null;
+            $("#interactive_chart").bind("plothover", function(event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+
+                if (item) {
+                    if (previousPoint != item.dataIndex) {
+                        previousPoint = item.dataIndex;
+
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0].toFixed(2),
+                                y = item.datapoint[1].toFixed(2);
+
+                        showTooltip(item.pageX, item.pageY, item.series.label + " of " + x + " = " + y);
+                    }
+                } else {
+                    $("#tooltip").remove();
+                    previousPoint = null;
+                }
+            });
+        }
+
+        //graph
+        interactiveChart();
+
+    }
+
+    var initPizzaChart = function() {
+        var data = [];
+        var series = Math.floor(Math.random() * 10) + 1;
+        series = series < 5 ? 5 : series;
+
+        for (var i = 0; i < series; i++) {
+            data[i] = {
+                label: "Series" + (i + 1),
+                data: Math.floor(Math.random() * 100) + 1
+            }
+        }
+
+        // GRAPH 2
+        $.plot($("#pizza_chart"), data, {
+            series: {
+                pie: {
+                    show: true,
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 1,
+                        formatter: function(label, series) {
+                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                        },
+                        background: {
+                            opacity: 0.8
+                        }
+                    }
+                }
+            },
+            legend: {
+                show: false
+            }
+        });
+    }
+
+    var initRevenueChart = function() {
+        if (!jQuery.plot) {
+            return;
+        }
+
+        function showChartTooltip(x, y, xValue, yValue) {
+            $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
+                position: 'absolute',
+                display: 'none',
+                top: y - 40,
+                left: x - 40,
+                border: '0px solid #ccc',
+                padding: '2px 6px',
+                'background-color': '#fff'
+            }).appendTo("body").fadeIn(200);
+        }
+
+        if ($('#site_activities').size() != 0) {
+            //site activities
+            var previousPoint2 = null;
+            $('#site_activities_loading').hide();
+            $('#site_activities_content').show();
+
+            var data = [
+                ['DEC', 300],
+                ['JAN', 600],
+                ['FEB', 1100],
+                ['MAR', 1200],
+                ['APR', 860],
+                ['MAY', 1200],
+                ['JUN', 1450],
+                ['JUL', 1800],
+                ['AUG', 1200],
+                ['SEP', 600]
+            ];
+
+
+            var plot_statistics = $.plot($("#site_activities"),
+                    [{
+                            data: data,
+                            lines: {
+                                fill: 0.2,
+                                lineWidth: 0,
+                            },
+                            color: ['#BAD9F5']
+                        }, {
+                            data: data,
+                            points: {
+                                show: true,
+                                fill: true,
+                                radius: 4,
+                                fillColor: "#9ACAE6",
+                                lineWidth: 2
+                            },
+                            color: '#9ACAE6',
+                            shadowSize: 1
+                        }, {
+                            data: data,
+                            lines: {
+                                show: true,
+                                fill: false,
+                                lineWidth: 3
+                            },
+                            color: '#9ACAE6',
+                            shadowSize: 0
+                        }],
+                    {
+                        xaxis: {
+                            tickLength: 0,
+                            tickDecimals: 0,
+                            mode: "categories",
+                            min: 0,
+                            font: {
+                                lineHeight: 18,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        yaxis: {
+                            ticks: 5,
+                            tickDecimals: 0,
+                            tickColor: "#eee",
+                            font: {
+                                lineHeight: 14,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#eee",
+                            borderColor: "#eee",
+                            borderWidth: 1
+                        }
+                    });
+
+            $("#site_activities").bind("plothover", function(event, pos, item) {
+                $("#x").text(pos.x.toFixed(2));
+                $("#y").text(pos.y.toFixed(2));
+                if (item) {
+                    if (previousPoint2 != item.dataIndex) {
+                        previousPoint2 = item.dataIndex;
+                        $("#tooltip").remove();
+                        var x = item.datapoint[0].toFixed(2),
+                                y = item.datapoint[1].toFixed(2);
+                        showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + 'M$');
+                    }
+                }
+            });
+
+            $('#site_activities').bind("mouseleave", function() {
+                $("#tooltip").remove();
+            });
+        }
+    }
+
     return {
         init: function() {
             $('.menu-home').addClass('active');
@@ -43,6 +401,13 @@ var Home = function() {
                     }
                 });
             });
-        }
+
+            Metronic.addResizeHandler(function() {
+                initPizzaCharts();
+            });
+            initInteractiveChart();
+            initPizzaChart();
+            initRevenueChart();
+        },
     };
 }();
