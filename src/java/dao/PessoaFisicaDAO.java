@@ -628,4 +628,20 @@ public class PessoaFisicaDAO implements Serializable {
         }
     }
     
+    public Integer countPFByMonth(Integer ano, Integer mes){
+        EntityManager em = getEntityManager();
+        try {
+            Integer count = (Integer) em.createNativeQuery("select count(distinct pf.id) from pessoa_fisica pf, log l "
+                    + "where l.tabela = 'PF' and l.id_fk= pf.id and "
+                    + "pf.status = 'A' and l.operacao = 'C' and "
+                    + "DATE_PART('MONTH', l.data_de_criacao) = "+mes+" and "
+                    + "DATE_PART('YEAR', l.data_de_criacao) = "+ano, PessoaFisica.class).getSingleResult();
+            return count;
+        } catch (NoResultException e) {
+            return 0;
+        } finally {
+            em.close();
+        }
+    }
+    
 }

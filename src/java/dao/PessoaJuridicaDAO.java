@@ -794,4 +794,20 @@ public class PessoaJuridicaDAO implements Serializable {
             em.close();
         }
     }
+    
+    public Integer countPJByMonth(Integer ano, Integer mes){
+        EntityManager em = getEntityManager();
+        try {
+            Integer count = (Integer) em.createNativeQuery("select count(distinct pj.id) from pessoa_juridica pj, log l "
+                    + "where l.tabela = 'PJ' and l.id_fk= pj.id and "
+                    + "pj.status = 'A' and l.operacao = 'C' and "
+                    + "DATE_PART('MONTH', l.data_de_criacao) = "+mes+" and "
+                    + "DATE_PART('YEAR', l.data_de_criacao) = "+ano, PessoaJuridica.class).getSingleResult();
+            return count;
+        } catch (NoResultException e) {
+            return 0;
+        } finally {
+            em.close();
+        }
+    }
 }

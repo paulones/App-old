@@ -5,6 +5,7 @@
  */
 package service;
 
+import bo.ChartsBO;
 import bo.EnderecoBO;
 import bo.LogBO;
 import bo.PessoaFisicaBO;
@@ -21,6 +22,7 @@ import entidade.ProcessoJudicial;
 import entidade.VinculoProcessual;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -294,6 +296,31 @@ public class ReaverResource {
             jsonObject.put("operacao", logList.get(i).getOperacao());
             jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));
             jsonArray.put(jsonObject);
+        }
+        return jsonArray.toString();
+    }
+    
+    @GET
+    @Path("/getMovimentacao")
+    @Produces("application/json")
+    public String getMovimentacao(@QueryParam("ano") Integer ano) {
+        ChartsBO chartsBO = new ChartsBO();
+        List<Integer> listPf = new ArrayList<>();
+        List<Integer> listPJ = new ArrayList<>();
+        List<Integer> listPJUD = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 1; i <= 12; i++) {
+            listPf.add(chartsBO.countPFByMonth(ano, i));
+            listPJ.add(chartsBO.countPJByMonth(ano, i));
+            listPJUD.add(chartsBO.countPJUDByMonth(ano, i));
+            JSONObject jsonObject = new JSONObject();
+            /*jsonObject.put("id", i);
+            jsonObject.put("mensagem", message);
+            jsonObject.put("idfk", logList.get(i).getIdFk());
+            jsonObject.put("tabela", logList.get(i).getTabela());
+            jsonObject.put("operacao", logList.get(i).getOperacao());
+            jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));
+            jsonArray.put(jsonObject);*/
         }
         return jsonArray.toString();
     }

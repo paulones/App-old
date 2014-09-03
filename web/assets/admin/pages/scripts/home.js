@@ -12,6 +12,8 @@ var Home = function() {
             function randValue() {
                 return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
             }
+            var ano = new Date().getFullYear();
+            
             var proc = [
                 [1, randValue()],
                 [2, randValue()],
@@ -24,25 +26,7 @@ var Home = function() {
                 [9, 25 + randValue()],
                 [10, 30 + randValue()],
                 [11, 35 + randValue()],
-                [12, 25 + randValue()],
-                [13, 15 + randValue()],
-                [14, 20 + randValue()],
-                [15, 45 + randValue()],
-                [16, 50 + randValue()],
-                [17, 65 + randValue()],
-                [18, 70 + randValue()],
-                [19, 85 + randValue()],
-                [20, 80 + randValue()],
-                [21, 75 + randValue()],
-                [22, 80 + randValue()],
-                [23, 75 + randValue()],
-                [24, 70 + randValue()],
-                [25, 65 + randValue()],
-                [26, 75 + randValue()],
-                [27, 80 + randValue()],
-                [28, 85 + randValue()],
-                [29, 90 + randValue()],
-                [30, 95 + randValue()]
+                [12, 25 + randValue()]
             ];
             var pf = [
                 [1, randValue() - 8],
@@ -56,25 +40,7 @@ var Home = function() {
                 [9, 24 + randValue()],
                 [10, 36 + randValue()],
                 [11, 43 + randValue()],
-                [12, 53 + randValue()],
-                [13, 50 + randValue()],
-                [14, 12 + randValue()],
-                [15, 14 + randValue()],
-                [16, 16 + randValue()],
-                [17, 16 + randValue()],
-                [18, 13 + randValue()],
-                [19, 14 + randValue()],
-                [20, 18 + randValue()],
-                [21, 10 + randValue()],
-                [22, 12 + randValue()],
-                [23, 15 + randValue()],
-                [24, 26 + randValue()],
-                [25, 15 + randValue()],
-                [26, 25 + randValue()],
-                [27, 27 + randValue()],
-                [28, 29 + randValue()],
-                [29, 23 + randValue()],
-                [30, 32 + randValue()]
+                [12, 53 + randValue()]
             ];
             var pj = [
                 [1, randValue() - 5],
@@ -88,25 +54,7 @@ var Home = function() {
                 [9, 26 + randValue()],
                 [10, 38 + randValue()],
                 [11, 39 + randValue()],
-                [12, 50 + randValue()],
-                [13, 51 + randValue()],
-                [14, 12 + randValue()],
-                [15, 13 + randValue()],
-                [16, 14 + randValue()],
-                [17, 15 + randValue()],
-                [18, 15 + randValue()],
-                [19, 16 + randValue()],
-                [20, 17 + randValue()],
-                [21, 18 + randValue()],
-                [22, 19 + randValue()],
-                [23, 20 + randValue()],
-                [24, 21 + randValue()],
-                [25, 14 + randValue()],
-                [26, 24 + randValue()],
-                [27, 25 + randValue()],
-                [28, 26 + randValue()],
-                [29, 27 + randValue()],
-                [30, 31 + randValue()]
+                [12, 50 + randValue()]
             ];
 
             var plot = $.plot($("#interactive_chart"), [{
@@ -258,6 +206,45 @@ var Home = function() {
         if (!jQuery.plot) {
             return;
         }
+        
+        $.ajax({
+                url: "/webresources/reaver/getPessoasFisicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $('.cpfVinculate').select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
+                        });
+                    });
 
         function showChartTooltip(x, y, xValue, yValue) {
             $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({

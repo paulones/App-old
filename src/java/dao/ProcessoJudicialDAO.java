@@ -437,4 +437,20 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
+    
+    public Integer countPJUDByMonth(Integer ano, Integer mes){
+        EntityManager em = getEntityManager();
+        try {
+            Integer count = (Integer) em.createNativeQuery("select count(distinct pjud.id) from processo_judicial pjud, log l "
+                    + "where l.tabela = 'PJ' and l.id_fk= pjud.id and "
+                    + "pjud.status = 'A' and l.operacao = 'C' and "
+                    + "DATE_PART('MONTH', l.data_de_criacao) = "+mes+" and "
+                    + "DATE_PART('YEAR', l.data_de_criacao) = "+ano, ProcessoJudicial.class).getSingleResult();
+            return count;
+        } catch (NoResultException e) {
+            return 0;
+        } finally {
+            em.close();
+        }
+    }
 }
