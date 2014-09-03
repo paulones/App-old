@@ -326,7 +326,7 @@ public class ReaverResource {
         } else if (log.getTabela().equals("PJS")) {
             PessoaJuridicaSucessao pjs = pjsBO.findPessoaJuridicaSucessao(log.getIdFk());
             tabela += "<span class='feed-label'>Sucessão Empresarial ";
-            detalhes += "<strong>" + pjs.getPessoaJuridicaSucedidaFk().getNome() + " <-> " + pjs.getPessoaJuridicaSucessoraFk().getNome() + "</strong>";
+            detalhes += "<strong>" + pjs.getPessoaJuridicaSucedidaFk().getNome() + " -> " + pjs.getPessoaJuridicaSucessoraFk().getNome() + "</strong>";
         }
         if (log.getOperacao().equals('C')) {
             operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "cadastrada: ";
@@ -352,6 +352,7 @@ public class ReaverResource {
             JSONObject jsonObject = new JSONObject();
             String sucedidaCnpj = pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(0,2)+"."+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(2,5)+"."+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(5,8)+"/"+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(8,12)+"-"+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(12);
             String sucessoraCnpj = pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(0,2)+"."+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(2,5)+"."+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(5,8)+"/"+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(8,12)+"-"+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(12);
+            jsonObject.put("sucessao_id", pjs.getId());
             jsonObject.put("sucedida_id", pjs.getPessoaJuridicaSucedidaFk().getId());
             jsonObject.put("sucedida_nome", pjs.getPessoaJuridicaSucedidaFk().getNome());
             jsonObject.put("sucedida_cnpj", sucedidaCnpj);

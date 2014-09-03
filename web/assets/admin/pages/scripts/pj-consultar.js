@@ -265,6 +265,14 @@ var PJCon = function() {
                 });
                 $('.detailed-info').remove();
             });
+            
+            $(document).on('click', '.dd3-content', function() {
+                if ($(this).parent().children('.suc-id').val().length > 0) {
+                    $('#sucessao-id').val($(this).parent().children('.suc-id').val());
+                    $('.sucessao-refresher').click();
+                    element = $(this);
+                }
+            });
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
@@ -284,11 +292,13 @@ var PJCon = function() {
                                     var sucessoras = "";
                                     $.each(data, function() {
                                         if (String(pjId) === String($(this).attr('sucessora_id'))) {
-                                            sucedidas += '<li class="sucedidas dd-item dd3-item"><div class="dd-handle dd3-handle pj-info"><i class="fa fa-search"></i><input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
-                                                    + '<div class="dd3-content">' + $(this).attr('sucedida_nome') + ': ' + $(this).attr('sucedida_cnpj') + '</div></li>';
+                                            sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
+                                                    + '<div class="dd-handle dd3-handle pj-info"><i class="fa fa-search"></i><input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
+                                                    + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + '</div></li>';
                                         } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
-                                            sucessoras += '<li class="sucessoras dd-item dd3-item"><div class="dd-handle dd3-handle pj-info"><i class="fa fa-search"></i><input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
-                                                    + '<div class="dd3-content">' + $(this).attr('sucessora_nome') + ': ' + $(this).attr('sucessora_cnpj') + '</div></li>';
+                                            sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
+                                                    + '<div class="dd-handle dd3-handle pj-info"><i class="fa fa-search"></i><input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
+                                                    + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + '</div></li>';
                                         }
                                     });
                                     if (sucedidas === "" && sucessoras === "") {
@@ -296,7 +306,7 @@ var PJCon = function() {
                                         $('#info').find('.nestable-list').append('<div layout="block" class="alert alert-warning">N&atilde;o h&aacute; sucess&otilde;es para esta Pessoa Jur&iacute;dica.</div>');
                                     } else {
                                         atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-check-square-o"></i></div>'
-                                                + '<div class="dd3-content">' + $('#info').find('.nome').html().trim() + ': ' + $('#info').find('.cnpj').html().trim() + '</div></li>';
+                                                + '<div class="dd3-content"><strong>' + $('#info').find('.nome').html().trim() + ':</strong> ' + $('#info').find('.cnpj').html().trim() + '</div></li>';
                                         $('#info').find('.dd-list').append(sucedidas);
                                         if (sucedidas !== "") {
                                             atual = '<ol class="dd-list">' + atual + '</ol>';
@@ -326,6 +336,10 @@ var PJCon = function() {
                                         "ordering": false
                                     });
                                 });
+                    }
+                    else if ($(data.source).attr('class') === 'sucessao-refresher') {
+                        $(element).closest('.nestable-list').find('.sucessao-info').remove();
+                        $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));
                     }
                 }
             });

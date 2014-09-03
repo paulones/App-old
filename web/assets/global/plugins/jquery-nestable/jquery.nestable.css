@@ -47,7 +47,7 @@
     background: #fafafa;
     -webkit-border-radius: 3px;
             border-radius: 3px;
-    box-sizing: border-box; -moz-box-sizing: border-box;
+    box-sizing: border-box; -moz-box-sizing: border-box;cursor:pointer;
 }
 .dd3-content:hover { color: #2ea8e5; background: #fff; }
 

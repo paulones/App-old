@@ -12,6 +12,7 @@ import bo.UtilBO;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -53,12 +54,9 @@ public class sucessaoBean implements Serializable {
     }
 
     public void suceder() {
-        PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
-        PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
-        if (pjSucedida.equals(pjSucessora)) {
-            succeed = "fail";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
-        } else {
+        if (!sucedida.equals(sucessora)) {
+            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
             UtilBO utilBO = new UtilBO();
             boolean exists = true;
             pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
@@ -70,16 +68,45 @@ public class sucessaoBean implements Serializable {
             pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
             pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
             pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
-            if (exists){
-                pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
-                GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'U');
-            } else{
+            if (exists) {
+                if (!pessoaJuridicaSucessao.equalsValues(pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
+                    pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
+                    GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'U');
+                    succeed = "success";
+                    sucedida = "";
+                    sucessora = "";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão alterada com sucesso!", null));
+                } else {
+                    succeed = "info";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum campo foi alterado.", null));
+                }
+            } else {
                 pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
                 GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'C');
+                succeed = "success";
+                sucedida = "";
+                sucessora = "";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão realizada com sucesso!", null));
             }
-            succeed = "success";
-            sucedida = "";
-            sucessora = "";
+        } else {
+            succeed = "fail";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
+        }
+    }
+
+    public void checkSucessoes() {
+        if (!sucedida.equals(sucessora)) {
+            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
+            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+            if (pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk().equals(pjSucessora) && pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk().equals(pjSucedida)) {
+                succeed = "warning";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existe uma sucessão invertida entre as empresas selecionadas. Caso opte em suceder, a sucessão anterior será substituída.", null));
+            } else {
+                succeed = "";
+            }
+        } else {
+            succeed = "";
         }
     }
 

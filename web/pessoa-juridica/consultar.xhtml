@@ -999,7 +999,6 @@
                                                     <div class="col-md-7">
                                                         <div class="col-md-offset-4 col-md-9">
                                                             <a href="consultar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Sucessões</a>
-                                                            <!--<a href="cadastrar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>-->
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1007,6 +1006,7 @@
                                             <!-- BEGIN LISTA CONTENT-->
                                             <div class="form-body nestable-list">
                                                 <span class="help-block">Para visualizar os dados de uma empresa, clique na <i class="fa fa-search"></i>.</span>
+                                                <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="portlet-body">
@@ -1017,12 +1017,95 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <h3 class="form-section"></h3> 
+
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- END LISTA CONTENT-->
+                        </div>
+                        <!-- END LISTA CONTENT-->
+                    </div>
+                </h:panelGroup>
+            </h:panelGroup>
+            <h:inputHidden id="sucessao-id" value="#{pessoaJuridicaBean.sucessaoId}"></h:inputHidden>
+            <h:commandLink class="sucessao-refresher">
+                <f:ajax execute="sucessao-id" listener="#{pessoaJuridicaBean.exibirSucessao}" render="sucessao"/>
+            </h:commandLink>
+            <h:panelGroup id="sucessao" class="display-hide">
+                <h:panelGroup layout="block" class="portlet box blue-chambray sucessao-info" rendered="#{not empty pessoaJuridicaBean.pessoaJuridicaSucessao}">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <span>#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome} </span><span><i class="fa fa-exchange"></i> #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}</span> 
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <!-- BEGIN SUCESSAO CONTENT-->
+                        <div class="form-body">
+                            <h3 class="form-section">Informações da Sucessão</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Empresa Sucedida:</label>
+                                        <div class="col-md-9">
+                                            <p class="form-control-static">
+                                                #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">CNPJ:</label>
+                                        <div class="col-md-9">
+                                            <p class="form-control-static">
+                                                <ui:param value="#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                #{cnpj}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Empresa Sucedida:</label>
+                                        <div class="col-md-9">
+                                            <p class="form-control-static">
+                                                #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">CNPJ:</label>
+                                        <div class="col-md-9">
+                                            <p class="form-control-static">
+                                                <ui:param value="#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
+                                                #{cnpj}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Data de Sucessao:</label>
+                                        <div class="col-md-9">
+                                            <p class="form-control-static">
+                                                <h:outputText value="#{pessoaJuridicaBean.pessoaJuridicaSucessao.dataDeSucessao}">
+                                                    <f:convertDateTime pattern="dd-MM-yyyy : HH:mm:ss"/>
+                                                </h:outputText>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </h:panelGroup>
