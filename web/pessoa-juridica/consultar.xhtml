@@ -613,7 +613,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label col-md-3">Nome:</label>
                                                             <div class="col-md-9">
-                                                                <p class="form-control-static">
+                                                                <p class="form-control-static nome">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.nome}
                                                                 </p>
                                                             </div>
@@ -624,7 +624,7 @@
                                                         <div class="form-group">
                                                             <label class="control-label col-md-3">CNPJ:</label>
                                                             <div class="col-md-9">
-                                                                <p class="form-control-static">
+                                                                <p class="form-control-static cnpj">
                                                                     <ui:param value="#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj eq null ? '-' : cnpj}
                                                                 </p>
@@ -999,65 +999,22 @@
                                                     <div class="col-md-7">
                                                         <div class="col-md-offset-4 col-md-9">
                                                             <a href="consultar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Sucessões</a>
-                                                            <a href="cadastrar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
+                                                            <!--<a href="cadastrar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>-->
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <!-- BEGIN LISTA CONTENT-->
-                                            <div class="form-body">
+                                            <div class="form-body nestable-list">
+                                                <span class="help-block">Para visualizar os dados de uma empresa, clique na <i class="fa fa-search"></i>.</span>
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                            <div class="portlet-body">
-                                                                <div class="dd" id="nestable_list_3">
-                                                                    <ol class="dd-list">
-                                                                        <li class="dd-item dd3-item" data-id="13">
-                                                                            <div class="dd-handle dd3-handle">
-                                                                            </div>
-                                                                            <div class="dd3-content">
-                                                                                Item 13
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="dd-item dd3-item" data-id="14">
-                                                                            <div class="dd-handle dd3-handle">
-                                                                            </div>
-                                                                            <div class="dd3-content">
-                                                                                Item 14
-                                                                            </div>
-                                                                        </li>
-                                                                        <li class="dd-item dd3-item" data-id="15">
-                                                                            <div class="dd-handle dd3-handle">
-                                                                            </div>
-                                                                            <div class="dd3-content">
-                                                                                Item 15
-                                                                            </div>
-                                                                            <ol class="dd-list">
-                                                                                <li class="dd-item dd3-item" data-id="16">
-                                                                                    <div class="dd-handle dd3-handle">
-                                                                                    </div>
-                                                                                    <div class="dd3-content">
-                                                                                        Item 16
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li class="dd-item dd3-item" data-id="17">
-                                                                                    <div class="dd-handle dd3-handle">
-                                                                                    </div>
-                                                                                    <div class="dd3-content">
-                                                                                        Item 17
-                                                                                    </div>
-                                                                                </li>
-                                                                                <li class="dd-item dd3-item" data-id="18">
-                                                                                    <div class="dd-handle dd3-handle">
-                                                                                    </div>
-                                                                                    <div class="dd3-content">
-                                                                                        Item 18
-                                                                                    </div>
-                                                                                </li>
-                                                                            </ol>
-                                                                        </li>
-                                                                    </ol>
-                                                                </div>
+                                                    <div class="col-md-12">
+                                                        <div class="portlet-body">
+                                                            <div class="dd" id="nestable_list">
+                                                                <ol class="dd-list">
+                                                                </ol>
                                                             </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

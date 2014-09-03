@@ -269,27 +269,68 @@ var PJCon = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
-                        $(element).addClass("row-details-open").removeClass("row-details-close");
-                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
-                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
-                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
-                        $(element).parent().parent().next().find('table').dataTable({
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
+                        var pjId = $('#pj-id').val();
+                        $.ajax({
+                            url: "/webresources/reaver/getSucessoes",
+                            data: {
+                                id: pjId
                             },
-                            "ordering": false
-                        });
+                            dataType: "json",
+                            cache: false
+                        })
+                                .done(function(data) {
+                                    var sucedidas = "";
+                                    var atual = "";
+                                    var sucessoras = "";
+                                    $.each(data, function() {
+                                        if (String(pjId) === String($(this).attr('sucessora_id'))) {
+                                            sucedidas += '<li class="sucedidas dd-item dd3-item"><div class="dd-handle dd3-handle pj-info"><i class="fa fa-search"></i><input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
+                                                    + '<div class="dd3-content">' + $(this).attr('sucedida_nome') + ': ' + $(this).attr('sucedida_cnpj') + '</div></li>';
+                                        } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
+                                            sucessoras += '<li class="sucessoras dd-item dd3-item"><div class="dd-handle dd3-handle pj-info"><i class="fa fa-search"></i><input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
+                                                    + '<div class="dd3-content">' + $(this).attr('sucessora_nome') + ': ' + $(this).attr('sucessora_cnpj') + '</div></li>';
+                                        }
+                                    });
+                                    if (sucedidas === "" && sucessoras === "") {
+                                        $('#info').find('.nestable-list').children().remove();
+                                        $('#info').find('.nestable-list').append('<div layout="block" class="alert alert-warning">N&atilde;o h&aacute; sucess&otilde;es para esta Pessoa Jur&iacute;dica.</div>');
+                                    } else {
+                                        atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-check-square-o"></i></div>'
+                                                + '<div class="dd3-content">' + $('#info').find('.nome').html().trim() + ': ' + $('#info').find('.cnpj').html().trim() + '</div></li>';
+                                        $('#info').find('.dd-list').append(sucedidas);
+                                        if (sucedidas !== "") {
+                                            atual = '<ol class="dd-list">' + atual + '</ol>';
+                                            $('#info').find('.sucedidas').last().append(atual);
+                                        } else {
+                                            $('#info').find('.dd-list').append(atual);
+                                        }
+                                        if (sucessoras !== "") {
+                                            sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
+                                            $('#info').find('.atual').append(sucessoras);
+                                        }
+                                    }
+                                    $(element).addClass("row-details-open").removeClass("row-details-close");
+                                    $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
+                                    $('#info').children().clone().appendTo($(element).parent().parent().next().children());
+                                    $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
+                                    $(element).parent().parent().next().find('table').dataTable({
+                                        paginate: false,
+                                        lengthMenu: false,
+                                        info: false,
+                                        filter: false,
+                                        // set the initial value
+                                        "pageLength": 10,
+                                        "language": {
+                                            "emptyTable": "Sem V&iacute;nculos."
+                                        },
+                                        "ordering": false
+                                    });
+                                });
                     }
                 }
             });
-            
-            $('#nestable_list_3').nestable();
+
+            $('#nestable_list').nestable();
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');

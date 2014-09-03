@@ -9,6 +9,7 @@ import bo.EnderecoBO;
 import bo.LogBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
+import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
 import entidade.Bem;
 import entidade.Endereco;
@@ -17,10 +18,12 @@ import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaJuridica;
+import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
 import entidade.VinculoProcessual;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -302,6 +305,7 @@ public class ReaverResource {
         PessoaFisicaBO pfBO = new PessoaFisicaBO();
         PessoaJuridicaBO pjBO = new PessoaJuridicaBO();
         ProcessoJudicialBO pjudBO = new ProcessoJudicialBO();
+        PessoaJuridicaSucessaoBO pjsBO = new PessoaJuridicaSucessaoBO();
         String tabela = "";
         String operacao = "";
         String detalhes = "";
@@ -309,16 +313,20 @@ public class ReaverResource {
             PessoaFisica pf = pfBO.findPessoaFisica(log.getIdFk());
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             tabela += "<span class='feed-label'>Pessoa Física ";
-            detalhes += pf.getNome() + " - " + cpf;
+            detalhes += "<strong>" + pf.getNome() + " - " + cpf + "</strong>";
         } else if (log.getTabela().equals("PJ")) {
             PessoaJuridica pj = pjBO.findPessoaJuridica(log.getIdFk());
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             tabela += "<span class='feed-label'>Pessoa Juridica ";
-            detalhes += pj.getNome() + " - " + cnpj;
+            detalhes += "<strong>" + pj.getNome() + " - " + cnpj + "</strong>";
         } else if (log.getTabela().equals("PJUD")) {
             ProcessoJudicial pjud = pjudBO.findProcessoJudicial(log.getIdFk());
             tabela += "<span class='feed-label'>Processo Judicial ";
-            detalhes += pjud.getNumeroDoProcesso();
+            detalhes += "<strong>" + pjud.getNumeroDoProcesso() + "</strong>";
+        } else if (log.getTabela().equals("PJS")) {
+            PessoaJuridicaSucessao pjs = pjsBO.findPessoaJuridicaSucessao(log.getIdFk());
+            tabela += "<span class='feed-label'>Sucessão Empresarial ";
+            detalhes += "<strong>" + pjs.getPessoaJuridicaSucedidaFk().getNome() + " <-> " + pjs.getPessoaJuridicaSucessoraFk().getNome() + "</strong>";
         }
         if (log.getOperacao().equals('C')) {
             operacao += log.getTabela().equals("PJUD") ? "cadastrado: " : "cadastrada: ";
@@ -330,4 +338,40 @@ public class ReaverResource {
         operacao += "</span>";
         return tabela + operacao + detalhes;
     }
+
+    @GET
+    @Path("/getSucessoes")
+    @Produces("application/json")
+    public String getSucessoes(@QueryParam("id") Integer id) {
+        PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+        List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = new ArrayList<>();
+        pessoaJuridicaSucessaoList.addAll(pessoaJuridicaSucessaoBO.findSucedidas(id));
+        pessoaJuridicaSucessaoList.addAll(pessoaJuridicaSucessaoBO.findSucessoras(id));
+        JSONArray jsonArray = new JSONArray();
+        for (PessoaJuridicaSucessao pjs : pessoaJuridicaSucessaoList) {
+            JSONObject jsonObject = new JSONObject();
+            String sucedidaCnpj = pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(0,2)+"."+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(2,5)+"."+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(5,8)+"/"+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(8,12)+"-"+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(12);
+            String sucessoraCnpj = pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(0,2)+"."+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(2,5)+"."+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(5,8)+"/"+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(8,12)+"-"+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(12);
+            jsonObject.put("sucedida_id", pjs.getPessoaJuridicaSucedidaFk().getId());
+            jsonObject.put("sucedida_nome", pjs.getPessoaJuridicaSucedidaFk().getNome());
+            jsonObject.put("sucedida_cnpj", sucedidaCnpj);
+            jsonObject.put("sucessora_id", pjs.getPessoaJuridicaSucessoraFk().getId());
+            jsonObject.put("sucessora_nome", pjs.getPessoaJuridicaSucessoraFk().getNome());
+            jsonObject.put("sucessora_cnpj", sucessoraCnpj);
+            jsonObject.put("data_de_sucessao", TimestampUtils.getISO8601StringForDate(pjs.getDataDeSucessao()).replace("Z", ""));
+            jsonArray.put(jsonObject);
+        }
+        return jsonArray.toString();
+    }
+
+//    private List<PessoaJuridicaSucessao> getSucedidasRecursivas(List<PessoaJuridicaSucessao> pjSucessaoList, Integer id) {
+//        PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+//        List<PessoaJuridicaSucessao> pjsDB = pessoaJuridicaSucessaoBO.findSucedidas(id);
+//        if (pjsDB.isEmpty()) {
+//            return pjSucessaoList;
+//        } else {
+//            pjSucessaoList.addAll(0,pjsDB);
+//            return getSucedidasRecursivas(pjSucessaoList, pjsDB.get(0).getPessoaJuridicaSucedidaFk().getId());
+//        }
+//    }
 }

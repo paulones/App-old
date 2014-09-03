@@ -18,6 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import util.Cookie;
+import util.GeradorLog;
 
 /**
  *
@@ -52,37 +53,34 @@ public class sucessaoBean implements Serializable {
     }
 
     public void suceder() {
-        if (sucedida != null && sucessora != null) {
-            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
-            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
-            if (pjSucedida.equals(pjSucessora)) {
-                succeed = "fail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
-            } else {
-                UtilBO utilBO = new UtilBO();
-                pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
-                if (pessoaJuridicaSucessao == null) {
-                    pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
-                    pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-                    pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
-                    pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
-                    pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
-                    pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
-                    pessoaJuridicaBO.edit(pjSucedida);
-                    succeed = "success";
-                    sucedida = "";
-                    sucessora = "";
-                } else {
-                    succeed = "fail";
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um vínculo entre as duas empresas selecionadas.", null));
-                }
-            }
-        } else {
+        PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+        PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
+        if (pjSucedida.equals(pjSucessora)) {
             succeed = "fail";
-            String message = (sucessora != null) ? "Selecione a empresa sucedida." : (sucedida != null) ? "Selecione a empresa sucessora." : "Selecione uma empresa sucedida e sucessora.";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
+        } else {
+            UtilBO utilBO = new UtilBO();
+            boolean exists = true;
+            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+            if (pessoaJuridicaSucessao == null) {
+                pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
+                exists = false;
+            }
+            pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+            pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
+            pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
+            pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
+            if (exists){
+                pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
+                GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'U');
+            } else{
+                pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
+                GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'C');
+            }
+            succeed = "success";
+            sucedida = "";
+            sucessora = "";
         }
-
     }
 
     public String getSucceed() {

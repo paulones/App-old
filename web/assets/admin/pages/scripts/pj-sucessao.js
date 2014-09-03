@@ -7,6 +7,10 @@ var PJSuc = function() {
             verPessoaJuridica();
             $('.cnpj').change(verPessoaJuridica);
             function verPessoaJuridica() {
+                var empty = $('.cnpj').filter(function() {
+                    return this.value === "";
+                });
+                empty.length ? $('.suceder').hide() : $('.suceder').show();
                 $.each($('.cnpj'), function() {
                     if ($(this).val() !== '') {
                         $(this).closest('.row').find('.btn').show();

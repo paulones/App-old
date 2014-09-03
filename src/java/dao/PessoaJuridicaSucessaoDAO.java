@@ -246,7 +246,7 @@ public class PessoaJuridicaSucessaoDAO implements Serializable {
         try {
             PessoaJuridicaSucessao pf = (PessoaJuridicaSucessao) em.createNativeQuery("select * from pessoa_juridica_sucessao "
                     + "where (pessoa_juridica_sucedida_fk = '" + pessoaJuridicaSucedida.getId()+ "' and pessoa_juridica_sucessora_fk = '" + pessoaJuridicaSucessora.getId() + "') "
-                    + "or (pessoa_juridica_sucedida_fk = '" + pessoaJuridicaSucessora.getId()+ "' and pessoa_juridica_sucessora_fk = '" + pessoaJuridicaSucedida.getId() + "')", PessoaJuridicaSucessao.class).getSingleResult();
+                    + "or (pessoa_juridica_sucedida_fk = '" + pessoaJuridicaSucessora.getId() + "' and pessoa_juridica_sucessora_fk = '" + pessoaJuridicaSucedida.getId() + "')", PessoaJuridicaSucessao.class).getSingleResult();
             return pf;
         } catch (NoResultException e) {
             return null;
@@ -255,4 +255,29 @@ public class PessoaJuridicaSucessaoDAO implements Serializable {
         }
     }
     
+    public List<PessoaJuridicaSucessao> findSucessoras(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = (List<PessoaJuridicaSucessao>) em.createNativeQuery("select * from pessoa_juridica_sucessao "
+                        + "where pessoa_juridica_sucedida_fk = '" + id + "' order by data_de_sucessao desc", PessoaJuridicaSucessao.class).getResultList();
+            return pessoaJuridicaSucessaoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaJuridicaSucessao> findSucedidas(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = (List<PessoaJuridicaSucessao>) em.createNativeQuery("select * from pessoa_juridica_sucessao "
+                        + "where pessoa_juridica_sucessora_fk = '" + id + "' order by data_de_sucessao asc", PessoaJuridicaSucessao.class).getResultList();
+            return pessoaJuridicaSucessaoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

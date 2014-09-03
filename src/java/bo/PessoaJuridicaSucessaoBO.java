@@ -10,6 +10,8 @@ import dao.PessoaJuridicaSucessaoDAO;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -47,6 +49,15 @@ public class PessoaJuridicaSucessaoBO implements Serializable{
         }
     }
     
+    public PessoaJuridicaSucessao findPessoaJuridicaSucessao(Integer id){
+        try {
+            return pessoaJuridicaSucessaoDAO.findPessoaJuridicaSucessao(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public PessoaJuridicaSucessao findDuplicates(PessoaJuridica pessoaJuridicaSucedida, PessoaJuridica pessoaJuridicaSucessora){
         try {
             return pessoaJuridicaSucessaoDAO.findDuplicates(pessoaJuridicaSucedida, pessoaJuridicaSucessora);
@@ -54,5 +65,23 @@ public class PessoaJuridicaSucessaoBO implements Serializable{
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public List<PessoaJuridicaSucessao> findSucessoras(Integer id){
+        try { 
+            return pessoaJuridicaSucessaoDAO.findSucessoras(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaJuridicaSucessao>();
+    }
+    
+    public List<PessoaJuridicaSucessao> findSucedidas(Integer id){
+        try { 
+            return pessoaJuridicaSucessaoDAO.findSucedidas(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaJuridicaSucessao>();
     }
 }
