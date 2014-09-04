@@ -269,27 +269,10 @@ var PJCon = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
-                        $(element).addClass("row-details-open").removeClass("row-details-close");
-                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
-                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
-                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
-                        $(element).parent().parent().next().find('table').dataTable({
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
+                        getSucessoes('#pj-id', '#info', $(element));
                     }
                 }
             });
-            
-            $('#nestable_list_3').nestable();
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');

@@ -12,12 +12,14 @@ import bo.UtilBO;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import util.Cookie;
+import util.GeradorLog;
 
 /**
  *
@@ -52,37 +54,60 @@ public class sucessaoBean implements Serializable {
     }
 
     public void suceder() {
-        if (sucedida != null && sucessora != null) {
+        if (!sucedida.equals(sucessora)) {
             PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
             PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
-            if (pjSucedida.equals(pjSucessora)) {
-                succeed = "fail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
-            } else {
-                UtilBO utilBO = new UtilBO();
-                pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
-                if (pessoaJuridicaSucessao == null) {
-                    pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
-                    pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-                    pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
-                    pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
-                    pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
-                    pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
-                    pessoaJuridicaBO.edit(pjSucedida);
+            UtilBO utilBO = new UtilBO();
+            boolean exists = true;
+            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+            if (pessoaJuridicaSucessao == null) {
+                pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
+                exists = false;
+            }
+            pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+            pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
+            pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
+            if (exists) {
+                if (!pessoaJuridicaSucessao.equalsValues(pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
+                    pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
+                    GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'U');
                     succeed = "success";
                     sucedida = "";
                     sucessora = "";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão alterada com sucesso!", null));
                 } else {
-                    succeed = "fail";
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um vínculo entre as duas empresas selecionadas.", null));
+                    succeed = "info";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum campo foi alterado.", null));
                 }
+            } else {
+                pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
+                pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
+                GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'C');
+                succeed = "success";
+                sucedida = "";
+                sucessora = "";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão realizada com sucesso!", null));
             }
         } else {
             succeed = "fail";
-            String message = (sucessora != null) ? "Selecione a empresa sucedida." : (sucedida != null) ? "Selecione a empresa sucessora." : "Selecione uma empresa sucedida e sucessora.";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Selecione duas empresas diferentes.", null));
         }
+    }
 
+    public void checkSucessoes() {
+        if (!sucedida.equals(sucessora)) {
+            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
+            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+            if (pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk().equals(pjSucessora) && pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk().equals(pjSucedida)) {
+                succeed = "warning";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existe uma sucessão invertida entre as empresas selecionadas. Caso opte em suceder, a sucessão anterior será substituída.", null));
+            } else {
+                succeed = "";
+            }
+        } else {
+            succeed = "";
+        }
     }
 
     public String getSucceed() {

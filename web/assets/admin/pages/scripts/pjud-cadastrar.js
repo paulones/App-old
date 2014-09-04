@@ -492,6 +492,7 @@ var PjudCad = function() {
                         initTable();
                     } else if ($(data.source).hasClass("button-pessoa-juridica")) {
                         $('#pessoa-juridica').show();
+                        getSucessoes('#cnpj','#pessoa-juridica');
                         initTable();
                     }
                 }

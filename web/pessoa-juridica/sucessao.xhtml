@@ -58,13 +58,23 @@
                     <div class="portlet-body">
                         <!-- BEGIN FORM-->
                         <h:form prependId="false" id="form" class="form-horizontal">
-                            <h:panelGroup layout="block" class="alert alert-danger" rendered="#{sucessaoBean.succeed eq 'fail'}">
-                                <button class="close" data-close="alert"></button>
-                                <h:messages layout="table" class="p-info"/> 
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" class="alert alert-success" rendered="#{sucessaoBean.succeed eq 'success'}">
-                                <button class="close" data-close="alert"></button>
-                                Sucessão realizada com sucesso!
+                            <h:panelGroup id="alerts">
+                                <h:panelGroup layout="block" class="alert alert-danger" rendered="#{sucessaoBean.succeed eq 'fail'}">
+                                    <button class="close" data-close="alert"></button>
+                                    <h:messages layout="table" class="p-info"/> 
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" class="alert alert-info" rendered="#{sucessaoBean.succeed eq 'info'}">
+                                    <button class="close" data-close="alert"></button>
+                                    <h:messages layout="table" class="p-info"/> 
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" class="alert alert-warning" rendered="#{sucessaoBean.succeed eq 'warning'}">
+                                    <button class="close" data-close="alert"></button>
+                                    <h:messages layout="table" class="p-info"/> 
+                                </h:panelGroup>
+                                <h:panelGroup layout="block" class="alert alert-success" rendered="#{sucessaoBean.succeed eq 'success'}">
+                                    <button class="close" data-close="alert"></button>
+                                    <h:messages layout="table" class="p-info"/>
+                                </h:panelGroup>
                             </h:panelGroup>
                             <span class="help-block">É necessário que tanto a empresa sucedida quanto a sucessora estejam cadastradas no sistema.</span>
                             <h3 class="form-section">Empresa Sucedida</h3>
@@ -80,7 +90,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <a href="javascript:;" class="btn blue-chambray pj-info" id="view-sucedida">
-                                        <h:inputText class="object-id display-hide"/>
+                                        <h:inputText class="object-id display-hide">
+                                            <f:ajax event="change" execute="sucedida sucessora" listener="#{sucessaoBean.checkSucessoes}" render="alerts"/>
+                                        </h:inputText>
                                         <i class="fa fa-plus-circle"></i> Visualizar Sucedida
                                     </a>
                                 </div>
@@ -93,14 +105,16 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
                                         <div class="col-md-10">
-                                            <h:inputText class="select2_category form-control cnpj" id="sucessora" value="#{sucessaoBean.sucessora}" />
+                                            <h:inputText class="select2_category form-control cnpj" id="sucessora" value="#{sucessaoBean.sucessora}">
+                                                <f:ajax event="change" execute="sucessora sucedida" listener="#{sucessaoBean.checkSucessoes}" render="alerts"/>
+                                            </h:inputText>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <a href="javascript:;" class="btn blue-chambray pj-info" id="view-sucessora">
                                         <h:inputText class="object-id display-hide"/>
-                                        <i class="fa fa-plus-circle"></i> Visualizar Sucedida
+                                        <i class="fa fa-plus-circle"></i> Visualizar Sucessora
                                     </a>
                                 </div>
                             </div>
@@ -109,7 +123,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <h:commandLink class="btn blue-chambray" action="#{sucessaoBean.suceder}">
+                                            <h:commandLink class="btn blue-chambray suceder" action="#{sucessaoBean.suceder}">
                                                 <i class="fa fa-exchange"></i> Suceder
                                             </h:commandLink>
                                         </div>

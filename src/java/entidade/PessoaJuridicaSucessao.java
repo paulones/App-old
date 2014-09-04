@@ -8,6 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -128,6 +129,24 @@ public class PessoaJuridicaSucessao implements Serializable {
         }
         return true;
     }
+    
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final PessoaJuridicaSucessao other = (PessoaJuridicaSucessao) obj;
+        if (!Objects.equals(this.pessoaJuridicaSucedidaFk, other.pessoaJuridicaSucedidaFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.pessoaJuridicaSucessoraFk, other.pessoaJuridicaSucessoraFk)) {
+            return false;
+        }
+        return true;
+    }
+    
 
     @Override
     public String toString() {

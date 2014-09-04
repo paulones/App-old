@@ -17,6 +17,7 @@ import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaHistoricoBO;
 import bo.PessoaJuridicaJuridicaBO;
 import bo.PessoaJuridicaJuridicaHistoricoBO;
+import bo.PessoaJuridicaSucessaoBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
@@ -35,6 +36,7 @@ import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaHistorico;
 import entidade.PessoaJuridicaJuridica;
 import entidade.PessoaJuridicaJuridicaHistorico;
+import entidade.PessoaJuridicaSucessao;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import java.io.IOException;
@@ -69,7 +71,6 @@ public class PessoaJuridicaBean implements Serializable {
     private PessoaJuridicaJuridica pessoaJuridicaJuridica;
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaModal;
-
     private PessoaJuridicaHistorico pessoaJuridicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
 
@@ -111,7 +112,6 @@ public class PessoaJuridicaBean implements Serializable {
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
     private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
-
     
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -567,7 +567,7 @@ public class PessoaJuridicaBean implements Serializable {
         enderecoPessoaFisicaJuridicaHistorico.setPessoaFisicaJuridicaHistoricoList(pessoaFisicaJuridicaHistoricoList);
         return enderecoPessoaFisicaJuridicaHistorico;
     }
-
+    
     public PessoaJuridica getPessoaJuridica() {
         return pessoaJuridica;
     }
@@ -743,5 +743,4 @@ public class PessoaJuridicaBean implements Serializable {
     public void setPessoaJuridicaJuridicaList(List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
         this.pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaList;
     }
-
 }

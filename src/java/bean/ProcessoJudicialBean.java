@@ -240,7 +240,8 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void adicionarBens() {
         if (bens > bemList.size()) {
-            for (int i = 0; i < bens - bemList.size(); i++) {
+            bens = bemList.isEmpty() ? bens : bens - bemList.size();
+            for (int i = 0; i < bens; i++) {
                 bem = new Bem();
                 bemList.add(bem);
             }
@@ -254,7 +255,8 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void adicionarVinculosProcessuais() {
         if (vinculos > vinculoProcessualList.size()) {
-            for (int i = 0; i < vinculos - vinculoProcessualList.size(); i++) {
+            vinculos = vinculoProcessualList.isEmpty() ? vinculos : vinculos - vinculoProcessualList.size();
+            for (int i = 0; i < vinculos; i++) {
                 vinculoProcessual = new VinculoProcessual();
                 vinculoProcessualList.add(vinculoProcessual);
             }
@@ -273,7 +275,7 @@ public class ProcessoJudicialBean implements Serializable {
             PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(executadoPJ));
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
-    }
+    } 
 
     public void exibirInfo() {
         processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
