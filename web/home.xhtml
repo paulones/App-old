@@ -41,29 +41,8 @@
         <!-- END PAGE HEADER-->
         <!-- BEGIN PAGE CONTENT -->
         <!--/row-->
-        <!-- BEGIN CHART PORTLETS-->
         <div class="row">
-            <div class="col-md-12">
-                <!-- BEGIN INTERACTIVE CHART PORTLET-->
-                <div class="portlet box red">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <i class="fa fa-dashboard"></i>Movimentação
-                        </div>
-                    </div>
-                    <div class="portlet-body">
-                        <h4>Movimentação mensal do portal.</h4>
-                        <div id="interactive_chart" class="chart">
-                        </div>
-                    </div>
-                </div>
-                <!-- END INTERACTIVE CHART PORTLET-->
-            </div>
-        </div>
-        <!-- END CHART PORTLETS-->
-        <!--/row-->
-        <!-- BEGIN PIE CHART PORTLET-->
-        <div class="row">
+            <!-- BEGIN PIE CHART PORTLET-->
             <div class="col-md-6">
                 <div class="portlet box blue">
                     <div class="portlet-title">
@@ -78,8 +57,9 @@
                     </div>
                 </div>
             </div>
+            <!-- END PIE CHART PORTLET-->
+            <!-- BEGIN REVENUE CHART PORTLET-->
             <div class="col-md-6">
-                <!-- BEGIN PORTLET-->
                 <div class="portlet box green">
                     <div class="portlet-title">
                         <div class="caption">
@@ -87,7 +67,7 @@
                         </div>
                     </div>
                     <div class="portlet-body">
-                        <h4>Arrecadação anual por parte dos processos.</h4>
+                        <h4>Arrecadação mensal por parte dos processos.</h4>
                         <div id="site_activities_loading">
                             <img src="../../assets/admin/layout/img/loading.gif" alt="loading"/>
                         </div>
@@ -116,7 +96,26 @@
                         </div>
                     </div>
                 </div>
-                <!-- END PORTLET-->
+            </div>
+            <!-- END REVENUE CHART PORTLET-->
+        </div>
+        <!--/row-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- BEGIN INTERACTIVE CHART PORTLET-->
+                <div class="portlet box red">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-dashboard"></i>Movimentação
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <h4>Movimentação mensal do portal.</h4>
+                        <div id="interactive_chart" class="chart">
+                        </div>
+                    </div>
+                </div>
+                <!-- END INTERACTIVE CHART PORTLET-->
             </div>
         </div>
         <!--/row-->

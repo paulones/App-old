@@ -170,7 +170,7 @@ var Home = function() {
                                 opacity: 0.80
                             }).appendTo("body").fadeIn(200);
                         }
-                        
+
                     });
         }
 
@@ -181,15 +181,28 @@ var Home = function() {
 
     var initPizzaChart = function() {
         var data = [];
-        var series = Math.floor(Math.random() * 10) + 1;
-        series = series < 5 ? 5 : series;
 
-        for (var i = 0; i < series; i++) {
-            data[i] = {
-                label: "Series" + (i + 1),
-                data: Math.floor(Math.random() * 100) + 1
-            }
-        }
+        data[0] = {
+            label: "Andamento",
+            data: Math.floor(Math.random() * 100) + 200
+        },
+        data[1] = {
+            label: "Extinto",
+            data: Math.floor(Math.random() * 100) + 1
+        },
+        data[2] = {
+            label: "Julgado",
+            data: Math.floor(Math.random() * 100) + 1
+        },
+        data[3] = {
+            label: "Arquivado",
+            data: Math.floor(Math.random() * 100) + 1
+        },
+        data[4] = {
+            label: "Suspenso",
+            data: Math.floor(Math.random() * 100) + 1
+        };
+        
 
         // GRAPH 2
         $.plot($("#pizza_chart"), data, {
