@@ -86,7 +86,7 @@ public class ProcessoJudicialBean implements Serializable {
     private TipoProcessoBO tipoProcessoBO;
     private VinculoProcessualBO vinculoProcessualBO;
     private EnderecoBO enderecoBO;
-    private UsuarioBO usuarioBO;
+    private UsuarioBO usuarioBO; 
     private BemBO bemBO;
     private ProcessoJudicialHistoricoBO processoJudicialHistoricoBO;
     private BemHistoricoBO bemHistoricoBO;
@@ -148,7 +148,7 @@ public class ProcessoJudicialBean implements Serializable {
                     edit = false;
                     carregarFormulario();
                 } else {                                    // Alteração
-                    try {
+                    try { 
                         Integer id = Integer.valueOf(request.getParameter("id"));
                         processoJudicial = processoJudicialBO.findProcessoJudicial(id);
                         if (processoJudicial == null) {

@@ -40,6 +40,11 @@
         <link href="../assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
         <!-- END THEME STYLES -->
         <link rel="shortcut icon" href="../assets/global/img/favicon.ico"/>
+        <!-- BEGIN PAULO'S STYLES -->
+        <style>
+            .modal-lg{width:980px !important}
+        </style>
+        <!-- END PAULO'S STYLES -->
     </h:head>
     <!-- BEGIN BODY -->
     <h:body class="page-header-fixed page-sidebar-fixed page-quick-sidebar-over-content ">
@@ -1748,7 +1753,7 @@
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-4">Discriminação do Crédito/Imposto:</label>
                                                                             <div class="col-md-8">
-                                                                                <p class="form-control-static">
+                                                                                <p class="form-control-static money">
                                                                                     #{templateBean.executado.processoJudicial.discriminacaoDoCreditoImposto eq null ? '-' : templateBean.executado.processoJudicial.discriminacaoDoCreditoImposto}
                                                                                 </p>
                                                                             </div>
@@ -1759,7 +1764,7 @@
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-4">Discriminação do Crédito/Multa</label>
                                                                             <div class="col-md-8">
-                                                                                <p class="form-control-static ">
+                                                                                <p class="form-control-static money">
                                                                                     #{templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta eq null ? '-' : templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta}
                                                                                 </p>
                                                                             </div>
@@ -1772,7 +1777,7 @@
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-4">Valor da Causa:</label>
                                                                             <div class="col-md-8">
-                                                                                <p class="form-control-static">
+                                                                                <p class="form-control-static money">
                                                                                     #{templateBean.executado.processoJudicial.valorDaCausa eq null ? '-' : templateBean.executado.processoJudicial.valorDaCausa}
                                                                                 </p>
                                                                             </div>
@@ -1783,7 +1788,7 @@
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-4">Valor Atualizado:</label>
                                                                             <div class="col-md-8">
-                                                                                <p class="form-control-static ">
+                                                                                <p class="form-control-static money">
                                                                                     #{templateBean.executado.processoJudicial.valorAtualizado eq null ? '-' : templateBean.executado.processoJudicial.valorAtualizado}
                                                                                 </p>
                                                                             </div>
@@ -2913,6 +2918,7 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <script src="../assets/global/plugins/jquery-nestable/jquery.nestable.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/select2/select2_locale_pt-BR.js"></script>
         <script src="../assets/global/scripts/combined_metronic-layout.min.js" type="text/javascript"></script>
@@ -2986,6 +2992,7 @@
                             $('.modal-pj').click();
                             getSucessoes('#id-modal', '#modal-pj');
                         } else if ($('#tabela-modal').val() === "PJUD") {
+                            getMoneyMask('.modal-pjud');
                             $('.modal-pjud').click();
                             getSucessoes('#pj-id', '#modal-pjud');
                         } else if ($('#tabela-modal').val() === "PJS") {
@@ -3011,56 +3018,83 @@
                 }
             });
 
+            function getMoneyMask(parent) {
+                $.each($(parent).find('.money'), function() {
+                    if ($(this).html().trim() !== "-") {
+                        $($(this)).html(function(i, val) {
+                            val = val.replace(".", ",").trim();
+                            var newVal = val.substring(val.indexOf(','));
+                            var index = 1;
+                            for (var i = val.indexOf(','); i > 0; i--) {
+                                if (index >= 3) {
+                                    if (index % 3 === 0 && i !== 1) {
+                                        newVal = "." + val.charAt(i - 1) + newVal;
+                                    } else {
+                                        newVal = val.charAt(i - 1) + newVal;
+                                    }
+                                } else {
+                                    newVal = val.charAt(i - 1) + newVal;
+                                }
+                                index++;
+                            }
+                            return 'R$ ' + newVal;
+                        });
+                    }
+                });
+            }
+
             function getSucessoes(id, parent, element) {
                 var pjId = $(id).val();
-                $.ajax({
-                    url: "/webresources/reaver/getSucessoes",
-                    data: {
-                        id: pjId
-                    },
-                    dataType: "json",
-                    cache: false
-                })
-                        .done(function(data) {
-                            var sucedidas = "";
-                            var atual = "";
-                            var sucessoras = "";
-                            var icon = parent.indexOf('modal') !== -1 ? '<i class="fa fa-bank"></i>' : '<i class="fa fa-search"></i>';
-                            var modal = parent.indexOf('modal') !== -1 ? '' : 'pj-info';
-                            $.each(data, function() {
-                                if (String(pjId) === String($(this).attr('sucessora_id'))) {
-                                    sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
-                                            + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
-                                            + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + '</div></li>';
-                                } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
-                                    sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
-                                            + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
-                                            + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + '</div></li>';
-                                }
-                            });
-                            if (sucedidas === "" && sucessoras === "") {
-                                $(parent).find('.nestable-list').children().remove();
-                                $(parent).find('.nestable-list').append('<div layout="block" class="alert alert-warning">Não há sucessões para esta Pessoa Jurídica.</div>');
-                            } else {
-                                atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-check-square-o"></i></div>'
-                                        + '<div class="dd3-content"><strong>' + $(parent).find('.nome').html().trim() + ':</strong> ' + $(parent).find('.cnpj').html().trim() + '</div></li>';
-                                $(parent).find('.dd-list').append(sucedidas);
-                                if (sucedidas !== "") {
-                                    atual = '<ol class="dd-list">' + atual + '</ol>';
-                                    $(parent).find('.sucedidas').last().append(atual);
+                if (pjId !== undefined) {
+                    $.ajax({
+                        url: "/webresources/reaver/getSucessoes",
+                        data: {
+                            id: pjId
+                        },
+                        dataType: "json",
+                        cache: false
+                    })
+                            .done(function(data) {
+                                var sucedidas = "";
+                                var atual = "";
+                                var sucessoras = "";
+                                var icon = parent.indexOf('modal') !== -1 ? '<i class="fa fa-bank"></i>' : '<i class="fa fa-search"></i>';
+                                var modal = parent.indexOf('modal') !== -1 ? '' : 'pj-info';
+                                $.each(data, function() {
+                                    if (String(pjId) === String($(this).attr('sucessora_id'))) {
+                                        sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
+                                                + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
+                                                + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + '</div></li>';
+                                    } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
+                                        sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
+                                                + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
+                                                + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + '</div></li>';
+                                    }
+                                });
+                                if (sucedidas === "" && sucessoras === "") {
+                                    $(parent).find('.nestable-list').children().remove();
+                                    $(parent).find('.nestable-list').append('<div layout="block" class="alert alert-warning">Não há sucessões para esta Pessoa Jurídica.</div>');
                                 } else {
-                                    $(parent).find('.dd-list').append(atual);
+                                    atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-check-square-o"></i></div>'
+                                            + '<div class="dd3-content"><strong>' + $(parent).find('.nome').html().trim() + ':</strong> ' + $(parent).find('.cnpj').html().trim() + '</div></li>';
+                                    $(parent).find('.dd-list').append(sucedidas);
+                                    if (sucedidas !== "") {
+                                        atual = '<ol class="dd-list">' + atual + '</ol>';
+                                        $(parent).find('.sucedidas').last().append(atual);
+                                    } else {
+                                        $(parent).find('.dd-list').append(atual);
+                                    }
+                                    if (sucessoras !== "") {
+                                        sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
+                                        $(parent).find('.atual').append(sucessoras);
+                                    }
                                 }
-                                if (sucessoras !== "") {
-                                    sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
-                                    $(parent).find('.atual').append(sucessoras);
+                                if (element !== undefined) {
+                                    reallocatePortlet(element);
                                 }
-                            }
-                            if (element !== undefined) {
-                                reallocatePortlet(element);
-                            }
 
-                        });
+                            });
+                }
 
                 function reallocatePortlet(element) {
                     $(element).addClass("row-details-open").removeClass("row-details-close");

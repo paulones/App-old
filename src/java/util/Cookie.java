@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ipti004
  */
-public class Cookie {
+public class Cookie { 
 
     private static HttpServletRequest request;
     private static HttpServletResponse response;

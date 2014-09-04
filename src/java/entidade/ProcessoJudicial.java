@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Basic;
@@ -66,6 +67,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesBem = :outrasInformacoesBem")})
 public class ProcessoJudicial implements Serializable {
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "discriminacao_do_credito_imposto")
+    private BigDecimal discriminacaoDoCreditoImposto; 
+    @Column(name = "discriminacao_do_credito_multa")
+    private BigDecimal discriminacaoDoCreditoMulta;
+    @Column(name = "valor_da_causa")
+    private BigDecimal valorDaCausa;
+    @Column(name = "valor_atualizado")
+    private BigDecimal valorAtualizado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
     private Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollection;
     @Basic(optional = false)
@@ -149,21 +160,9 @@ public class ProcessoJudicial implements Serializable {
     @Size(max = 150)
     @Column(name = "fundamentacao")
     private String fundamentacao;
-    @Size(max = 20)
-    @Column(name = "discriminacao_do_credito_imposto")
-    private String discriminacaoDoCreditoImposto;
-    @Size(max = 20)
-    @Column(name = "discriminacao_do_credito_multa")
-    private String discriminacaoDoCreditoMulta;
     @Size(max = 10)
     @Column(name = "data_de_inscricao")
     private String dataDeInscricao;
-    @Size(max = 20)
-    @Column(name = "valor_da_causa")
-    private String valorDaCausa;
-    @Size(max = 20)
-    @Column(name = "valor_atualizado")
-    private String valorAtualizado;
     @Size(max = 50)
     @Column(name = "notificacao_administrativa")
     private String notificacaoAdministrativa;
@@ -343,44 +342,12 @@ public class ProcessoJudicial implements Serializable {
         this.fundamentacao = fundamentacao;
     }
 
-    public String getDiscriminacaoDoCreditoImposto() {
-        return discriminacaoDoCreditoImposto;
-    }
-
-    public void setDiscriminacaoDoCreditoImposto(String discriminacaoDoCreditoImposto) {
-        this.discriminacaoDoCreditoImposto = discriminacaoDoCreditoImposto;
-    }
-
-    public String getDiscriminacaoDoCreditoMulta() {
-        return discriminacaoDoCreditoMulta;
-    }
-
-    public void setDiscriminacaoDoCreditoMulta(String discriminacaoDoCreditoMulta) {
-        this.discriminacaoDoCreditoMulta = discriminacaoDoCreditoMulta;
-    }
-
     public String getDataDeInscricao() {
         return dataDeInscricao;
     }
 
     public void setDataDeInscricao(String dataDeInscricao) {
         this.dataDeInscricao = dataDeInscricao;
-    }
-
-    public String getValorDaCausa() {
-        return valorDaCausa;
-    }
-
-    public void setValorDaCausa(String valorDaCausa) {
-        this.valorDaCausa = valorDaCausa;
-    }
-
-    public String getValorAtualizado() {
-        return valorAtualizado;
-    }
-
-    public void setValorAtualizado(String valorAtualizado) {
-        this.valorAtualizado = valorAtualizado;
     }
 
     public String getNotificacaoAdministrativa() {
@@ -648,6 +615,38 @@ public class ProcessoJudicial implements Serializable {
 
     public void setProcessoJudicialHistoricoCollection(Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollection) {
         this.processoJudicialHistoricoCollection = processoJudicialHistoricoCollection;
+    }
+
+    public BigDecimal getDiscriminacaoDoCreditoImposto() {
+        return discriminacaoDoCreditoImposto;
+    }
+
+    public void setDiscriminacaoDoCreditoImposto(BigDecimal discriminacaoDoCreditoImposto) {
+        this.discriminacaoDoCreditoImposto = discriminacaoDoCreditoImposto;
+    }
+
+    public BigDecimal getDiscriminacaoDoCreditoMulta() {
+        return discriminacaoDoCreditoMulta;
+    }
+
+    public void setDiscriminacaoDoCreditoMulta(BigDecimal discriminacaoDoCreditoMulta) {
+        this.discriminacaoDoCreditoMulta = discriminacaoDoCreditoMulta;
+    }
+
+    public BigDecimal getValorDaCausa() {
+        return valorDaCausa;
+    }
+
+    public void setValorDaCausa(BigDecimal valorDaCausa) {
+        this.valorDaCausa = valorDaCausa;
+    }
+
+    public BigDecimal getValorAtualizado() {
+        return valorAtualizado;
+    }
+
+    public void setValorAtualizado(BigDecimal valorAtualizado) {
+        this.valorAtualizado = valorAtualizado;
     }
 
 }

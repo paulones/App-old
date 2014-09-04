@@ -9,12 +9,13 @@ package bo;
 import dao.PessoaFisicaDAO;
 import dao.PessoaJuridicaDAO;
 import dao.ProcessoJudicialDAO;
+import java.io.Serializable;
 
 /**
  *
  * @author Pedro
  */
-public class ChartsBO {
+public class ChartsBO implements Serializable{
     
     private PessoaFisicaDAO pessoaFisicaDAO;
     private PessoaJuridicaDAO pessoaJuridicaDAO;
@@ -25,7 +26,7 @@ public class ChartsBO {
         pessoaJuridicaDAO = new PessoaJuridicaDAO();
         processoJudicialDAO = new ProcessoJudicialDAO();
     }
-    
+     
     public Integer countPFByMonth(Integer ano, Integer mes){
         try {
             return pessoaFisicaDAO.countPFByMonth(ano, mes);

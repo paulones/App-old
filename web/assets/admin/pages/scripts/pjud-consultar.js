@@ -167,6 +167,7 @@ var PjudCon = function() {
         init: function() {
 
             if (window.location.search != "") {
+                getMoneyMask(".tab1");
                 var atual;
                 initHistoryTable();
                 $.each($('.data-de-modificacao'), function() {
@@ -343,6 +344,7 @@ var PjudCon = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
+                        getMoneyMask('#info');
                         if ($('#executado').val() === "PJ") {
                             getSucessoes("#pj-id", "#info", element);
                         } else {

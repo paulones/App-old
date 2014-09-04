@@ -281,28 +281,6 @@ public class ReaverResource {
     }
 
     @GET
-    @Path("/getLogs")
-    @Produces("application/json")
-    public String getLogs(@QueryParam("quantidade") Integer quantidade, @QueryParam("indice") Integer indice) {
-        LogBO logBO = new LogBO();
-        List<Log> logList = logBO.findLogEntities(quantidade, indice);
-        JSONArray jsonArray = new JSONArray();
-
-        for (int i = 0; i < logList.size(); i++) {
-            String message = loadMessage(logList.get(i));
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", i);
-            jsonObject.put("mensagem", message);
-            jsonObject.put("idfk", logList.get(i).getIdFk());
-            jsonObject.put("tabela", logList.get(i).getTabela());
-            jsonObject.put("operacao", logList.get(i).getOperacao());
-            jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));
-            jsonArray.put(jsonObject);
-        }
-        return jsonArray.toString();
-    }
-
-    @GET
     @Path("/getMovimentacao")
     @Produces("application/json")
     public String getMovimentacao(@QueryParam("ano") Integer ano) {
@@ -323,6 +301,28 @@ public class ReaverResource {
         }
         jsonArray.put(jsonObject);
         
+        return jsonArray.toString();
+    }
+    
+    @GET
+    @Path("/getLogs")
+    @Produces("application/json")
+    public String getLogs(@QueryParam("quantidade") Integer quantidade, @QueryParam("indice") Integer indice) {
+        LogBO logBO = new LogBO();
+        List<Log> logList = logBO.findLogEntities(quantidade, indice);
+        JSONArray jsonArray = new JSONArray();
+
+        for (int i = 0; i < logList.size(); i++) {
+            String message = loadMessage(logList.get(i));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", i);
+            jsonObject.put("mensagem", message);
+            jsonObject.put("idfk", logList.get(i).getIdFk());
+            jsonObject.put("tabela", logList.get(i).getTabela());
+            jsonObject.put("operacao", logList.get(i).getOperacao());
+            jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));
+            jsonArray.put(jsonObject);
+        }
         return jsonArray.toString();
     }
 

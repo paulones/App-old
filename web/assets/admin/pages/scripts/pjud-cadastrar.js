@@ -5,7 +5,7 @@ var PjudCad = function() {
         var error = $('.alert-danger', form);
         var success = $('.alert-success', form);
         var info = $('.alert-info', form);
- 
+
         form.validate({
             doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
             errorElement: 'span', //default input error message container
@@ -152,6 +152,12 @@ var PjudCad = function() {
             submitHandler: function(form) {
                 success.show();
                 error.hide();
+                $.each($('.money'), function() {
+                    $($(this)).val(function(i, val) {
+                        return val.replace('R$','').replace(" ","").replace(/\./g, "").replace(",",".");
+                    });
+                });
+                $('.submit-pjud').click();
                 //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
             }
 
@@ -272,8 +278,8 @@ var PjudCad = function() {
             if (!jQuery().bootstrapWizard) {
                 return;
             }
-            
-            if ($('.p-error').length > 0){
+
+            if ($('.p-error').length > 0) {
                 $('.alert-danger').show();
             }
 
@@ -307,7 +313,7 @@ var PjudCad = function() {
                 precision: 2, // Precisão
                 thousands: '.', // Separador para os milhares
                 allowZero: false, // Permite que o digito 0 seja o primeiro caractere
-                showSymbol: false // Exibe/Oculta o símbolo
+                showSymbol: true // Exibe/Oculta o símbolo
             })
 
             $('.masked-numbers').keypress(numeroDoProcesso);
@@ -366,7 +372,7 @@ var PjudCad = function() {
                     }
                 }
             }
-            
+
             validaVinculosProcessuais();
             $('.vinculotipo').change(validaVinculosProcessuais);
             function validaVinculosProcessuais() {
@@ -492,7 +498,7 @@ var PjudCad = function() {
                         initTable();
                     } else if ($(data.source).hasClass("button-pessoa-juridica")) {
                         $('#pessoa-juridica').show();
-                        getSucessoes('#cnpj','#pessoa-juridica');
+                        getSucessoes('#cnpj', '#pessoa-juridica');
                         initTable();
                     }
                 }

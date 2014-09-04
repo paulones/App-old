@@ -29,7 +29,7 @@ public class VinculoProcessualHistoricoDAO implements Serializable {
 
     public VinculoProcessualHistoricoDAO() {
     }
-    private EntityManagerFactory emf = JPAUtil.getEMF();
+    private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();

@@ -25,7 +25,6 @@ var Home = function() {
                 }
             })
                     .done(function(data) {
-                        console.log(data);
                         $.each(data, function() {
                             proc = [
                                 [1, $(this).attr("pjud1")],
