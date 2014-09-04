@@ -33,7 +33,7 @@ import util.Cookie;
  * @author ipti004
  */
 @ManagedBean(name = "templateBean")
-@SessionScoped
+@ViewScoped
 public class TemplateBean implements Serializable{
     
     private Usuario usuario;
@@ -60,10 +60,12 @@ public class TemplateBean implements Serializable{
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
             processoJudicialBO = new ProcessoJudicialBO();
+            pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
             usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
             
             enderecoPessoa = new EnderecoPessoa();
             executado = new Executado();
+            pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
             
             searchValue = "";
             
@@ -77,10 +79,12 @@ public class TemplateBean implements Serializable{
             PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(idfk));
             enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
             executado = new Executado();
+            pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJ")) {
             PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(idfk));
             enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
             executado = new Executado();
+            pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJUD")){ 
             ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")){
@@ -90,12 +94,16 @@ public class TemplateBean implements Serializable{
                 PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
                 executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId())));
             }
+            pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
+            enderecoPessoa = new EnderecoPessoa();
+        } else if (tabela.equals("PJS")){
+            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(idfk));
+            executado = new Executado();
             enderecoPessoa = new EnderecoPessoa();
         }
     }
     
     public void exibirSucessao(){ 
-        pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
         pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(sucessaoId));
     }
     
