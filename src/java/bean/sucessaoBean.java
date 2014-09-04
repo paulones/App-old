@@ -65,7 +65,6 @@ public class sucessaoBean implements Serializable {
                 exists = false;
             }
             pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-            pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
             pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
             pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
             if (exists) {
@@ -81,6 +80,7 @@ public class sucessaoBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum campo foi alterado.", null));
                 }
             } else {
+                pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
                 pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
                 GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'C');
                 succeed = "success";

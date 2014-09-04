@@ -343,11 +343,15 @@ var PjudCon = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
-                        $(element).addClass("row-details-open").removeClass("row-details-close");
-                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
-                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
-                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
-                        initVinculationsTable();
+                        if ($('#executado').val() === "PJ") {
+                            getSucessoes("#pj-id", "#info", element);
+                        } else {
+                            $(element).addClass("row-details-open").removeClass("row-details-close");
+                            $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
+                            $('#info').children().clone().appendTo($(element).parent().parent().next().children());
+                            $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
+                            initVinculationsTable();
+                        }
                     }
                 }
             });

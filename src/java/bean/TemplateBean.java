@@ -9,12 +9,14 @@ package bean;
 import bo.EnderecoBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
+import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
 import bo.UsuarioBO;
 import entidade.EnderecoPessoa;
 import entidade.Executado;
 import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
 import entidade.Usuario;
 import java.io.IOException;
@@ -40,13 +42,16 @@ public class TemplateBean implements Serializable{
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
     private ProcessoJudicialBO processoJudicialBO;
+    private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
     
     private EnderecoPessoa enderecoPessoa;
     private Executado executado;
+    private PessoaJuridicaSucessao pessoaJuridicaSucessao;
     
     private String idfk;
     private String tabela;
     private String searchValue;
+    private String sucessaoId;
     
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
@@ -87,6 +92,11 @@ public class TemplateBean implements Serializable{
             }
             enderecoPessoa = new EnderecoPessoa();
         }
+    }
+    
+    public void exibirSucessao(){ 
+        pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+        pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(sucessaoId));
     }
     
     public void search() throws IOException{
@@ -139,6 +149,22 @@ public class TemplateBean implements Serializable{
 
     public void setSearchValue(String searchValue) {
         this.searchValue = searchValue;
+    }
+
+    public PessoaJuridicaSucessao getPessoaJuridicaSucessao() {
+        return pessoaJuridicaSucessao;
+    }
+
+    public void setPessoaJuridicaSucessao(PessoaJuridicaSucessao pessoaJuridicaSucessao) {
+        this.pessoaJuridicaSucessao = pessoaJuridicaSucessao;
+    }
+
+    public String getSucessaoId() {
+        return sucessaoId;
+    }
+
+    public void setSucessaoId(String sucessaoId) {
+        this.sucessaoId = sucessaoId;
     }
 
 }

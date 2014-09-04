@@ -71,8 +71,6 @@ public class PessoaJuridicaBean implements Serializable {
     private PessoaJuridicaJuridica pessoaJuridicaJuridica;
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaModal;
-    private PessoaJuridicaSucessao pessoaJuridicaSucessao;
-
     private PessoaJuridicaHistorico pessoaJuridicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
 
@@ -83,7 +81,6 @@ public class PessoaJuridicaBean implements Serializable {
     private String pjId;
     private String pfVId;
     private String pjVId;
-    private String sucessaoId;
 
     private List<TipoEmpresarial> tipoEmpresarialList;
     private List<Estado> estadoList;
@@ -115,8 +112,6 @@ public class PessoaJuridicaBean implements Serializable {
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
     private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
-    private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
-
     
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -573,11 +568,6 @@ public class PessoaJuridicaBean implements Serializable {
         return enderecoPessoaFisicaJuridicaHistorico;
     }
     
-    public void exibirSucessao(){ 
-        pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
-        pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(sucessaoId));
-    }
-
     public PessoaJuridica getPessoaJuridica() {
         return pessoaJuridica;
     }
@@ -752,21 +742,5 @@ public class PessoaJuridicaBean implements Serializable {
 
     public void setPessoaJuridicaJuridicaList(List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
         this.pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaList;
-    }
-
-    public PessoaJuridicaSucessao getPessoaJuridicaSucessao() {
-        return pessoaJuridicaSucessao;
-    }
-
-    public void setPessoaJuridicaSucessao(PessoaJuridicaSucessao pessoaJuridicaSucessao) {
-        this.pessoaJuridicaSucessao = pessoaJuridicaSucessao;
-    }
-
-    public String getSucessaoId() {
-        return sucessaoId;
-    }
-
-    public void setSucessaoId(String sucessaoId) {
-        this.sucessaoId = sucessaoId;
     }
 }

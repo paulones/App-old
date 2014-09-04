@@ -9,7 +9,6 @@
     </ui:define>
     <ui:define name="page-styles">
         <!-- BEGIN PAGE LEVEL PLUGIN STYLES -->
-        <link rel="stylesheet" type="text/css" href="../assets/global/plugins/jquery-nestable/jquery.nestable.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css"/>
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
@@ -139,7 +138,7 @@
                                             <td class="data-de-modificacao">
                                                 <h:outputText rendered="#{empty historico.pessoaHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
                                                 <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
-                                                    <f:convertDateTime pattern="dd-MM-yyyy : HH:mm:ss"/>
+                                                    <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
                                                 </h:outputText>
                                             </td>
                                             <td class="description">
@@ -1018,7 +1017,6 @@
                                                     </div>
                                                 </div>
                                                 <h3 class="form-section"></h3> 
-
                                             </div>
                                         </div>
                                     </div>
@@ -1026,87 +1024,6 @@
                             </div>
                         </div>
                         <!-- END LISTA CONTENT-->
-                    </div>
-                </h:panelGroup>
-            </h:panelGroup>
-            <h:inputHidden id="sucessao-id" value="#{pessoaJuridicaBean.sucessaoId}"></h:inputHidden>
-            <h:commandLink class="sucessao-refresher">
-                <f:ajax execute="sucessao-id" listener="#{pessoaJuridicaBean.exibirSucessao}" render="sucessao"/>
-            </h:commandLink>
-            <h:panelGroup id="sucessao" class="display-hide">
-                <h:panelGroup layout="block" class="portlet box blue-chambray sucessao-info" rendered="#{not empty pessoaJuridicaBean.pessoaJuridicaSucessao}">
-                    <div class="portlet-title">
-                        <div class="caption">
-                            <span>#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome} </span><span><i class="fa fa-exchange"></i> #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}</span> 
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <!-- BEGIN SUCESSAO CONTENT-->
-                        <div class="form-body">
-                            <h3 class="form-section">Informações da Sucessão</h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Empresa Sucedida:</label>
-                                        <div class="col-md-9">
-                                            <p class="form-control-static">
-                                                #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">CNPJ:</label>
-                                        <div class="col-md-9">
-                                            <p class="form-control-static">
-                                                <ui:param value="#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
-                                                #{cnpj}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Empresa Sucedida:</label>
-                                        <div class="col-md-9">
-                                            <p class="form-control-static">
-                                                #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">CNPJ:</label>
-                                        <div class="col-md-9">
-                                            <p class="form-control-static">
-                                                <ui:param value="#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
-                                                #{cnpj}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-3">Data de Sucessao:</label>
-                                        <div class="col-md-9">
-                                            <p class="form-control-static">
-                                                <h:outputText value="#{pessoaJuridicaBean.pessoaJuridicaSucessao.dataDeSucessao}">
-                                                    <f:convertDateTime pattern="dd-MM-yyyy : HH:mm:ss"/>
-                                                </h:outputText>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </h:panelGroup>
             </h:panelGroup>
@@ -1136,7 +1053,6 @@
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
-        <script src="../assets/global/plugins/jquery-nestable/jquery.nestable.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
