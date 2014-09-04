@@ -299,29 +299,28 @@ public class ReaverResource {
         }
         return jsonArray.toString();
     }
-    
+
     @GET
     @Path("/getMovimentacao")
     @Produces("application/json")
     public String getMovimentacao(@QueryParam("ano") Integer ano) {
         ChartsBO chartsBO = new ChartsBO();
-        List<Integer> listPf = new ArrayList<>();
+        List<Integer> listPF = new ArrayList<>();
         List<Integer> listPJ = new ArrayList<>();
         List<Integer> listPJUD = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
-        for (int i = 1; i <= 12; i++) {
-            listPf.add(chartsBO.countPFByMonth(ano, i));
-            listPJ.add(chartsBO.countPJByMonth(ano, i));
-            listPJUD.add(chartsBO.countPJUDByMonth(ano, i));
-            JSONObject jsonObject = new JSONObject();
-            /*jsonObject.put("id", i);
-            jsonObject.put("mensagem", message);
-            jsonObject.put("idfk", logList.get(i).getIdFk());
-            jsonObject.put("tabela", logList.get(i).getTabela());
-            jsonObject.put("operacao", logList.get(i).getOperacao());
-            jsonObject.put("data", TimestampUtils.getISO8601StringForDate(logList.get(i).getDataDeCriacao()).replace("Z", ""));
-            jsonArray.put(jsonObject);*/
+        JSONObject jsonObject = new JSONObject();
+        for (Integer i = 1; i <= 12; i++) {
+            jsonObject.put("pf"+i, chartsBO.countPFByMonth(ano, i));
         }
+        for (Integer i = 1; i <= 12; i++) {
+            jsonObject.put("pj"+i, chartsBO.countPJByMonth(ano, i));
+        }
+        for (Integer i = 1; i <= 12; i++) {
+            jsonObject.put("pjud"+i, chartsBO.countPJUDByMonth(ano, i));
+        }
+        jsonArray.put(jsonObject);
+        
         return jsonArray.toString();
     }
 

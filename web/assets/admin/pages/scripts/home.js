@@ -13,157 +13,171 @@ var Home = function() {
                 return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
             }
             var ano = new Date().getFullYear();
-            
-            var proc = [
-                [1, randValue()],
-                [2, randValue()],
-                [3, 2 + randValue()],
-                [4, 3 + randValue()],
-                [5, 5 + randValue()],
-                [6, 10 + randValue()],
-                [7, 15 + randValue()],
-                [8, 20 + randValue()],
-                [9, 25 + randValue()],
-                [10, 30 + randValue()],
-                [11, 35 + randValue()],
-                [12, 25 + randValue()]
-            ];
-            var pf = [
-                [1, randValue() - 8],
-                [2, randValue() - 7],
-                [3, randValue() - 9],
-                [4, 3 + randValue()],
-                [5, 7 + randValue()],
-                [6, 24 + randValue()],
-                [7, 26 + randValue()],
-                [8, 38 + randValue()],
-                [9, 24 + randValue()],
-                [10, 36 + randValue()],
-                [11, 43 + randValue()],
-                [12, 53 + randValue()]
-            ];
-            var pj = [
-                [1, randValue() - 5],
-                [2, randValue() - 5],
-                [3, randValue() - 5],
-                [4, 6 + randValue()],
-                [5, 5 + randValue()],
-                [6, 20 + randValue()],
-                [7, 25 + randValue()],
-                [8, 36 + randValue()],
-                [9, 26 + randValue()],
-                [10, 38 + randValue()],
-                [11, 39 + randValue()],
-                [12, 50 + randValue()]
-            ];
-
-            var plot = $.plot($("#interactive_chart"), [{
-                    data: proc,
-                    label: "Processos",
-                    lines: {
-                        lineWidth: 1,
-                    },
-                    shadowSize: 0
-
-                }, {
-                    data: pf,
-                    label: "P. F&iacute;sicas",
-                    lines: {
-                        lineWidth: 1,
-                    },
-                    shadowSize: 0
-                }, {
-                    data: pj,
-                    label: "P. Jur&iacute;dicas",
-                    lines: {
-                        lineWidth: 1,
-                    },
-                    shadowSize: 0
+            var proc = [];
+            var pf = [];
+            var pj = [];
+            $.ajax({
+                url: "/webresources/reaver/getMovimentacao",
+                dataType: "json",
+                cache: false,
+                data: {
+                    ano: ano
                 }
-            ], {
-                series: {
-                    lines: {
-                        show: true,
-                        lineWidth: 2,
-                        fill: true,
-                        fillColor: {
-                            colors: [{
-                                    opacity: 0.05
-                                }, {
-                                    opacity: 0.01
+            })
+                    .done(function(data) {
+                        console.log(data);
+                        $.each(data, function() {
+                            proc = [
+                                [1, $(this).attr("pjud1")],
+                                [2, $(this).attr("pjud2")],
+                                [3, $(this).attr("pjud3")],
+                                [4, $(this).attr("pjud4")],
+                                [5, $(this).attr("pjud5")],
+                                [6, $(this).attr("pjud6")],
+                                [7, $(this).attr("pjud7")],
+                                [8, $(this).attr("pjud8")],
+                                [9, $(this).attr("pjud9")],
+                                [10, $(this).attr("pjud10")],
+                                [11, $(this).attr("pjud11")],
+                                [12, $(this).attr("pjud12")]
+                            ];
+                            pf = [
+                                [1, $(this).attr("pf1")],
+                                [2, $(this).attr("pf2")],
+                                [3, $(this).attr("pf3")],
+                                [4, $(this).attr("pf4")],
+                                [5, $(this).attr("pf5")],
+                                [6, $(this).attr("pf6")],
+                                [7, $(this).attr("pf7")],
+                                [8, $(this).attr("pf8")],
+                                [9, $(this).attr("pf9")],
+                                [10, $(this).attr("pf10")],
+                                [11, $(this).attr("pf11")],
+                                [12, $(this).attr("pf12")]
+                            ];
+                            pj = [
+                                [1, $(this).attr("pj1")],
+                                [2, $(this).attr("pj2")],
+                                [3, $(this).attr("pj3")],
+                                [4, $(this).attr("pj4")],
+                                [5, $(this).attr("pj5")],
+                                [6, $(this).attr("pj6")],
+                                [7, $(this).attr("pj7")],
+                                [8, $(this).attr("pj8")],
+                                [9, $(this).attr("pj9")],
+                                [10, $(this).attr("pj10")],
+                                [11, $(this).attr("pj11")],
+                                [12, $(this).attr("pj12")]
+                            ];
+                        });
+
+                        var plot = $.plot($("#interactive_chart"), [{
+                                data: proc,
+                                label: "Processos",
+                                lines: {
+                                    lineWidth: 1,
+                                },
+                                shadowSize: 0
+
+                            }, {
+                                data: pf,
+                                label: "P. F&iacute;sicas",
+                                lines: {
+                                    lineWidth: 1,
+                                },
+                                shadowSize: 0
+                            }, {
+                                data: pj,
+                                label: "P. Jur&iacute;dicas",
+                                lines: {
+                                    lineWidth: 1,
+                                },
+                                shadowSize: 0
+                            }
+                        ], {
+                            series: {
+                                lines: {
+                                    show: true,
+                                    lineWidth: 2,
+                                    fill: true,
+                                    fillColor: {
+                                        colors: [{
+                                                opacity: 0.05
+                                            }, {
+                                                opacity: 0.01
+                                            }
+                                        ]
+                                    }
+                                },
+                                points: {
+                                    show: true,
+                                    radius: 3,
+                                    lineWidth: 1
+                                },
+                                shadowSize: 2
+                            },
+                            grid: {
+                                hoverable: true,
+                                clickable: true,
+                                tickColor: "#eee",
+                                borderColor: "#eee",
+                                borderWidth: 1
+                            },
+                            colors: ["#d12610", "#37b7f3", "#52e136"],
+                            xaxis: {
+                                ticks: 11,
+                                tickDecimals: 0,
+                                tickColor: "#eee",
+                            },
+                            yaxis: {
+                                ticks: 11,
+                                tickDecimals: 0,
+                                tickColor: "#eee",
+                            }
+                        });
+
+                        var previousPoint = null;
+                        $("#interactive_chart").bind("plothover", function(event, pos, item) {
+                            $("#x").text(pos.x.toFixed(2));
+                            $("#y").text(pos.y.toFixed(2));
+
+                            if (item) {
+                                if (previousPoint != item.dataIndex) {
+                                    previousPoint = item.dataIndex;
+
+                                    $("#tooltip").remove();
+                                    var x = item.datapoint[0].toFixed(2),
+                                            y = item.datapoint[1].toFixed(2);
+
+                                    showTooltip(item.pageX, item.pageY, item.series.label + " = " + y);
                                 }
-                            ]
+                            } else {
+                                $("#tooltip").remove();
+                                previousPoint = null;
+                            }
+                        });
+                        function showTooltip(x, y, contents) {
+                            $('<div id="tooltip">' + contents + '</div>').css({
+                                position: 'absolute',
+                                display: 'none',
+                                top: y + 5,
+                                left: x + 15,
+                                border: '1px solid #333',
+                                padding: '4px',
+                                color: '#fff',
+                                'border-radius': '3px',
+                                'background-color': '#333',
+                                opacity: 0.80
+                            }).appendTo("body").fadeIn(200);
                         }
-                    },
-                    points: {
-                        show: true,
-                        radius: 3,
-                        lineWidth: 1
-                    },
-                    shadowSize: 2
-                },
-                grid: {
-                    hoverable: true,
-                    clickable: true,
-                    tickColor: "#eee",
-                    borderColor: "#eee",
-                    borderWidth: 1
-                },
-                colors: ["#d12610", "#37b7f3", "#52e136"],
-                xaxis: {
-                    ticks: 11,
-                    tickDecimals: 0,
-                    tickColor: "#eee",
-                },
-                yaxis: {
-                    ticks: 11,
-                    tickDecimals: 0,
-                    tickColor: "#eee",
-                }
-            });
-
-
-            function showTooltip(x, y, contents) {
-                $('<div id="tooltip">' + contents + '</div>').css({
-                    position: 'absolute',
-                    display: 'none',
-                    top: y + 5,
-                    left: x + 15,
-                    border: '1px solid #333',
-                    padding: '4px',
-                    color: '#fff',
-                    'border-radius': '3px',
-                    'background-color': '#333',
-                    opacity: 0.80
-                }).appendTo("body").fadeIn(200);
-            }
-
-            var previousPoint = null;
-            $("#interactive_chart").bind("plothover", function(event, pos, item) {
-                $("#x").text(pos.x.toFixed(2));
-                $("#y").text(pos.y.toFixed(2));
-
-                if (item) {
-                    if (previousPoint != item.dataIndex) {
-                        previousPoint = item.dataIndex;
-
-                        $("#tooltip").remove();
-                        var x = item.datapoint[0].toFixed(2),
-                                y = item.datapoint[1].toFixed(2);
-
-                        showTooltip(item.pageX, item.pageY, item.series.label + " of " + x + " = " + y);
-                    }
-                } else {
-                    $("#tooltip").remove();
-                    previousPoint = null;
-                }
-            });
+                        
+                    });
         }
 
         //graph
         interactiveChart();
 
-    }
+    };
 
     var initPizzaChart = function() {
         var data = [];
@@ -206,45 +220,6 @@ var Home = function() {
         if (!jQuery.plot) {
             return;
         }
-        
-        $.ajax({
-                url: "/webresources/reaver/getPessoasFisicas",
-                dataType: "json",
-                cache: false
-            })
-                    .done(function(data) {
-                        $('.cpfVinculate').select2({
-                            initSelection: function(element, callback) {
-                                var selection = _.find(data, function(metric) {
-                                    return metric.id === element.val();
-                                })
-                                callback(selection);
-                            },
-                            query: function(options) {
-                                var pageSize = 100;
-                                var startIndex = (options.page - 1) * pageSize;
-                                var filteredData = data;
-
-                                if (options.term && options.term.length > 0) {
-                                    if (!options.context) {
-                                        var term = options.term.toLowerCase();
-                                        options.context = data.filter(function(metric) {
-                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
-                                        });
-                                    }
-                                    filteredData = options.context;
-                                }
-
-                                options.callback({
-                                    context: filteredData,
-                                    results: filteredData.slice(startIndex, startIndex + pageSize),
-                                    more: (startIndex + pageSize) < filteredData.length
-                                });
-                            },
-                            placeholder: "Selecione...",
-                            allowClear: true,
-                        });
-                    });
 
         function showChartTooltip(x, y, xValue, yValue) {
             $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
