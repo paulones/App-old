@@ -393,7 +393,7 @@ var Home = function() {
                     }
                 });
             });
-            
+
             $('.interactive-back-reload').click(function() {
                 $("#ano").text(function() {
                     anoInteractiveChart--;
@@ -402,11 +402,13 @@ var Home = function() {
                 initInteractiveChart();
             });
             $('.interactive-next-reload').click(function() {
-                $("#ano").text(function() {
-                    anoInteractiveChart++;
-                    return anoInteractiveChart;
-                });
-                initInteractiveChart();
+                if (anoInteractiveChart + 1 <= new Date().getFullYear()) {
+                    $("#ano").text(function() {
+                        anoInteractiveChart++;
+                        return anoInteractiveChart;
+                    });
+                    initInteractiveChart();
+                }
             });
 
             Metronic.addResizeHandler(function() {
