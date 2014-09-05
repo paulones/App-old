@@ -2992,7 +2992,7 @@
                             $('.modal-pj').click();
                             getSucessoes('#id-modal', '#modal-pj');
                         } else if ($('#tabela-modal').val() === "PJUD") {
-                            getMoneyMask('.modal-pjud');
+                            getMoneyMask('#modal-pjud');
                             $('.modal-pjud').click();
                             getSucessoes('#pj-id', '#modal-pjud');
                         } else if ($('#tabela-modal').val() === "PJS") {
@@ -3043,7 +3043,7 @@
                 });
             }
 
-            function getSucessoes(id, parent, element) {
+            function getSucessoes(id, parent, portlet) {
                 var pjId = $(id).val();
                 if (pjId !== undefined) {
                     $.ajax({
@@ -3089,19 +3089,18 @@
                                         $(parent).find('.atual').append(sucessoras);
                                     }
                                 }
-                                if (element !== undefined) {
-                                    reallocatePortlet(element);
+                                if (portlet !== undefined) {
+                                    reallocatePortlet(portlet);
                                 }
-
                             });
                 }
 
-                function reallocatePortlet(element) {
-                    $(element).addClass("row-details-open").removeClass("row-details-close");
-                    $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
-                    $('#info').children().clone().appendTo($(element).parent().parent().next().children());
-                    $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
-                    $(element).parent().parent().next().find('table').dataTable({
+                function reallocatePortlet(portlet) {
+                    $(portlet).addClass("row-details-open").removeClass("row-details-close");
+                    $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(portlet).parent().parent());
+                    $('#info').children().clone().appendTo($(portlet).parent().parent().next().children());
+                    $(portlet).parent().parent().children(".detail").appendTo($(portlet).parent().parent().next());
+                    $(portlet).parent().parent().next().find('table').dataTable({
                         paginate: false,
                         lengthMenu: false,
                         info: false,

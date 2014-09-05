@@ -314,7 +314,12 @@ var PjudCad = function() {
                 thousands: '.', // Separador para os milhares
                 allowZero: false, // Permite que o digito 0 seja o primeiro caractere
                 showSymbol: true // Exibe/Oculta o símbolo
-            })
+            });
+            $.each($('.money'),function(){
+                if ($(this).val() !== ""){
+                    $(this).maskMoney('mask');
+                }
+            });
 
             $('.masked-numbers').keypress(numeroDoProcesso);
             function numeroDoProcesso(e) {

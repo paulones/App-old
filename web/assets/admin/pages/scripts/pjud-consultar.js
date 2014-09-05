@@ -163,162 +163,287 @@ var PjudCon = function() {
         });
     }
 
+    var getHistorico = function() {
+
+        $.each($('.tab1'), function() {
+            getMoneyMask($(this));
+        });
+        var atual;
+        $.each($('.data-de-modificacao'), function() {
+            if ($(this).html().indexOf('Atual') !== -1) {
+                $(this).parent().find('.main').addClass('current');
+                $(this).parent().children('.description').removeClass('description');
+                atual = $(this).parent().find('.form-body');
+            } else {
+                $(this).parent().find('.main').addClass('past');
+            }
+        });
+        $.each($('.past'), function() {
+            var history = this;
+            var description = "";
+            var processo = false;
+            var executado = false;
+            var bens = false;
+            var atoProcessual = false;
+
+            $.each($(this).find('.form-control-static'), function(index) {
+                if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                    $(this).parent().parent().css("color", "#a94442");
+                    if ($(this).parents('.tab1').length > 0) {
+                        processo = true;
+                    } else if ($(this).parents('.tab2').length > 0) {
+                        executado = true;
+                        $(history).find('.tab-pj-info').css("color", "#a94442");
+                    } else if ($(this).parents('.tab3').length > 0) {
+                        bens = true;
+                    } else if ($(this).parents('.tab4').length > 0) {
+                        atoProcessual = true;
+                    }
+                }
+            });
+
+            if ($(atual).find('.form-control-executado-static').length !== $(history).find('.form-control-executado-static').length) {
+                $(history).find('.form-control-executado-static').parent().parent().css("color", "#a94442");
+                $(history).find('td').css("color", "#a94442");
+                $(history).find('th').css("color", "#a94442");
+                $(history).find('td').children().css("color", "#a94442");
+                $(history).find('.tab-pj-info').css("color", "#a94442");
+                executado = true;
+            } else {
+                $.each($(this).find('.form-control-executado-static'), function(index) {
+                    if ($(atual).find('.form-control-executado-static').eq(index).html().trim() !== $(this).html().trim()) {
+                        $(this).parent().parent().css("color", "#a94442");
+                        $(history).find('.tab-pj-info').css("color", "#a94442");
+                        executado = true;
+                    }
+
+                });
+            }
+
+            var checkSucedidasChanges = checkSucessoes('.sucedidas');
+            var checkSucessorasChanges = checkSucessoes('.sucessoras');
+            var checkPfjChanges = checkChangesTable('.rows-pfj tr');
+            var checkPjjChanges = checkChangesTable('.rows-pjj tr');
+            var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab3');
+            var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab1');
+            bens = (!bens) ? checkBensChanges : true;
+            processo = (!processo) ? checkProcessoChanges : true;
+            executado = (!executado) ? checkSucedidasChanges : true;
+            executado = (!executado) ? checkSucessorasChanges : true;
+            executado = (!executado) ? checkPfjChanges : true;
+            executado = (!executado) ? checkPjjChanges : true;
+
+            function checkChangesTable(tr) {
+                var changed = false;
+                if ($(atual).find(tr).length !== $(history).find(tr).length) {
+                    changed = true;
+                }
+                $.each($(atual).find(tr), function() {
+                    var atual = this;
+                    var exists = false;
+                    $.each($(history).find(tr), function() {
+                        $(this).find('td').children().css("color", "#a94442");
+                        $(this).find('td').css("color", "#a94442");
+                        var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().children('span').html().trim() : $(atual).find('td').eq(0).html().trim();
+                        var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().children('span').html().trim() : $(this).find('td').eq(0).html().trim();
+                        if (cpfAtual === cpfHistorico) {
+                            $(this).find('td').children().css("color", "black");
+                            $(this).find('td').css("color", "black");
+                            exists = true;
+                            $.each($(this).find('td'), function(index) {
+                                if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                    $(this).css("color", "#a94442");
+                                    $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                    changed = true;
+                                }
+                            })
+                        } else {
+                            if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                changed = true;
+                            }
+                        }
+                    });
+                    if (!exists) {
+                        changed = true;
+                    }
+                });
+                if (changed) {
+                    $(history).find('.tab-pj-info').css("color", "#a94442");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkChangesLabel(label, tab) {
+                var changed = false;
+                if ($(atual).find(label).length !== $(history).find(label).length) {
+                    changed = true;
+                    if ($(history).find(label).length === 0) {
+                        $(history).find(tab).find('.alert').css("color", "#a94442");
+                    } else if ($(atual).find(label).length === 0) {
+                        $(label).parent().parent().css("color", "#a94442");
+                    }
+                }
+                $(history).find(label).parent().parent().css("color", "#a94442");
+                $.each($(atual).find(label), function() {
+                    var atual = this;
+                    var exists = false;
+                    $.each($(history).find(label), function() {
+                        if ($(atual).text().trim() === $(this).text().trim()) {
+                            $(this).parent().parent().css("color", "black");
+                            exists = true;
+                        }
+                    });
+                    if (!exists) {
+                        changed = true;
+                    }
+                });
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkSucessoes(sucessao) {
+                var changed = false;
+
+                //Se for PF
+                if ($(atual).find('.nestable-list').length === 0 && $(history).find('.nestable-list').length !== 0) {
+                    $(history).find('.nestable-list').children('.alert').css("color", "#a94442");
+                    $(history).find('.tab-pj-sucessao').css('color', "#a94442");
+                    changed = true;
+                }
+                //Se for PJ com um deles sem sucessão
+                if ($(atual).find('.dd-list').length === 0 && $(history).find('.dd-list').length !== 0) {
+                    $(history).find(sucessao).children('.dd3-content').css("color", "#a94442");
+                    $(history).find('.tab-pj-sucessao').css('color', "#a94442");
+                    changed = true;
+                } else if ($(history).find('.dd-list').length === 0 && $(atual).find('.dd-list').length !== 0) {
+                    $(history).find('.nestable-list').children('.alert').css("color", "#a94442");
+                    $(history).find('.tab-pj-sucessao').css('color', "#a94442");
+                    changed = true;
+                }
+
+                //Comparação de sucessões
+                if ($(atual).find(sucessao).length !== $(history).find(sucessao).length) {
+                    $(history).find('.tab-pj-sucessao').css('color', "#a94442");
+                    changed = true;
+                }
+                $(history).find(sucessao).children('.dd3-content').css("color", "#a94442");
+                $.each($(atual).find(sucessao), function() {
+                    var atual = this;
+                    var exists = false;
+                    $.each($(history).find(sucessao), function() {
+                        if ($(this).children('.dd3-content').children('strong').html().trim() === $(atual).children('.dd3-content').children('strong').html().trim()) {
+                            exists = true;
+                            $(this).children('.dd3-content').css("color", "#333");
+                        }
+                    });
+                    if (!exists) {
+                        changed = true;
+                    }
+                });
+
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            if (processo) {
+                $(this).find('.processo-tab').css("color", "#a94442");
+                description += "Processo, ";
+            }
+            if (executado) {
+                $(this).find('.executado-tab').css("color", "#a94442");
+                description += "Executado, ";
+            }
+            if (bens) {
+                $(this).find('.bens-tab').css("color", "#a94442");
+                description += "Bens, ";
+            }
+            if (atoProcessual) {
+                $(this).find('.atoprocessual-tab').css("color", "#a94442");
+                description += "Ato Processual, "
+            }
+            description = description.substring(0, description.length - 2) + ".";
+            if (description.indexOf(",") !== -1) {
+                description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+            } else if (description === ".") {
+                description = "";
+            }
+            $(this).closest('.detail').parent().children('.description').append(description);
+        });
+    }
+
     return {
         init: function() {
 
             if (window.location.search != "") {
-                getMoneyMask(".tab1");
-                var atual;
                 initHistoryTable();
-                $.each($('.data-de-modificacao'), function() {
-                    if ($(this).html().indexOf('Atual') !== -1) {
-                        $(this).parent().find('.main').addClass('current');
-                        $(this).parent().children('.description').removeClass('description');
-                        atual = $(this).parent().find('.form-body');
-                    } else {
-                        $(this).parent().find('.main').addClass('past');
-                    }
-                });
-                $.each($('.past'), function() {
-                    var history = this;
-                    var description = "";
-                    var processo = false;
-                    var executado = false;
-                    var bens = false;
-                    var atoProcessual = false;
-                    $.each($(this).find('.form-control-static'), function(index) {
-                        if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
-                            $(this).parent().parent().css("color", "#a94442");
-                            if ($(this).parents('.tab1').length > 0) {
-                                processo = true;
-                            } else if ($(this).parents('.tab2').length > 0) {
-                                executado = true;
-                            } else if ($(this).parents('.tab3').length > 0) {
-                                bens = true;
-                            } else if ($(this).parents('.tab4').length > 0) {
-                                atoProcessual = true;
-                            }
+                if ($('.pj-id').length !== 0) {
+                    var lastIndex = $('.pj-id').length - 1;
+                    var index = 0;
+                    $.each($('.tab2'), function() {
+                        var pjId = $(this).find('.pj-id').val();
+                        var parent = "#" + $(this).find('.pj-tab').attr('id');
+                        if (pjId !== undefined) {
+                            $.ajax({
+                                url: "/webresources/reaver/getSucessoes",
+                                data: {
+                                    id: pjId
+                                },
+                                dataType: "json",
+                                cache: false
+                            })
+                                    .done(function(data) {
+                                        var sucedidas = "";
+                                        var atual = "";
+                                        var sucessoras = "";
+                                        var icon = parent.indexOf('modal') !== -1 ? '<i class="fa fa-bank"></i>' : '<i class="fa fa-search"></i>';
+                                        var modal = parent.indexOf('modal') !== -1 ? '' : 'pj-info';
+                                        $.each(data, function() {
+                                            if (String(pjId) === String($(this).attr('sucessora_id'))) {
+                                                sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
+                                                        + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
+                                                        + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + '</div></li>';
+                                            } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
+                                                sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
+                                                        + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
+                                                        + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + '</div></li>';
+                                            }
+                                        });
+                                        if (sucedidas === "" && sucessoras === "") {
+                                            $(parent).find('.nestable-list').children().remove();
+                                            $(parent).find('.nestable-list').append('<div layout="block" class="alert alert-warning">N&atilde;o h&aacute; sucess&otilde;es para esta Pessoa Jur&iacute;dica.</div>');
+                                        } else {
+                                            atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-check-square-o"></i></div>'
+                                                    + '<div class="dd3-content"><strong>' + $(parent).find('.nome').html().trim() + ':</strong> ' + $(parent).find('.cnpj').html().trim() + '</div></li>';
+                                            $(parent).find('.dd-list').append(sucedidas);
+                                            if (sucedidas !== "") {
+                                                atual = '<ol class="dd-list">' + atual + '</ol>';
+                                                $(parent).find('.sucedidas').last().append(atual);
+                                            } else {
+                                                $(parent).find('.dd-list').append(atual);
+                                            }
+                                            if (sucessoras !== "") {
+                                                sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
+                                                $(parent).find('.atual').append(sucessoras);
+                                            }
+                                        }
+                                        if (index === lastIndex) {
+                                            getHistorico();
+                                        }
+                                        index++;
+                                    });
                         }
                     });
-                    if ($(atual).find('.form-control-executado-static').length !== $(history).find('.form-control-executado-static').length) {
-                        $(history).find('.form-control-executado-static').parent().parent().css("color", "#a94442");
-                        $(history).find('td').css("color", "#a94442");
-                        $(history).find('th').css("color", "#a94442");
-                        $(history).find('td').children().css("color", "#a94442");
-                        executado = true;
-                    } else {
-                        $.each($(this).find('.form-control-executado-static'), function(index) {
-                            if ($(atual).find('.form-control-executado-static').eq(index).html().trim() !== $(this).html().trim()) {
-                                $(this).parent().parent().css("color", "#a94442");
-                                executado = true;
-                            }
-                        });
-                    }
-                    var checkPfjChanges = checkChangesTable('.rows-pfj tr');
-                    var checkPjjChanges = checkChangesTable('.rows-pjj tr');
-                    var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab3');
-                    var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab1');
-                    bens = (!bens) ? checkBensChanges : true;
-                    processo = (!processo) ? checkProcessoChanges : true;
-                    executado = (!executado) ? checkPfjChanges : true;
-                    executado = (!executado) ? checkPjjChanges : true;
-                    function checkChangesTable(tr) {
-                        var changed = false;
-                        if ($(atual).find(tr).length !== $(history).find(tr).length) {
-                            changed = true;
-                        }
-                        $.each($(atual).find(tr), function() {
-                            var atual = this;
-                            var exists = false;
-                            $.each($(history).find(tr), function() {
-                                $(this).find('td').children().css("color", "#a94442");
-                                $(this).find('td').css("color", "#a94442");
-                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().children('span').html().trim() : $(atual).find('td').eq(0).html().trim();
-                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().children('span').html().trim() : $(this).find('td').eq(0).html().trim();
-                                if (cpfAtual === cpfHistorico) {
-                                    $(this).find('td').children().css("color", "black");
-                                    $(this).find('td').css("color", "black");
-                                    exists = true;
-                                    $.each($(this).find('td'), function(index) {
-                                        if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
-                                            $(this).css("color", "#a94442");
-                                            $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
-                                            changed = true;
-                                        }
-                                    })
-                                } else {
-                                    if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
-                                        changed = true;
-                                    }
-                                }
-                            });
-                            if (!exists) {
-                                changed = true;
-                            }
-                        });
-                        if (changed) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                    ;
-
-                    function checkChangesLabel(label, tab) {
-                        var changed = false;
-                        if ($(atual).find(label).length !== $(history).find(label).length) {
-                            changed = true;
-                            if ($(history).find(label).length === 0) {
-                                $(history).find(tab).find('.alert').css("color", "#a94442");
-                            } else if ($(atual).find(label).length === 0) {
-                                $(label).parent().parent().css("color", "#a94442");
-                            }
-                        }
-                        $(history).find(label).parent().parent().css("color", "#a94442");
-                        $.each($(atual).find(label), function() {
-                            var atual = this;
-                            var exists = false;
-                            $.each($(history).find(label), function() {
-                                if ($(atual).text().trim() === $(this).text().trim()) {
-                                    $(this).parent().parent().css("color", "black");
-                                    exists = true;
-                                }
-                            });
-                            if (!exists) {
-                                changed = true;
-                            }
-                        });
-                        if (changed) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-
-                    if (processo) {
-                        $(this).find('.processo-tab').css("color", "#a94442");
-                        description += "Processo, ";
-                    }
-                    if (executado) {
-                        $(this).find('.executado-tab').css("color", "#a94442");
-                        description += "Executado, ";
-                    }
-                    if (bens) {
-                        $(this).find('.bens-tab').css("color", "#a94442");
-                        description += "Bens, ";
-                    }
-                    if (atoProcessual) {
-                        $(this).find('.atoprocessual-tab').css("color", "#a94442");
-                        description += "Ato Processual, "
-                    }
-                    description = description.substring(0, description.length - 2) + ".";
-                    if (description.indexOf(",") !== -1) {
-                        description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
-                    } else if (description === ".") {
-                        description = "";
-                    }
-                    $(this).closest('.detail').parent().children('.description').append(description);
-                });
+                } else {
+                    getHistorico();
+                }
             } else {
                 initTable();
             }
@@ -345,7 +470,7 @@ var PjudCon = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
                         getMoneyMask('#info');
-                        if ($('#executado').val() === "PJ") {
+                        if ($('#info').find('#executado').val() === "PJ") {
                             getSucessoes("#pj-id", "#info", element);
                         } else {
                             $(element).addClass("row-details-open").removeClass("row-details-close");
