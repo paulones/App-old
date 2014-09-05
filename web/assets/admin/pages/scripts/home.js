@@ -1,18 +1,22 @@
 var Home = function() {
 
+    var anoInteractiveChart = new Date().getFullYear();
     var initInteractiveChart = function() {
 
         if (!jQuery.plot) {
             return;
         }
-
         //Interactive Chart
+        interactiveChart();
 
         function interactiveChart() {
             function randValue() {
                 return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
             }
-            var ano = new Date().getFullYear();
+            $("#ano").text(function() {
+                return anoInteractiveChart;
+            });
+
             var proc = [];
             var pf = [];
             var pj = [];
@@ -21,7 +25,7 @@ var Home = function() {
                 dataType: "json",
                 cache: false,
                 data: {
-                    ano: ano
+                    ano: anoInteractiveChart
                 }
             })
                     .done(function(data) {
@@ -169,13 +173,8 @@ var Home = function() {
                                 opacity: 0.80
                             }).appendTo("body").fadeIn(200);
                         }
-
                     });
         }
-
-        //graph
-        interactiveChart();
-
     };
 
     var initPizzaChart = function() {
@@ -201,7 +200,7 @@ var Home = function() {
             label: "Suspenso",
             data: Math.floor(Math.random() * 100) + 1
         };
-        
+
 
         // GRAPH 2
         $.plot($("#pizza_chart"), data, {
@@ -393,6 +392,21 @@ var Home = function() {
                         $('.' + $(this).val()).show();
                     }
                 });
+            });
+            
+            $('.interactive-back-reload').click(function() {
+                $("#ano").text(function() {
+                    anoInteractiveChart--;
+                    return anoInteractiveChart;
+                });
+                initInteractiveChart();
+            });
+            $('.interactive-next-reload').click(function() {
+                $("#ano").text(function() {
+                    anoInteractiveChart++;
+                    return anoInteractiveChart;
+                });
+                initInteractiveChart();
             });
 
             Metronic.addResizeHandler(function() {
