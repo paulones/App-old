@@ -339,6 +339,9 @@ var PjudCon = function() {
                         if ($(this).children('.dd3-content').children('strong').html().trim() === $(atual).children('.dd3-content').children('strong').html().trim()) {
                             exists = true;
                             $(this).children('.dd3-content').css("color", "#333");
+                            $(this).children('.dd3-content').hover(function(e){
+                                $(this).css("color",e.type === "mouseenter" ? "#2ea8e5" : "#333");
+                            });
                         }
                     });
                     if (!exists) {
@@ -420,7 +423,7 @@ var PjudCon = function() {
                                             $(parent).find('.nestable-list').children().remove();
                                             $(parent).find('.nestable-list').append('<div layout="block" class="alert alert-warning">N&atilde;o h&aacute; sucess&otilde;es para esta Pessoa Jur&iacute;dica.</div>');
                                         } else {
-                                            atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-check-square-o"></i></div>'
+                                            atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-bank"></i></div>'
                                                     + '<div class="dd3-content"><strong>' + $(parent).find('.nome').html().trim() + ':</strong> ' + $(parent).find('.cnpj').html().trim() + '</div></li>';
                                             $(parent).find('.dd-list').append(sucedidas);
                                             if (sucedidas !== "") {
@@ -433,6 +436,7 @@ var PjudCon = function() {
                                                 sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
                                                 $(parent).find('.atual').append(sucessoras);
                                             }
+                                            $('.atual').children('.dd3-content').css("color","#3c763d");
                                         }
                                         if (index === lastIndex) {
                                             getHistorico();
