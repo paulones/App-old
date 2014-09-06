@@ -79,6 +79,7 @@ public class PessoaJuridicaBean implements Serializable {
     private boolean edit;
     private boolean history;
     private String pjId;
+    private String pjsId;
     private String pfVId;
     private String pjVId;
 
@@ -112,7 +113,7 @@ public class PessoaJuridicaBean implements Serializable {
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
     private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
-    
+
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
@@ -146,7 +147,7 @@ public class PessoaJuridicaBean implements Serializable {
             cidadeEndList = new ArrayList<>();
             pessoaFisicaJuridicaList = new ArrayList<>();
             pessoaJuridicaJuridicaList = new ArrayList<>();
-            
+
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             pessoaJuridica = new PessoaJuridica();
             if (isRegisterPage) {
@@ -432,6 +433,21 @@ public class PessoaJuridicaBean implements Serializable {
         pessoaJuridicaJuridicaList.remove(index);
     }
 
+    public void removerSucessao() {
+        try {
+            PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+            PessoaJuridicaSucessao pjs = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(pjsId));
+            pjs.setStatus('I');
+            pessoaJuridicaSucessaoBO.edit(pjs);
+            GeradorLog.criar(pjs.getId(), "PJS", 'D');
+            redirect = "";
+            register = "success";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão removida com sucesso!", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void exibirInfo() {
         pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
@@ -446,6 +462,7 @@ public class PessoaJuridicaBean implements Serializable {
         GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'D');
         redirect = "";
         register = "success";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro removido com sucesso!", null));
     }
 
     public void prepararHistorico(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
@@ -567,7 +584,7 @@ public class PessoaJuridicaBean implements Serializable {
         enderecoPessoaFisicaJuridicaHistorico.setPessoaFisicaJuridicaHistoricoList(pessoaFisicaJuridicaHistoricoList);
         return enderecoPessoaFisicaJuridicaHistorico;
     }
-    
+
     public PessoaJuridica getPessoaJuridica() {
         return pessoaJuridica;
     }
@@ -743,4 +760,13 @@ public class PessoaJuridicaBean implements Serializable {
     public void setPessoaJuridicaJuridicaList(List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
         this.pessoaJuridicaJuridicaList = pessoaJuridicaJuridicaList;
     }
+
+    public String getPjsId() {
+        return pjsId;
+    }
+
+    public void setPjsId(String pjsId) {
+        this.pjsId = pjsId;
+    }
+
 }

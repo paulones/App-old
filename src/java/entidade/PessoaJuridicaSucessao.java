@@ -37,6 +37,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaJuridicaSucessao.findById", query = "SELECT p FROM PessoaJuridicaSucessao p WHERE p.id = :id"),
     @NamedQuery(name = "PessoaJuridicaSucessao.findByDataDeSucessao", query = "SELECT p FROM PessoaJuridicaSucessao p WHERE p.dataDeSucessao = :dataDeSucessao")})
 public class PessoaJuridicaSucessao implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "status")
+    private Character status;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -144,6 +148,9 @@ public class PessoaJuridicaSucessao implements Serializable {
         if (!Objects.equals(this.pessoaJuridicaSucessoraFk, other.pessoaJuridicaSucessoraFk)) {
             return false;
         }
+        if (!Objects.equals(this.status, other.status)) {
+            return false;
+        }
         return true;
     }
     
@@ -151,6 +158,14 @@ public class PessoaJuridicaSucessao implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaJuridicaSucessao[ id=" + id + " ]";
+    }
+
+    public Character getStatus() {
+        return status;
+    }
+
+    public void setStatus(Character status) {
+        this.status = status;
     }
     
 }

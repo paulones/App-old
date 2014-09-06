@@ -269,9 +269,26 @@ var PJCon = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
-                        getSucessoes('#pj-id', '#info', $(element));
+                        getSucessoes('#pj-id', '#info', $(element), true);
                     }
                 }
+            });
+
+            var index;
+            $(document).on('click', '.button-delete-sucessao', function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                index = $('.button-delete-sucessao').index(this);
+                $('.delete-sucessao-modal-activator').click();
+            });
+
+            $('.cancel-sucessao').click(function(e) {
+                e.preventDefault();
+            });
+            $('.remove-sucessao').click(function(e) {
+                e.preventDefault();
+                $('#pj-sucessao-id').val($($('.button-delete-sucessao').get(index)).parent().parent().children('.suc-id').val());
+                $('.info-delete-sucessao').click();
             });
 
             $('.menu-pj').addClass('active open');

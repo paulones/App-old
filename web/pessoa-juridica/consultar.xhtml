@@ -14,6 +14,7 @@
         <!-- BEGIN PAGE STYLES -->
         <style>
             .control-label{margin-top:6px !important}
+            .button-delete-sucessao{color:red;float:right}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -81,7 +82,7 @@
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="alert alert-success"  rendered="#{pessoaJuridicaBean.register eq 'success'}">
                                 <button class="close" data-close="alert"></button>
-                                Cadastro removido com sucesso!
+                                <h:messages layout="table" />
                             </h:panelGroup>
                             <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
                                 <span class="help-block">Para visualizar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span>.</span>
@@ -563,6 +564,8 @@
             <h:commandLink class="info-refresher">
                 <f:ajax execute="pj-id" listener="#{pessoaJuridicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>
+            <h:inputHidden id="pj-sucessao-id" value="#{pessoaJuridicaBean.pjsId}"/>
+            <h:commandLink class="info-delete-sucessao" action="#{pessoaJuridicaBean.removerSucessao()}" />
             <h:panelGroup id="info" class="display-hide">
                 <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty pessoaJuridicaBean.enderecoPessoa.pessoa}">
                     <div class="portlet-title">
@@ -997,7 +1000,7 @@
                                                     </div>
                                                     <div class="col-md-7">
                                                         <div class="col-md-offset-4 col-md-9">
-                                                            <a href="consultar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Sucessões</a>
+                                                            <a href="sucessao.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Sucessões</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1045,6 +1048,25 @@
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal" class="btn default cancel">Cancelar</button>
                         <button type="button" data-dismiss="modal" class="btn blue-chambray remove">Remover</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="btn default display-hide delete-sucessao-modal-activator" data-toggle="modal" href="#static-sucessao"></a>
+        <div id="static-sucessao" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> Remover Sucessão Empresarial <i class="fa fa-exclamation-triangle"></i></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Tem certeza que deseja remover o vínculo entre essas duas empresas?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn default cancel-sucessao">Cancelar</button>
+                        <button type="button" data-dismiss="modal" class="btn blue-chambray remove-sucessao">Remover</button>
                     </div>
                 </div>
             </div>

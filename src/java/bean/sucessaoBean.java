@@ -11,6 +11,7 @@ import bo.UsuarioBO;
 import bo.UtilBO;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaSucessao;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
 import util.GeradorLog;
 
@@ -35,11 +37,13 @@ public class sucessaoBean implements Serializable {
 
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
 
+    private List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList;
+
     private PessoaJuridicaBO pessoaJuridicaBO;
     private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
     private UsuarioBO usuarioBO;
 
-    public void init() {
+    public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             sucedida = "";
             sucessora = "";
@@ -50,6 +54,20 @@ public class sucessaoBean implements Serializable {
 
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
 
+            pessoaJuridicaSucessaoList = new ArrayList<>();
+
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            if (request.getQueryString() != null) {
+                try {
+                    Integer id = Integer.valueOf(request.getParameter("id"));
+                    if (pessoaJuridicaSucessaoBO.findSucedidasAndSucessoras(id).isEmpty()) {
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("sucessao.xhtml");
+                    }
+                } catch (Exception e) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("sucessao.xhtml");
+                }
+
+            }
         }
     }
 
@@ -67,6 +85,7 @@ public class sucessaoBean implements Serializable {
             pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
             pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
             pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
+            pessoaJuridicaSucessao.setStatus('A');
             if (exists) {
                 if (!pessoaJuridicaSucessao.equalsValues(pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
                     pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
@@ -96,17 +115,34 @@ public class sucessaoBean implements Serializable {
 
     public void checkSucessoes() {
         if (!sucedida.equals(sucessora)) {
-            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
-            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
-            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
-            if (pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk().equals(pjSucessora) && pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk().equals(pjSucedida)) {
-                succeed = "warning";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existe uma sucessão invertida entre as empresas selecionadas. Caso opte em suceder, a sucessão anterior será substituída.", null));
+            if (sucedida != null && sucessora != null) {
+                PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+                PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
+                pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+                if (pessoaJuridicaSucessao != null) {
+                    if (pessoaJuridicaSucessao.getStatus().equals('I')) {
+                        succeed = "warning";
+                        if (pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk().equals(pjSucessora) && pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk().equals(pjSucedida)) {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existe uma sucessão invertida entre as empresas selecionadas, porém desativada. Caso opte em suceder, a sucessão anterior será substituída e reativada.", null));
+                        } else {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Esta sucessão foi desativada. Caso opte em suceder, a mesma será reativada.", null));
+                        }
+                    } else if (pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk().equals(pjSucessora) && pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk().equals(pjSucedida)) {
+                        succeed = "warning";
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existe uma sucessão invertida entre as empresas selecionadas. Caso opte em suceder, a sucessão anterior será substituída.", null));
+                    } else {
+                        System.out.println("ativo e nada a ver");
+                        succeed = "";
+                    }
+                } else {
+                    succeed = "";
+                }
             } else {
                 succeed = "";
             }
         } else {
-            succeed = "";
+            succeed = "warning";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Escolha duas empresas diferentes.", null));
         }
     }
 

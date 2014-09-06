@@ -255,11 +255,24 @@ public class PessoaJuridicaSucessaoDAO implements Serializable {
         }
     }
     
+    public PessoaJuridicaSucessao findBySucedidaAndSucessora(Integer sucedida, Integer sucessora) {
+        EntityManager em = getEntityManager();
+        try {
+            PessoaJuridicaSucessao pjs = (PessoaJuridicaSucessao) em.createNativeQuery("select * from pessoa_juridica_sucessao "
+                    + "where pessoa_juridica_sucedida_fk = '" + sucedida + "' and pessoa_juridica_sucessora_fk = '" + sucessora + "'", PessoaJuridicaSucessao.class).getSingleResult();
+            return pjs;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
     public List<PessoaJuridicaSucessao> findSucessoras(Integer id){
         EntityManager em = getEntityManager();
         try {
             List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = (List<PessoaJuridicaSucessao>) em.createNativeQuery("select * from pessoa_juridica_sucessao "
-                        + "where pessoa_juridica_sucedida_fk = '" + id + "' order by data_de_sucessao desc", PessoaJuridicaSucessao.class).getResultList();
+                        + "where pessoa_juridica_sucedida_fk = '" + id + "' and status = 'A' order by data_de_sucessao desc", PessoaJuridicaSucessao.class).getResultList();
             return pessoaJuridicaSucessaoList;
         } catch (NoResultException e) {
             return null;
@@ -272,7 +285,20 @@ public class PessoaJuridicaSucessaoDAO implements Serializable {
         EntityManager em = getEntityManager();
         try {
             List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = (List<PessoaJuridicaSucessao>) em.createNativeQuery("select * from pessoa_juridica_sucessao "
-                        + "where pessoa_juridica_sucessora_fk = '" + id + "' order by data_de_sucessao asc", PessoaJuridicaSucessao.class).getResultList();
+                        + "where pessoa_juridica_sucessora_fk = '" + id + "' and status = 'A' order by data_de_sucessao asc", PessoaJuridicaSucessao.class).getResultList();
+            return pessoaJuridicaSucessaoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<PessoaJuridicaSucessao> findSucedidasAndSucessoras(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = (List<PessoaJuridicaSucessao>) em.createNativeQuery("select * from pessoa_juridica_sucessao "
+                        + "where (pessoa_juridica_sucessora_fk = '" + id + "' or pessoa_juridica_sucedida_fk = '" + id + "') and status = 'A' order by data_de_sucessao asc", PessoaJuridicaSucessao.class).getResultList();
             return pessoaJuridicaSucessaoList;
         } catch (NoResultException e) {
             return null;
