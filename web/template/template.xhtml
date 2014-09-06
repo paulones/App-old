@@ -930,6 +930,7 @@
                                                             <!-- BEGIN LISTA CONTENT-->
                                                             <div class="form-body nestable-list">
                                                                 <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
+                                                                <br/>
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div class="portlet-body">
@@ -2713,6 +2714,7 @@
                                                                                     <!-- BEGIN LISTA CONTENT-->
                                                                                     <div class="form-body nestable-list">
                                                                                         <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
+                                                                                        <br/>
                                                                                         <div class="row">
                                                                                             <div class="col-md-12">
                                                                                                 <div class="portlet-body">
@@ -3043,7 +3045,7 @@
                 });
             }
 
-            function getSucessoes(id, parent, portlet, removeGrant) {
+            function getSucessoes(id, parent, portlet, removeGrant, displayHistory) {
                 var pjId = $(id).val();
                 if (pjId !== undefined) {
                     $.ajax({
@@ -3093,11 +3095,19 @@
                                     }
                                     $('.atual').children('.dd3-content').css("color","#3c763d");
                                 }
+                                
                                 if (removeGrant){
                                     var remove = '<a class="button-delete-sucessao"><i class="glyphicon glyphicon-remove"></i></a>';
                                     $(parent).find('.sucedidas').children(".dd3-content").append(remove);
                                     $(parent).find('.sucessoras').children(".dd3-content").append(remove);
                                 }
+                                
+                                if (displayHistory){
+                                     var history = '<a class="button-history-sucessao"><i class="fa fa-history"></i></a>';
+                                    $(parent).find('.sucedidas').children(".dd3-content").append(history);
+                                    $(parent).find('.sucessoras').children(".dd3-content").append(history);
+                                }
+                                
                                 if (portlet !== undefined) {
                                     reallocatePortlet(portlet);
                                 }

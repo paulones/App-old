@@ -7,11 +7,8 @@
 package entidade;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,32 +18,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author paulones
  */
 @Entity
-@Table(name = "pessoa_juridica_sucessao")
+@Table(name = "pessoa_juridica_sucessao_historico")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "PessoaJuridicaSucessao.findAll", query = "SELECT p FROM PessoaJuridicaSucessao p"),
-    @NamedQuery(name = "PessoaJuridicaSucessao.findById", query = "SELECT p FROM PessoaJuridicaSucessao p WHERE p.id = :id"),
-    @NamedQuery(name = "PessoaJuridicaSucessao.findByDataDeSucessao", query = "SELECT p FROM PessoaJuridicaSucessao p WHERE p.dataDeSucessao = :dataDeSucessao")})
-public class PessoaJuridicaSucessao implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucessaoFk")
-    private Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "status")
-    private Character status;
+    @NamedQuery(name = "PessoaJuridicaSucessaoHistorico.findAll", query = "SELECT p FROM PessoaJuridicaSucessaoHistorico p"),
+    @NamedQuery(name = "PessoaJuridicaSucessaoHistorico.findById", query = "SELECT p FROM PessoaJuridicaSucessaoHistorico p WHERE p.id = :id"),
+    @NamedQuery(name = "PessoaJuridicaSucessaoHistorico.findByDataDeSucessao", query = "SELECT p FROM PessoaJuridicaSucessaoHistorico p WHERE p.dataDeSucessao = :dataDeSucessao"),
+    @NamedQuery(name = "PessoaJuridicaSucessaoHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaJuridicaSucessaoHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
+public class PessoaJuridicaSucessaoHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,26 +48,35 @@ public class PessoaJuridicaSucessao implements Serializable {
     @Column(name = "data_de_sucessao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataDeSucessao;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "data_de_modificacao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataDeModificacao;
     @JoinColumn(name = "pessoa_juridica_sucedida_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaJuridica pessoaJuridicaSucedidaFk;
     @JoinColumn(name = "pessoa_juridica_sucessora_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaJuridica pessoaJuridicaSucessoraFk;
+    @JoinColumn(name = "pessoa_juridica_sucessao_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private PessoaJuridicaSucessao pessoaJuridicaSucessaoFk;
     @JoinColumn(name = "usuario_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Usuario usuarioFk;
 
-    public PessoaJuridicaSucessao() {
+    public PessoaJuridicaSucessaoHistorico() {
     }
 
-    public PessoaJuridicaSucessao(Integer id) {
+    public PessoaJuridicaSucessaoHistorico(Integer id) {
         this.id = id;
     }
 
-    public PessoaJuridicaSucessao(Integer id, Date dataDeSucessao) {
+    public PessoaJuridicaSucessaoHistorico(Integer id, Date dataDeSucessao, Date dataDeModificacao) {
         this.id = id;
         this.dataDeSucessao = dataDeSucessao;
+        this.dataDeModificacao = dataDeModificacao;
     }
 
     public Integer getId() {
@@ -96,6 +95,14 @@ public class PessoaJuridicaSucessao implements Serializable {
         this.dataDeSucessao = dataDeSucessao;
     }
 
+    public Date getDataDeModificacao() {
+        return dataDeModificacao;
+    }
+
+    public void setDataDeModificacao(Date dataDeModificacao) {
+        this.dataDeModificacao = dataDeModificacao;
+    }
+
     public PessoaJuridica getPessoaJuridicaSucedidaFk() {
         return pessoaJuridicaSucedidaFk;
     }
@@ -110,6 +117,14 @@ public class PessoaJuridicaSucessao implements Serializable {
 
     public void setPessoaJuridicaSucessoraFk(PessoaJuridica pessoaJuridicaSucessoraFk) {
         this.pessoaJuridicaSucessoraFk = pessoaJuridicaSucessoraFk;
+    }
+
+    public PessoaJuridicaSucessao getPessoaJuridicaSucessaoFk() {
+        return pessoaJuridicaSucessaoFk;
+    }
+
+    public void setPessoaJuridicaSucessaoFk(PessoaJuridicaSucessao pessoaJuridicaSucessaoFk) {
+        this.pessoaJuridicaSucessaoFk = pessoaJuridicaSucessaoFk;
     }
 
     public Usuario getUsuarioFk() {
@@ -130,57 +145,19 @@ public class PessoaJuridicaSucessao implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof PessoaJuridicaSucessao)) {
+        if (!(object instanceof PessoaJuridicaSucessaoHistorico)) {
             return false;
         }
-        PessoaJuridicaSucessao other = (PessoaJuridicaSucessao) object;
+        PessoaJuridicaSucessaoHistorico other = (PessoaJuridicaSucessaoHistorico) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
-    
-    public boolean equalsValues(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PessoaJuridicaSucessao other = (PessoaJuridicaSucessao) obj;
-        if (!Objects.equals(this.pessoaJuridicaSucedidaFk, other.pessoaJuridicaSucedidaFk)) {
-            return false;
-        }
-        if (!Objects.equals(this.pessoaJuridicaSucessoraFk, other.pessoaJuridicaSucessoraFk)) {
-            return false;
-        }
-        if (!Objects.equals(this.status, other.status)) {
-            return false;
-        }
-        return true;
-    }
-    
 
     @Override
     public String toString() {
-        return "entidade.PessoaJuridicaSucessao[ id=" + id + " ]";
-    }
-
-    public Character getStatus() {
-        return status;
-    }
-
-    public void setStatus(Character status) {
-        this.status = status;
-    }
-
-    @XmlTransient
-    public Collection<PessoaJuridicaSucessaoHistorico> getPessoaJuridicaSucessaoHistoricoCollection() {
-        return pessoaJuridicaSucessaoHistoricoCollection;
-    }
-
-    public void setPessoaJuridicaSucessaoHistoricoCollection(Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection) {
-        this.pessoaJuridicaSucessaoHistoricoCollection = pessoaJuridicaSucessaoHistoricoCollection;
+        return "entidade.PessoaJuridicaSucessaoHistorico[ id=" + id + " ]";
     }
     
 }

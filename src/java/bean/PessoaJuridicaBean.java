@@ -18,6 +18,7 @@ import bo.PessoaJuridicaHistoricoBO;
 import bo.PessoaJuridicaJuridicaBO;
 import bo.PessoaJuridicaJuridicaHistoricoBO;
 import bo.PessoaJuridicaSucessaoBO;
+import bo.PessoaJuridicaSucessaoHistoricoBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
@@ -37,6 +38,7 @@ import entidade.PessoaJuridicaHistorico;
 import entidade.PessoaJuridicaJuridica;
 import entidade.PessoaJuridicaJuridicaHistorico;
 import entidade.PessoaJuridicaSucessao;
+import entidade.PessoaJuridicaSucessaoHistorico;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import java.io.IOException;
@@ -73,6 +75,7 @@ public class PessoaJuridicaBean implements Serializable {
     private EnderecoPessoa enderecoPessoaModal;
     private PessoaJuridicaHistorico pessoaJuridicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
+    private PessoaJuridicaSucessao pessoaJuridicaSucessao;
 
     private String register;
     private String redirect;
@@ -98,6 +101,7 @@ public class PessoaJuridicaBean implements Serializable {
     private List<EnderecoPessoaFisicaJuridicaHistorico> enderecoPessoaFisicaJuridicaHistoricoList;
     private List<PessoaJuridicaHistorico> pessoaJuridicaHistoricoList;
     private List<EnderecoHistorico> enderecoHistoricoList;
+    private List<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoList;
 
     private TipoEmpresarialBO tipoEmpresarialBO;
     private PessoaFisicaBO pessoaFisicaBO;
@@ -447,13 +451,7 @@ public class PessoaJuridicaBean implements Serializable {
             e.printStackTrace();
         }
     }
-
-    public void exibirInfo() {
-        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
-        endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
-        enderecoPessoa = new EnderecoPessoa(pessoaJuridica, endereco);
-    }
-
+    
     public void removerPessoaJuridica() {
         pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
@@ -463,6 +461,30 @@ public class PessoaJuridicaBean implements Serializable {
         redirect = "";
         register = "success";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro removido com sucesso!", null));
+    }
+
+
+    public void exibirInfo() {
+        pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
+        endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
+        enderecoPessoa = new EnderecoPessoa(pessoaJuridica, endereco);
+    }
+    
+    public void exibirHistoricoDaSucessao(){
+        PessoaJuridicaSucessaoHistoricoBO pessoaJuridicaSucessaoHistoricoBO = new PessoaJuridicaSucessaoHistoricoBO();
+        PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+        PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico = new PessoaJuridicaSucessaoHistorico();
+        pessoaJuridicaSucessaoHistoricoList = new ArrayList<>();
+        
+        pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(pjsId)); 
+        pessoaJuridicaSucessaoHistorico.setDataDeSucessao(pessoaJuridicaSucessao.getDataDeSucessao());
+        pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucedidaFk(pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk());
+        pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucessoraFk(pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk());
+        pessoaJuridicaSucessaoHistorico.setUsuarioFk(pessoaJuridicaSucessao.getUsuarioFk());
+        
+        pessoaJuridicaSucessaoHistoricoList.add(pessoaJuridicaSucessaoHistorico);
+        pessoaJuridicaSucessaoHistoricoList.addAll(pessoaJuridicaSucessaoHistoricoBO.findByPJS(Integer.valueOf(pjsId)));
+        
     }
 
     public void prepararHistorico(PessoaJuridica pessoaJuridica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList) {
@@ -769,4 +791,19 @@ public class PessoaJuridicaBean implements Serializable {
         this.pjsId = pjsId;
     }
 
+    public List<PessoaJuridicaSucessaoHistorico> getPessoaJuridicaSucessaoHistoricoList() {
+        return pessoaJuridicaSucessaoHistoricoList;
+    }
+
+    public void setPessoaJuridicaSucessaoHistoricoList(List<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoList) {
+        this.pessoaJuridicaSucessaoHistoricoList = pessoaJuridicaSucessaoHistoricoList;
+    }
+
+    public PessoaJuridicaSucessao getPessoaJuridicaSucessao() {
+        return pessoaJuridicaSucessao;
+    }
+
+    public void setPessoaJuridicaSucessao(PessoaJuridicaSucessao pessoaJuridicaSucessao) {
+        this.pessoaJuridicaSucessao = pessoaJuridicaSucessao;
+    }
 }

@@ -7,10 +7,12 @@ package bean;
 
 import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaSucessaoBO;
+import bo.PessoaJuridicaSucessaoHistoricoBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaSucessao;
+import entidade.PessoaJuridicaSucessaoHistorico;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,12 +38,12 @@ public class sucessaoBean implements Serializable {
     private String sucessora;
 
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
-
-    private List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList;
+    private PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico;
 
     private PessoaJuridicaBO pessoaJuridicaBO;
     private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
     private UsuarioBO usuarioBO;
+    private PessoaJuridicaSucessaoHistoricoBO pessoaJuridicaSucessaoHistoricoBO;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -50,24 +52,10 @@ public class sucessaoBean implements Serializable {
             succeed = "";
             pessoaJuridicaBO = new PessoaJuridicaBO();
             pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+            pessoaJuridicaSucessaoHistoricoBO = new PessoaJuridicaSucessaoHistoricoBO();
             usuarioBO = new UsuarioBO();
 
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
-
-            pessoaJuridicaSucessaoList = new ArrayList<>();
-
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            if (request.getQueryString() != null) {
-                try {
-                    Integer id = Integer.valueOf(request.getParameter("id"));
-                    if (pessoaJuridicaSucessaoBO.findSucedidasAndSucessoras(id).isEmpty()) {
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("sucessao.xhtml");
-                    }
-                } catch (Exception e) {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("sucessao.xhtml");
-                }
-
-            }
         }
     }
 
@@ -81,6 +69,8 @@ public class sucessaoBean implements Serializable {
             if (pessoaJuridicaSucessao == null) {
                 pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
                 exists = false;
+            } else {
+                prepararHistorico(pessoaJuridicaSucessao);
             }
             pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
             pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
@@ -89,6 +79,8 @@ public class sucessaoBean implements Serializable {
             if (exists) {
                 if (!pessoaJuridicaSucessao.equalsValues(pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
                     pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
+                    pessoaJuridicaSucessaoHistorico.setDataDeModificacao(utilBO.findServerTime());
+                    pessoaJuridicaSucessaoHistoricoBO.create(pessoaJuridicaSucessaoHistorico);
                     GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'U');
                     succeed = "success";
                     sucedida = "";
@@ -131,7 +123,6 @@ public class sucessaoBean implements Serializable {
                         succeed = "warning";
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Existe uma sucessão invertida entre as empresas selecionadas. Caso opte em suceder, a sucessão anterior será substituída.", null));
                     } else {
-                        System.out.println("ativo e nada a ver");
                         succeed = "";
                     }
                 } else {
@@ -144,6 +135,16 @@ public class sucessaoBean implements Serializable {
             succeed = "warning";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Escolha duas empresas diferentes.", null));
         }
+    }
+    
+    private void prepararHistorico(PessoaJuridicaSucessao pessoaJuridicaSucessao){
+        pessoaJuridicaSucessaoHistorico = new PessoaJuridicaSucessaoHistorico();
+        
+        pessoaJuridicaSucessaoHistorico.setDataDeSucessao(pessoaJuridicaSucessao.getDataDeSucessao());
+        pessoaJuridicaSucessaoHistorico.setUsuarioFk(pessoaJuridicaSucessao.getUsuarioFk());
+        pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucedidaFk(pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk());
+        pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucessoraFk(pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk());
+        pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucessaoFk(pessoaJuridicaSucessao);
     }
 
     public String getSucceed() {
