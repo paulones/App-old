@@ -327,9 +327,11 @@ public class ReaverResource {
         ChartsBO chartsBO = new ChartsBO();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        for (Integer i = 1; i <= 5; i++) {
-            jsonObject.put("situacao"+i, chartsBO.getPJUDSituations(i));
-        }
+        jsonObject.put("Andamento", chartsBO.getPJUDSituations("Andamento"));
+        jsonObject.put("Arquivado", chartsBO.getPJUDSituations("Arquivado"));
+        jsonObject.put("Extinto", chartsBO.getPJUDSituations("Extinto"));
+        jsonObject.put("Julgado", chartsBO.getPJUDSituations("Julgado"));
+        jsonObject.put("Suspenso", chartsBO.getPJUDSituations("Suspenso"));
         jsonArray.put(jsonObject);
         
         return jsonArray.toString();

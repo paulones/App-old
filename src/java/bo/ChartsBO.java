@@ -81,7 +81,7 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Integer getPJUDSituations(Integer situacao){
+    public Integer getPJUDSituations(String situacao){
         try {
             return processoJudicialDAO.getPJUDSituations(situacao);
         } catch (Exception e) {

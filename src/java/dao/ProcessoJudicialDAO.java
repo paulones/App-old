@@ -536,11 +536,11 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
     
-    public Integer getPJUDSituations(Integer situacao) {
+    public Integer getPJUDSituations(String situacao) {
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(*) from processo_judicial pj, situacao s "
-                    + "where pj.situacao_fk = s.id and pj.situacao_fk = "+situacao+" group by pj.situacao_fk, s.situacao ").getSingleResult();
+                    + "where pj.situacao_fk = s.id and s.situacao = '"+situacao+"' group by pj.situacao_fk, s.situacao ").getSingleResult();
             if (count == null) {
                 return 0;
             } else {

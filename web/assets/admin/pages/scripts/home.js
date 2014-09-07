@@ -194,23 +194,23 @@ var Home = function() {
 
                         data[0] = {
                             label: "Andamento",
-                            data: $(this).attr("situacao1")
+                            data: $(this).attr("Andamento")
                         },
                         data[1] = {
                             label: "Arquivado",
-                            data: $(this).attr("situacao2")
+                            data: $(this).attr("Arquivado")
                         },
                         data[2] = {
                             label: "Extinto",
-                            data: $(this).attr("situacao3")
+                            data: $(this).attr("Extinto")
                         },
                         data[3] = {
                             label: "Julgado",
-                            data: $(this).attr("situacao4")
+                            data: $(this).attr("Julgado")
                         },
                         data[4] = {
                             label: "Suspenso",
-                            data: $(this).attr("situacao5")
+                            data: $(this).attr("Suspenso")
                         };
                         
                         // GRAPH 2
