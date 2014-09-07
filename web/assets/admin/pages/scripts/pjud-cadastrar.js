@@ -47,7 +47,7 @@ var PjudCad = function() {
                 },
                 distribuicaodata: {
                     data: true,
-                    required: false,
+                    required: true,
                 },
                 despachoinicial: {
                     required: false,
@@ -139,12 +139,24 @@ var PjudCad = function() {
                 Metronic.scrollTo(error, -200);
             },
             highlight: function(element) { // hightlight error inputs
-                $(element)
-                        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                if ($(element).attr("id") == "distribuicaodata"){
+                        $('#distribuicao').css("border-color","#e5e5e5");
+                        $('#distribuicao').focus(function(){
+                            $('#distribuicao').css("border-color","#999");
+                            $('#distribuicao').css("box-shadow","none");
+                            $('#distribuicao').css("outline","0 none");
+                        });
+                        $('#distribuicao').focusout(function(){
+                            $('#distribuicao').css("border-color","#e5e5e5");
+                            $('#distribuicao').css("box-shadow","none");
+                            $('#distribuicao').css("outline","0 none");
+                        });
+                        
+                }
             },
             unhighlight: function(element) { // revert the change done by hightlight
-                $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');

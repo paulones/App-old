@@ -121,6 +121,8 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 100)
     @Column(name = "distribuicao")
     private String distribuicao;
+    @Basic(optional = false)
+    @NotNull
     @Size(max = 10)
     @Column(name = "distribuicao_data_do_ato")
     private String distribuicaoDataDoAto;
