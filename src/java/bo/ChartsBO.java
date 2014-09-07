@@ -53,4 +53,22 @@ public class ChartsBO implements Serializable{
         }
         return null;
     }
+    
+    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes){
+        try {
+            return processoJudicialDAO.sumPJUDValueBeforeMonth(ano, mes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes){
+        try {
+            return processoJudicialDAO.countPJUDValueBeforeMonth(ano, mes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

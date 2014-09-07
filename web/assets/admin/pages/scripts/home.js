@@ -1,6 +1,8 @@
 var Home = function() {
 
     var anoInteractiveChart = new Date().getFullYear();
+    var anoRevenueChart = new Date().getFullYear();
+
     var initInteractiveChart = function() {
 
         if (!jQuery.plot) {
@@ -232,6 +234,123 @@ var Home = function() {
             return;
         }
 
+        var revenue = [];
+        $.ajax({
+            url: "/webresources/reaver/getArrecadacao",
+            dataType: "json",
+            cache: false,
+            data: {
+                ano: anoRevenueChart
+            }
+        })
+                .done(function(data) {
+                    $.each(data, function() {
+                        if ($('#site_activities').size() != 0) {
+                            //site activities
+                            var previousPoint2 = null;
+                            $('#site_activities_loading').hide();
+                            $('#site_activities_content').show();
+
+                            var data = [
+                                ['JAN', $(this).attr("value1")],
+                                ['FEV', $(this).attr("value2")],
+                                ['MAR', $(this).attr("value3")],
+                                ['ABR', $(this).attr("value4")],
+                                ['MAI', $(this).attr("value5")],
+                                ['JUN', $(this).attr("value6")],
+                                ['JUL', $(this).attr("value7")],
+                                ['AGO', $(this).attr("value8")],
+                                ['SET', $(this).attr("value9")],
+                                ['OUT', $(this).attr("value10")],
+                                ['NOV', $(this).attr("value11")],
+                                ['DEZ', $(this).attr("value12")]
+                            ];
+                            $("#previsao").text("R$" + $(this).attr("value12"));
+                            $("#processosCount").text($(this).attr("count"));
+
+                            var plot_statistics = $.plot($("#site_activities"),
+                                    [{
+                                            data: data,
+                                            lines: {
+                                                fill: 0.2,
+                                                lineWidth: 0,
+                                            },
+                                            color: ['#BAD9F5']
+                                        }, {
+                                            data: data,
+                                            points: {
+                                                show: true,
+                                                fill: true,
+                                                radius: 4,
+                                                fillColor: "#9ACAE6",
+                                                lineWidth: 2
+                                            },
+                                            color: '#9ACAE6',
+                                            shadowSize: 1
+                                        }, {
+                                            data: data,
+                                            lines: {
+                                                show: true,
+                                                fill: false,
+                                                lineWidth: 3
+                                            },
+                                            color: '#9ACAE6',
+                                            shadowSize: 0
+                                        }],
+                                    {
+                                        xaxis: {
+                                            tickLength: 0,
+                                            tickDecimals: 0,
+                                            mode: "categories",
+                                            min: 0,
+                                            font: {
+                                                lineHeight: 18,
+                                                style: "normal",
+                                                variant: "small-caps",
+                                                color: "#6F7B8A"
+                                            }
+                                        },
+                                        yaxis: {
+                                            ticks: 5,
+                                            tickDecimals: 0,
+                                            tickColor: "#eee",
+                                            font: {
+                                                lineHeight: 14,
+                                                style: "normal",
+                                                variant: "small-caps",
+                                                color: "#6F7B8A"
+                                            }
+                                        },
+                                        grid: {
+                                            hoverable: true,
+                                            clickable: true,
+                                            tickColor: "#eee",
+                                            borderColor: "#eee",
+                                            borderWidth: 1
+                                        }
+                                    });
+
+                            $("#site_activities").bind("plothover", function(event, pos, item) {
+                                $("#x").text(pos.x.toFixed(2));
+                                $("#y").text(pos.y.toFixed(2));
+                                if (item) {
+                                    if (previousPoint2 != item.dataIndex) {
+                                        previousPoint2 = item.dataIndex;
+                                        $("#tooltip").remove();
+                                        var x = item.datapoint[0].toFixed(2),
+                                                y = item.datapoint[1].toFixed(2);
+                                        showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + 'R$');
+                                    }
+                                }
+                            });
+
+                            $('#site_activities').bind("mouseleave", function() {
+                                $("#tooltip").remove();
+                            });
+                        }
+                    });
+                });
+
         function showChartTooltip(x, y, xValue, yValue) {
             $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
                 position: 'absolute',
@@ -242,109 +361,6 @@ var Home = function() {
                 padding: '2px 6px',
                 'background-color': '#fff'
             }).appendTo("body").fadeIn(200);
-        }
-
-        if ($('#site_activities').size() != 0) {
-            //site activities
-            var previousPoint2 = null;
-            $('#site_activities_loading').hide();
-            $('#site_activities_content').show();
-
-            var data = [
-                ['JAN', 600],
-                ['FEV', 1100],
-                ['MAR', 1200],
-                ['ABR', 860],
-                ['MAI', 1200],
-                ['JUN', 1450],
-                ['JUL', 1800],
-                ['AGO', 1200],
-                ['SET', 600],
-                ['OUT', 900],
-                ['NOV', 700],
-                ['DEZ', 300],
-            ];
-
-
-            var plot_statistics = $.plot($("#site_activities"),
-                    [{
-                            data: data,
-                            lines: {
-                                fill: 0.2,
-                                lineWidth: 0,
-                            },
-                            color: ['#BAD9F5']
-                        }, {
-                            data: data,
-                            points: {
-                                show: true,
-                                fill: true,
-                                radius: 4,
-                                fillColor: "#9ACAE6",
-                                lineWidth: 2
-                            },
-                            color: '#9ACAE6',
-                            shadowSize: 1
-                        }, {
-                            data: data,
-                            lines: {
-                                show: true,
-                                fill: false,
-                                lineWidth: 3
-                            },
-                            color: '#9ACAE6',
-                            shadowSize: 0
-                        }],
-                    {
-                        xaxis: {
-                            tickLength: 0,
-                            tickDecimals: 0,
-                            mode: "categories",
-                            min: 0,
-                            font: {
-                                lineHeight: 18,
-                                style: "normal",
-                                variant: "small-caps",
-                                color: "#6F7B8A"
-                            }
-                        },
-                        yaxis: {
-                            ticks: 5,
-                            tickDecimals: 0,
-                            tickColor: "#eee",
-                            font: {
-                                lineHeight: 14,
-                                style: "normal",
-                                variant: "small-caps",
-                                color: "#6F7B8A"
-                            }
-                        },
-                        grid: {
-                            hoverable: true,
-                            clickable: true,
-                            tickColor: "#eee",
-                            borderColor: "#eee",
-                            borderWidth: 1
-                        }
-                    });
-
-            $("#site_activities").bind("plothover", function(event, pos, item) {
-                $("#x").text(pos.x.toFixed(2));
-                $("#y").text(pos.y.toFixed(2));
-                if (item) {
-                    if (previousPoint2 != item.dataIndex) {
-                        previousPoint2 = item.dataIndex;
-                        $("#tooltip").remove();
-                        var x = item.datapoint[0].toFixed(2),
-                                y = item.datapoint[1].toFixed(2);
-                        showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + 'M$');
-                    }
-                }
-            });
-
-            $('#site_activities').bind("mouseleave", function() {
-                $("#tooltip").remove();
-            });
         }
     }
 

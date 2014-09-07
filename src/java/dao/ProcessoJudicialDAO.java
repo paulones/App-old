@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import dao.exceptions.IllegalOrphanException;
@@ -16,6 +15,7 @@ import entidade.TipoRecurso;
 import entidade.Usuario;
 import entidade.VinculoProcessual;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -54,7 +54,8 @@ public class ProcessoJudicialDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             TipoRecurso tipoDeRecursoFk = processoJudicial.getTipoDeRecursoFk();
             if (tipoDeRecursoFk != null) {
                 tipoDeRecursoFk = em.getReference(tipoDeRecursoFk.getClass(), tipoDeRecursoFk.getId());
@@ -137,7 +138,8 @@ public class ProcessoJudicialDAO implements Serializable {
     public void edit(ProcessoJudicial processoJudicial) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             ProcessoJudicial persistentProcessoJudicial = em.find(ProcessoJudicial.class, processoJudicial.getId());
             TipoRecurso tipoDeRecursoFkOld = persistentProcessoJudicial.getTipoDeRecursoFk();
             TipoRecurso tipoDeRecursoFkNew = processoJudicial.getTipoDeRecursoFk();
@@ -281,7 +283,8 @@ public class ProcessoJudicialDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             ProcessoJudicial processoJudicial;
             try {
                 processoJudicial = em.getReference(ProcessoJudicial.class, id);
@@ -385,12 +388,12 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
-    
-    public ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial){
+
+    public ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial) {
         EntityManager em = getEntityManager();
         try {
             ProcessoJudicial usuario = (ProcessoJudicial) em.createNativeQuery("select * from processo_judicial "
-                    + "where numero_do_processo = '" + processoJudicial.getNumeroDoProcesso() + "' or numero_da_cda = '"+ processoJudicial.getNumeroDaCda() +"'", ProcessoJudicial.class).getSingleResult();
+                    + "where numero_do_processo = '" + processoJudicial.getNumeroDoProcesso() + "' or numero_da_cda = '" + processoJudicial.getNumeroDaCda() + "'", ProcessoJudicial.class).getSingleResult();
             return usuario;
         } catch (NoResultException e) {
             return null;
@@ -398,8 +401,8 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
-    
-    public ProcessoJudicial findByProcessNumber(String processNumber){
+
+    public ProcessoJudicial findByProcessNumber(String processNumber) {
         EntityManager em = getEntityManager();
         try {
             ProcessoJudicial usuario = (ProcessoJudicial) em.createNativeQuery("select * from processo_judicial "
@@ -411,12 +414,12 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
-    
-    public ProcessoJudicial findByCDA(ProcessoJudicial processoJudicial){
+
+    public ProcessoJudicial findByCDA(ProcessoJudicial processoJudicial) {
         EntityManager em = getEntityManager();
         try {
             ProcessoJudicial usuario = (ProcessoJudicial) em.createNativeQuery("select * from processo_judicial "
-                    + "where numero_da_cda = '"+ processoJudicial.getNumeroDaCda() +"'", ProcessoJudicial.class).getSingleResult();
+                    + "where numero_da_cda = '" + processoJudicial.getNumeroDaCda() + "'", ProcessoJudicial.class).getSingleResult();
             return usuario;
         } catch (NoResultException e) {
             return null;
@@ -424,12 +427,12 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
-    
-    public List<ProcessoJudicial> findAllActive(){
+
+    public List<ProcessoJudicial> findAllActive() {
         EntityManager em = getEntityManager();
         try {
             List<ProcessoJudicial> processoJudicialList = (List<ProcessoJudicial>) em.createNativeQuery("select * from processo_judicial "
-                        + "where status = 'A' ", ProcessoJudicial.class).getResultList();
+                    + "where status = 'A' ", ProcessoJudicial.class).getResultList();
             return processoJudicialList;
         } catch (NoResultException e) {
             return null;
@@ -437,15 +440,49 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
-    
-    public Integer countPJUDByMonth(Integer ano, Integer mes){
+
+    public Integer countPJUDByMonth(Integer ano, Integer mes) {
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(distinct pjud.id) from processo_judicial pjud, log l "
                     + "where l.tabela = 'PJUD' and l.id_fk= pjud.id and "
                     + "pjud.status = 'A' and l.operacao = 'C' and "
-                    + "DATE_PART('MONTH', l.data_de_criacao) = "+mes+" and "
-                    + "DATE_PART('YEAR', l.data_de_criacao) = "+ano).getSingleResult();
+                    + "DATE_PART('MONTH', l.data_de_criacao) = " + mes + " and "
+                    + "DATE_PART('YEAR', l.data_de_criacao) = " + ano).getSingleResult();
+            return count.intValue();
+        } catch (NoResultException e) {
+            return 0;
+        } finally {
+            em.close();
+        }
+    }
+
+    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes) {
+        EntityManager em = getEntityManager();
+        try {
+            BigDecimal count = (BigDecimal) em.createNativeQuery("select sum(valor_atualizado) from processo_judicial pj "
+                    + "where pj.id != (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.operacao = 'D') and "
+                    + "pj.id in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and "
+                    + "DATE_PART('YEAR', sl.data_de_criacao) <= " + ano + " and DATE_PART('MONTH', sl.data_de_criacao) <= " + mes + " ) ").getSingleResult();
+            if (count == null) {
+                return 0.0;
+            } else {
+                return count.doubleValue();
+            }
+        } catch (NoResultException e) {
+            return 0.0;
+        } finally {
+            em.close();
+        }
+    }
+
+    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes) {
+        EntityManager em = getEntityManager();
+        try {
+            Long count = (Long) em.createNativeQuery("select count(pj.id) from processo_judicial pj "
+                    + "where pj.id != (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.operacao = 'D') and "
+                    + "pj.id in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and "
+                    + "DATE_PART('YEAR', sl.data_de_criacao) <= " + ano + " and DATE_PART('MONTH', sl.data_de_criacao) <= " + mes + " ) ").getSingleResult();
             return count.intValue();
         } catch (NoResultException e) {
             return 0;
