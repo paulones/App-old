@@ -55,7 +55,7 @@
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="../home.xhtml">
-                        <img src="../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
+                        <!--<img src="../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>-->
                     </a>
                     <div class="menu-toggler sidebar-toggler ">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -930,6 +930,7 @@
                                                             <!-- BEGIN LISTA CONTENT-->
                                                             <div class="form-body nestable-list">
                                                                 <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
+                                                                <br/>
                                                                 <div class="row">
                                                                     <div class="col-md-12">
                                                                         <div class="portlet-body">
@@ -1547,10 +1548,10 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                                            <label class="control-label col-md-4">Situação:</label>
                                                                             <div class="col-md-8">
                                                                                 <p class="form-control-static ">
-                                                                                    #{templateBean.executado.processoJudicial.procurador eq null ? '-' : templateBean.executado.processoJudicial.procurador}
+                                                                                    #{templateBean.executado.processoJudicial.situacaoFk.situacao}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -1618,7 +1619,14 @@
                                                                     </div>
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
-
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static ">
+                                                                                    #{templateBean.executado.processoJudicial.procurador eq null ? '-' : templateBean.executado.processoJudicial.procurador}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <!--/row-->
@@ -1762,7 +1770,7 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa</label>
+                                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa:</label>
                                                                             <div class="col-md-8">
                                                                                 <p class="form-control-static money">
                                                                                     #{templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta eq null ? '-' : templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta}
@@ -1814,6 +1822,35 @@
                                                                             <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{templateBean.executado.processoJudicial.fatosGeradores eq null ? '-' : templateBean.executado.processoJudicial.fatosGeradores.replaceAll(',', '; ')}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Valor Arrecadado:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static money">
+                                                                                    #{templateBean.executado.processoJudicial.valorArrecadado eq null ? '-' : templateBean.executado.processoJudicial.valorArrecadado}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Fonte da Arrecadação:</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static money">
+                                                                                    #{templateBean.executado.processoJudicial.fonteDaArrecadacao eq null ? '-' : templateBean.executado.processoJudicial.fonteDaArrecadacao}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -2713,6 +2750,7 @@
                                                                                     <!-- BEGIN LISTA CONTENT-->
                                                                                     <div class="form-body nestable-list">
                                                                                         <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
+                                                                                        <br/>
                                                                                         <div class="row">
                                                                                             <div class="col-md-12">
                                                                                                 <div class="portlet-body">
@@ -3043,7 +3081,7 @@
                 });
             }
 
-            function getSucessoes(id, parent, portlet) {
+            function getSucessoes(id, parent, portlet, removeGrant, displayHistory) {
                 var pjId = $(id).val();
                 if (pjId !== undefined) {
                     $.ajax({
@@ -3061,14 +3099,17 @@
                                 var icon = parent.indexOf('modal') !== -1 ? '<i class="fa fa-bank"></i>' : '<i class="fa fa-search"></i>';
                                 var modal = parent.indexOf('modal') !== -1 ? '' : 'pj-info';
                                 $.each(data, function() {
+                                    var status;
                                     if (String(pjId) === String($(this).attr('sucessora_id'))) {
+                                        status = $(this).attr('sucedida_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                         sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                 + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
-                                                + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + '</div></li>';
+                                                + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + status + '</div></li>';
                                     } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
+                                        status = $(this).attr('sucessora_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                         sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                 + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
-                                                + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + '</div></li>';
+                                                + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + status + '</div></li>';
                                     }
                                 });
                                 if (sucedidas === "" && sucessoras === "") {
@@ -3088,8 +3129,21 @@
                                         sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
                                         $(parent).find('.atual').append(sucessoras);
                                     }
-                                    $('.atual').children('.dd3-content').css("color","#3c763d");
+                                    $('.atual').children('.dd3-content').css("color", "#3c763d");
                                 }
+
+                                if (removeGrant) {
+                                    var remove = '<a class="button-delete-sucessao"><i class="glyphicon glyphicon-remove"></i></a>';
+                                    $(parent).find('.sucedidas').children(".dd3-content").append(remove);
+                                    $(parent).find('.sucessoras').children(".dd3-content").append(remove);
+                                }
+
+                                if (displayHistory) {
+                                    var history = '<a class="button-history-sucessao"><i class="fa fa-history"></i></a>';
+                                    $(parent).find('.sucedidas').children(".dd3-content").append(history);
+                                    $(parent).find('.sucessoras').children(".dd3-content").append(history);
+                                }
+
                                 if (portlet !== undefined) {
                                     reallocatePortlet(portlet);
                                 }

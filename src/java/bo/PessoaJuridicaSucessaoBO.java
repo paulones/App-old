@@ -41,9 +41,9 @@ public class PessoaJuridicaSucessaoBO implements Serializable{
         }
     }
     
-    public void destroy(PessoaJuridicaSucessao pessoaJuridicaSucessao){
+    public void destroy(Integer id){
         try {
-            pessoaJuridicaSucessaoDAO.destroy(pessoaJuridicaSucessao.getId());
+            pessoaJuridicaSucessaoDAO.destroy(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,6 +67,24 @@ public class PessoaJuridicaSucessaoBO implements Serializable{
         return null;
     }
     
+    public PessoaJuridicaSucessao findBySucedida(PessoaJuridica pessoaJuridicaSucedida, PessoaJuridica pessoaJuridicaSucessora){
+        try {
+            return pessoaJuridicaSucessaoDAO.findDuplicates(pessoaJuridicaSucedida, pessoaJuridicaSucessora);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public PessoaJuridicaSucessao findBySucedidaAndSucessora(Integer sucedida, Integer sucessora){
+        try {
+            return pessoaJuridicaSucessaoDAO.findBySucedidaAndSucessora(sucedida, sucessora);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
     public List<PessoaJuridicaSucessao> findSucessoras(Integer id){
         try { 
             return pessoaJuridicaSucessaoDAO.findSucessoras(id);
@@ -79,6 +97,15 @@ public class PessoaJuridicaSucessaoBO implements Serializable{
     public List<PessoaJuridicaSucessao> findSucedidas(Integer id){
         try { 
             return pessoaJuridicaSucessaoDAO.findSucedidas(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PessoaJuridicaSucessao>();
+    }
+    
+    public List<PessoaJuridicaSucessao> findSucedidasAndSucessoras(Integer id){
+        try { 
+            return pessoaJuridicaSucessaoDAO.findSucedidasAndSucessoras(id);
         } catch (Exception e) {
             e.printStackTrace();
         }

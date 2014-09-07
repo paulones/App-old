@@ -3,7 +3,6 @@ var PJSuc = function() {
 
     return {
         init: function() {
-
             verPessoaJuridica();
             $('.cnpj').change(verPessoaJuridica);
             function verPessoaJuridica() {

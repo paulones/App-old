@@ -130,7 +130,7 @@
                                             Cadastro realizado com sucesso!
                                         </h:panelGroup>
                                         <div class="tab-pane active" id="tab1">
-                                            <span class="help-block">Antes de cadastrar um Processo Judicial, é necessário que o executado (Pessoa Física ou Pessoa Jurídica) já esteja cadastrado no sistema.</span>
+                                            <span class="help-block">Antes de cadastrar um Processo Judicial, é necessário que o executado (Pessoa Física ou Pessoa Jurídica) esteja cadastrado no sistema.</span>
                                             <span class="help-block">Campos com * são obrigatórios.</span>
                                             <h3 class="form-section">Identificação do Processo Judicial</h3>
                                             <div class="row">
@@ -180,13 +180,14 @@
                                                 <!--/span-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Procurador 
+                                                        <label class="control-label col-md-4">Situação <span class="required">
+                                                                * </span>
                                                         </label>
                                                         <div class="col-md-8">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="procurador" autocomplete="off" value="#{processoJudicialBean.processoJudicial.procurador}"/>
-                                                            </div>
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="situacao" tabindex="1" value="#{processoJudicialBean.processoJudicial.situacaoFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{processoJudicialBean.situacaoList}" var="situacao" itemLabel="#{situacao.situacao}" itemValue="#{situacao}"/>
+                                                            </h:selectOneMenu>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -265,6 +266,16 @@
                                                 </div>
                                                 <!--/span-->
                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Procurador 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="procurador" autocomplete="off" value="#{processoJudicialBean.processoJudicial.procurador}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <!--/span-->
                                             </div>
@@ -272,7 +283,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-2">Distribuição / Data do Ato 
+                                                        <label class="control-label col-md-2">Distribuição / Data do Ato <span class="required">
+                                                                * </span>
                                                         </label>
                                                         <div class="col-md-6">
                                                             <div class="input-icon right">
@@ -505,6 +517,45 @@
                                                                 Escolha datas no formato mm/aaaa e aperte "Enter". Não é necessário digitar "/".</span>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Valor Arrecadado 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control money" id="valorarrecadado" autocomplete="off" value="#{processoJudicialBean.processoJudicial.valorArrecadado}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
+                                                    
+                                                </div>
+                                                <!--/span-->
+                                            </div>
+                                            <!--/row-->
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Fonte da Arrecadação 
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="fontedaarrecadacao" value="#{processoJudicialBean.processoJudicial.fonteDaArrecadacao}" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/span-->
+                                                <div class="col-md-6">
                                                 </div>
                                                 <!--/span-->
                                             </div>
@@ -1570,7 +1621,7 @@
                                                 <a href="javascript:;" class="btn blue-chambray button-submit">
                                                     <ui:fragment rendered="#{!processoJudicialBean.edit}"><i class="fa fa-save"></i>
                                                     </ui:fragment><ui:fragment rendered="#{processoJudicialBean.edit}"><i class="fa fa-edit"></i></ui:fragment> 
-                                                    #{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'} 
+                                                        #{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'} 
                                                 </a>
                                                 <h:commandLink class="submit-pjud" action="#{processoJudicialBean.cadastrar()}"></h:commandLink>
                                             </div>

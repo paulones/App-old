@@ -8,6 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -83,6 +84,14 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorDaCausa;
     @Column(name = "valor_atualizado")
     private BigDecimal valorAtualizado;
+    @Column(name = "valor_arrecadado")
+    private BigDecimal valorArrecadado;
+    @Size(max = 300)
+    @Column(name = "fonte_da_arrecadacao")
+    private String fonteDaArrecadacao;
+    @JoinColumn(name = "situacao_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Situacao situacaoFk;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -117,6 +126,8 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 100)
     @Column(name = "distribuicao")
     private String distribuicao;
+    @Basic(optional = false)
+    @NotNull
     @Size(max = 10)
     @Column(name = "distribuicao_data_do_ato")
     private String distribuicaoDataDoAto;
@@ -544,6 +555,30 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setValorAtualizado(BigDecimal valorAtualizado) {
         this.valorAtualizado = valorAtualizado;
+    }
+
+    public Situacao getSituacaoFk() {
+        return situacaoFk;
+    }
+
+    public void setSituacaoFk(Situacao situacaoFk) {
+        this.situacaoFk = situacaoFk;
+    }
+
+    public BigDecimal getValorArrecadado() {
+        return valorArrecadado;
+    }
+
+    public void setValorArrecadado(BigDecimal valorArrecadado) {
+        this.valorArrecadado = valorArrecadado;
+    }
+
+    public String getFonteDaArrecadacao() {
+        return fonteDaArrecadacao;
+    }
+
+    public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
+        this.fonteDaArrecadacao = fonteDaArrecadacao;
     }
 
 }

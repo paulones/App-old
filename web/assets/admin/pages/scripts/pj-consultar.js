@@ -78,11 +78,12 @@ var PJCon = function() {
         });
     }
 
-    var initHistoryTable = function() {
-        var table = $('#table');
+    var initHistoryTable = function(table) {
+        var tableMain = $(table);
         var tableDetails = $('.vinculations');
 
         var oTable2 = tableDetails.dataTable({
+            destroy: true,
             paginate: false,
             lengthMenu: false,
             info: false,
@@ -97,12 +98,19 @@ var PJCon = function() {
         /*
          * Initialize DataTables, with no sorting on the 'details' column
          */
-        var oTable = table.dataTable({
+        var oTable = tableMain.dataTable({
             "columnDefs": [{
                     "orderable": false,
                     "targets": [0, 2, 3]
                 }],
             "order": [
+            ],
+            "columns": [
+                {"class": "width-expand"},
+                {"class": "width-data"},
+                {"class": "width-descricao"},
+                {"class": "width-usuario"},
+                {},
             ],
             "orderClasses": false,
             "language": {
@@ -121,7 +129,7 @@ var PJCon = function() {
             // set the initial value
             "pageLength": 10,
         });
-        var tableWrapper = $('#table_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
+        var tableWrapper = $(table + '_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
 
         tableWrapper.find('.dataTables_length select').select2(); // initialize select2 dropdown
 
@@ -129,7 +137,7 @@ var PJCon = function() {
          * Note that the indicator for showing which row is open is not controlled by DataTables,
          * rather it is done here
          */
-        table.on('click', ' tbody td .row-details', function() {
+        tableMain.on('click', ' tbody td .row-details', function() {
             if ($(this).hasClass('row-details-open')) {
                 /* This row is already open - close it */
                 $(this).addClass("row-details-close").removeClass("row-details-open");
@@ -151,7 +159,7 @@ var PJCon = function() {
 
             if (window.location.search != "") {
                 var atual;
-                initHistoryTable();
+                initHistoryTable('#table');
                 $.each($('.data-de-modificacao'), function() {
                     if ($(this).html().indexOf('Atual') !== -1) {
                         $(this).parent().find('.form-body').addClass('current');
@@ -246,6 +254,30 @@ var PJCon = function() {
                 });
             } else {
                 initTable();
+
+                var index;
+                $(document).on('click', '.button-delete-sucessao', function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    index = $('.button-delete-sucessao').index(this);
+                    $('.delete-sucessao-modal-activator').click();
+                });
+
+                $('.cancel-sucessao').click(function(e) {
+                    e.preventDefault();
+                });
+                $('.remove-sucessao').click(function(e) {
+                    e.preventDefault();
+                    $('#pj-sucessao-id').val($($('.button-delete-sucessao').get(index)).parent().parent().children('.suc-id').val());
+                    $('.info-delete-sucessao').click();
+                });
+
+                $(document).on('click', '.button-history-sucessao', function(e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    $('#pj-sucessao-id').val($(this).parent().parent().children('.suc-id').val());
+                    $('.info-history-sucessao').click();
+                });
             }
 
             $('select[name=table_length]').change(function() {
@@ -269,7 +301,42 @@ var PJCon = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
-                        getSucessoes('#pj-id', '#info', $(element));
+                        getSucessoes('#pj-id', '#info', $(element), true, true);
+                    } else if ($(data.source).attr('class') === 'info-history-sucessao') {
+                        $('.show-history-modal-activator').click();
+                        var atual;
+                        initHistoryTable('#sucessao-table');
+                        $.each($('.data-de-modificacao'), function() {
+                            if ($(this).html().indexOf('Atual') !== -1) {
+                                $(this).parent().find('.form-body').addClass('current');
+                                $(this).parent().children('.description').removeClass('description');
+                                atual = $(this).parent().find('.form-body');
+                            } else {
+                                $(this).parent().find('.form-body').addClass('past');
+                            }
+                        });
+                        $.each($('.past'), function() {
+                            var description = "";
+                            var informacoes = "";
+                            $.each($(this).find('.form-control-static'), function(index) {
+                                if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                                    $(this).parent().parent().css("color", "#a94442");
+                                    informacoes = true;
+                                }
+                            });
+
+                            if (informacoes) {
+                                description += "Informa&ccedil;&otilde;es da Sucess&atilde;o, ";
+                            }
+
+                            description = description.substring(0, description.length - 2) + ".";
+                            if (description.indexOf(",") !== -1) {
+                                description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+                            } else if (description === ".") {
+                                description = "";
+                            }
+                            $(this).closest('.detail').parent().children('.description').append(description);
+                        });
                     }
                 }
             });

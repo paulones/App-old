@@ -54,6 +54,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridica.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridica p WHERE p.atividadeSecundaria = :atividadeSecundaria"),
     @NamedQuery(name = "PessoaJuridica.findByStatus", query = "SELECT p FROM PessoaJuridica p WHERE p.status = :status")})
 public class PessoaJuridica implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucedidaFk")
+    private Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucessoraFk")
+    private Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection1;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -444,6 +448,24 @@ public class PessoaJuridica implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaJuridica[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaSucessaoHistorico> getPessoaJuridicaSucessaoHistoricoCollection() {
+        return pessoaJuridicaSucessaoHistoricoCollection;
+    }
+
+    public void setPessoaJuridicaSucessaoHistoricoCollection(Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection) {
+        this.pessoaJuridicaSucessaoHistoricoCollection = pessoaJuridicaSucessaoHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaJuridicaSucessaoHistorico> getPessoaJuridicaSucessaoHistoricoCollection1() {
+        return pessoaJuridicaSucessaoHistoricoCollection1;
+    }
+
+    public void setPessoaJuridicaSucessaoHistoricoCollection1(Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection1) {
+        this.pessoaJuridicaSucessaoHistoricoCollection1 = pessoaJuridicaSucessaoHistoricoCollection1;
     }
     
 }

@@ -409,22 +409,26 @@ var PjudCon = function() {
                                         var icon = parent.indexOf('modal') !== -1 ? '<i class="fa fa-bank"></i>' : '<i class="fa fa-search"></i>';
                                         var modal = parent.indexOf('modal') !== -1 ? '' : 'pj-info';
                                         $.each(data, function() {
+                                            var status;
                                             if (String(pjId) === String($(this).attr('sucessora_id'))) {
+                                                status = $(this).attr('sucedida_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>'; 
                                                 sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                         + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
-                                                        + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + '</div></li>';
+                                                        + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + status + '</div></li>';
                                             } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
+                                                status = $(this).attr('sucessora_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>'; 
                                                 sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                         + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
-                                                        + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + '</div></li>';
+                                                        + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + status + '</div></li>';
                                             }
                                         });
                                         if (sucedidas === "" && sucessoras === "") {
                                             $(parent).find('.nestable-list').children().remove();
                                             $(parent).find('.nestable-list').append('<div layout="block" class="alert alert-warning">N&atilde;o h&aacute; sucess&otilde;es para esta Pessoa Jur&iacute;dica.</div>');
                                         } else {
+                                            var status = $(parent).find('.pj-status').val() === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                             atual += '<li class="atual dd-item dd3-item"><div class="dd-handle dd3-handle"><i class="fa fa-bank"></i></div>'
-                                                    + '<div class="dd3-content"><strong>' + $(parent).find('.nome').html().trim() + ':</strong> ' + $(parent).find('.cnpj').html().trim() + '</div></li>';
+                                                    + '<div class="dd3-content"><strong>' + $(parent).find('.nome').html().trim() + ':</strong> ' + $(parent).find('.cnpj').html().trim() + status + '</div></li>';
                                             $(parent).find('.dd-list').append(sucedidas);
                                             if (sucedidas !== "") {
                                                 atual = '<ol class="dd-list">' + atual + '</ol>';

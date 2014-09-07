@@ -2,7 +2,8 @@
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="title">Pessoa Jurídica - #{pessoaJuridicaBean.history ? 'Histórico' :'Consulta'}</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaJuridicaBean.init()}"/>
@@ -14,6 +15,13 @@
         <!-- BEGIN PAGE STYLES -->
         <style>
             .control-label{margin-top:6px !important}
+            .button-delete-sucessao{color:red;float:right}
+            .button-history-sucessao{color:#333;margin-right:5px;float:right}
+            .height-top{height:75px}
+            .width-expand{width:3%}
+            .width-data{width:15%}
+            .width-descricao{width:48%}
+            .width-usuario{width:40%}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -81,7 +89,7 @@
                             </h:panelGroup>
                             <h:panelGroup layout="block" class="alert alert-success"  rendered="#{pessoaJuridicaBean.register eq 'success'}">
                                 <button class="close" data-close="alert"></button>
-                                Cadastro removido com sucesso!
+                                <h:messages layout="table" />
                             </h:panelGroup>
                             <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
                                 <span class="help-block">Para visualizar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span>.</span>
@@ -563,6 +571,11 @@
             <h:commandLink class="info-refresher">
                 <f:ajax execute="pj-id" listener="#{pessoaJuridicaBean.exibirInfo()}" render="info"/>
             </h:commandLink>
+            <h:inputHidden id="pj-sucessao-id" value="#{pessoaJuridicaBean.pjsId}"/>
+            <h:commandLink class="info-delete-sucessao" action="#{pessoaJuridicaBean.removerSucessao()}" />
+            <h:commandLink class="info-history-sucessao">
+                <f:ajax execute="pj-sucessao-id" listener="#{pessoaJuridicaBean.exibirHistoricoDaSucessao()}" render=":modal-pj-sucessao"/>
+            </h:commandLink>
             <h:panelGroup id="info" class="display-hide">
                 <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty pessoaJuridicaBean.enderecoPessoa.pessoa}">
                     <div class="portlet-title">
@@ -991,13 +1004,12 @@
                                             </div>
                                         </div>
                                         <div class="portlet-body form">
-                                            <div class="form-actions top">
+                                            <div class="form-actions top height-top">
                                                 <div class="row">
                                                     <div class="col-md-5">
                                                     </div>
                                                     <div class="col-md-7">
                                                         <div class="col-md-offset-4 col-md-9">
-                                                            <a href="consultar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Sucessões</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1005,7 +1017,9 @@
                                             <!-- BEGIN LISTA CONTENT-->
                                             <div class="form-body nestable-list">
                                                 <span class="help-block">Para visualizar os dados de uma empresa, clique na <i class="fa fa-search"></i>.</span>
+                                                <span class="help-block">Para acessar o histórico de uma sucessão, clique no <i class="fa fa-history"></i>.</span>
                                                 <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
+                                                <br/>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="portlet-body">
@@ -1049,6 +1063,184 @@
                 </div>
             </div>
         </div>
+        <a class="btn default display-hide delete-sucessao-modal-activator" data-toggle="modal" href="#static-sucessao-delete"></a>
+        <div id="static-sucessao-delete" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fa fa-exclamation-triangle"></i> Remover Sucessão Empresarial <i class="fa fa-exclamation-triangle"></i></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Tem certeza que deseja remover o vínculo entre essas duas empresas?
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn default cancel-sucessao">Cancelar</button>
+                        <button type="button" data-dismiss="modal" class="btn blue-chambray remove-sucessao">Remover</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="btn default display-hide show-history-modal-activator" data-toggle="modal" href="#largepjs-history"></a>
+        <h:panelGroup id="modal-pj-sucessao">
+            <h:panelGroup layout="block" id="largepjs-history" class="modal fade bs-modal-lg" p:tabindex="-1" p:role="dialog" p:aria-hidden="true" rendered="#{not empty pessoaJuridicaBean.pessoaJuridicaSucessaoHistoricoList}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body modal-pessoa">
+                            <div class="portlet box blue-chambray">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-globe"></i>
+                                        <span>Histórico de #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome}</span> <span><i class="fa fa-exchange"></i> #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}</span>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <span class="help-block">Para visualizar os dados alterados de um registro anterior em relação ao atual,clique no <span class="expand-example"></span>.</span>
+                                    <span class="help-block">Os campos alterados estão destacados na cor vermelha.</span>
+                                    <br/>
+                                    <table class="table table-striped table-bordered table-hover" id="sucessao-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:3%"></th>
+                                                <th style="width:15%">
+                                                    Registro
+                                                </th>
+                                                <th style="width:48%">
+                                                    Alterações
+                                                </th>
+                                                <th style="width:40%">
+                                                    Usuário Alterador
+                                                </th>
+                                                <th class="display-hide"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{pessoaJuridicaBean.pessoaJuridicaSucessaoHistoricoList}" var="pessoaJuridicaSucessaoHistorico">
+                                                <tr>
+                                                    <td class="expand-box">
+                                                        <span class="row-details row-details-close"></span>
+                                                    </td>
+                                                    <td class="data-de-modificacao">
+                                                        <h:outputText rendered="#{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
+                                                        <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
+                                                            <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
+                                                        </h:outputText>
+                                                    </td>
+                                                    <td class="description">
+                                                    </td>
+                                                    <td>
+                                                        <ui:param value="#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(0,3)}.#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(3,6)}.#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(6,9)}-#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(9)}" name="cpfUsuario"/>
+                                                        #{pessoaJuridicaSucessaoHistorico.usuarioFk.nome} | #{cpfUsuario}
+                                                    </td>
+                                                    <td class="detail display-hide" colspan="6">
+                                                        <div class="portlet box blue-chambray">
+                                                            <div class="portlet-title">
+                                                                <div class="caption">
+                                                                    <i class="fa fa-history"></i>
+                                                                    Registro #{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao ? 'atual': 'do dia'}
+                                                                    <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
+                                                                        <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                                                    </h:outputText>
+                                                                    #{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao ? '': ' às '}
+                                                                    <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
+                                                                        <f:convertDateTime pattern="HH:mm:ss"/>
+                                                                    </h:outputText>
+                                                                </div>
+                                                            </div>
+                                                            <div class="portlet-body form">
+                                                                <!-- BEGIN LISTA CONTENT-->
+                                                                <div class="form-body">
+                                                                    <h3 class="form-section">Informações da Sucessão</h3>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Empresa Sucedida:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.nome}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--/span-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">CNPJ:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        #{cnpj}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Empresa Sucessora:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.nome}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <!--/span-->
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">CNPJ:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                        #{cnpj}
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-6">
+                                                                            <div class="form-group">
+                                                                                <label class="control-label col-md-3">Data de Sucessao:</label>
+                                                                                <div class="col-md-9">
+                                                                                    <p class="form-control-static">
+                                                                                        <h:outputText value="#{pessoaJuridicaSucessaoHistorico.dataDeSucessao}">
+                                                                                            <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
+                                                                                        </h:outputText>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <!--/span-->
+                                        <div class="col-md-6">
+                                            <div class="col-md-offset-9 col-md-9">
+                                                <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                            </div>
+                                        </div>
+                                        <!--/span-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </h:panelGroup>
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->

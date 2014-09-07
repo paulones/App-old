@@ -285,9 +285,6 @@ public class ReaverResource {
     @Produces("application/json")
     public String getMovimentacao(@QueryParam("ano") Integer ano) {
         ChartsBO chartsBO = new ChartsBO();
-        List<Integer> listPF = new ArrayList<>();
-        List<Integer> listPJ = new ArrayList<>();
-        List<Integer> listPJUD = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
@@ -398,9 +395,11 @@ public class ReaverResource {
             jsonObject.put("sucedida_id", pjs.getPessoaJuridicaSucedidaFk().getId());
             jsonObject.put("sucedida_nome", pjs.getPessoaJuridicaSucedidaFk().getNome());
             jsonObject.put("sucedida_cnpj", sucedidaCnpj);
+            jsonObject.put("sucedida_status", pjs.getPessoaJuridicaSucedidaFk().getStatus());
             jsonObject.put("sucessora_id", pjs.getPessoaJuridicaSucessoraFk().getId());
             jsonObject.put("sucessora_nome", pjs.getPessoaJuridicaSucessoraFk().getNome());
             jsonObject.put("sucessora_cnpj", sucessoraCnpj);
+            jsonObject.put("sucessora_status", pjs.getPessoaJuridicaSucessoraFk().getStatus());
             jsonObject.put("data_de_sucessao", TimestampUtils.getISO8601StringForDate(pjs.getDataDeSucessao()).replace("Z", ""));
             jsonArray.put(jsonObject);
         }

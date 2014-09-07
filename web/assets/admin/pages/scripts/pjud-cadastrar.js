@@ -21,6 +21,9 @@ var PjudCad = function() {
                 comarca: {
                     required: true,
                 },
+                situacao: {
+                    required: true,
+                },
                 procurador: {
                     required: false,
                 },
@@ -44,7 +47,7 @@ var PjudCad = function() {
                 },
                 distribuicaodata: {
                     data: true,
-                    required: false,
+                    required: true,
                 },
                 despachoinicial: {
                     required: false,
@@ -92,6 +95,12 @@ var PjudCad = function() {
                     data: true,
                     required: false,
                 },
+                valorarrecadado: {
+                    required: false,
+                },
+                fontedaarrecadacao: {
+                    required: false,
+                },
                 outrasinfos1: {
                     required: false,
                 },
@@ -122,7 +131,7 @@ var PjudCad = function() {
             errorPlacement: function(error, element) { // render error placement for each input type
                 if (element.attr("name") == "executado") { // for uniform radio buttons, insert the after the given container
                     error.insertAfter("#form_executado_error");
-                } else if (element.attr("name") == "cpf" || element.attr("name") == "cnpj" || $(element).hasClass("vinculotipo")) {
+                } else if (element.attr("name") == "cpf" || element.attr("name") == "cnpj" || $(element).hasClass("vinculotipo") || $(element).attr("id") == "situacao") {
                     error.insertAfter(element);
                 } else {
                     var icon = $(element).parent('.input-icon').children('i');
@@ -136,12 +145,24 @@ var PjudCad = function() {
                 Metronic.scrollTo(error, -200);
             },
             highlight: function(element) { // hightlight error inputs
-                $(element)
-                        .closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
+                if ($(element).attr("id") == "distribuicaodata"){
+                        $('#distribuicao').css("border-color","#e5e5e5");
+                        $('#distribuicao').focus(function(){
+                            $('#distribuicao').css("border-color","#999");
+                            $('#distribuicao').css("box-shadow","none");
+                            $('#distribuicao').css("outline","0 none");
+                        });
+                        $('#distribuicao').focusout(function(){
+                            $('#distribuicao').css("border-color","#e5e5e5");
+                            $('#distribuicao').css("box-shadow","none");
+                            $('#distribuicao').css("outline","0 none");
+                        });
+                        
+                }
             },
             unhighlight: function(element) { // revert the change done by hightlight
-                $(element)
-                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');
@@ -381,6 +402,20 @@ var PjudCad = function() {
             validaVinculosProcessuais();
             $('.vinculotipo').change(validaVinculosProcessuais);
             function validaVinculosProcessuais() {
+                if ($(this).next('span').length > 0) {
+                    if ($(this).find(":selected").text() !== "") {
+                        $(this).closest('.form-group').removeClass("has-error");
+                        $(this).next('span').hide();
+                    } else {
+                        $(this).closest('.form-group').addClass("has-error");
+                        $(this).next('span').show();
+                    }
+                }
+            }
+            
+            validaSituacao();
+            $('#situacao').change(validaSituacao);
+            function validaSituacao() {
                 if ($(this).next('span').length > 0) {
                     if ($(this).find(":selected").text() !== "") {
                         $(this).closest('.form-group').removeClass("has-error");

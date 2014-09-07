@@ -11,6 +11,7 @@ import dao.exceptions.RollbackFailureException;
 import entidade.Bem;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
+import entidade.Situacao;
 import entidade.TipoRecurso;
 import entidade.Usuario;
 import entidade.VinculoProcessual;
@@ -66,6 +67,11 @@ public class ProcessoJudicialDAO implements Serializable {
                 usuarioFk = em.getReference(usuarioFk.getClass(), usuarioFk.getId());
                 processoJudicial.setUsuarioFk(usuarioFk);
             }
+            Situacao situacaoFk = processoJudicial.getSituacaoFk();
+            if (situacaoFk != null) {
+                situacaoFk = em.getReference(situacaoFk.getClass(), situacaoFk.getId());
+                processoJudicial.setSituacaoFk(situacaoFk);
+            }
             Collection<Bem> attachedBemCollection = new ArrayList<Bem>();
             for (Bem bemCollectionBemToAttach : processoJudicial.getBemCollection()) {
                 bemCollectionBemToAttach = em.getReference(bemCollectionBemToAttach.getClass(), bemCollectionBemToAttach.getId());
@@ -92,6 +98,10 @@ public class ProcessoJudicialDAO implements Serializable {
             if (usuarioFk != null) {
                 usuarioFk.getProcessoJudicialCollection().add(processoJudicial);
                 usuarioFk = em.merge(usuarioFk);
+            }
+            if (situacaoFk != null) {
+                situacaoFk.getProcessoJudicialCollection().add(processoJudicial);
+                situacaoFk = em.merge(situacaoFk);
             }
             for (Bem bemCollectionBem : processoJudicial.getBemCollection()) {
                 ProcessoJudicial oldProcessoJudicialFkOfBemCollectionBem = bemCollectionBem.getProcessoJudicialFk();
@@ -145,6 +155,8 @@ public class ProcessoJudicialDAO implements Serializable {
             TipoRecurso tipoDeRecursoFkNew = processoJudicial.getTipoDeRecursoFk();
             Usuario usuarioFkOld = persistentProcessoJudicial.getUsuarioFk();
             Usuario usuarioFkNew = processoJudicial.getUsuarioFk();
+            Situacao situacaoFkOld = persistentProcessoJudicial.getSituacaoFk();
+            Situacao situacaoFkNew = processoJudicial.getSituacaoFk();
             Collection<Bem> bemCollectionOld = persistentProcessoJudicial.getBemCollection();
             Collection<Bem> bemCollectionNew = processoJudicial.getBemCollection();
             Collection<VinculoProcessual> vinculoProcessualCollectionOld = persistentProcessoJudicial.getVinculoProcessualCollection();
@@ -187,6 +199,10 @@ public class ProcessoJudicialDAO implements Serializable {
                 usuarioFkNew = em.getReference(usuarioFkNew.getClass(), usuarioFkNew.getId());
                 processoJudicial.setUsuarioFk(usuarioFkNew);
             }
+            if (situacaoFkNew != null) {
+                situacaoFkNew = em.getReference(situacaoFkNew.getClass(), situacaoFkNew.getId());
+                processoJudicial.setSituacaoFk(situacaoFkNew);
+            }
             Collection<Bem> attachedBemCollectionNew = new ArrayList<Bem>();
             for (Bem bemCollectionNewBemToAttach : bemCollectionNew) {
                 bemCollectionNewBemToAttach = em.getReference(bemCollectionNewBemToAttach.getClass(), bemCollectionNewBemToAttach.getId());
@@ -224,6 +240,14 @@ public class ProcessoJudicialDAO implements Serializable {
             if (usuarioFkNew != null && !usuarioFkNew.equals(usuarioFkOld)) {
                 usuarioFkNew.getProcessoJudicialCollection().add(processoJudicial);
                 usuarioFkNew = em.merge(usuarioFkNew);
+            }
+            if (situacaoFkOld != null && !situacaoFkOld.equals(situacaoFkNew)) {
+                situacaoFkOld.getProcessoJudicialCollection().remove(processoJudicial);
+                situacaoFkOld = em.merge(situacaoFkOld);
+            }
+            if (situacaoFkNew != null && !situacaoFkNew.equals(situacaoFkOld)) {
+                situacaoFkNew.getProcessoJudicialCollection().add(processoJudicial);
+                situacaoFkNew = em.merge(situacaoFkNew);
             }
             for (Bem bemCollectionNewBem : bemCollectionNew) {
                 if (!bemCollectionOld.contains(bemCollectionNewBem)) {
@@ -326,6 +350,11 @@ public class ProcessoJudicialDAO implements Serializable {
             if (usuarioFk != null) {
                 usuarioFk.getProcessoJudicialCollection().remove(processoJudicial);
                 usuarioFk = em.merge(usuarioFk);
+            }
+            Situacao situacaoFk = processoJudicial.getSituacaoFk();
+            if (situacaoFk != null) {
+                situacaoFk.getProcessoJudicialCollection().remove(processoJudicial);
+                situacaoFk = em.merge(situacaoFk);
             }
             em.remove(processoJudicial);
             em.getTransaction().commit();
