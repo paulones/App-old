@@ -285,9 +285,6 @@ public class ReaverResource {
     @Produces("application/json")
     public String getMovimentacao(@QueryParam("ano") Integer ano) {
         ChartsBO chartsBO = new ChartsBO();
-        List<Integer> listPF = new ArrayList<>();
-        List<Integer> listPJ = new ArrayList<>();
-        List<Integer> listPJUD = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {

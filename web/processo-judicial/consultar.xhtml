@@ -459,7 +459,7 @@
                                                                                     <!--/span-->
                                                                                     <div class="col-md-6">
                                                                                         <div class="form-group">
-                                                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa</label>
+                                                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa:</label>
                                                                                             <div class="col-md-8">
                                                                                                 <p class="form-control-static money">
                                                                                                     #{executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoMulta eq null ? '-' : executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoMulta}
@@ -511,6 +511,35 @@
                                                                                             <div class="col-md-8">
                                                                                                 <p class="form-control-static">
                                                                                                     #{executadoHistorico.processoJudicialHistorico.fatosGeradores eq null ? '-' : executadoHistorico.processoJudicialHistorico.fatosGeradores.replaceAll(',', '; ')}
+                                                                                                </p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/row-->
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <label class="control-label col-md-4">Valor Arrecadado:</label>
+                                                                                            <div class="col-md-8">
+                                                                                                <p class="form-control-static money">
+                                                                                                    #{executadoHistorico.processoJudicialHistorico.valorArrecadado eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorArrecadado}
+                                                                                                </p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/span-->
+                                                                                    <div class="col-md-6">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!--/row-->
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <div class="form-group">
+                                                                                            <label class="control-label col-md-2">Fonte da Arrecadação:</label>
+                                                                                            <div class="col-md-10">
+                                                                                                <p class="form-control-static money">
+                                                                                                    #{executadoHistorico.processoJudicialHistorico.fonteDaArrecadacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.fonteDaArrecadacao}
                                                                                                 </p>
                                                                                             </div>
                                                                                         </div>
@@ -1844,7 +1873,7 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa</label>
+                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa:</label>
                                                             <div class="col-md-8">
                                                                 <p class="form-control-static money">
                                                                     #{processoJudicialBean.executado.processoJudicial.discriminacaoDoCreditoMulta eq null ? '-' : processoJudicialBean.executado.processoJudicial.discriminacaoDoCreditoMulta}
@@ -1900,6 +1929,35 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Valor Arrecadado:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static money">
+                                                                    #{processoJudicialBean.executado.processoJudicial.valorArrecadado eq null ? '-' : processoJudicialBean.executado.processoJudicial.valorArrecadado}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2">Fonte da Arrecadação:</label>
+                                                            <div class="col-md-10">
+                                                                <p class="form-control-static money">
+                                                                    #{processoJudicialBean.executado.processoJudicial.fonteDaArrecadacao eq null ? '-' : processoJudicialBean.executado.processoJudicial.fonteDaArrecadacao}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
                                                 </div>
                                                 <!--/row-->
                                                 <div class="row">

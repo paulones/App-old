@@ -95,6 +95,12 @@ var PjudCad = function() {
                     data: true,
                     required: false,
                 },
+                valorarrecadado: {
+                    required: false,
+                },
+                fontedaarrecadacao: {
+                    required: false,
+                },
                 outrasinfos1: {
                     required: false,
                 },

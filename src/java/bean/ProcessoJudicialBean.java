@@ -89,7 +89,7 @@ public class ProcessoJudicialBean implements Serializable {
     private TipoProcessoBO tipoProcessoBO;
     private VinculoProcessualBO vinculoProcessualBO;
     private EnderecoBO enderecoBO;
-    private UsuarioBO usuarioBO; 
+    private UsuarioBO usuarioBO;
     private BemBO bemBO;
     private ProcessoJudicialHistoricoBO processoJudicialHistoricoBO;
     private BemHistoricoBO bemHistoricoBO;
@@ -105,7 +105,7 @@ public class ProcessoJudicialBean implements Serializable {
     private String pjudId;
     private boolean edit;
     private boolean history;
-    
+
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
@@ -142,7 +142,7 @@ public class ProcessoJudicialBean implements Serializable {
 
             bemList = new ArrayList<>();
             vinculoProcessualList = new ArrayList<>();
-            
+
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
                 /*
@@ -153,7 +153,7 @@ public class ProcessoJudicialBean implements Serializable {
                     edit = false;
                     carregarFormulario();
                 } else {                                    // Alteração
-                    try { 
+                    try {
                         Integer id = Integer.valueOf(request.getParameter("id"));
                         processoJudicial = processoJudicialBO.findProcessoJudicial(id);
                         if (processoJudicial == null) {
@@ -281,7 +281,7 @@ public class ProcessoJudicialBean implements Serializable {
             PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(executadoPJ));
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
         }
-    } 
+    }
 
     public void exibirInfo() {
         processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
@@ -304,8 +304,8 @@ public class ProcessoJudicialBean implements Serializable {
         redirect = "";
         register = "success";
     }
-    
-    public void evitarAvisosIndevidosNoForm() throws IOException{
+
+    public void evitarAvisosIndevidosNoForm() throws IOException {
         register = "none";
         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
     }
@@ -322,6 +322,9 @@ public class ProcessoJudicialBean implements Serializable {
             if (pjudDBCDA == null && pjudDBProcess == null) { // Processo novo
                 processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
                 processoJudicial.setStatus('A');
+                if (processoJudicial.getValorAtualizado() == null && processoJudicial.getValorDaCausa() != null) {
+                    processoJudicial.setValorAtualizado(processoJudicial.getValorDaCausa());
+                }
                 processoJudicialBO.create(processoJudicial);
                 for (Bem bem : bemList) {
                     if (bem.getDescricao() != null || bem.getDataDoAto() != null) {
@@ -399,6 +402,9 @@ public class ProcessoJudicialBean implements Serializable {
                     UtilBO utilBO = new UtilBO();
                     Timestamp timestamp = utilBO.findServerTime();
                     processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                    if (processoJudicial.getValorAtualizado() == null && processoJudicial.getValorDaCausa() != null) {
+                        processoJudicial.setValorAtualizado(processoJudicial.getValorDaCausa());
+                    }
                     processoJudicialBO.edit(processoJudicial);
                     processoJudicialHistorico.setDataDeModificacao(timestamp);
                     processoJudicialHistoricoBO.create(processoJudicialHistorico);
@@ -485,6 +491,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setExecutado(processoJudicial.getExecutado());
         processoJudicialHistorico.setExecutadoFk(processoJudicial.getExecutadoFk());
         processoJudicialHistorico.setFatosGeradores(processoJudicial.getFatosGeradores());
+        processoJudicialHistorico.setFonteDaArrecadacao(processoJudicial.getFonteDaArrecadacao());
         processoJudicialHistorico.setFundamentacao(processoJudicial.getFundamentacao());
         processoJudicialHistorico.setGrupoDeEspecializacao(processoJudicial.getGrupoDeEspecializacao());
         processoJudicialHistorico.setNotificacaoAdministrativa(processoJudicial.getNotificacaoAdministrativa());
@@ -502,6 +509,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setSituacaoFk(processoJudicial.getSituacaoFk());
         processoJudicialHistorico.setTipoDeRecursoFk(processoJudicial.getTipoDeRecursoFk());
         processoJudicialHistorico.setUsuarioFk(processoJudicial.getUsuarioFk());
+        processoJudicialHistorico.setValorArrecadado(processoJudicial.getValorArrecadado());
         processoJudicialHistorico.setValorAtualizado(processoJudicial.getValorAtualizado());
         processoJudicialHistorico.setValorDaCausa(processoJudicial.getValorDaCausa());
         processoJudicialHistorico.setVara(processoJudicial.getVara());
@@ -545,6 +553,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setExecutado(processoJudicial.getExecutado());
         processoJudicialHistorico.setExecutadoFk(processoJudicial.getExecutadoFk());
         processoJudicialHistorico.setFatosGeradores(processoJudicial.getFatosGeradores());
+        processoJudicialHistorico.setFonteDaArrecadacao(processoJudicial.getFonteDaArrecadacao());
         processoJudicialHistorico.setFundamentacao(processoJudicial.getFundamentacao());
         processoJudicialHistorico.setGrupoDeEspecializacao(processoJudicial.getGrupoDeEspecializacao());
         processoJudicialHistorico.setNotificacaoAdministrativa(processoJudicial.getNotificacaoAdministrativa());
@@ -562,6 +571,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setSituacaoFk(processoJudicial.getSituacaoFk());
         processoJudicialHistorico.setTipoDeRecursoFk(processoJudicial.getTipoDeRecursoFk());
         processoJudicialHistorico.setUsuarioFk(processoJudicial.getUsuarioFk());
+        processoJudicialHistorico.setValorArrecadado(processoJudicial.getValorArrecadado());
         processoJudicialHistorico.setValorAtualizado(processoJudicial.getValorAtualizado());
         processoJudicialHistorico.setValorDaCausa(processoJudicial.getValorDaCausa());
         processoJudicialHistorico.setVara(processoJudicial.getVara());

@@ -55,7 +55,7 @@
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="../home.xhtml">
-                        <img src="../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
+                        <!--<img src="../assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>-->
                     </a>
                     <div class="menu-toggler sidebar-toggler ">
                         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
@@ -1770,7 +1770,7 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa</label>
+                                                                            <label class="control-label col-md-4">Discriminação do Crédito/Multa:</label>
                                                                             <div class="col-md-8">
                                                                                 <p class="form-control-static money">
                                                                                     #{templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta eq null ? '-' : templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta}
@@ -1822,6 +1822,35 @@
                                                                             <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{templateBean.executado.processoJudicial.fatosGeradores eq null ? '-' : templateBean.executado.processoJudicial.fatosGeradores.replaceAll(',', '; ')}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Valor Arrecadado:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static money">
+                                                                                    #{templateBean.executado.processoJudicial.valorArrecadado eq null ? '-' : templateBean.executado.processoJudicial.valorArrecadado}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Fonte da Arrecadação:</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static money">
+                                                                                    #{templateBean.executado.processoJudicial.fonteDaArrecadacao eq null ? '-' : templateBean.executado.processoJudicial.fonteDaArrecadacao}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
