@@ -84,6 +84,9 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorDaCausa;
     @Column(name = "valor_atualizado")
     private BigDecimal valorAtualizado;
+    @JoinColumn(name = "situacao_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Situacao situacaoFk;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -545,6 +548,14 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setValorAtualizado(BigDecimal valorAtualizado) {
         this.valorAtualizado = valorAtualizado;
+    }
+
+    public Situacao getSituacaoFk() {
+        return situacaoFk;
+    }
+
+    public void setSituacaoFk(Situacao situacaoFk) {
+        this.situacaoFk = situacaoFk;
     }
 
 }

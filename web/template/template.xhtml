@@ -1548,10 +1548,10 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                                            <label class="control-label col-md-4">Situação:</label>
                                                                             <div class="col-md-8">
                                                                                 <p class="form-control-static ">
-                                                                                    #{templateBean.executado.processoJudicial.procurador eq null ? '-' : templateBean.executado.processoJudicial.procurador}
+                                                                                    #{templateBean.executado.processoJudicial.situacaoFk.situacao}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -1619,7 +1619,14 @@
                                                                     </div>
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
-
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static ">
+                                                                                    #{templateBean.executado.processoJudicial.procurador eq null ? '-' : templateBean.executado.processoJudicial.procurador}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <!--/row-->
@@ -3065,12 +3072,12 @@
                                 $.each(data, function() {
                                     var status;
                                     if (String(pjId) === String($(this).attr('sucessora_id'))) {
-                                        status = $(this).attr('sucedida_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>'; 
+                                        status = $(this).attr('sucedida_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                         sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                 + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
                                                 + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + status + '</div></li>';
                                     } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
-                                        status = $(this).attr('sucessora_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>'; 
+                                        status = $(this).attr('sucessora_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                         sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                 + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
                                                 + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + status + '</div></li>';
@@ -3093,21 +3100,21 @@
                                         sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
                                         $(parent).find('.atual').append(sucessoras);
                                     }
-                                    $('.atual').children('.dd3-content').css("color","#3c763d");
+                                    $('.atual').children('.dd3-content').css("color", "#3c763d");
                                 }
-                                
-                                if (removeGrant){
+
+                                if (removeGrant) {
                                     var remove = '<a class="button-delete-sucessao"><i class="glyphicon glyphicon-remove"></i></a>';
                                     $(parent).find('.sucedidas').children(".dd3-content").append(remove);
                                     $(parent).find('.sucessoras').children(".dd3-content").append(remove);
                                 }
-                                
-                                if (displayHistory){
-                                     var history = '<a class="button-history-sucessao"><i class="fa fa-history"></i></a>';
+
+                                if (displayHistory) {
+                                    var history = '<a class="button-history-sucessao"><i class="fa fa-history"></i></a>';
                                     $(parent).find('.sucedidas').children(".dd3-content").append(history);
                                     $(parent).find('.sucessoras').children(".dd3-content").append(history);
                                 }
-                                
+
                                 if (portlet !== undefined) {
                                     reallocatePortlet(portlet);
                                 }

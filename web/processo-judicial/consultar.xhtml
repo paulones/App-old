@@ -237,10 +237,10 @@
                                                                                     <!--/span-->
                                                                                     <div class="col-md-6">
                                                                                         <div class="form-group">
-                                                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                                                            <label class="control-label col-md-4">Situação:</label>
                                                                                             <div class="col-md-8">
                                                                                                 <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.procurador eq null ? '-' : executadoHistorico.processoJudicialHistorico.procurador}
+                                                                                                    #{executadoHistorico.processoJudicialHistorico.situacaoFk.situacao}
                                                                                                 </p>
                                                                                             </div>
                                                                                         </div>
@@ -308,7 +308,14 @@
                                                                                     </div>
                                                                                     <!--/span-->
                                                                                     <div class="col-md-6">
-
+                                                                                        <div class="form-group">
+                                                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                                                            <div class="col-md-8">
+                                                                                                <p class="form-control-static ">
+                                                                                                    #{executadoHistorico.processoJudicialHistorico.procurador eq null ? '-' : executadoHistorico.processoJudicialHistorico.procurador}
+                                                                                                </p>
+                                                                                            </div>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <!--/row-->
@@ -1615,10 +1622,10 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                            <label class="control-label col-md-4">Situação:</label>
                                                             <div class="col-md-8">
                                                                 <p class="form-control-static ">
-                                                                    #{processoJudicialBean.executado.processoJudicial.procurador eq null ? '-' : processoJudicialBean.executado.processoJudicial.procurador}
+                                                                    #{processoJudicialBean.executado.processoJudicial.situacaoFk.situacao}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -1686,7 +1693,14 @@
                                                     </div>
                                                     <!--/span-->
                                                     <div class="col-md-6">
-
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Procurador:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static ">
+                                                                    #{processoJudicialBean.executado.processoJudicial.procurador eq null ? '-' : processoJudicialBean.executado.processoJudicial.procurador}
+                                                                </p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!--/row-->

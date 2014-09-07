@@ -78,6 +78,9 @@ public class ProcessoJudicial implements Serializable {
     private BigDecimal valorDaCausa;
     @Column(name = "valor_atualizado")
     private BigDecimal valorAtualizado;
+    @JoinColumn(name = "situacao_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Situacao situacaoFk;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
     private Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollection;
     @Basic(optional = false)
@@ -542,6 +545,9 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.outrasInformacoesBem, other.outrasInformacoesBem)) {
             return false;
         }
+        if (!Objects.equals(this.situacaoFk, other.situacaoFk)) {
+            return false;
+        }
         return true;
     }
 
@@ -648,6 +654,14 @@ public class ProcessoJudicial implements Serializable {
 
     public void setValorAtualizado(BigDecimal valorAtualizado) {
         this.valorAtualizado = valorAtualizado;
+    }
+
+    public Situacao getSituacaoFk() {
+        return situacaoFk;
+    }
+
+    public void setSituacaoFk(Situacao situacaoFk) {
+        this.situacaoFk = situacaoFk;
     }
 
 }

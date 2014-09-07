@@ -180,13 +180,14 @@
                                                 <!--/span-->
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-4">Procurador 
+                                                        <label class="control-label col-md-4">Situação <span class="required">
+                                                                * </span>
                                                         </label>
                                                         <div class="col-md-8">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="procurador" autocomplete="off" value="#{processoJudicialBean.processoJudicial.procurador}"/>
-                                                            </div>
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="situacao" tabindex="1" value="#{processoJudicialBean.processoJudicial.situacaoFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{processoJudicialBean.situacaoList}" var="situacao" itemLabel="#{situacao.situacao}" itemValue="#{situacao}"/>
+                                                            </h:selectOneMenu>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -265,6 +266,16 @@
                                                 </div>
                                                 <!--/span-->
                                                 <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Procurador 
+                                                        </label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="procurador" autocomplete="off" value="#{processoJudicialBean.processoJudicial.procurador}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <!--/span-->
                                             </div>
@@ -1570,7 +1581,7 @@
                                                 <a href="javascript:;" class="btn blue-chambray button-submit">
                                                     <ui:fragment rendered="#{!processoJudicialBean.edit}"><i class="fa fa-save"></i>
                                                     </ui:fragment><ui:fragment rendered="#{processoJudicialBean.edit}"><i class="fa fa-edit"></i></ui:fragment> 
-                                                    #{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'} 
+                                                        #{processoJudicialBean.edit ? 'Alterar' : 'Cadastrar'} 
                                                 </a>
                                                 <h:commandLink class="submit-pjud" action="#{processoJudicialBean.cadastrar()}"></h:commandLink>
                                             </div>
