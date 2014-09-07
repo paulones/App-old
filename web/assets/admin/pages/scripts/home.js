@@ -251,6 +251,10 @@ var Home = function() {
                             $('#site_activities_loading').hide();
                             $('#site_activities_content').show();
 
+                            $("#anoRevenue").text(function() {
+                                return anoRevenueChart;
+                            });
+
                             var data = [
                                 ['JAN', $(this).attr("value1")],
                                 ['FEV', $(this).attr("value2")],
@@ -424,6 +428,22 @@ var Home = function() {
                         return anoInteractiveChart;
                     });
                     initInteractiveChart();
+                }
+            });
+            $('.revenue-back-reload').click(function() {
+                $("#anoRevenue").text(function() {
+                    anoRevenueChart--;
+                    return anoRevenueChart;
+                });
+                initRevenueChart();
+            });
+            $('.revenue-next-reload').click(function() {
+                if (anoRevenueChart + 1 <= new Date().getFullYear()) {
+                    $("#anoRevenue").text(function() {
+                        anoRevenueChart++;
+                        return anoRevenueChart;
+                    });
+                    initRevenueChart();
                 }
             });
 
