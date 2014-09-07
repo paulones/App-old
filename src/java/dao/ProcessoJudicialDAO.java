@@ -489,10 +489,27 @@ public class ProcessoJudicialDAO implements Serializable {
     public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes) {
         EntityManager em = getEntityManager();
         try {
-            BigDecimal count = (BigDecimal) em.createNativeQuery("select sum(valor_atualizado) from processo_judicial pj "
-                    + "where pj.id != (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.operacao = 'D') and "
-                    + "pj.id in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and "
-                    + "DATE_PART('YEAR', sl.data_de_criacao) <= " + ano + " and DATE_PART('MONTH', sl.data_de_criacao) <= " + mes + " ) ").getSingleResult();
+            BigDecimal count = (BigDecimal) em.createNativeQuery("select sum(valor_atualizado) from processo_judicial pj  "
+                    + "where to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
+                    + "pj.id not in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.tabela = 'PJUD' and sl.operacao = 'D') ").getSingleResult();
+            if (count == null) {
+                return 0.0;
+            } else {
+                return count.doubleValue();
+            }
+        } catch (NoResultException e) {
+            return 0.0;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes) {
+        EntityManager em = getEntityManager();
+        try {
+            BigDecimal count = (BigDecimal) em.createNativeQuery("select sum(valor_arrecadado) from processo_judicial pj  "
+                    + "where to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
+                    + "pj.id not in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.tabela = 'PJUD' and sl.operacao = 'D') ").getSingleResult();
             if (count == null) {
                 return 0.0;
             } else {
@@ -509,10 +526,26 @@ public class ProcessoJudicialDAO implements Serializable {
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(pj.id) from processo_judicial pj "
-                    + "where pj.id != (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.operacao = 'D') and "
-                    + "pj.id in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and "
-                    + "DATE_PART('YEAR', sl.data_de_criacao) <= " + ano + " and DATE_PART('MONTH', sl.data_de_criacao) <= " + mes + " ) ").getSingleResult();
+                    + "where to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
+                    + "pj.id not in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.tabela = 'PJUD' and sl.operacao = 'D') ").getSingleResult();
             return count.intValue();
+        } catch (NoResultException e) {
+            return 0;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public Integer getPJUDSituations(Integer situacao) {
+        EntityManager em = getEntityManager();
+        try {
+            Long count = (Long) em.createNativeQuery("select count(*) from processo_judicial pj, situacao s "
+                    + "where pj.situacao_fk = s.id and pj.situacao_fk = "+situacao+" group by pj.situacao_fk, s.situacao ").getSingleResult();
+            if (count == null) {
+                return 0;
+            } else {
+                return count.intValue();
+            }
         } catch (NoResultException e) {
             return 0;
         } finally {

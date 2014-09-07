@@ -306,13 +306,30 @@ public class ReaverResource {
     @Produces("application/json")
     public String getArrecadacao(@QueryParam("ano") Integer ano) {
         ChartsBO chartsBO = new ChartsBO();
-        List<Integer> listArrecadacao = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
             jsonObject.put("value"+i, chartsBO.sumPJUDValueBeforeMonth(ano, i));
         }
+        for (Integer i = 1; i <= 12; i++) {
+            jsonObject.put("arrecadacao"+i, chartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i));
+        }
         jsonObject.put("count", chartsBO.countPJUDValueBeforeMonth(ano, 12));
+        jsonArray.put(jsonObject);
+        
+        return jsonArray.toString();
+    }
+    
+    @GET
+    @Path("/getPizza")
+    @Produces("application/json")
+    public String getPizza() {
+        ChartsBO chartsBO = new ChartsBO();
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        for (Integer i = 1; i <= 5; i++) {
+            jsonObject.put("situacao"+i, chartsBO.getPJUDSituations(i));
+        }
         jsonArray.put(jsonObject);
         
         return jsonArray.toString();

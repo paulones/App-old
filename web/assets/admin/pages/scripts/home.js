@@ -182,51 +182,63 @@ var Home = function() {
     var initPizzaChart = function() {
         var data = [];
 
-        data[0] = {
-            label: "Andamento",
-            data: Math.floor(Math.random() * 100) + 200
-        },
-        data[1] = {
-            label: "Extinto",
-            data: Math.floor(Math.random() * 100) + 1
-        },
-        data[2] = {
-            label: "Julgado",
-            data: Math.floor(Math.random() * 100) + 1
-        },
-        data[3] = {
-            label: "Arquivado",
-            data: Math.floor(Math.random() * 100) + 1
-        },
-        data[4] = {
-            label: "Suspenso",
-            data: Math.floor(Math.random() * 100) + 1
-        };
-
-
-        // GRAPH 2
-        $.plot($("#pizza_chart"), data, {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 3 / 4,
-                    label: {
-                        show: true,
-                        radius: 3 / 4,
-                        formatter: function(label, series) {
-                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
-                        },
-                        background: {
-                            opacity: 0.5,
-                            color: '#000'
-                        }
-                    }
-                }
-            },
-            legend: {
-                show: false
+        $.ajax({
+            url: "/webresources/reaver/getPizza",
+            dataType: "json",
+            cache: false,
+            dado: {
             }
-        });
+        })
+                .done(function(dado) {
+                    $.each(dado, function() {
+
+                        data[0] = {
+                            label: "Andamento",
+                            data: $(this).attr("situacao1")
+                        },
+                        data[1] = {
+                            label: "Arquivado",
+                            data: $(this).attr("situacao2")
+                        },
+                        data[2] = {
+                            label: "Extinto",
+                            data: $(this).attr("situacao3")
+                        },
+                        data[3] = {
+                            label: "Julgado",
+                            data: $(this).attr("situacao4")
+                        },
+                        data[4] = {
+                            label: "Suspenso",
+                            data: $(this).attr("situacao5")
+                        };
+                        
+                        // GRAPH 2
+                        $.plot($("#pizza_chart"), data, {
+                            series: {
+                                pie: {
+                                    show: true,
+                                    radius: 3 / 4,
+                                    label: {
+                                        show: true,
+                                        radius: 3 / 4,
+                                        formatter: function(label, series) {
+                                            return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+                                        },
+                                        background: {
+                                            opacity: 0.5,
+                                            color: '#000'
+                                        }
+                                    }
+                                }
+                            },
+                            legend: {
+                                show: false
+                            }
+                        });
+                    });
+                });
+
     }
 
     var initRevenueChart = function() {
@@ -256,20 +268,22 @@ var Home = function() {
                             });
 
                             var data = [
-                                ['JAN', $(this).attr("value1")],
-                                ['FEV', $(this).attr("value2")],
-                                ['MAR', $(this).attr("value3")],
-                                ['ABR', $(this).attr("value4")],
-                                ['MAI', $(this).attr("value5")],
-                                ['JUN', $(this).attr("value6")],
-                                ['JUL', $(this).attr("value7")],
-                                ['AGO', $(this).attr("value8")],
-                                ['SET', $(this).attr("value9")],
-                                ['OUT', $(this).attr("value10")],
-                                ['NOV', $(this).attr("value11")],
-                                ['DEZ', $(this).attr("value12")]
+                                ['JAN', $(this).attr("arrecadacao1")],
+                                ['FEV', $(this).attr("arrecadacao2")],
+                                ['MAR', $(this).attr("arrecadacao3")],
+                                ['ABR', $(this).attr("arrecadacao4")],
+                                ['MAI', $(this).attr("arrecadacao5")],
+                                ['JUN', $(this).attr("arrecadacao6")],
+                                ['JUL', $(this).attr("arrecadacao7")],
+                                ['AGO', $(this).attr("arrecadacao8")],
+                                ['SET', $(this).attr("arrecadacao9")],
+                                ['OUT', $(this).attr("arrecadacao10")],
+                                ['NOV', $(this).attr("arrecadacao11")],
+                                ['DEZ', $(this).attr("arrecadacao12")]
                             ];
+                            
                             $("#previsao").text("R$" + $(this).attr("value12"));
+                            $("#arrecadacao").text("R$" + $(this).attr("arrecadacao12"));
                             $("#processosCount").text($(this).attr("count"));
 
                             var plot_statistics = $.plot($("#site_activities"),
@@ -338,12 +352,12 @@ var Home = function() {
                                 $("#x").text(pos.x.toFixed(2));
                                 $("#y").text(pos.y.toFixed(2));
                                 if (item) {
-                                    if (previousPoint2 != item.dataIndex) {
+                                    if (previousPoint2 !== item.dataIndex) {
                                         previousPoint2 = item.dataIndex;
                                         $("#tooltip").remove();
                                         var x = item.datapoint[0].toFixed(2),
                                                 y = item.datapoint[1].toFixed(2);
-                                        showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + 'R$');
+                                        showChartTooltip(item.pageX, item.pageY, item.datapoint[0], 'R$ '+item.datapoint[1]);
                                     }
                                 }
                             });
