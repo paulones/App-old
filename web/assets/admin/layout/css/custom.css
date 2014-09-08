@@ -7,6 +7,7 @@
 .modal .control-label{margin-top:6px !important}
 .filter-by{width:220px}
 #ano{margin:0 10px;font-weight:bold}
+#anoRevenue{margin:0 10px;font-weight:bold}
 .interactive{cursor:pointer}
 .interactive:hover{color:gray}
 /*lock*/
