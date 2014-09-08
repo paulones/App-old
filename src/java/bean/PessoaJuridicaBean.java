@@ -376,8 +376,8 @@ public class PessoaJuridicaBean implements Serializable {
         }
         if (error) {
             register = "fail";
-            String cnpj = pjDB.getCnpj().substring(0, 3) + "." + pjDB.getCnpj().substring(3, 6) + "." + pjDB.getCnpj().substring(6, 9) + "/" + pjDB.getCnpj().substring(9, 13) + "-" + pjDB.getCnpj().substring(13);
-            String message = "Já existe empresa cadastrada com o CNPJ " + cnpj;
+            String cnpj = pjDB.getCnpj().substring(0, 2) + "." + pjDB.getCnpj().substring(2, 5) + "." + pjDB.getCnpj().substring(5, 8) + "/" + pjDB.getCnpj().substring(8, 12) + "-" + pjDB.getCnpj().substring(12);
+            String message = "Já existe uma empresa cadastrada com o CNPJ " + cnpj;
             message += pjDB.getNome() != null ? "\nNome: " + pjDB.getNome() : "";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
         }

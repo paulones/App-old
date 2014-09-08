@@ -25,9 +25,15 @@ var Lock = function() {
                 error.insertAfter(element.closest('.input-icon'));
             },
             submitHandler: function(form) {
-                $('#password').val(CryptoJS.MD5($('#password').val()));
-                $('.submit-login').click();
             }
+        });
+        
+        $('#button-unlock').click(function(e) {
+                if ($('.login-form').validate().form()) {
+                    $('#password').val(CryptoJS.MD5($('#password').val()));
+                    $('.submit-login').click();
+                }
+                return false;
         });
 
         $('.login-form button').keypress(function(e) {

@@ -171,12 +171,18 @@ var PFCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                $(".date-error").hide();
                 error.hide();
-                $(".register").click();
             }
         });
     }
+    
+    $('.submit-pf').click(function(e) {
+            if ($('#form').validate().form()) {
+                $(".date-error").hide();
+                $(".register").click();
+            }
+            return false;
+        });
 
     var checkDates = function() {
         if ($(this).val().length == 10) {
