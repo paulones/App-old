@@ -7,7 +7,7 @@ var Login = function() {
             focusInvalid: false, // do not focus the last invalid input
             rules: {
                 cpf: {
-                    cpf: true,
+                    cpf:true,
                     required: true
                 },
                 password: {
@@ -43,12 +43,12 @@ var Login = function() {
             },
             submitHandler: function(form) {
                 $('#password').val(CryptoJS.MD5($('#password').val()));
-                $('.submit-login').trigger("click");
+                $('.submit-login').click();
             }
         });
 
         $('.login-form input').keypress(function(e) {
-            if (e.which === 13) {
+            if (e.which == 13) {
                 if ($('.login-form').validate().form()) {
                     $('#password').val(CryptoJS.MD5($('#password').val()));
                     $('.submit-login').click();
@@ -56,8 +56,7 @@ var Login = function() {
                 return false;
             }
         });
-
-    };
+    }
 
     var handleForgetPassword = function() {
         $('.forget-form').validate({
@@ -344,7 +343,7 @@ var Login = function() {
                 jQuery('.login-form').hide();
                 jQuery('.pass-form').show();
             }
-
+            
             function validaCPF(value, element) {
                 value = value.replace(/\./g, "").replace(/-/g, "");
                 var Soma;
@@ -380,7 +379,7 @@ var Login = function() {
                     return false;
                 return true;
             }
-
+            
             $.backstretch([
                 "assets/admin/pages/media/bg/1.jpg",
                 "assets/admin/pages/media/bg/2.jpg",
