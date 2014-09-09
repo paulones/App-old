@@ -46,21 +46,21 @@ var PjudCad = function() {
                     required: false,
                 },
                 distribuicaodata: {
-                    data: true,
+                    date: true,
                     required: true,
                 },
                 despachoinicial: {
                     required: false,
                 },
                 despachoinicialdata: {
-                    data: true,
+                    date: true,
                     required: false,
                 },
                 decisaojuiz: {
                     required: false,
                 },
                 decisaojuizdata: {
-                    data: true,
+                    date: true,
                     required: false,
                 },
                 ncda: {
@@ -73,7 +73,7 @@ var PjudCad = function() {
                     required: false,
                 },
                 datadeinscricao: {
-                    data: true,
+                    date: true,
                     required: false,
                 },
                 discriminacaoimposto: {
@@ -92,7 +92,7 @@ var PjudCad = function() {
                     required: false,
                 },
                 notificacaoadministrativadata: {
-                    data: true,
+                    date: true,
                     required: false,
                 },
                 valorarrecadado: {
@@ -146,23 +146,27 @@ var PjudCad = function() {
             },
             highlight: function(element) { // hightlight error inputs
                 $(element).closest('.form-group').removeClass('has-success').addClass('has-error'); // set error class to the control group
-                if ($(element).attr("id") == "distribuicaodata"){
-                        $('#distribuicao').css("border-color","#e5e5e5");
-                        $('#distribuicao').focus(function(){
-                            $('#distribuicao').css("border-color","#999");
-                            $('#distribuicao').css("box-shadow","none");
-                            $('#distribuicao').css("outline","0 none");
-                        });
-                        $('#distribuicao').focusout(function(){
-                            $('#distribuicao').css("border-color","#e5e5e5");
-                            $('#distribuicao').css("box-shadow","none");
-                            $('#distribuicao').css("outline","0 none");
-                        });
-                        
+                if ($(element).attr("id") == "distribuicaodata") {
+                    $('#distribuicao').css("border-color", "#e5e5e5");
+                    $('#distribuicao').focus(function() {
+                        $('#distribuicao').css("border-color", "#999");
+                        $('#distribuicao').css("box-shadow", "none");
+                        $('#distribuicao').css("outline", "0 none");
+                    });
+                    $('#distribuicao').focusout(function() {
+                        $('#distribuicao').css("border-color", "#e5e5e5");
+                        $('#distribuicao').css("box-shadow", "none");
+                        $('#distribuicao').css("outline", "0 none");
+                    });
+
                 }
             },
             unhighlight: function(element) { // revert the change done by hightlight
-                $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                if ($(element).attr("id") === "distribuicao") {
+
+                } else {
+                    $(element).closest('.form-group').removeClass('has-error'); // set error class to the control group
+                }
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');
@@ -173,15 +177,20 @@ var PjudCad = function() {
             submitHandler: function(form) {
                 success.show();
                 error.hide();
+            }
+
+        });
+
+        $('.button-submit').click(function(e) {
+            if ($('#submit_form').validate().form()) {
                 $.each($('.money'), function() {
                     $($(this)).val(function(i, val) {
-                        return val.replace('R$','').replace(" ","").replace(/\./g, "").replace(",",".");
+                        return val.replace('R$', '').replace(" ", "").replace(/\./g, "").replace(",", ".");
                     });
                 });
                 $('.submit-pjud').click();
-                //add here some ajax code to submit your form or just call form.submit() if you want to submit the form without ajax
             }
-
+            return false;
         });
 
         var handleTitle = function(tab, navigation, index) {
@@ -304,7 +313,13 @@ var PjudCad = function() {
                 $('.alert-danger').show();
             }
 
-            $.validator.addMethod("data", validaData, "Digite uma data v&aacute;lida.");
+            $.validator.methods["date"] = function validaData(value, element) {
+                var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+                if (value === "" || value === null) {
+                    return true;
+                }
+                return value.match(reg) ? true : false;
+            }
             $.validator.addMethod("cpfOrCnpj", validaExecutado, "Escolha um executado.");
             $.validator.addClassRules({
                 bem: {
@@ -336,8 +351,8 @@ var PjudCad = function() {
                 allowZero: false, // Permite que o digito 0 seja o primeiro caractere
                 showSymbol: true // Exibe/Oculta o símbolo
             });
-            $.each($('.money'),function(){
-                if ($(this).val() !== ""){
+            $.each($('.money'), function() {
+                if ($(this).val() !== "") {
                     $(this).maskMoney('mask');
                 }
             });
@@ -412,7 +427,7 @@ var PjudCad = function() {
                     }
                 }
             }
-            
+
             validaSituacao();
             $('#situacao').change(validaSituacao);
             function validaSituacao() {
@@ -426,15 +441,6 @@ var PjudCad = function() {
                     }
                 }
             }
-
-            function validaData(value, element) {
-                var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
-                if (value === "" || value === null) {
-                    return true;
-                }
-                return value.match(reg) ? true : false;
-            }
-            ;
 
             function validaExecutado() {
                 if ($('#cpf').val() !== "" || $('#cnpj').val() !== "") {

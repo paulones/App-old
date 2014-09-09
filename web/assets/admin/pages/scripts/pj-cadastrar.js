@@ -171,13 +171,19 @@ var PJCad = function() {
                 icon.removeAttr("data-original-title");
             },
             submitHandler: function(form) {
-                $(".date-error-pfj").hide();
-                $(".date-error-pjj").hide();
                 error.hide();
-                $(".register").click();
             }
         });
     }
+
+    $('.submit-pj').click(function(e) {
+        if ($('#form').validate().form()) {
+            $(".date-error-pfj").hide();
+            $(".date-error-pjj").hide();
+            $(".register").click();
+        }
+        return false;
+    });
 
     var checkDates = function() {
         var dateError;

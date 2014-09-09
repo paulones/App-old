@@ -7,7 +7,7 @@ var Login = function() {
             focusInvalid: false, // do not focus the last invalid input
             rules: {
                 cpf: {
-                    cpf:true,
+                    cpf: true,
                     required: true
                 },
                 password: {
@@ -42,9 +42,15 @@ var Login = function() {
                 error.insertAfter(element.closest('.input-icon'));
             },
             submitHandler: function(form) {
+            }
+        });
+
+        $('.button-submit-login').click(function(e) {
+            if ($('.login-form').validate().form()) {
                 $('#password').val(CryptoJS.MD5($('#password').val()));
                 $('.submit-login').click();
             }
+            return false;
         });
 
         $('.login-form input').keypress(function(e) {
@@ -90,8 +96,14 @@ var Login = function() {
                 error.insertAfter(element.closest('.input-icon'));
             },
             submitHandler: function(form) {
+            }
+        });
+
+        $('#submit-email').click(function(e) {
+            if ($('.forget-form').validate().form()) {
                 $(".submit-emailrecover").click();
             }
+            return false;
         });
 
         $('.forget-form input').keypress(function(e) {
@@ -168,11 +180,17 @@ var Login = function() {
                 }
             },
             submitHandler: function(form) {
-                $('#register_password').val(CryptoJS.MD5($('#register_password').val()));
-                $('#rpassword').val(CryptoJS.MD5($('#rpassword').val()));
-                $('.submit-register').click();
             }
         });
+
+        $('#register-submit-btn').click(function() {
+            if ($('.register-form').validate().form()) {
+                $('#register_password').val(CryptoJS.MD5($('#register_password').val()));
+                $('#rpassword').val(CryptoJS.MD5($('#rpassword').val()));
+                $(".submit-register").click();
+            }
+            return false;
+        })
 
         $('.register-form input').keypress(function(e) {
             if (e.which == 13) {
@@ -228,10 +246,15 @@ var Login = function() {
                 error.insertAfter(element.closest('.input-icon'));
             },
             submitHandler: function(form) {
-                $(".submit-licensing").click();
             }
         });
 
+        $('#licensing-submit-btn').click(function(e) {
+            if ($('.licensing-form').validate().form()) {
+                $('.submit-licensing').click();
+            }
+            return false;
+        });
 
         $('.licensing-form input').keypress(function(e) {
             if (e.which == 13) {
@@ -283,10 +306,16 @@ var Login = function() {
                 }
             },
             submitHandler: function(form) {
+            }
+        });
+
+        $('#pass-submit-btn').click(function(e) {
+            if ($('.pass-form').validate().form()) {
                 $('#new_password').val(CryptoJS.MD5($('#new_password').val()));
                 $('#rnew_password').val(CryptoJS.MD5($('#rnew_password').val()));
                 $('.submit-pass').click();
             }
+            return false;
         });
 
         $('.pass-form input').keypress(function(e) {
@@ -343,7 +372,7 @@ var Login = function() {
                 jQuery('.login-form').hide();
                 jQuery('.pass-form').show();
             }
-            
+
             function validaCPF(value, element) {
                 value = value.replace(/\./g, "").replace(/-/g, "");
                 var Soma;
@@ -379,7 +408,7 @@ var Login = function() {
                     return false;
                 return true;
             }
-            
+
             $.backstretch([
                 "assets/admin/pages/media/bg/1.jpg",
                 "assets/admin/pages/media/bg/2.jpg",
