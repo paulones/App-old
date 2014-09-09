@@ -59,6 +59,7 @@ public class LoginBean implements Serializable {
     }
 
     public void login() throws IOException {
+        System.out.println("logay");
         Usuario usuarioBD = usuarioBO.findUsuarioByCPF(usuario.getCpf());
         if (usuarioBD != null) {
             if (usuarioBD.getSenha().equals(usuario.getSenha())) {
