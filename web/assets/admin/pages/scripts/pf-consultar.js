@@ -54,9 +54,11 @@ var PFCon = function() {
                 $(this).parent().parent().next().remove();
             } else {
                 /* Open this row */
-                $('#pf-id').val($(this).parent().siblings(":last").text());
-                $('.info-refresher').click();
-                element = $(this);
+                if (!executing) {
+                    $('#pf-id').val($(this).parent().siblings(":last").text());
+                    $('.info-refresher').click();
+                    element = $(this);
+                }
             }
         });
 
@@ -253,7 +255,7 @@ var PFCon = function() {
                 });
                 $('.detailed-info').remove();
             });
-            
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {

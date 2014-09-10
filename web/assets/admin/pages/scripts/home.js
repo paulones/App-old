@@ -282,8 +282,9 @@ var Home = function() {
                                 ['DEZ', $(this).attr("arrecadacao12")]
                             ];
                             
-                            $("#previsao").text("R$" + $(this).attr("value12"));
-                            $("#arrecadacao").text("R$" + $(this).attr("arrecadacao12"));
+                            $("#previsao").text($(this).attr("value12"));
+                            $("#arrecadacao").text($(this).attr("arrecadacao12"));
+                            getMoneyMask(".revenue");
                             $("#processosCount").text($(this).attr("count"));
 
                             var plot_statistics = $.plot($("#site_activities"),

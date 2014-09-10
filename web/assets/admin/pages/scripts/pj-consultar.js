@@ -55,9 +55,11 @@ var PJCon = function() {
                 $(this).parent().parent().next().remove();
             } else {
                 /* Open this row */
-                $('#pj-id').val($(this).parent().siblings(":last").text());
-                $('.info-refresher').click();
-                element = $(this);
+                if (!executing) {
+                    $('#pj-id').val($(this).parent().siblings(":last").text());
+                    $('.info-refresher').click();
+                    element = $(this);
+                }
             }
         });
 
@@ -275,8 +277,10 @@ var PJCon = function() {
                 $(document).on('click', '.button-history-sucessao', function(e) {
                     e.stopImmediatePropagation();
                     e.preventDefault();
-                    $('#pj-sucessao-id').val($(this).parent().parent().children('.suc-id').val());
-                    $('.info-history-sucessao').click();
+                    if (!executing) {
+                        $('#pj-sucessao-id').val($(this).parent().parent().children('.suc-id').val());
+                        $('.info-history-sucessao').click();
+                    }
                 });
             }
 

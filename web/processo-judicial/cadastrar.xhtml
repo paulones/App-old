@@ -1611,10 +1611,19 @@
                                 </div>
                                 <div class="form-actions fluid">
                                     <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="col-md-offset-9 col-md-3">
+                                        <div class="col-md-2">
+                                        <ui:fragment rendered="#{processoJudicialBean.edit}">
+                                            <div class="col-md-offset-0 col-md-3">
+                                                <a href="consultar.xhtml" class="btn default">
+                                                    <i class="m-icon-swapleft"></i> Voltar
+                                                </a>
+                                            </div>
+                                        </ui:fragment>
+                                    </div>
+                                        <div class="col-md-10">
+                                            <div class="col-md-offset-8 col-md-4">
                                                 <a href="javascript:;" class="btn default button-previous">
-                                                    <i class="m-icon-swapleft"></i> Voltar </a>
+                                                    <i class="m-icon-swapleft"></i> Retornar </a>
                                                 <a href="javascript:;" class="btn blue-chambray button-next">
                                                     Continuar <i class="m-icon-swapright m-icon-white"></i>
                                                 </a>
