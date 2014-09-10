@@ -54,9 +54,11 @@ var PjudCon = function() {
                 $(this).parent().parent().next().remove();
             } else {
                 /* Open this row */
-                $('#pjud-id').val($(this).parent().siblings(":last").text());
-                $('.info-refresher').click();
-                element = $(this);
+                if (!executing) {
+                    $('#pjud-id').val($(this).parent().siblings(":last").text());
+                    $('.info-refresher').click();
+                    element = $(this);
+                }
             }
         });
 
@@ -339,8 +341,8 @@ var PjudCon = function() {
                         if ($(this).children('.dd3-content').children('strong').html().trim() === $(atual).children('.dd3-content').children('strong').html().trim()) {
                             exists = true;
                             $(this).children('.dd3-content').css("color", "#333");
-                            $(this).children('.dd3-content').hover(function(e){
-                                $(this).css("color",e.type === "mouseenter" ? "#2ea8e5" : "#333");
+                            $(this).children('.dd3-content').hover(function(e) {
+                                $(this).css("color", e.type === "mouseenter" ? "#2ea8e5" : "#333");
                             });
                         }
                     });
@@ -411,12 +413,12 @@ var PjudCon = function() {
                                         $.each(data, function() {
                                             var status;
                                             if (String(pjId) === String($(this).attr('sucessora_id'))) {
-                                                status = $(this).attr('sucedida_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>'; 
+                                                status = $(this).attr('sucedida_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                                 sucedidas += '<li class="sucedidas dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                         + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucedida_id') + '" type="text"/></div>'
                                                         + '<div class="dd3-content"><strong>' + $(this).attr('sucedida_nome') + ':</strong> ' + $(this).attr('sucedida_cnpj') + status + '</div></li>';
                                             } else if (String(pjId) === String($(this).attr('sucedida_id'))) {
-                                                status = $(this).attr('sucessora_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>'; 
+                                                status = $(this).attr('sucessora_status') === 'A' ? '' : '<strong> (DESATIVADA)</strong>';
                                                 sucessoras += '<li class="sucessoras dd-item dd3-item"><input class="suc-id display-hide" value="' + $(this).attr('sucessao_id') + '" type="text"/>'
                                                         + '<div class="dd-handle dd3-handle ' + modal + '">' + icon + '<input class="object-id display-hide" value="' + $(this).attr('sucessora_id') + '" type="text"/></div>'
                                                         + '<div class="dd3-content"><strong>' + $(this).attr('sucessora_nome') + ':</strong> ' + $(this).attr('sucessora_cnpj') + status + '</div></li>';
@@ -440,7 +442,7 @@ var PjudCon = function() {
                                                 sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
                                                 $(parent).find('.atual').append(sucessoras);
                                             }
-                                            $('.atual').children('.dd3-content').css("color","#3c763d");
+                                            $('.atual').children('.dd3-content').css("color", "#3c763d");
                                         }
                                         if (index === lastIndex) {
                                             getHistorico();
@@ -475,6 +477,14 @@ var PjudCon = function() {
             });
 
             jsf.ajax.addOnEvent(function(data) {
+                switch (data.status) {
+                    case "begin":
+                        data.source.disabled = true;
+                        break;
+                    case "complete":
+                        data.source.disabled = false;
+                        break;
+                }
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
                         getMoneyMask('#info');

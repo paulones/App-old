@@ -2964,6 +2964,8 @@
 
         <script>
             //<![CDATA[
+            var executing = false;
+
             if (Modernizr.localstorage) {
                 localStorage.clear();
             }
@@ -2993,27 +2995,37 @@
                 e.preventDefault();
                 window.location = "../procura-geral.xhtml?valor=" + $(this).find('.form-control').val();
             });
+
             $(document).on('click', '.pf-info', function() {
-                $('#id-modal').val($(this).find('.object-id').val());
-                $('#tabela-modal').val('PF');
-                $('.show-modal').click();
+                if (!executing) {
+                    $('#id-modal').val($(this).find('.object-id').val());
+                    $('#tabela-modal').val('PF');
+                    $('.show-modal').click();
+                }
             });
             $(document).on('click', '.pj-info', function() {
-                $('#id-modal').val($(this).find('.object-id').val());
-                $('#tabela-modal').val('PJ');
-                $('.show-modal').click();
+                if (!executing) {
+                    $('#id-modal').val($(this).find('.object-id').val());
+                    $('#tabela-modal').val('PJ');
+                    $('.show-modal').click();
+                }
             });
             $(document).on('click', '.pjud-info', function() {
-                $('#id-modal').val($(this).find('.object-id').val());
-                $('#tabela-modal').val('PJUD');
-                $('.show-modal').click();
+                if (!executing) {
+                    $('#id-modal').val($(this).find('.object-id').val());
+                    $('#tabela-modal').val('PJUD');
+                    $('.show-modal').click();
+                }
             });
             $(document).on('click', '.pjs-info', function() {
-                $('#id-modal').val($(this).find('.object-id').val());
-                $('#tabela-modal').val('PJS');
-                $('.show-modal').click();
+                if (!executing) {
+                    $('#id-modal').val($(this).find('.object-id').val());
+                    $('#tabela-modal').val('PJS');
+                    $('.show-modal').click();
+                }
             });
             var element;
+
             $(document).on('click', '.dd3-content', function() {
                 if ($(this).parent().children('.suc-id').val().length > 0) {
                     $('#sucessao-id').val($(this).parent().children('.suc-id').val());
@@ -3021,8 +3033,31 @@
                     element = $(this);
                 }
             });
+
+            function setCursors(ajax) {
+                if (ajax === "begin") {
+                    $('body').css('cursor', 'wait');
+                    $('.row-details').css('cursor', 'wait');
+                    $('a').css('cursor', 'wait');
+                } else {
+                    $('body').css('cursor', 'auto');
+                    $('.row-details').css('cursor', 'pointer');
+                    $('a').css('cursor', 'pointer');
+                }
+            }
+
             jsf.ajax.addOnEvent(function(data) {
+                switch (data.status) {
+                    case "begin":
+                        setCursors(data.status);
+                        executing = true;
+                        break;
+                    case "complete":
+                        executing = true;
+                        break;
+                }
                 if (data.status === 'success') {
+                    setCursors(data.status);
                     if ($(data.source).attr("class") === "show-modal") {
                         if ($('#tabela-modal').val() === "PF") {
                             $('.modal-pf').click();
@@ -3053,6 +3088,7 @@
                         $(element).closest('.nestable-list').find('.sucessao-info').remove();
                         $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));
                     }
+                    executing = false;
                 }
             });
 
@@ -3061,9 +3097,11 @@
                     if ($(this).html().trim() !== "-") {
                         $($(this)).html(function(i, val) {
                             val = val.replace(".", ",").trim();
-                            var newVal = val.substring(val.indexOf(','));
+                            var decimal = val.indexOf(',') === -1 ? val.length : val.indexOf(',');
+                            var newVal = val.indexOf(',') === -1 ? ",00" : val.substring(val.indexOf(','));
+                            newVal = val.substring(val.indexOf(',')).length === 2 ? newVal + "0" : newVal;
                             var index = 1;
-                            for (var i = val.indexOf(','); i > 0; i--) {
+                            for (var i = decimal; i > 0; i--) {
                                 if (index >= 3) {
                                     if (index % 3 === 0 && i !== 1) {
                                         newVal = "." + val.charAt(i - 1) + newVal;
