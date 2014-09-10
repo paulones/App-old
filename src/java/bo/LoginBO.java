@@ -5,8 +5,8 @@
  */
 package bo;
 
-import dao.ConfigDAO;
-import entidade.Config;
+import dao.InstituicaoDAO;
+import entidade.Instituicao;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,12 +19,11 @@ import util.Base64Crypt;
 public class LoginBO implements Serializable {
 
     private String chaveTeste = "79OPRx8E0xVmaqi950wC1pxBWBN3Jt1jh6qUrsDJJeY=";
-    private String cnpj = "12345678901150";
     private String cryptKey = "deadwood8986deadwood8986";
-    ConfigDAO configDAO = new ConfigDAO();
+    private InstituicaoDAO instituicaoDAO;
 
     public LoginBO() {
-
+        instituicaoDAO = new InstituicaoDAO();
     }
 
     //Verifica a licença fornecida ao sistema
@@ -46,18 +45,18 @@ public class LoginBO implements Serializable {
                 Date dataChave = sdf.parse(endData);
                 Date dataAtual = new Date();
                 if (dataAtual.before(dataChave)) {
-                    Config config = new Config();
-                    if (configDAO.getConfigCount() == 0) {
-                        config.setCnpj(cnpj);
-                        config.setChave(crypt);
-                        config.setUltimoLogin(dataAtual);
-                        configDAO.create(config);
+                    Instituicao instituicao = new Instituicao();
+                    instituicao = instituicaoDAO.findInstituicaoByCNPJ(cnpj);
+                    //System.out.println("instituicao: "+instituicao.getRazaoSocial());
+                    if (instituicao == null) { // Cria instituição caso a mesma não exista
+                        instituicao.setCnpj(cnpj);
+                        instituicao.setChave(crypt);
+                        instituicao.setUltimoLogin(base64Crypt.encrypt(sdf.format(dataAtual)));
+                        instituicaoDAO.create(instituicao);
                     } else {
-                        System.out.println(cnpj);
-                        config = configDAO.findConfigByCNPJ(cnpj);
-                        config.setChave(crypt);
-                        config.setUltimoLogin(dataAtual);
-                        configDAO.edit(config);
+                        instituicao.setChave(crypt);
+                        instituicao.setUltimoLogin(base64Crypt.encrypt(sdf.format(dataAtual)));
+                        instituicaoDAO.edit(instituicao);
                     }
                     ok = true;
                 }
@@ -69,21 +68,33 @@ public class LoginBO implements Serializable {
     }
 
     //Verifica se o tempo da última licença já expirou
-    public Boolean expirado() {
+    public Boolean expirado(String cpf) {
         Boolean ok = true;
-        Config config = new Config();
+        Instituicao instituicao = new Instituicao();
         //Consulta em uma persistênca a string de licença
         try {
-            config = configDAO.findConfigByCNPJ(cnpj);
+            instituicao = instituicaoDAO.findInstituicaoByCPF(cpf);
             String descriptografia;
-            //System.out.println("config: "+config.getChave()+", "+config.getCnpj()+", "+config.getUltimoLogin().toString());
-            if (config != null) {
+            String ultimoLogin = "";
+            //System.out.println("config: "+instituicao.getChave()+", "+instituicao.getCnpj()+", "+instituicao.getUltimoLogin());
+            if (instituicao != null) {
                 Base64Crypt base64Crypt = new Base64Crypt();
-                descriptografia = base64Crypt.decrypt(config.getChave());
+                descriptografia = base64Crypt.decrypt(instituicao.getChave());
                 String endData = descriptografia.substring(9, 17);
                 SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
                 Date dataChave = sdf.parse(endData);
-                if(!dataChave.before(new Date())){
+                if (instituicao.getUltimoLogin() != null) { //Verifica se existe um último login realizado
+                    ultimoLogin = base64Crypt.decrypt(instituicao.getUltimoLogin());
+                    //System.out.println("ultimo login: "+ultimoLogin);
+                    Date ultimoDateLogin = sdf.parse(ultimoLogin);
+                    if (ultimoDateLogin.before(new Date())) {
+                        //System.out.println("Data Atual: "+sdf.format(new Date()));
+                        instituicao.setUltimoLogin(base64Crypt.encrypt(sdf.format(new Date())));
+                    }
+                }
+                //Criar regra para licença vitalicia
+                if (!dataChave.before(new Date())) {
+                    instituicaoDAO.edit(instituicao);
                     ok = false;
                 }
             }

@@ -62,7 +62,7 @@ public class LoginBean implements Serializable {
         Usuario usuarioBD = usuarioBO.findUsuarioByCPF(usuario.getCpf());
         if (usuarioBD != null) {
             if (usuarioBD.getSenha().equals(usuario.getSenha())) {
-                if (!loginBO.expirado()) {
+                if (!loginBO.expirado(usuario.getCpf())) {
                     Cookie.addCookie("usuario", usuario.getCpf(), 36000);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
                 } else {
@@ -114,25 +114,32 @@ public class LoginBean implements Serializable {
     }
 
     public void registrar() {
-        if (usuarioBO.findUsuarioByCPF(usuario.getCpf()) == null) {
-            if (usuarioBO.findUsuarioByEmail(usuario.getEmail()) == null) {
-                usuarioBO.create(usuario);
-                mensagem = "loginSuccess";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário registrado com sucesso!", null));
-                usuario.setNome(null);
-                usuario.setEmail(null);
-                usuario.setCpf(null);
+        System.out.println("Autorizado: "+usuarioBO.findAutozizacaoByCPF(usuario.getCpf()));
+        if (usuarioBO.findAutozizacaoByCPF(usuario.getCpf()) != null) {
+            if (usuarioBO.findUsuarioByCPF(usuario.getCpf()) == null) {
+                if (usuarioBO.findUsuarioByEmail(usuario.getEmail()) == null) {
+                    usuarioBO.create(usuario);
+                    mensagem = "loginSuccess";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário registrado com sucesso!", null));
+                    usuario.setNome(null);
+                    usuario.setEmail(null);
+                    usuario.setCpf(null);
+                } else {
+                    mensagem = "registerFail";
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Já existe um usuário com o e-mail \"" + usuario.getEmail() + "\" cadastrado.", null));
+                    usuario.setEmail(null);
+                }
             } else {
                 mensagem = "registerFail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Já existe um usuário com o e-mail \"" + usuario.getEmail() + "\" cadastrado.", null));
-                usuario.setEmail(null);
+                String cpf = String.format("%s.%s.%s-%s", usuario.getCpf().substring(0, 3), usuario.getCpf().substring(3, 6), usuario.getCpf().substring(6, 9), usuario.getCpf().substring(9));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um usuário com o CPF \"" + cpf + "\" cadastrado.", null));
+                usuario.setCpf(null);
             }
         } else {
-            mensagem = "registerFail";
-            String cpf = String.format("%s.%s.%s-%s",usuario.getCpf().substring(0, 3),usuario.getCpf().substring(3, 6),usuario.getCpf().substring(6, 9),usuario.getCpf().substring(9));
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Já existe um usuário com o CPF \"" +cpf+ "\" cadastrado.", null));
-            usuario.setCpf(null);
-        }
+                mensagem = "registerFail";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro não autorizado, verifique sua permissão de acesso.", null));
+                usuario.setCpf(null);
+            }
     }
 
     public void licenciar() {

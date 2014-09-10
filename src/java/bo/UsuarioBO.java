@@ -6,7 +6,9 @@
 
 package bo;
 
+import dao.AutorizacaoDAO;
 import dao.UsuarioDAO;
+import entidade.Autorizacao;
 import entidade.Usuario;
 import java.io.Serializable;
 import java.util.List;
@@ -18,9 +20,11 @@ import java.util.List;
 public class UsuarioBO implements Serializable {
     
     private UsuarioDAO usuarioDAO;
+    private AutorizacaoDAO autorizacaoDAO;
     
     public UsuarioBO(){
         usuarioDAO = new UsuarioDAO();
+        autorizacaoDAO = new AutorizacaoDAO();
     }
 
     public void create(Usuario usuario) {
@@ -47,6 +51,15 @@ public class UsuarioBO implements Serializable {
             e.printStackTrace();
         }
         return new Usuario();
+    }
+    
+    public Autorizacao findAutozizacaoByCPF(String cpf) {
+        try { 
+            return autorizacaoDAO.findAutozizacaoByCPF(cpf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new Autorizacao();
     }
     
     public Usuario findUsuarioByCNPJ(String cnpj) {
