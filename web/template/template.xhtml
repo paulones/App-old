@@ -2965,7 +2965,7 @@
         <script>
             //<![CDATA[
             var executing = false;
-            
+
             if (Modernizr.localstorage) {
                 localStorage.clear();
             }
@@ -3034,9 +3034,24 @@
                 }
             });
 
+            function setCursors(ajax) {
+                if (ajax === "begin") {
+                    $('body').css('cursor', 'wait');
+                    $('.row-details').css('cursor', 'wait');
+                    $('a').css('cursor', 'wait');
+                    $('th').css('cursor', 'wait');
+                } else {
+                    $('body').css('cursor', 'auto');
+                    $('.row-details').css('cursor', 'pointer');
+                    $('a').css('cursor', 'pointer');
+                    $('th').css('cursor', 'pointer');
+                }
+            }
+
             jsf.ajax.addOnEvent(function(data) {
                 switch (data.status) {
                     case "begin":
+                        setCursors(data.status);
                         executing = true;
                         break;
                     case "complete":
@@ -3044,6 +3059,7 @@
                         break;
                 }
                 if (data.status === 'success') {
+                    setCursors(data.status);
                     if ($(data.source).attr("class") === "show-modal") {
                         if ($('#tabela-modal').val() === "PF") {
                             $('.modal-pf').click();
@@ -3076,13 +3092,6 @@
                     }
                     executing = false;
                 }
-            });
-
-
-            $('body').ajaxStart(function() {
-                $(this).css({'cursor': 'wait'});
-            }).ajaxStop(function() {
-                $(this).css({'cursor': 'default'});
             });
 
             function getMoneyMask(parent) {
