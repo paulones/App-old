@@ -114,8 +114,7 @@ public class LoginBean implements Serializable {
     }
 
     public void registrar() {
-        System.out.println("Autorizado: "+usuarioBO.findAutozizacaoByCPF(usuario.getCpf()));
-        if (usuarioBO.findAutozizacaoByCPF(usuario.getCpf()) != null) {
+        if (usuarioBO.findAutorizacaoByCPF(usuario.getCpf()) != null) {
             if (usuarioBO.findUsuarioByCPF(usuario.getCpf()) == null) {
                 if (usuarioBO.findUsuarioByEmail(usuario.getEmail()) == null) {
                     usuarioBO.create(usuario);
@@ -137,7 +136,7 @@ public class LoginBean implements Serializable {
             }
         } else {
                 mensagem = "registerFail";
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cadastro não autorizado, verifique sua permissão de acesso.", null));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Usuário não autorizado. Verifique sua permissão de acesso.", null));
                 usuario.setCpf(null);
             }
     }

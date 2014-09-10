@@ -53,9 +53,9 @@ public class UsuarioBO implements Serializable {
         return new Usuario();
     }
     
-    public Autorizacao findAutozizacaoByCPF(String cpf) {
+    public Autorizacao findAutorizacaoByCPF(String cpf) {
         try { 
-            return autorizacaoDAO.findAutozizacaoByCPF(cpf);
+            return autorizacaoDAO.findAutorizacaoByCPF(cpf);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -29,7 +29,7 @@ public class AutorizacaoDAO implements Serializable {
 
     public AutorizacaoDAO() {
     }
-    private EntityManagerFactory emf = JPAUtil.getEMF();
+    private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
@@ -187,7 +187,7 @@ public class AutorizacaoDAO implements Serializable {
         }
     }
     
-    public Autorizacao findAutozizacaoByCPF(String cpf) {
+    public Autorizacao findAutorizacaoByCPF(String cpf) {
         EntityManager em = getEntityManager();
         try {
             Autorizacao autorizacao = (Autorizacao) em.createNativeQuery("select * from autorizacao "

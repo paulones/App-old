@@ -32,7 +32,7 @@ public class InstituicaoDAO implements Serializable {
 
     public InstituicaoDAO() {
     }
-    private EntityManagerFactory emf = JPAUtil.getEMF();
+    private transient EntityManagerFactory emf = JPAUtil.getEMF();
 
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
