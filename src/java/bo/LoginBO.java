@@ -18,8 +18,6 @@ import util.Base64Crypt;
  */
 public class LoginBO implements Serializable {
 
-    private String chaveTeste = "79OPRx8E0xVmaqi950wC1pxBWBN3Jt1jh6qUrsDJJeY=";
-    private String cryptKey = "deadwood8986deadwood8986";
     private InstituicaoDAO instituicaoDAO;
 
     public LoginBO() {
@@ -76,8 +74,7 @@ public class LoginBO implements Serializable {
             instituicao = instituicaoDAO.findInstituicaoByCPF(cpf);
             String descriptografia;
             String ultimoLogin = "";
-            //System.out.println("config: "+instituicao.getChave()+", "+instituicao.getCnpj()+", "+instituicao.getUltimoLogin());
-            if (instituicao != null) {
+            if (instituicao.getChave() != null) {
                 Base64Crypt base64Crypt = new Base64Crypt();
                 descriptografia = base64Crypt.decrypt(instituicao.getChave());
                 String endData = descriptografia.substring(9, 17);
@@ -85,10 +82,8 @@ public class LoginBO implements Serializable {
                 Date dataChave = sdf.parse(endData);
                 if (instituicao.getUltimoLogin() != null) { //Verifica se existe um último login realizado
                     ultimoLogin = base64Crypt.decrypt(instituicao.getUltimoLogin());
-                    //System.out.println("ultimo login: "+ultimoLogin);
                     Date ultimoDateLogin = sdf.parse(ultimoLogin);
                     if (ultimoDateLogin.before(new Date())) {
-                        //System.out.println("Data Atual: "+sdf.format(new Date()));
                         instituicao.setUltimoLogin(base64Crypt.encrypt(sdf.format(new Date())));
                     }
                 }
