@@ -27,7 +27,8 @@ var PJCad = function() {
                     required: false
                 },
                 state: {
-                    minlength_optional: 15,
+                    minlength_optional: 9,
+                    maxlength: 15,
                     required: false
                 },
                 province: {
@@ -198,37 +199,122 @@ var PJCad = function() {
             $.each($('.initial-date'), function() {
                 var initialdate = $(this).val();
                 var finaldate = $(this).closest('tr').children('td').children('.final-date').val();
-                if (initialdate.match(reg) && finaldate.match(reg)) {
-                    if (finaldate != "" && initialdate != "") {
-                        var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
-                        var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
-                        if (final < initial) {
-                            $(this).closest('tr').children('td').children('.final-date').val("");
-                            $(dateError).html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                var criacaoEmpresa = $('.data-de-criacao').val();
+                var criacao = criacaoEmpresa.split("/")[2] + "-" + criacaoEmpresa.split("/")[1] + "-" + criacaoEmpresa.split("/")[0];
+                var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
+                var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
+                if (initialdate !== "") {
+                    if (initialdate.match(reg)) {
+                        if (criacaoEmpresa !== "") { // Caso tenha sido informado data de criação da empresa
+                            if (criacaoEmpresa.match(reg)) {
+                                if (criacao > initial) {
+                                    $(this).val("");
+                                    $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cri&ccedil;&atilde;o da empresa.");
+                                    $(dateError).show();
+                                    return result = false;
+                                }
+                            } else {
+                                $(this).val("");
+                                $(dateError).html("Digite uma data de cri&ccedil;&atilde;o da empresa v&aacute;lida.");
+                                $(dateError).show();
+                                return result = false;
+                            }
+                        }
+                        if (finaldate !== "") { // Caso tenha sido informado data de final de vinculo
+                            if (finaldate.match(reg)) {
+                                if (final < initial) {
+                                    $(this).closest('tr').children('td').children('.final-date').val("");
+                                    $(dateError).html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                                    $(dateError).show();
+                                    return result = false;
+                                }
+                            } else {
+                                $(this).closest('tr').children('td').children('.final-date').val("");
+                                $(dateError).html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                                $(dateError).show();
+                                return result = false;
+                            }
+                        }
+                    } else {
+                        $(this).val("");
+                        $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                        $(dateError).show();
+                        return result = false;
+                    }
+                } else { // Se não foi informado "data inicial", não há necessidade de comparações
+                    if (criacaoEmpresa !== "") { // Caso tenha sido informado data de criação da empresa
+                        if (!criacaoEmpresa.match(reg)) {
+                            $(this).val("");
+                            $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
                             $(dateError).show();
                             return result = false;
-                        } else {
-                            $(dateError).hide();
-                            return result = true;
                         }
-                    } else if (initialdate != "") {
-                        $(dateError).hide();
-                        return result = true;
                     }
-                } else if (initialdate != "" && !initialdate.match(reg)) {
-                    $(this).val("");
-                    $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
-                    $(dateError).show();
-                    return result = false;
-                } else if (finaldate != "" && !finaldate.match(reg)) {
-                    $(this).closest('tr').children('td').children('.final-date').val("");
-                    $(dateError).html("Digite uma data de t&eacute;rmino v&aacute;lida.");
-                    $(dateError).show();
-                    return result = false;
-                } else {
-                    $(dateError).hide();
-                    return result = true;
+                    if (finaldate !== "") { // Caso tenha sido informado data de final de vinculo
+                        if (!finaldate.match(reg)) {
+                            $(this).val("");
+                            $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                            $(dateError).show();
+                            return result = false;
+                        }
+                    }
                 }
+                //Caso só tenha sido informado data inicial,
+                //Nada foi informado ou está tudo certo
+                $(dateError).hide();
+                return result = true;
+
+                //--------------------------------------------------------------
+                /*if (initialdate.match(reg) && finaldate.match(reg)) {
+                 if (initialdate !== "") {
+                 if (criacaoEmpresa !== "" && criacaoEmpresa.match(reg)) {
+                 if (initial < criacao) {
+                 $(this).val("");
+                 $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cri&ccedil;&atilde;o da empresa.");
+                 $(dateError).show();
+                 return result = false;
+                 } else {
+                 $(dateError).hide();
+                 return result = true;
+                 }
+                 }
+                 if (finaldate !== "") {
+                 if (final < initial) {
+                 $(this).closest('tr').children('td').children('.final-date').val("");
+                 $(dateError).html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
+                 $(dateError).show();
+                 return result = false;
+                 } else {
+                 $(dateError).hide();
+                 return result = true;
+                 }
+                 }
+                 } else if (initialdate !== "") {
+                 $(dateError).hide();
+                 return result = true;
+                 }
+                 } else if (initialdate !== "" && !initialdate.match(reg)) {
+                 if (criacaoEmpresa !== "" && criacaoEmpresa.match(reg)) {
+                 if (initial < criacao) {
+                 $(this).val("");
+                 $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cri&ccedil;&atilde;o da empresa.");
+                 $(dateError).show();
+                 return result = false;
+                 }
+                 }
+                 $(this).val("");
+                 $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
+                 $(dateError).show();
+                 return result = false;
+                 } else if (finaldate != "" && !finaldate.match(reg)) {
+                 $(this).closest('tr').children('td').children('.final-date').val("");
+                 $(dateError).html("Digite uma data de t&eacute;rmino v&aacute;lida.");
+                 $(dateError).show();
+                 return result = false;
+                 } else {
+                 $(dateError).hide();
+                 return result = true;
+                 }*/
             });
             return result;
         }
@@ -296,7 +382,7 @@ var PJCad = function() {
             handleTable();
 
             $('#cnpj').mask("99.999.999/9999-99");
-            $('#state').mask("999.999.999.999");
+            $('#state').mask("99999999999999");
             $('#iniDate').mask("99/99/9999");
             $('#nire').mask("99999999999");
             $('#cep').mask("99999-999");

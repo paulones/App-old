@@ -204,7 +204,7 @@
                                             <div class="col-md-9">
                                                 <div class="input-icon right">
                                                     <i class="fa"></i>
-                                                    <h:inputText class="form-control" id="iniDate" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaBean.pessoaJuridica.dataDeCriacao}"/>
+                                                    <h:inputText class="form-control data-de-criacao" id="iniDate" p:placeholder="dd/mm/aaaa" value="#{pessoaJuridicaBean.pessoaJuridica.dataDeCriacao}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -386,7 +386,7 @@
                                         <button  class="btn blue-chambray" id="vinculatePF">
                                             <i class="fa fa-plus-circle"></i> Vincular</button>
                                         <h:commandLink styleClass="vinculatePF">
-                                            <f:ajax event="click" execute="pessoafisica" listener="#{pessoaJuridicaBean.vincularPessoaFisica}" render="pessoaFisicaJuridica"/>
+                                            <f:ajax event="click" execute="pessoafisica pessoaFisicaJuridica" listener="#{pessoaJuridicaBean.vincularPessoaFisica}" render="pessoaFisicaJuridica"/>
                                         </h:commandLink>
                                     </div>
                                 </div>
@@ -476,7 +476,7 @@
                                         <button  class="btn blue-chambray" id="vinculatePJ">
                                             <i class="fa fa-plus-circle"></i> Vincular</button>
                                         <h:commandLink styleClass="vinculatePJ">
-                                            <f:ajax event="click" execute="pessoajuridica" listener="#{pessoaJuridicaBean.vincularPessoaJuridica}" render="pessoaJuridicaJuridica"/>
+                                            <f:ajax event="click" execute="pessoajuridica pessoaJuridicaJuridica" listener="#{pessoaJuridicaBean.vincularPessoaJuridica}" render="pessoaJuridicaJuridica"/>
                                         </h:commandLink>
                                     </div>
                                 </div>
