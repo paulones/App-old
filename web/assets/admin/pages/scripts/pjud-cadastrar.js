@@ -326,7 +326,7 @@ var PjudCad = function() {
                     required: false,
                 },
                 bemdata: {
-                    data: true,
+                    date: true,
                     required: false
                 },
                 vinculo: {

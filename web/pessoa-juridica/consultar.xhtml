@@ -178,8 +178,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Nome:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Nome:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.nome}
                                                                                 </p>
@@ -189,8 +189,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">CNPJ:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">CNPJ:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     <ui:param value="#{historico.pessoaHistorico.cnpj.substring(0,2)}.#{historico.pessoaHistorico.cnpj.substring(2,5)}.#{historico.pessoaHistorico.cnpj.substring(5,8)}/#{historico.pessoaHistorico.cnpj.substring(8,12)}-#{historico.pessoaHistorico.cnpj.substring(12)}" name="cnpj"/>
                                                                                     #{historico.pessoaHistorico.cnpj eq null ? '-' : cnpj}
@@ -204,8 +204,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Nome Fantasia: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Nome Fantasia: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.nomeFantasia eq null ? '-' : historico.pessoaHistorico.nomeFantasia}
                                                                                 </p>
@@ -215,8 +215,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Tipo Empresarial: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Tipo Empresarial: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.tipoEmpresarialFk.tipo eq null ? '-' : historico.pessoaHistorico.tipoEmpresarialFk.tipo}
                                                                                 </p>
@@ -229,8 +229,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Inscrição Estadual: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Inscrição Estadual: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.inscricaoEstadual eq null ? '-' : historico.pessoaHistorico.inscricaoEstadual}
                                                                                 </p>
@@ -240,8 +240,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Inscrição Municipal: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Inscrição Municipal: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.inscricaoMunicipal eq null ? '-' : historico.pessoaHistorico.inscricaoMunicipal}
                                                                                 </p>
@@ -254,8 +254,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Situação: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Situação: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.situacao eq null ? '-' : 'A' ? 'Ativo' : 'Inativo'}
                                                                                 </p>
@@ -265,8 +265,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Motivo da Desativação: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Motivo da Desativação: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.motivoDaDesativacao eq null ? '-' : historico.pessoaHistorico.motivoDaDesativacao}
                                                                                 </p>
@@ -279,8 +279,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Data de Criação: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Data de Criação: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.dataDeCriacao eq null ? '-' : historico.pessoaHistorico.dataDeCriacao}
                                                                                 </p>
@@ -290,8 +290,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Grupo Econômico: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Grupo Econômico: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.grupoEconomico eq null ? '-' : historico.pessoaHistorico.grupoEconomico}
                                                                                 </p>
@@ -304,8 +304,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">NIRE: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">NIRE: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.nire eq null ? '-' : historico.pessoaHistorico.nire}
                                                                                 </p>
@@ -315,8 +315,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">CNAE: </label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">CNAE: </label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.cnae eq null ? '-' : historico.pessoaHistorico.cnae}
                                                                                 </p>
@@ -327,7 +327,7 @@
                                                                 </div>
                                                                 <!--/row-->
                                                                 <div class="row">
-                                                                    <div class="col-md-9">
+                                                                    <div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-2">Atividade Principal:</label>
                                                                             <div class="col-md-10">
@@ -340,9 +340,9 @@
                                                                 </div>
                                                                 <!--/row-->
                                                                 <div class="row">
-                                                                    <div class="col-md-9">
+                                                                    <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-2">Atividades Secundárias</label>
+                                                                            <label class="control-label col-md-2">Atividades Secundárias:</label>
                                                                             <div class="col-md-10">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.pessoaHistorico.atividadeSecundaria eq null ? '-' : historico.pessoaHistorico.atividadeSecundaria}
@@ -358,8 +358,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">CEP:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">CEP:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     <ui:param name="cep" value="#{historico.enderecoHistorico.cep.substring(0,5)}-#{historico.enderecoHistorico.cep.substring(5,8)}" />
                                                                                     #{historico.enderecoHistorico.cep eq null ? '-' : cep}
@@ -370,8 +370,8 @@
                                                                     <!--span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Cidade/Estado:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.enderecoHistorico.cidadeFk eq null ? '-' : historico.enderecoHistorico.cidadeFk.nome} #{historico.enderecoHistorico.estadoFk eq null ? '' : '/'} #{historico.enderecoHistorico.estadoFk eq null ? '' : historico.enderecoHistorico.estadoFk.uf}
                                                                                 </p>
@@ -383,8 +383,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Endereço:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Endereço:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.enderecoHistorico.endereco eq null ? '-' : historico.enderecoHistorico.endereco}
                                                                                 </p>
@@ -394,8 +394,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Número:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Número:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.enderecoHistorico.numero eq null ? '-' : historico.enderecoHistorico.numero}
                                                                                 </p>
@@ -408,8 +408,8 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Complemento:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Complemento:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.enderecoHistorico.complemento eq null ? '-' : historico.enderecoHistorico.complemento}
                                                                                 </p>
@@ -419,8 +419,8 @@
                                                                     <!--/span-->
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-3">Bairro:</label>
-                                                                            <div class="col-md-9">
+                                                                            <label class="control-label col-md-4">Bairro:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static">
                                                                                     #{historico.enderecoHistorico.bairro eq null ? '-' : historico.enderecoHistorico.bairro}
                                                                                 </p>
@@ -623,8 +623,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Nome:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Nome:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static nome">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.nome}
                                                                 </p>
@@ -634,8 +634,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">CNPJ:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">CNPJ:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static cnpj">
                                                                     <ui:param value="#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.cnpj eq null ? '-' : cnpj}
@@ -649,8 +649,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Nome Fantasia: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Nome Fantasia: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.nomeFantasia eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.nomeFantasia}
                                                                 </p>
@@ -660,8 +660,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Tipo Empresarial: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Tipo Empresarial: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo}
                                                                 </p>
@@ -674,8 +674,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Inscrição Estadual: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Inscrição Estadual: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.inscricaoEstadual eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.inscricaoEstadual}
                                                                 </p>
@@ -685,8 +685,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Inscrição Municipal: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Inscrição Municipal: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.inscricaoMunicipal eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.inscricaoMunicipal}
                                                                 </p>
@@ -699,8 +699,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Situação: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Situação: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.situacao eq null ? '-' : 'A' ? 'Ativo' : 'Inativo'}
                                                                 </p>
@@ -710,8 +710,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Motivo da Desativação: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Motivo da Desativação: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
                                                                 </p>
@@ -724,8 +724,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Data de Criação: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Data de Criação: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.dataDeCriacao eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.dataDeCriacao}
                                                                 </p>
@@ -735,8 +735,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Grupo Econômico: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Grupo Econômico: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.grupoEconomico eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.grupoEconomico}
                                                                 </p>
@@ -749,8 +749,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">NIRE: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">NIRE: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.nire eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.nire}
                                                                 </p>
@@ -760,8 +760,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">CNAE: </label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">CNAE: </label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.cnae eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.cnae}
                                                                 </p>
@@ -772,7 +772,7 @@
                                                 </div>
                                                 <!--/row-->
                                                 <div class="row">
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-12">
                                                         <div class="form-group">
                                                             <label class="control-label col-md-2">Atividade Principal:</label>
                                                             <div class="col-md-10">
@@ -785,9 +785,9 @@
                                                 </div>
                                                 <!--/row-->
                                                 <div class="row">
-                                                    <div class="col-md-9">
+                                                    <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-2">Atividades Secundárias</label>
+                                                            <label class="control-label col-md-2">Atividades Secundárias:</label>
                                                             <div class="col-md-10">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.pessoa.atividadeSecundaria eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.pessoa.atividadeSecundaria}
@@ -801,8 +801,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">CEP:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">CEP:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     <ui:param name="cep" value="#{pessoaJuridicaBean.enderecoPessoa.endereco.cep.substring(0,5)}-#{pessoaJuridicaBean.enderecoPessoa.endereco.cep.substring(5,8)}" />
                                                                     #{pessoaJuridicaBean.enderecoPessoa.endereco.cep eq null ? '-' : cep}
@@ -813,8 +813,8 @@
                                                     <!--span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Cidade/Estado:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.endereco.cidadeFk eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.endereco.cidadeFk.nome} #{pessoaJuridicaBean.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{pessoaJuridicaBean.enderecoPessoa.endereco.estadoFk eq null ? '' : pessoaJuridicaBean.enderecoPessoa.endereco.estadoFk.uf}
                                                                 </p>
@@ -826,8 +826,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Endereço:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Endereço:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.endereco.endereco eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.endereco.endereco}
                                                                 </p>
@@ -837,8 +837,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Número:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Número:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.endereco.numero eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.endereco.numero}
                                                                 </p>
@@ -851,8 +851,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Complemento:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Complemento:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.endereco.complemento eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.endereco.complemento}
                                                                 </p>
@@ -862,8 +862,8 @@
                                                     <!--/span-->
                                                     <div class="col-md-6">
                                                         <div class="form-group">
-                                                            <label class="control-label col-md-3">Bairro:</label>
-                                                            <div class="col-md-9">
+                                                            <label class="control-label col-md-4">Bairro:</label>
+                                                            <div class="col-md-8">
                                                                 <p class="form-control-static">
                                                                     #{pessoaJuridicaBean.enderecoPessoa.endereco.bairro eq null ? '-' : pessoaJuridicaBean.enderecoPessoa.endereco.bairro}
                                                                 </p>
@@ -1155,8 +1155,8 @@
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">Empresa Sucedida:</label>
-                                                                                <div class="col-md-9">
+                                                                                <label class="control-label col-md-4">Empresa Sucedida:</label>
+                                                                                <div class="col-md-8">
                                                                                     <p class="form-control-static">
                                                                                         #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.nome}
                                                                                     </p>
@@ -1166,8 +1166,8 @@
                                                                         <!--/span-->
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">CNPJ:</label>
-                                                                                <div class="col-md-9">
+                                                                                <label class="control-label col-md-4">CNPJ:</label>
+                                                                                <div class="col-md-8">
                                                                                     <p class="form-control-static">
                                                                                         <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         #{cnpj}
@@ -1179,8 +1179,8 @@
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">Empresa Sucessora:</label>
-                                                                                <div class="col-md-9">
+                                                                                <label class="control-label col-md-4">Empresa Sucessora:</label>
+                                                                                <div class="col-md-8">
                                                                                     <p class="form-control-static">
                                                                                         #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.nome}
                                                                                     </p>
@@ -1190,8 +1190,8 @@
                                                                         <!--/span-->
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">CNPJ:</label>
-                                                                                <div class="col-md-9">
+                                                                                <label class="control-label col-md-4">CNPJ:</label>
+                                                                                <div class="col-md-8">
                                                                                     <p class="form-control-static">
                                                                                         <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                         #{cnpj}
@@ -1203,8 +1203,8 @@
                                                                     <div class="row">
                                                                         <div class="col-md-6">
                                                                             <div class="form-group">
-                                                                                <label class="control-label col-md-3">Data de Sucessao:</label>
-                                                                                <div class="col-md-9">
+                                                                                <label class="control-label col-md-4">Data de Sucessao:</label>
+                                                                                <div class="col-md-8">
                                                                                     <p class="form-control-static">
                                                                                         <h:outputText value="#{pessoaJuridicaSucessaoHistorico.dataDeSucessao}">
                                                                                             <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>

@@ -372,14 +372,14 @@ public class ReaverResource {
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             tabela += "<span class='feed-label'>Pessoa Física ";
             String info = pf.getNome() + " - " + cpf;
-            info =  info.length() >= 45 ? info.substring(0,42) + "..." : info;
+            info =  info.length() >= 35 ? info.substring(0,32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         } else if (log.getTabela().equals("PJ")) {
             PessoaJuridica pj = pjBO.findPessoaJuridica(log.getIdFk());
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             tabela += "<span class='feed-label'>Pessoa Juridica ";
             String info = pj.getNome() + " - " + cnpj;
-            info =  info.length() >= 45 ? info.substring(0,42) + "..." : info;
+            info =  info.length() >= 35 ? info.substring(0,32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         } else if (log.getTabela().equals("PJUD")) {
             ProcessoJudicial pjud = pjudBO.findProcessoJudicial(log.getIdFk());
@@ -389,7 +389,7 @@ public class ReaverResource {
             PessoaJuridicaSucessao pjs = pjsBO.findPessoaJuridicaSucessao(log.getIdFk());
             tabela += "<span class='feed-label'>Sucessão Empresarial ";
             String info = pjs.getPessoaJuridicaSucedidaFk().getNome() + " -> " + pjs.getPessoaJuridicaSucessoraFk().getNome();
-            info =  info.length() >= 45 ? info.substring(0,42) + "..." : info;
+            info =  info.length() >= 35 ? info.substring(0,32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         }
         if (log.getOperacao().equals('C')) {

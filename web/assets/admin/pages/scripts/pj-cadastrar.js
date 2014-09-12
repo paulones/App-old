@@ -209,7 +209,7 @@ var PJCad = function() {
                             if (criacaoEmpresa.match(reg)) {
                                 if (criacao > initial) {
                                     $(this).val("");
-                                    $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cri&ccedil;&atilde;o da empresa.");
+                                    $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cria&ccedil;&atilde;o da empresa.");
                                     $(dateError).show();
                                     return result = false;
                                 }
@@ -263,58 +263,6 @@ var PJCad = function() {
                 //Nada foi informado ou está tudo certo
                 $(dateError).hide();
                 return result = true;
-
-                //--------------------------------------------------------------
-                /*if (initialdate.match(reg) && finaldate.match(reg)) {
-                 if (initialdate !== "") {
-                 if (criacaoEmpresa !== "" && criacaoEmpresa.match(reg)) {
-                 if (initial < criacao) {
-                 $(this).val("");
-                 $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cri&ccedil;&atilde;o da empresa.");
-                 $(dateError).show();
-                 return result = false;
-                 } else {
-                 $(dateError).hide();
-                 return result = true;
-                 }
-                 }
-                 if (finaldate !== "") {
-                 if (final < initial) {
-                 $(this).closest('tr').children('td').children('.final-date').val("");
-                 $(dateError).html("Digite uma data de in&iacute;cio inferior &agrave; data de t&eacute;rmino.");
-                 $(dateError).show();
-                 return result = false;
-                 } else {
-                 $(dateError).hide();
-                 return result = true;
-                 }
-                 }
-                 } else if (initialdate !== "") {
-                 $(dateError).hide();
-                 return result = true;
-                 }
-                 } else if (initialdate !== "" && !initialdate.match(reg)) {
-                 if (criacaoEmpresa !== "" && criacaoEmpresa.match(reg)) {
-                 if (initial < criacao) {
-                 $(this).val("");
-                 $(dateError).html("Digite uma data de in&iacute;cio superior &agrave; data de cri&ccedil;&atilde;o da empresa.");
-                 $(dateError).show();
-                 return result = false;
-                 }
-                 }
-                 $(this).val("");
-                 $(dateError).html("Digite uma data de in&iacute;cio v&aacute;lida.");
-                 $(dateError).show();
-                 return result = false;
-                 } else if (finaldate != "" && !finaldate.match(reg)) {
-                 $(this).closest('tr').children('td').children('.final-date').val("");
-                 $(dateError).html("Digite uma data de t&eacute;rmino v&aacute;lida.");
-                 $(dateError).show();
-                 return result = false;
-                 } else {
-                 $(dateError).hide();
-                 return result = true;
-                 }*/
             });
             return result;
         }

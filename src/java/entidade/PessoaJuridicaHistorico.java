@@ -75,7 +75,7 @@ public class PessoaJuridicaHistorico implements Serializable {
     @Size(min = 1, max = 14)
     @Column(name = "cnpj")
     private String cnpj;
-    @Size(max = 12)
+    @Size(max = 15)
     @Column(name = "inscricao_estadual")
     private String inscricaoEstadual;
     @Size(max = 30)
