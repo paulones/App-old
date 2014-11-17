@@ -167,7 +167,7 @@ var PjudCon = function() {
 
     var getHistorico = function() {
 
-        $.each($('.tab1'), function() {
+        $.each($('.tab2'), function() {
             getMoneyMask($(this));
         });
         var atual;
@@ -192,10 +192,10 @@ var PjudCon = function() {
                 if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                     $(this).parent().parent().css("color", "#a94442");
                     if ($(this).parents('.tab1').length > 0) {
-                        processo = true;
-                    } else if ($(this).parents('.tab2').length > 0) {
                         executado = true;
                         $(history).find('.tab-pj-info').css("color", "#a94442");
+                    } else if ($(this).parents('.tab2').length > 0) {
+                        processo = true;
                     } else if ($(this).parents('.tab3').length > 0) {
                         bens = true;
                     } else if ($(this).parents('.tab4').length > 0) {
@@ -227,7 +227,7 @@ var PjudCon = function() {
             var checkPfjChanges = checkChangesTable('.rows-pfj tr');
             var checkPjjChanges = checkChangesTable('.rows-pjj tr');
             var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab3');
-            var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab1');
+            var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
             bens = (!bens) ? checkBensChanges : true;
             processo = (!processo) ? checkProcessoChanges : true;
             executado = (!executado) ? checkSucedidasChanges : true;
@@ -392,7 +392,7 @@ var PjudCon = function() {
                 if ($('.pj-id').length !== 0) {
                     var lastIndex = $('.pj-id').length - 1;
                     var index = 0;
-                    $.each($('.tab2'), function() {
+                    $.each($('.tab1'), function() {
                         var pjId = $(this).find('.pj-id').val();
                         var parent = "#" + $(this).find('.pj-tab').attr('id');
                         if (pjId !== undefined) {
@@ -442,7 +442,8 @@ var PjudCon = function() {
                                                 sucessoras = '<ol class="dd-list">' + sucessoras + '</ol>';
                                                 $(parent).find('.atual').append(sucessoras);
                                             }
-                                            $('.atual').children('.dd3-content').css("color", "#3c763d");
+                                            $(parent).find('.sucedidas').children(".dd3-content").append('<strong class="sucessao-label-right">(Sucedida)</strong>');
+                                            $(parent).find('.sucessoras').children(".dd3-content").append('<strong class="sucessao-label-right">(Sucessora)</strong>');
                                         }
                                         if (index === lastIndex) {
                                             getHistorico();

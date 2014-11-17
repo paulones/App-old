@@ -250,7 +250,7 @@ public class ReaverResource {
             }
             detalhes += " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk() == null ? "" : end.getEstadoFk().getUf()) + " "
                     + end.getNumero() + " " + end.getComplemento() + " " + end.getEndereco();
-            detalhes += " " + pjud.getAtoProcessual() + " " + pjud.getDataDeInscricao() + " " + pjud.getDecisaoDoJuiz() + " " + pjud.getDecisaoDoJuizDataDoAto() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
+            detalhes += " " + pjud.getAtoProcessual() + " " + pjud.getDataDeInscricao() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
                     + pjud.getDiscriminacaoDoCreditoImposto() + " " + pjud.getDiscriminacaoDoCreditoMulta() + " " + pjud.getDistribuicao() + " " + pjud.getDistribuicaoDataDoAto() + " " + (pjud.getFatosGeradores() == null ? "" : pjud.getFatosGeradores().replace(",", "; ")) + " "
                     + pjud.getFundamentacao() + " " + pjud.getGrupoDeEspecializacao() + " " + pjud.getNotificacaoAdministrativa() + " " + pjud.getNotificacaoAdministrativaDataDoAto() + " " + pjud.getNumeroDoProcessoAnterior() + " "
                     + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesBem() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + pjud.getProcurador() + " "
@@ -425,7 +425,7 @@ public class ReaverResource {
             jsonObject.put("sucessora_nome", pjs.getPessoaJuridicaSucessoraFk().getNome());
             jsonObject.put("sucessora_cnpj", sucessoraCnpj);
             jsonObject.put("sucessora_status", pjs.getPessoaJuridicaSucessoraFk().getStatus());
-            jsonObject.put("data_de_sucessao", TimestampUtils.getISO8601StringForDate(pjs.getDataDeSucessao()).replace("Z", ""));
+            jsonObject.put("data_de_sucessao", pjs.getDataDeSucessao());
             jsonArray.put(jsonObject);
         }
         return jsonArray.toString();

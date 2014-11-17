@@ -10,6 +10,7 @@
 #anoRevenue{margin:0 10px;font-weight:bold}
 .interactive{cursor:pointer}
 .interactive:hover{color:gray}
+.sucessao-label-right{margin-right:15px;float:right}
 /*lock*/
 .password-error{margin:10px 0 -10px 0}
 /*cadastroPF*/

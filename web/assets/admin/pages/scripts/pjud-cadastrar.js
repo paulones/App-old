@@ -56,13 +56,6 @@ var PjudCad = function() {
                     date: true,
                     required: false,
                 },
-                decisaojuiz: {
-                    required: false,
-                },
-                decisaojuizdata: {
-                    date: true,
-                    required: false,
-                },
                 ncda: {
                     required: true,
                 },

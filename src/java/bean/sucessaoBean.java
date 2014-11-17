@@ -36,6 +36,7 @@ public class sucessaoBean implements Serializable {
     private String succeed;
     private String sucedida;
     private String sucessora;
+    private String dataDeSucessao;
 
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
     private PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico;
@@ -50,6 +51,7 @@ public class sucessaoBean implements Serializable {
             sucedida = "";
             sucessora = "";
             succeed = "";
+            dataDeSucessao = "";
             pessoaJuridicaBO = new PessoaJuridicaBO();
             pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
             pessoaJuridicaSucessaoHistoricoBO = new PessoaJuridicaSucessaoHistoricoBO();
@@ -75,6 +77,7 @@ public class sucessaoBean implements Serializable {
             pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
             pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
             pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
+            pessoaJuridicaSucessao.setDataDeSucessao(dataDeSucessao);
             pessoaJuridicaSucessao.setStatus('A');
             if (exists) {
                 if (!pessoaJuridicaSucessao.equalsValues(pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
@@ -85,18 +88,19 @@ public class sucessaoBean implements Serializable {
                     succeed = "success";
                     sucedida = "";
                     sucessora = "";
+                    dataDeSucessao = "";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão alterada com sucesso!", null));
                 } else {
                     succeed = "info";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum campo foi alterado.", null));
                 }
             } else {
-                pessoaJuridicaSucessao.setDataDeSucessao(utilBO.findServerTime());
                 pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
                 GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'C');
                 succeed = "success";
                 sucedida = "";
                 sucessora = "";
+                dataDeSucessao = "";
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Sucessão realizada com sucesso!", null));
             }
         } else {
@@ -106,8 +110,8 @@ public class sucessaoBean implements Serializable {
     }
 
     public void checkSucessoes() {
-        if (!sucedida.equals(sucessora)) {
-            if (sucedida != null && sucessora != null) {
+        if (sucedida != null && sucessora != null) {
+            if (!sucedida.equals(sucessora)) {
                 PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
                 PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
                 pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
@@ -129,17 +133,17 @@ public class sucessaoBean implements Serializable {
                     succeed = "";
                 }
             } else {
-                succeed = "";
+                succeed = "warning";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Escolha duas empresas diferentes.", null));
             }
         } else {
-            succeed = "warning";
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Escolha duas empresas diferentes.", null));
+            succeed = "";
         }
     }
-    
-    private void prepararHistorico(PessoaJuridicaSucessao pessoaJuridicaSucessao){
+
+    private void prepararHistorico(PessoaJuridicaSucessao pessoaJuridicaSucessao) {
         pessoaJuridicaSucessaoHistorico = new PessoaJuridicaSucessaoHistorico();
-        
+
         pessoaJuridicaSucessaoHistorico.setDataDeSucessao(pessoaJuridicaSucessao.getDataDeSucessao());
         pessoaJuridicaSucessaoHistorico.setUsuarioFk(pessoaJuridicaSucessao.getUsuarioFk());
         pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucedidaFk(pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk());
@@ -169,6 +173,22 @@ public class sucessaoBean implements Serializable {
 
     public void setSucessora(String sucessora) {
         this.sucessora = sucessora;
+    }
+
+    public PessoaJuridicaSucessao getPessoaJuridicaSucessao() {
+        return pessoaJuridicaSucessao;
+    }
+
+    public void setPessoaJuridicaSucessao(PessoaJuridicaSucessao pessoaJuridicaSucessao) {
+        this.pessoaJuridicaSucessao = pessoaJuridicaSucessao;
+    }
+
+    public String getDataDeSucessao() {
+        return dataDeSucessao;
+    }
+
+    public void setDataDeSucessao(String dataDeSucessao) {
+        this.dataDeSucessao = dataDeSucessao;
     }
 
 }

@@ -48,8 +48,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByGrupoDeEspecializacao", query = "SELECT p FROM ProcessoJudicial p WHERE p.grupoDeEspecializacao = :grupoDeEspecializacao"),
     @NamedQuery(name = "ProcessoJudicial.findByDistribuicao", query = "SELECT p FROM ProcessoJudicial p WHERE p.distribuicao = :distribuicao"),
     @NamedQuery(name = "ProcessoJudicial.findByDistribuicaoDataDoAto", query = "SELECT p FROM ProcessoJudicial p WHERE p.distribuicaoDataDoAto = :distribuicaoDataDoAto"),
-    @NamedQuery(name = "ProcessoJudicial.findByDecisaoDoJuiz", query = "SELECT p FROM ProcessoJudicial p WHERE p.decisaoDoJuiz = :decisaoDoJuiz"),
-    @NamedQuery(name = "ProcessoJudicial.findByDecisaoDoJuizDataDoAto", query = "SELECT p FROM ProcessoJudicial p WHERE p.decisaoDoJuizDataDoAto = :decisaoDoJuizDataDoAto"),
     @NamedQuery(name = "ProcessoJudicial.findByDespachoInicial", query = "SELECT p FROM ProcessoJudicial p WHERE p.despachoInicial = :despachoInicial"),
     @NamedQuery(name = "ProcessoJudicial.findByDespachoInicialDataDoAto", query = "SELECT p FROM ProcessoJudicial p WHERE p.despachoInicialDataDoAto = :despachoInicialDataDoAto"),
     @NamedQuery(name = "ProcessoJudicial.findByNumeroDaCda", query = "SELECT p FROM ProcessoJudicial p WHERE p.numeroDaCda = :numeroDaCda"),
@@ -148,12 +146,6 @@ public class ProcessoJudicial implements Serializable {
     @Size(max = 10)
     @Column(name = "distribuicao_data_do_ato")
     private String distribuicaoDataDoAto;
-    @Size(max = 100)
-    @Column(name = "decisao_do_juiz")
-    private String decisaoDoJuiz;
-    @Size(max = 10)
-    @Column(name = "decisao_do_juiz_data_do_ato")
-    private String decisaoDoJuizDataDoAto;
     @Size(max = 100)
     @Column(name = "despacho_inicial")
     private String despachoInicial;
@@ -295,22 +287,6 @@ public class ProcessoJudicial implements Serializable {
 
     public void setDistribuicaoDataDoAto(String distribuicaoDataDoAto) {
         this.distribuicaoDataDoAto = distribuicaoDataDoAto;
-    }
-
-    public String getDecisaoDoJuiz() {
-        return decisaoDoJuiz;
-    }
-
-    public void setDecisaoDoJuiz(String decisaoDoJuiz) {
-        this.decisaoDoJuiz = decisaoDoJuiz;
-    }
-
-    public String getDecisaoDoJuizDataDoAto() {
-        return decisaoDoJuizDataDoAto;
-    }
-
-    public void setDecisaoDoJuizDataDoAto(String decisaoDoJuizDataDoAto) {
-        this.decisaoDoJuizDataDoAto = decisaoDoJuizDataDoAto;
     }
 
     public String getDespachoInicial() {
@@ -493,12 +469,6 @@ public class ProcessoJudicial implements Serializable {
             return false;
         }
         if (!Objects.equals(this.distribuicaoDataDoAto, other.distribuicaoDataDoAto)) {
-            return false;
-        }
-        if (!Objects.equals(this.decisaoDoJuiz, other.decisaoDoJuiz)) {
-            return false;
-        }
-        if (!Objects.equals(this.decisaoDoJuizDataDoAto, other.decisaoDoJuizDataDoAto)) {
             return false;
         }
         if (!Objects.equals(this.despachoInicial, other.despachoInicial)) {

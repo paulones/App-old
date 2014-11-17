@@ -26,6 +26,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -41,6 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridicaSucessao.findById", query = "SELECT p FROM PessoaJuridicaSucessao p WHERE p.id = :id"),
     @NamedQuery(name = "PessoaJuridicaSucessao.findByDataDeSucessao", query = "SELECT p FROM PessoaJuridicaSucessao p WHERE p.dataDeSucessao = :dataDeSucessao")})
 public class PessoaJuridicaSucessao implements Serializable {
+    @Size(max = 10)
+    @Column(name = "data_de_sucessao")
+    private String dataDeSucessao;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucessaoFk")
     private Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection;
     @Basic(optional = false)
@@ -53,11 +57,6 @@ public class PessoaJuridicaSucessao implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "data_de_sucessao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataDeSucessao;
     @JoinColumn(name = "pessoa_juridica_sucedida_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaJuridica pessoaJuridicaSucedidaFk;
@@ -75,25 +74,12 @@ public class PessoaJuridicaSucessao implements Serializable {
         this.id = id;
     }
 
-    public PessoaJuridicaSucessao(Integer id, Date dataDeSucessao) {
-        this.id = id;
-        this.dataDeSucessao = dataDeSucessao;
-    }
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getDataDeSucessao() {
-        return dataDeSucessao;
-    }
-
-    public void setDataDeSucessao(Date dataDeSucessao) {
-        this.dataDeSucessao = dataDeSucessao;
     }
 
     public PessoaJuridica getPessoaJuridicaSucedidaFk() {
@@ -154,6 +140,9 @@ public class PessoaJuridicaSucessao implements Serializable {
         if (!Objects.equals(this.pessoaJuridicaSucessoraFk, other.pessoaJuridicaSucessoraFk)) {
             return false;
         }
+        if (!Objects.equals(this.dataDeSucessao, other.dataDeSucessao)) {
+            return false;
+        }
         if (!Objects.equals(this.status, other.status)) {
             return false;
         }
@@ -181,6 +170,14 @@ public class PessoaJuridicaSucessao implements Serializable {
 
     public void setPessoaJuridicaSucessaoHistoricoCollection(Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection) {
         this.pessoaJuridicaSucessaoHistoricoCollection = pessoaJuridicaSucessaoHistoricoCollection;
+    }
+
+    public String getDataDeSucessao() {
+        return dataDeSucessao;
+    }
+
+    public void setDataDeSucessao(String dataDeSucessao) {
+        this.dataDeSucessao = dataDeSucessao;
     }
     
 }

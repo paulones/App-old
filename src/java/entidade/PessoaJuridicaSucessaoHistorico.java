@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -37,17 +38,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaJuridicaSucessaoHistorico.findByDataDeSucessao", query = "SELECT p FROM PessoaJuridicaSucessaoHistorico p WHERE p.dataDeSucessao = :dataDeSucessao"),
     @NamedQuery(name = "PessoaJuridicaSucessaoHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaJuridicaSucessaoHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
 public class PessoaJuridicaSucessaoHistorico implements Serializable {
+    @Size(max = 10)
+    @Column(name = "data_de_sucessao")
+    private String dataDeSucessao;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "data_de_sucessao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataDeSucessao;
     @Basic(optional = false)
     @NotNull
     @Column(name = "data_de_modificacao")
@@ -73,9 +72,8 @@ public class PessoaJuridicaSucessaoHistorico implements Serializable {
         this.id = id;
     }
 
-    public PessoaJuridicaSucessaoHistorico(Integer id, Date dataDeSucessao, Date dataDeModificacao) {
+    public PessoaJuridicaSucessaoHistorico(Integer id, Date dataDeModificacao) {
         this.id = id;
-        this.dataDeSucessao = dataDeSucessao;
         this.dataDeModificacao = dataDeModificacao;
     }
 
@@ -85,14 +83,6 @@ public class PessoaJuridicaSucessaoHistorico implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Date getDataDeSucessao() {
-        return dataDeSucessao;
-    }
-
-    public void setDataDeSucessao(Date dataDeSucessao) {
-        this.dataDeSucessao = dataDeSucessao;
     }
 
     public Date getDataDeModificacao() {
@@ -158,6 +148,14 @@ public class PessoaJuridicaSucessaoHistorico implements Serializable {
     @Override
     public String toString() {
         return "entidade.PessoaJuridicaSucessaoHistorico[ id=" + id + " ]";
+    }
+
+    public String getDataDeSucessao() {
+        return dataDeSucessao;
+    }
+
+    public void setDataDeSucessao(String dataDeSucessao) {
+        this.dataDeSucessao = dataDeSucessao;
     }
     
 }

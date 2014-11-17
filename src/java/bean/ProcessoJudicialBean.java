@@ -480,8 +480,6 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setAtoProcessual(processoJudicial.getAtoProcessual());
         processoJudicialHistorico.setComarca(processoJudicial.getComarca());
         processoJudicialHistorico.setDataDeInscricao(processoJudicial.getDataDeInscricao());
-        processoJudicialHistorico.setDecisaoDoJuiz(processoJudicial.getDecisaoDoJuiz());
-        processoJudicialHistorico.setDecisaoDoJuizDataDoAto(processoJudicial.getDecisaoDoJuizDataDoAto());
         processoJudicialHistorico.setDespachoInicial(processoJudicial.getDespachoInicial());
         processoJudicialHistorico.setDespachoInicialDataDoAto(processoJudicial.getDespachoInicialDataDoAto());
         processoJudicialHistorico.setDiscriminacaoDoCreditoImposto(processoJudicial.getDiscriminacaoDoCreditoImposto());
@@ -542,8 +540,6 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setAtoProcessual(processoJudicial.getAtoProcessual());
         processoJudicialHistorico.setComarca(processoJudicial.getComarca());
         processoJudicialHistorico.setDataDeInscricao(processoJudicial.getDataDeInscricao());
-        processoJudicialHistorico.setDecisaoDoJuiz(processoJudicial.getDecisaoDoJuiz());
-        processoJudicialHistorico.setDecisaoDoJuizDataDoAto(processoJudicial.getDecisaoDoJuizDataDoAto());
         processoJudicialHistorico.setDespachoInicial(processoJudicial.getDespachoInicial());
         processoJudicialHistorico.setDespachoInicialDataDoAto(processoJudicial.getDespachoInicialDataDoAto());
         processoJudicialHistorico.setDiscriminacaoDoCreditoImposto(processoJudicial.getDiscriminacaoDoCreditoImposto());

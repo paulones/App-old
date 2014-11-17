@@ -50,8 +50,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicialHistorico.findByGrupoDeEspecializacao", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.grupoDeEspecializacao = :grupoDeEspecializacao"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByDistribuicao", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.distribuicao = :distribuicao"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByDistribuicaoDataDoAto", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.distribuicaoDataDoAto = :distribuicaoDataDoAto"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByDecisaoDoJuiz", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.decisaoDoJuiz = :decisaoDoJuiz"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByDecisaoDoJuizDataDoAto", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.decisaoDoJuizDataDoAto = :decisaoDoJuizDataDoAto"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByDespachoInicial", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.despachoInicial = :despachoInicial"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByDespachoInicialDataDoAto", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.despachoInicialDataDoAto = :despachoInicialDataDoAto"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByNumeroDaCda", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.numeroDaCda = :numeroDaCda"),
@@ -131,12 +129,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "distribuicao_data_do_ato")
     private String distribuicaoDataDoAto;
-    @Size(max = 100)
-    @Column(name = "decisao_do_juiz")
-    private String decisaoDoJuiz;
-    @Size(max = 10)
-    @Column(name = "decisao_do_juiz_data_do_ato")
-    private String decisaoDoJuizDataDoAto;
     @Size(max = 100)
     @Column(name = "despacho_inicial")
     private String despachoInicial;
@@ -304,22 +296,6 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setDistribuicaoDataDoAto(String distribuicaoDataDoAto) {
         this.distribuicaoDataDoAto = distribuicaoDataDoAto;
-    }
-
-    public String getDecisaoDoJuiz() {
-        return decisaoDoJuiz;
-    }
-
-    public void setDecisaoDoJuiz(String decisaoDoJuiz) {
-        this.decisaoDoJuiz = decisaoDoJuiz;
-    }
-
-    public String getDecisaoDoJuizDataDoAto() {
-        return decisaoDoJuizDataDoAto;
-    }
-
-    public void setDecisaoDoJuizDataDoAto(String decisaoDoJuizDataDoAto) {
-        this.decisaoDoJuizDataDoAto = decisaoDoJuizDataDoAto;
     }
 
     public String getDespachoInicial() {

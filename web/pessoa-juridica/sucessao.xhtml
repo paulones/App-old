@@ -59,6 +59,10 @@
                         <!-- BEGIN FORM-->
                         <h:form prependId="false" id="form" class="form-horizontal">
                             <h:panelGroup id="alerts">
+                                <div class="alert alert-danger form-error display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                    Há alguns erros no formulário. Digite os dados corretamente.
+                                </div>
                                 <h:panelGroup layout="block" class="alert alert-danger" rendered="#{sucessaoBean.succeed eq 'fail'}">
                                     <button class="close" data-close="alert"></button>
                                     <h:messages layout="table" class="p-info"/> 
@@ -119,13 +123,34 @@
                                 </div>
                             </div>
                             <br/>
+                            <h3 class="form-section">Dados da Sucessão</h3>
+                            <!--/row-->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">Data da Sucessão</label>
+                                        <div class="col-md-6">
+                                            <div class="input-icon right">
+                                                <i class="fa"></i>
+                                                <h:inputText class="form-control date" id="data" p:placeholder="dd/mm/aaaa" value="#{sucessaoBean.dataDeSucessao}"/></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/span-->
+                                <div class="col-md-6">
+                                </div>
+                                <!--/span-->
+                            </div>
                             <div class="form-actions right">
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-9">
+                                    </div>
+                                    <div class="col-md-3">
                                         <div class="col-md-offset-3 col-md-9">
-                                            <h:commandLink class="btn blue-chambray suceder" action="#{sucessaoBean.suceder}">
+                                            <button class="btn blue-chambray submit-sucessao">
                                                 <i class="fa fa-exchange"></i> Suceder
-                                            </h:commandLink>
+                                            </button>
+                                            <h:commandLink styleClass="suceder" action="#{sucessaoBean.suceder}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +166,10 @@
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->
         <!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag e drop support -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/jquery.validate.js"></script>
+        <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/localization/messages_pt_BR.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/media/js/jquery.dataTables.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
         <!-- END PAGE LEVEL PLUGINS -->
