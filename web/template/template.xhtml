@@ -3182,6 +3182,21 @@
                     });
                 }
             }
+
+            $.fn.dataTableExt.ofnSearch['string'] = function(data) {
+                return !data ?
+                        '' :
+                        typeof data === 'string' ?
+                        data
+                        .replace(/\n/g, ' ')
+                        .replace(/[áàäâãÁÀÄÂÃ]/g, 'a')
+                        .replace(/[éèëêẽÉÈËÊẼ]/g, 'e')
+                        .replace(/[íìïîĩÍÌÏÎĨ]/g, 'i')
+                        .replace(/[óòöôõÓÒÖÔÕ]/g, 'o')
+                        .replace(/[úùüûũÚÙÜÛŨ]/g, 'u')
+                        .replace(/[çÇ]/g, 'c') :
+                        data;
+            };
             //]]>
         </script>
 

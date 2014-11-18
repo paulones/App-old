@@ -4,7 +4,6 @@ var PJCon = function() {
 
     var initTable = function() {
         var table = $('#table');
-
         /*
          * Initialize DataTables, with no sorting on the 'details' column
          */
