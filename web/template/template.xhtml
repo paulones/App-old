@@ -3183,7 +3183,7 @@
                 }
             }
 
-            $.fn.dataTableExt.ofnSearch['string'] = function(data) {
+            function accents_supr(data) {
                 return !data ?
                         '' :
                         typeof data === 'string' ?
@@ -3196,7 +3196,20 @@
                         .replace(/[úùüûũÚÙÜÛŨ]/g, 'u')
                         .replace(/[çÇ]/g, 'c') :
                         data;
-            };
+                };
+                jQuery.extend(jQuery.fn.dataTableExt.oSort,
+                        {
+                            "string-asc": function(s1, s2) {
+                                return s1.localeCompare(s2);
+                            },
+                            "string-desc": function(s1, s2) {
+                                return s2.localeCompare(s1);
+                            }
+                        });
+
+                $.fn.dataTableExt.ofnSearch['string'] = function(data) {
+                    return accents_supr(data);
+                }
             //]]>
         </script>
 

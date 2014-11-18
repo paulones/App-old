@@ -2646,6 +2646,11 @@
 	
 			/* Now do the filter */
 			if ( val != previousSearch.sSearch ) {
+                            
+                            //MINHA MUDANÇA
+                            val=accents_supr(val);
+                            //
+                            
 				_fnFilterComplete( settings, {
 					"sSearch": val,
 					"bRegex": previousSearch.bRegex,
