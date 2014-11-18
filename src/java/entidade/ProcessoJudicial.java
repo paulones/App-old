@@ -42,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByNumeroDoProcesso", query = "SELECT p FROM ProcessoJudicial p WHERE p.numeroDoProcesso = :numeroDoProcesso"),
     @NamedQuery(name = "ProcessoJudicial.findByNumeroDoProcessoAnterior", query = "SELECT p FROM ProcessoJudicial p WHERE p.numeroDoProcessoAnterior = :numeroDoProcessoAnterior"),
     @NamedQuery(name = "ProcessoJudicial.findByComarca", query = "SELECT p FROM ProcessoJudicial p WHERE p.comarca = :comarca"),
-    @NamedQuery(name = "ProcessoJudicial.findByProcurador", query = "SELECT p FROM ProcessoJudicial p WHERE p.procurador = :procurador"),
+    @NamedQuery(name = "ProcessoJudicial.findByProcuradorFk", query = "SELECT p FROM ProcessoJudicial p WHERE p.procuradorFk = :procuradorFk"),
     @NamedQuery(name = "ProcessoJudicial.findByVara", query = "SELECT p FROM ProcessoJudicial p WHERE p.vara = :vara"),
     @NamedQuery(name = "ProcessoJudicial.findByVaraAnterior", query = "SELECT p FROM ProcessoJudicial p WHERE p.varaAnterior = :varaAnterior"),
     @NamedQuery(name = "ProcessoJudicial.findByGrupoDeEspecializacao", query = "SELECT p FROM ProcessoJudicial p WHERE p.grupoDeEspecializacao = :grupoDeEspecializacao"),
@@ -78,6 +78,9 @@ public class ProcessoJudicial implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @JoinColumn(name = "procurador_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Procurador procuradorFk;
     @Size(max = 300)
     @Column(name = "fonte_da_arrecadacao")
     private String fonteDaArrecadacao;
@@ -126,9 +129,6 @@ public class ProcessoJudicial implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "comarca")
     private String comarca;
-    @Size(max = 50)
-    @Column(name = "procurador")
-    private String procurador;
     @Size(max = 50)
     @Column(name = "vara")
     private String vara;
@@ -239,14 +239,6 @@ public class ProcessoJudicial implements Serializable {
 
     public void setComarca(String comarca) {
         this.comarca = comarca;
-    }
-
-    public String getProcurador() {
-        return procurador;
-    }
-
-    public void setProcurador(String procurador) {
-        this.procurador = procurador;
     }
 
     public String getVara() {
@@ -453,7 +445,7 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.comarca, other.comarca)) {
             return false;
         }
-        if (!Objects.equals(this.procurador, other.procurador)) {
+        if (!Objects.equals(this.procuradorFk, other.procuradorFk)) {
             return false;
         }
         if (!Objects.equals(this.vara, other.vara)) {
@@ -661,6 +653,14 @@ public class ProcessoJudicial implements Serializable {
 
     public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
         this.fonteDaArrecadacao = fonteDaArrecadacao;
+    }
+
+    public Procurador getProcuradorFk() {
+        return procuradorFk;
+    }
+
+    public void setProcuradorFk(Procurador procuradorFk) {
+        this.procuradorFk = procuradorFk;
     }
 
 }

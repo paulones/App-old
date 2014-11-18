@@ -44,7 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicialHistorico.findByNumeroDoProcesso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.numeroDoProcesso = :numeroDoProcesso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByNumeroDoProcessoAnterior", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.numeroDoProcessoAnterior = :numeroDoProcessoAnterior"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByComarca", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.comarca = :comarca"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByProcurador", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.procurador = :procurador"),
+    @NamedQuery(name = "ProcessoJudicialHistorico.findByProcuradorFk", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.procuradorFk = :procuradorFk"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByVara", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.vara = :vara"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByVaraAnterior", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.varaAnterior = :varaAnterior"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByGrupoDeEspecializacao", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.grupoDeEspecializacao = :grupoDeEspecializacao"),
@@ -84,6 +84,9 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @JoinColumn(name = "procurador_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Procurador procuradorFk;
     @Size(max = 300)
     @Column(name = "fonte_da_arrecadacao")
     private String fonteDaArrecadacao;
@@ -109,9 +112,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "comarca")
     private String comarca;
-    @Size(max = 50)
-    @Column(name = "procurador")
-    private String procurador;
     @Size(max = 50)
     @Column(name = "vara")
     private String vara;
@@ -248,14 +248,6 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setComarca(String comarca) {
         this.comarca = comarca;
-    }
-
-    public String getProcurador() {
-        return procurador;
-    }
-
-    public void setProcurador(String procurador) {
-        this.procurador = procurador;
     }
 
     public String getVara() {
@@ -555,6 +547,14 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
         this.fonteDaArrecadacao = fonteDaArrecadacao;
+    }
+
+    public Procurador getProcuradorFk() {
+        return procuradorFk;
+    }
+
+    public void setProcuradorFk(Procurador procuradorFk) {
+        this.procuradorFk = procuradorFk;
     }
 
 }

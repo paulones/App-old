@@ -1181,10 +1181,10 @@
                                                         <label class="control-label col-md-4">Procurador 
                                                         </label>
                                                         <div class="col-md-8">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputText class="form-control" id="procurador" autocomplete="off" value="#{processoJudicialBean.processoJudicial.procurador}"/>
-                                                            </div>
+                                                            <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="procurador" tabindex="1" value="#{processoJudicialBean.processoJudicial.procuradorFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{processoJudicialBean.procuradorList}" var="procurador" itemLabel="#{procurador.nome}" itemValue="#{procurador}"/>
+                                                            </h:selectOneMenu>
                                                         </div>
                                                     </div>
                                                 </div>

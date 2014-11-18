@@ -408,7 +408,7 @@ var PJCad = function() {
                                     if (!options.context) {
                                         var term = options.term.toLowerCase();
                                         options.context = data.filter(function(metric) {
-                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                            return (removeDiacritics(metric.text.toLowerCase()).indexOf(removeDiacritics(term)) >= 0);
                                         });
                                     }
                                     filteredData = options.context;
@@ -447,7 +447,7 @@ var PJCad = function() {
                                     if (!options.context) {
                                         var term = options.term.toLowerCase();
                                         options.context = data.filter(function(metric) {
-                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                            return (removeDiacritics(metric.text.toLowerCase()).indexOf(removeDiacritics(term)) >= 0);
                                         });
                                     }
                                     filteredData = options.context;

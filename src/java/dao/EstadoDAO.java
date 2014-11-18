@@ -23,6 +23,7 @@ import entidade.Endereco;
 import entidade.EnderecoHistorico;
 import entidade.Estado;
 import entidade.PessoaFisicaHistorico;
+import entidade.Procurador;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -63,6 +64,9 @@ public class EstadoDAO implements Serializable {
         }
         if (estado.getEnderecoHistoricoCollection() == null) {
             estado.setEnderecoHistoricoCollection(new ArrayList<EnderecoHistorico>());
+        }
+        if (estado.getProcuradorCollection() == null) {
+            estado.setProcuradorCollection(new ArrayList<Procurador>());
         }
         EntityManager em = null;
         try {
@@ -114,6 +118,12 @@ public class EstadoDAO implements Serializable {
                 attachedEnderecoHistoricoCollection.add(enderecoHistoricoCollectionEnderecoHistoricoToAttach);
             }
             estado.setEnderecoHistoricoCollection(attachedEnderecoHistoricoCollection);
+            Collection<Procurador> attachedProcuradorCollection = new ArrayList<Procurador>();
+            for (Procurador procuradorCollectionProcuradorToAttach : estado.getProcuradorCollection()) {
+                procuradorCollectionProcuradorToAttach = em.getReference(procuradorCollectionProcuradorToAttach.getClass(), procuradorCollectionProcuradorToAttach.getId());
+                attachedProcuradorCollection.add(procuradorCollectionProcuradorToAttach);
+            }
+            estado.setProcuradorCollection(attachedProcuradorCollection);
             em.persist(estado);
             if (paisFk != null) {
                 paisFk.getEstadoCollection().add(estado);
@@ -182,6 +192,15 @@ public class EstadoDAO implements Serializable {
                     oldEstadoFkOfEnderecoHistoricoCollectionEnderecoHistorico = em.merge(oldEstadoFkOfEnderecoHistoricoCollectionEnderecoHistorico);
                 }
             }
+            for (Procurador procuradorCollectionProcurador : estado.getProcuradorCollection()) {
+                Estado oldEstadoFkOfProcuradorCollectionProcurador = procuradorCollectionProcurador.getEstadoFk();
+                procuradorCollectionProcurador.setEstadoFk(estado);
+                procuradorCollectionProcurador = em.merge(procuradorCollectionProcurador);
+                if (oldEstadoFkOfProcuradorCollectionProcurador != null) {
+                    oldEstadoFkOfProcuradorCollectionProcurador.getProcuradorCollection().remove(procuradorCollectionProcurador);
+                    oldEstadoFkOfProcuradorCollectionProcurador = em.merge(oldEstadoFkOfProcuradorCollectionProcurador);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -218,6 +237,8 @@ public class EstadoDAO implements Serializable {
             Collection<PessoaFisica> pessoaFisicaCollection1New = estado.getPessoaFisicaCollection1();
             Collection<EnderecoHistorico> enderecoHistoricoCollectionOld = persistentEstado.getEnderecoHistoricoCollection();
             Collection<EnderecoHistorico> enderecoHistoricoCollectionNew = estado.getEnderecoHistoricoCollection();
+            Collection<Procurador> procuradorCollectionOld = persistentEstado.getProcuradorCollection();
+            Collection<Procurador> procuradorCollectionNew = estado.getProcuradorCollection();
             List<String> illegalOrphanMessages = null;
             for (Cidade cidadeCollectionOldCidade : cidadeCollectionOld) {
                 if (!cidadeCollectionNew.contains(cidadeCollectionOldCidade)) {
@@ -225,6 +246,14 @@ public class EstadoDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Cidade " + cidadeCollectionOldCidade + " since its estadoFk field is not nullable.");
+                }
+            }
+            for (Procurador procuradorCollectionOldProcurador : procuradorCollectionOld) {
+                if (!procuradorCollectionNew.contains(procuradorCollectionOldProcurador)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Procurador " + procuradorCollectionOldProcurador + " since its estadoFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -283,6 +312,13 @@ public class EstadoDAO implements Serializable {
             }
             enderecoHistoricoCollectionNew = attachedEnderecoHistoricoCollectionNew;
             estado.setEnderecoHistoricoCollection(enderecoHistoricoCollectionNew);
+            Collection<Procurador> attachedProcuradorCollectionNew = new ArrayList<Procurador>();
+            for (Procurador procuradorCollectionNewProcuradorToAttach : procuradorCollectionNew) {
+                procuradorCollectionNewProcuradorToAttach = em.getReference(procuradorCollectionNewProcuradorToAttach.getClass(), procuradorCollectionNewProcuradorToAttach.getId());
+                attachedProcuradorCollectionNew.add(procuradorCollectionNewProcuradorToAttach);
+            }
+            procuradorCollectionNew = attachedProcuradorCollectionNew;
+            estado.setProcuradorCollection(procuradorCollectionNew);
             estado = em.merge(estado);
             if (paisFkOld != null && !paisFkOld.equals(paisFkNew)) {
                 paisFkOld.getEstadoCollection().remove(estado);
@@ -405,6 +441,17 @@ public class EstadoDAO implements Serializable {
                     }
                 }
             }
+            for (Procurador procuradorCollectionNewProcurador : procuradorCollectionNew) {
+                if (!procuradorCollectionOld.contains(procuradorCollectionNewProcurador)) {
+                    Estado oldEstadoFkOfProcuradorCollectionNewProcurador = procuradorCollectionNewProcurador.getEstadoFk();
+                    procuradorCollectionNewProcurador.setEstadoFk(estado);
+                    procuradorCollectionNewProcurador = em.merge(procuradorCollectionNewProcurador);
+                    if (oldEstadoFkOfProcuradorCollectionNewProcurador != null && !oldEstadoFkOfProcuradorCollectionNewProcurador.equals(estado)) {
+                        oldEstadoFkOfProcuradorCollectionNewProcurador.getProcuradorCollection().remove(procuradorCollectionNewProcurador);
+                        oldEstadoFkOfProcuradorCollectionNewProcurador = em.merge(oldEstadoFkOfProcuradorCollectionNewProcurador);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -445,6 +492,13 @@ public class EstadoDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Estado (" + estado + ") cannot be destroyed since the Cidade " + cidadeCollectionOrphanCheckCidade + " in its cidadeCollection field has a non-nullable estadoFk field.");
+            }
+            Collection<Procurador> procuradorCollectionOrphanCheck = estado.getProcuradorCollection();
+            for (Procurador procuradorCollectionOrphanCheckProcurador : procuradorCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Estado (" + estado + ") cannot be destroyed since the Procurador " + procuradorCollectionOrphanCheckProcurador + " in its procuradorCollection field has a non-nullable estadoFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

@@ -12,6 +12,7 @@ import dao.exceptions.RollbackFailureException;
 import entidade.BemHistorico;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
+import entidade.Procurador;
 import entidade.Situacao;
 import entidade.TipoRecurso;
 import entidade.Usuario;
@@ -73,6 +74,11 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                 situacaoFk = em.getReference(situacaoFk.getClass(), situacaoFk.getId());
                 processoJudicialHistorico.setSituacaoFk(situacaoFk);
             }
+            Procurador procuradorFk = processoJudicialHistorico.getProcuradorFk();
+            if (procuradorFk != null) {
+                procuradorFk = em.getReference(procuradorFk.getClass(), procuradorFk.getId());
+                processoJudicialHistorico.setProcuradorFk(procuradorFk);
+            }
             Collection<BemHistorico> attachedBemHistoricoCollection = new ArrayList<BemHistorico>();
             for (BemHistorico bemHistoricoCollectionBemHistoricoToAttach : processoJudicialHistorico.getBemHistoricoCollection()) {
                 bemHistoricoCollectionBemHistoricoToAttach = em.getReference(bemHistoricoCollectionBemHistoricoToAttach.getClass(), bemHistoricoCollectionBemHistoricoToAttach.getId());
@@ -101,6 +107,10 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             if (situacaoFk != null) {
                 situacaoFk.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
                 situacaoFk = em.merge(situacaoFk);
+            }
+            if (procuradorFk != null) {
+                procuradorFk.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
+                procuradorFk = em.merge(procuradorFk);
             }
             for (BemHistorico bemHistoricoCollectionBemHistorico : processoJudicialHistorico.getBemHistoricoCollection()) {
                 ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionBemHistorico = bemHistoricoCollectionBemHistorico.getProcessoJudicialHistoricoFk();
@@ -148,6 +158,8 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             Usuario usuarioFkNew = processoJudicialHistorico.getUsuarioFk();
             Situacao situacaoFkOld = persistentProcessoJudicialHistorico.getSituacaoFk();
             Situacao situacaoFkNew = processoJudicialHistorico.getSituacaoFk();
+            Procurador procuradorFkOld = persistentProcessoJudicialHistorico.getProcuradorFk();
+            Procurador procuradorFkNew = processoJudicialHistorico.getProcuradorFk();
             Collection<BemHistorico> bemHistoricoCollectionOld = persistentProcessoJudicialHistorico.getBemHistoricoCollection();
             Collection<BemHistorico> bemHistoricoCollectionNew = processoJudicialHistorico.getBemHistoricoCollection();
             Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionOld = persistentProcessoJudicialHistorico.getVinculoProcessualHistoricoCollection();
@@ -187,6 +199,10 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             if (situacaoFkNew != null) {
                 situacaoFkNew = em.getReference(situacaoFkNew.getClass(), situacaoFkNew.getId());
                 processoJudicialHistorico.setSituacaoFk(situacaoFkNew);
+            }
+            if (procuradorFkNew != null) {
+                procuradorFkNew = em.getReference(procuradorFkNew.getClass(), procuradorFkNew.getId());
+                processoJudicialHistorico.setProcuradorFk(procuradorFkNew);
             }
             Collection<BemHistorico> attachedBemHistoricoCollectionNew = new ArrayList<BemHistorico>();
             for (BemHistorico bemHistoricoCollectionNewBemHistoricoToAttach : bemHistoricoCollectionNew) {
@@ -234,6 +250,14 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             if (situacaoFkNew != null && !situacaoFkNew.equals(situacaoFkOld)) {
                 situacaoFkNew.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
                 situacaoFkNew = em.merge(situacaoFkNew);
+            }
+            if (procuradorFkOld != null && !procuradorFkOld.equals(procuradorFkNew)) {
+                procuradorFkOld.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistorico);
+                procuradorFkOld = em.merge(procuradorFkOld);
+            }
+            if (procuradorFkNew != null && !procuradorFkNew.equals(procuradorFkOld)) {
+                procuradorFkNew.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
+                procuradorFkNew = em.merge(procuradorFkNew);
             }
             for (BemHistorico bemHistoricoCollectionNewBemHistorico : bemHistoricoCollectionNew) {
                 if (!bemHistoricoCollectionOld.contains(bemHistoricoCollectionNewBemHistorico)) {
@@ -327,6 +351,11 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             if (situacaoFk != null) {
                 situacaoFk.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistorico);
                 situacaoFk = em.merge(situacaoFk);
+            }
+            Procurador procuradorFk = processoJudicialHistorico.getProcuradorFk();
+            if (procuradorFk != null) {
+                procuradorFk.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistorico);
+                procuradorFk = em.merge(procuradorFk);
             }
             em.remove(processoJudicialHistorico);
             em.getTransaction().commit();

@@ -95,10 +95,10 @@ var PFCad = function() {
                     minlength_optional: 2,
                 },
                 eleuf: {
-                    required:false,
+                    required: false,
                 },
                 elecity: {
-                    required:false,
+                    required: false,
                 },
                 address: {
                     minlength_optional: 3,
@@ -175,14 +175,14 @@ var PFCad = function() {
             }
         });
     }
-    
+
     $('.submit-pf').click(function(e) {
-            if ($('#form').validate().form()) {
-                $(".date-error").hide();
-                $(".register").click();
-            }
-            return false;
-        });
+        if ($('#form').validate().form()) {
+            $(".date-error").hide();
+            $(".register").click();
+        }
+        return false;
+    });
 
     var checkDates = function() {
         if ($(this).val().length == 10) {
@@ -229,8 +229,12 @@ var PFCad = function() {
 
     var checkCapital = function() {
         $(this).val($(this).val().replace(/,/g, "."));
+        var soma = 0;
+        $.each($('.capital'), function() {
+            soma += Number($(this).val());
+        });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
-            if ($(this).val() > 100) {
+            if ($(this).val() > 100 || soma > 100) {
                 $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
                 $('.date-error').show();
                 $(this).val("");
@@ -323,7 +327,7 @@ var PFCad = function() {
                         $('.natcity').select2();
                     } else if ($(data.source).attr("id") === "eleuf") {
                         $('.elecity').select2();
-                    } else if ($(data.source).attr("class") === "delete"){
+                    } else if ($(data.source).attr("class") === "delete") {
                         $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
                         $('.date').mask("99/99/9999");
@@ -334,10 +338,10 @@ var PFCad = function() {
                         if ($('.rows').children().length == 0) {
                             $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                         }
-                    } 
+                    }
                 }
             });
-            
+
             $.ajax({
                 url: "/webresources/reaver/getPessoasJuridicas",
                 dataType: "json",
@@ -360,7 +364,7 @@ var PFCad = function() {
                                     if (!options.context) {
                                         var term = options.term.toLowerCase();
                                         options.context = data.filter(function(metric) {
-                                            return (metric.text.toLowerCase().indexOf(term) !== -1);
+                                            return (removeDiacritics(metric.text.toLowerCase()).indexOf(removeDiacritics(term)) >= 0);
                                         });
                                     }
                                     filteredData = options.context;
@@ -373,7 +377,7 @@ var PFCad = function() {
                                 });
                             },
                             placeholder: "Selecione...",
-                            allowClear:true,
+                            allowClear: true,
                         });
                     });
 

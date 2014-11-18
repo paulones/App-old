@@ -12,6 +12,7 @@ import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
 import bo.ProcessoJudicialBO;
 import bo.ProcessoJudicialHistoricoBO;
+import bo.ProcuradorBO;
 import bo.SituacaoBO;
 import bo.TipoProcessoBO;
 import bo.TipoRecursoBO;
@@ -29,6 +30,7 @@ import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
+import entidade.Procurador;
 import entidade.Situacao;
 import entidade.TipoProcesso;
 import entidade.TipoRecurso;
@@ -81,6 +83,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<VinculoProcessualHistorico> vinculoProcessualHistoricoList;
     private List<ExecutadoHistorico> executadoHistoricoList;
     private List<Situacao> situacaoList;
+    private List<Procurador> procuradorList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -95,6 +98,7 @@ public class ProcessoJudicialBean implements Serializable {
     private BemHistoricoBO bemHistoricoBO;
     private VinculoProcessualHistoricoBO vinculoProcessualHistoricoBO;
     private SituacaoBO situacaoBO;
+    private ProcuradorBO procuradorBO;
 
     private Integer bens;
     private Integer vinculos;
@@ -131,6 +135,7 @@ public class ProcessoJudicialBean implements Serializable {
             bemHistoricoBO = new BemHistoricoBO();
             vinculoProcessualHistoricoBO = new VinculoProcessualHistoricoBO();
             situacaoBO = new SituacaoBO();
+            procuradorBO = new ProcuradorBO();
 
             bens = 0;
             vinculos = 0;
@@ -242,6 +247,7 @@ public class ProcessoJudicialBean implements Serializable {
         tipoDeRecursoList = tipoRecursoBO.findAll();
         tipoDoProcessoList = tipoProcessoBO.findAll();
         situacaoList = situacaoBO.findAll();
+        procuradorList = procuradorBO.findAll();
     }
 
     public void adicionarBens() {
@@ -502,7 +508,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setOutrasInformacoesExecutado(processoJudicial.getOutrasInformacoesExecutado());
         processoJudicialHistorico.setOutrasInformacoesProcesso(processoJudicial.getOutrasInformacoesProcesso());
         processoJudicialHistorico.setProcessoJudicialFk(processoJudicial);
-        processoJudicialHistorico.setProcurador(processoJudicial.getProcurador());
+        processoJudicialHistorico.setProcuradorFk(processoJudicial.getProcuradorFk());
         processoJudicialHistorico.setRecurso(processoJudicial.getRecurso());
         processoJudicialHistorico.setSituacaoFk(processoJudicial.getSituacaoFk());
         processoJudicialHistorico.setTipoDeRecursoFk(processoJudicial.getTipoDeRecursoFk());
@@ -562,7 +568,7 @@ public class ProcessoJudicialBean implements Serializable {
         processoJudicialHistorico.setOutrasInformacoesExecutado(processoJudicial.getOutrasInformacoesExecutado());
         processoJudicialHistorico.setOutrasInformacoesProcesso(processoJudicial.getOutrasInformacoesProcesso());
         processoJudicialHistorico.setProcessoJudicialFk(processoJudicial);
-        processoJudicialHistorico.setProcurador(processoJudicial.getProcurador());
+        processoJudicialHistorico.setProcuradorFk(processoJudicial.getProcuradorFk());
         processoJudicialHistorico.setRecurso(processoJudicial.getRecurso());
         processoJudicialHistorico.setSituacaoFk(processoJudicial.getSituacaoFk());
         processoJudicialHistorico.setTipoDeRecursoFk(processoJudicial.getTipoDeRecursoFk());
@@ -781,4 +787,13 @@ public class ProcessoJudicialBean implements Serializable {
     public void setSituacaoList(List<Situacao> situacaoList) {
         this.situacaoList = situacaoList;
     }
+
+    public List<Procurador> getProcuradorList() {
+        return procuradorList;
+    }
+
+    public void setProcuradorList(List<Procurador> procuradorList) {
+        this.procuradorList = procuradorList;
+    }
+    
 }
