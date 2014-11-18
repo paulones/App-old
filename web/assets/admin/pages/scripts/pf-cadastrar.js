@@ -235,7 +235,7 @@ var PFCad = function() {
         });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
             if ($(this).val() > 100 || soma > 100) {
-                $('.date-error').html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+                $('.date-error').html("A soma dos percentuais de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
                 $('.date-error').show();
                 $(this).val("");
             } else {

@@ -277,9 +277,16 @@ var PJCad = function() {
             dateError = ".date-error-pfj";
         }
         $(this).val($(this).val().replace(/,/g, "."));
+        var soma = 0;
+        $.each($('.capital-pfj'), function() {
+            soma += Number($(this).val());
+        });
+        $.each($('.capital-pjj'), function() {
+            soma += Number($(this).val());
+        });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
-            if ($(this).val() > 100) {
-                $(dateError).html("O percentual de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
+            if ($(this).val() > 100 || soma > 100) {
+                $(dateError).html("A soma dos percentuais de participa&ccedil;&atilde;o dos v&iacute;nculos administrativos e empresariais n&atilde;o pode exceder 100%.");
                 $(dateError).show();
                 $(this).val("");
             } else {
