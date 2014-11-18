@@ -1166,7 +1166,7 @@
                                                                                             <label class="control-label col-md-5">Procurador:</label>
                                                                                             <div class="col-md-7">
                                                                                                 <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.procurador eq null ? '-' : executadoHistorico.processoJudicialHistorico.procurador}
+                                                                                                    #{executadoHistorico.processoJudicialHistorico.procuradorFk eq null ? '-' : executadoHistorico.processoJudicialHistorico.procuradorFk.nome}
                                                                                                 </p>
                                                                                             </div>
                                                                                         </div>
@@ -2559,7 +2559,7 @@
                                                             <label class="control-label col-md-5">Procurador:</label>
                                                             <div class="col-md-7">
                                                                 <p class="form-control-static ">
-                                                                    #{processoJudicialBean.executado.processoJudicial.procurador eq null ? '-' : processoJudicialBean.executado.processoJudicial.procurador}
+                                                                    #{processoJudicialBean.executado.processoJudicial.procuradorFk eq null ? '-' : processoJudicialBean.executado.processoJudicial.procuradorFk.nome}
                                                                 </p>
                                                             </div>
                                                         </div>
