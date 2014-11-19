@@ -482,6 +482,19 @@ public class ProcessoJudicialDAO implements Serializable {
             em.close();
         }
     }
+    
+    public List<ProcessoJudicial> findByExecutado(String executado, String tipoExecutado){
+        EntityManager em = getEntityManager();
+        try {
+            List<ProcessoJudicial> processoJudicialList = (List<ProcessoJudicial>) em.createNativeQuery("select * from processo_judicial "
+                    + "where status = 'A' and executado = '"+tipoExecutado+"' and executado_fk = '"+executado+"'", ProcessoJudicial.class).getResultList();
+            return processoJudicialList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 
     public List<ProcessoJudicial> findAllActive() {
         EntityManager em = getEntityManager();

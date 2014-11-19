@@ -19,6 +19,7 @@ import bo.PessoaJuridicaJuridicaBO;
 import bo.PessoaJuridicaJuridicaHistoricoBO;
 import bo.PessoaJuridicaSucessaoBO;
 import bo.PessoaJuridicaSucessaoHistoricoBO;
+import bo.ProcessoJudicialBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
@@ -39,6 +40,7 @@ import entidade.PessoaJuridicaJuridica;
 import entidade.PessoaJuridicaJuridicaHistorico;
 import entidade.PessoaJuridicaSucessao;
 import entidade.PessoaJuridicaSucessaoHistorico;
+import entidade.ProcessoJudicial;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import java.io.IOException;
@@ -102,6 +104,7 @@ public class PessoaJuridicaBean implements Serializable {
     private List<PessoaJuridicaHistorico> pessoaJuridicaHistoricoList;
     private List<EnderecoHistorico> enderecoHistoricoList;
     private List<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoList;
+    private List<ProcessoJudicial> processoJudicialList;
 
     private TipoEmpresarialBO tipoEmpresarialBO;
     private PessoaFisicaBO pessoaFisicaBO;
@@ -117,6 +120,7 @@ public class PessoaJuridicaBean implements Serializable {
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
     private PessoaJuridicaJuridicaHistoricoBO pessoaJuridicaJuridicaHistoricoBO;
+    private ProcessoJudicialBO processoJudicialBO;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -132,6 +136,7 @@ public class PessoaJuridicaBean implements Serializable {
             enderecoHistoricoBO = new EnderecoHistoricoBO();
             pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
             pessoaJuridicaJuridicaHistoricoBO = new PessoaJuridicaJuridicaHistoricoBO();
+            processoJudicialBO = new ProcessoJudicialBO();
             estadoBO = new EstadoBO();
             cidadeBO = new CidadeBO();
             funcaoBO = new FuncaoBO();
@@ -468,6 +473,7 @@ public class PessoaJuridicaBean implements Serializable {
         pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjId));
         endereco = enderecoBO.findPJAddress(pessoaJuridica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaJuridica, endereco);
+        processoJudicialList = processoJudicialBO.findByExecutado(pjId, "PJ");
     }
     
     public void exibirHistoricoDaSucessao(){
@@ -806,4 +812,13 @@ public class PessoaJuridicaBean implements Serializable {
     public void setPessoaJuridicaSucessao(PessoaJuridicaSucessao pessoaJuridicaSucessao) {
         this.pessoaJuridicaSucessao = pessoaJuridicaSucessao;
     }
+
+    public List<ProcessoJudicial> getProcessoJudicialList() {
+        return processoJudicialList;
+    }
+
+    public void setProcessoJudicialList(List<ProcessoJudicial> processoJudicialList) {
+        this.processoJudicialList = processoJudicialList;
+    }
+    
 }

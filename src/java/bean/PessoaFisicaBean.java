@@ -18,6 +18,7 @@ import bo.PessoaFisicaHistoricoBO;
 import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaFisicaJuridicaHistoricoBO;
 import bo.PessoaJuridicaBO;
+import bo.ProcessoJudicialBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
 import entidade.Cidade;
@@ -35,6 +36,7 @@ import entidade.PessoaFisicaHistorico;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaFisicaJuridicaHistorico;
 import entidade.PessoaJuridica;
+import entidade.ProcessoJudicial;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -90,6 +92,7 @@ public class PessoaFisicaBean implements Serializable {
     private List<EnderecoHistorico> enderecoHistoricoList;
     private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
     private List<EnderecoPessoaFisicaJuridicaHistorico> enderecoPessoaFisicaJuridicaHistoricoList;
+    private List<ProcessoJudicial> processoJudicialList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -104,6 +107,7 @@ public class PessoaFisicaBean implements Serializable {
     private PessoaFisicaHistoricoBO pessoaFisicaHistoricoBO;
     private EnderecoHistoricoBO enderecoHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
+    private ProcessoJudicialBO processoJudicialBO;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -123,6 +127,7 @@ public class PessoaFisicaBean implements Serializable {
             pessoaFisicaHistoricoBO = new PessoaFisicaHistoricoBO();
             enderecoHistoricoBO = new EnderecoHistoricoBO();
             pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
+            processoJudicialBO = new ProcessoJudicialBO();
 
             endereco = new Endereco();
             pessoaJuridica = new PessoaJuridica();
@@ -367,6 +372,7 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfId));
         endereco = enderecoBO.findPFAddress(pessoaFisica.getId());
         enderecoPessoa = new EnderecoPessoa(pessoaFisica, endereco);
+        processoJudicialList = processoJudicialBO.findByExecutado(pfId, "PF");
     }
 
     public void removerVinculo(int index) {
@@ -700,4 +706,13 @@ public class PessoaFisicaBean implements Serializable {
     public void setPjId(String pjId) {
         this.pjId = pjId;
     }
+
+    public List<ProcessoJudicial> getProcessoJudicialList() {
+        return processoJudicialList;
+    }
+
+    public void setProcessoJudicialList(List<ProcessoJudicial> processoJudicialList) {
+        this.processoJudicialList = processoJudicialList;
+    }
+    
 }

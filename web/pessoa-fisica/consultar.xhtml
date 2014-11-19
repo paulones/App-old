@@ -15,6 +15,7 @@
         <!-- END PAGE LEVEL PLUGIN STYLES -->
         <!-- BEGIN PAGE STYLES -->
         <style>
+            .height-top{height:75px}
             .control-label{margin-top:6px !important}
         </style>
         <!-- END PAGE STYLES -->
@@ -574,389 +575,499 @@
                     </div>
                     <div class="portlet-body form">
                         <!-- BEGIN LISTA CONTENT-->
-                        <div class="form-actions top">
-                            <div class="row">
-                                <div class="col-md-5">
-                                </div>
-                                <div class="col-md-7">
-                                    <div class="col-md-offset-4 col-md-9">
-                                        <a href="consultar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</a>
-                                        <a href="cadastrar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="form-body">
-                            <h3 class="form-section">Informações Pessoais</h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Nome:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.nome}
-                                            </p>
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#tab_1_1_#{pessoaFisicaBean.pessoaFisica.cpf}" data-toggle="tab">
+                                        <i class="fa fa-list-ul"></i>  Informações Gerais </a>
+                                </li>
+                                <li>
+                                    <a href="#tab_1_2_#{pessoaFisicaBean.pessoaFisica.cpf}" data-toggle="tab">
+                                        <i class="fa fa-gavel"></i> Processos Envolvidos </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="tab_1_1_#{pessoaFisicaBean.pessoaFisica.cpf}">
+                                    <div layout="block" class="portlet box blue-chambray">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-list-ul"></i>Informações Gerais
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-actions top">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                            <a href="consultar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn default"><i class="fa fa-history"></i> Histórico de Alterações</a>
+                                                            <a href="cadastrar.xhtml?id=#{pessoaFisicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-body">
+                                                <h3 class="form-section">Informações Pessoais</h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Nome:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.nome}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">CPF:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    <ui:param name="cpf" value="#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(0,3)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(3,6)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(6,9)}-#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(9)}" />
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf eq '..-' ? '-' : cpf}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Apelido:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.apelido eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.apelido}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">RG:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.rg eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.rg} #{pessoaFisicaBean.enderecoPessoa.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{pessoaFisicaBean.enderecoPessoa.pessoa.rgOrgaoEmissor}#{pessoaFisicaBean.enderecoPessoa.pessoa.rgUfFk.uf eq null ? '' : '/'}#{pessoaFisicaBean.enderecoPessoa.pessoa.rgUfFk.uf}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Sexo:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.sexo eq 'M' ? 'Masculino' : pessoaFisicaBean.enderecoPessoa.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">T. de Eleitor:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.tituloDeEleitor eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.tituloDeEleitor}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Pai:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoPai eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoPai}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Nacionalidade:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.nacionalidadeFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nacionalidadeFk.tipo}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Mãe:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.nomeDaMae eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nomeDaMae}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Naturalidade:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.cidadeFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.cidadeFk.nome} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoFk eq null ? '' : '/'} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoFk eq null ? '' : pessoaFisicaBean.enderecoPessoa.pessoa.estadoFk.uf}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Estado Civil:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoCivilFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.estadoCivilFk.situacao}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">INSS:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.inss eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.inss}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Cônjuge:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoConjuge eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoConjuge}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2">Observações:</label>
+                                                            <div class="col-md-10">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.observacoes eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.observacoes}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <h3 class="form-section">Domicílio Eleitoral</h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Zona:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.zona eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.zona}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Seção:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.secao eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.secao}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Local:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.local eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.local}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Cidade/Estado:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.cidadeEleitoralFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.cidadeEleitoralFk.nome} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : pessoaFisicaBean.enderecoPessoa.pessoa.estadoEleitoralFk.uf}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Endereço:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.pessoa.endereco eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.endereco}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!-- row/-->
+                                                <h3 class="form-section">Endereço</h3>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">CEP:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    <ui:param name="cep" value="#{pessoaFisicaBean.enderecoPessoa.endereco.cep.substring(0,5)}-#{pessoaFisicaBean.enderecoPessoa.endereco.cep.substring(5,8)}" />
+                                                                    #{pessoaFisicaBean.enderecoPessoa.endereco.cep eq null ? '-' : cep}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Cidade/Estado:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.endereco.cidadeFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.cidadeFk.nome} #{pessoaFisicaBean.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{pessoaFisicaBean.enderecoPessoa.endereco.estadoFk eq null ? '' : pessoaFisicaBean.enderecoPessoa.endereco.estadoFk.uf}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Endereço:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.endereco.endereco eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.endereco}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Número:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.endereco.numero eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.numero}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Complemento:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.endereco.complemento eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.complemento}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-4">Bairro:</label>
+                                                            <div class="col-md-8">
+                                                                <p class="form-control-static">
+                                                                    #{pessoaFisicaBean.enderecoPessoa.endereco.bairro eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.bairro}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--/span-->
+                                                </div>
+                                                <!--/row-->
+                                                <h3 class="form-section">Vínculos Empresariais</h3>
+                                                <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <table class="table table-striped table-hover table-bordered vinculations">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="width:20%;text-align:center">
+                                                                        CNPJ
+                                                                    </th>
+                                                                    <th style="width:20%;text-align:center">
+                                                                        Função
+                                                                    </th>
+                                                                    <th style="width:20%;text-align:center">
+                                                                        Capital de Participação
+                                                                    </th>
+                                                                    <th style="width:18%;text-align:center">
+                                                                        Data de Início
+                                                                    </th>
+                                                                    <th style="width:18%;text-align:center">
+                                                                        Data de Término
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="rows">
+                                                                <ui:repeat value="#{pessoaFisicaBean.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                    <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                    <tr>
+                                                                        <td style="text-align:center">
+                                                                            <a href="javascript:;" class="pj-info">
+                                                                                <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.id}"/>
+                                                                                #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
+                                                                            </a>
+                                                                        </td>
+                                                                        <td style="text-align:center">
+                                                                            #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
+                                                                        </td>
+                                                                        <td style="text-align:center">
+                                                                            #{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridica.capitalDeParticipacao}#{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                        </td>
+                                                                        <td style="text-align:center">
+                                                                            #{pessoaFisicaJuridica.dataDeInicio eq null ? '-' : pessoaFisicaJuridica.dataDeInicio}
+                                                                        </td>
+                                                                        <td style="text-align:center">
+                                                                            #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
+                                                                        </td>
+                                                                    </tr>
+                                                                </ui:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">CPF:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                <ui:param name="cpf" value="#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(0,3)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(3,6)}.#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(6,9)}-#{pessoaFisicaBean.enderecoPessoa.pessoa.cpf.substring(9)}" />
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf eq '..-' ? '-' : cpf}
-                                            </p>
+                                <div class="tab-pane fade" id="tab_1_2_#{pessoaFisicaBean.pessoaFisica.cpf}">
+                                    <div layout="block" class="portlet box blue-chambray">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-gavel"></i>Processos Envolvidos
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-actions top height-top">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- BEGIN LISTA CONTENT-->
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                                        <table class="table table-striped table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        #
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Nº do Processo
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Nº da CDA
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Comarca
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Situação
+                                                                    </th>
+                                                                    <th>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <ui:repeat value="#{pessoaFisicaBean.processoJudicialList}" var="processoJudicial" varStatus="status">
+                                                                    <tr>
+                                                                        <td>
+                                                                            #{status.index + 1}
+                                                                        </td>
+                                                                        <td>
+                                                                            #{processoJudicial.numeroDoProcesso}
+                                                                        </td>
+                                                                        <td>
+                                                                            #{processoJudicial.numeroDaCda}
+                                                                        </td>
+                                                                        <td>
+                                                                            #{processoJudicial.comarca}
+                                                                        </td>
+                                                                        <td>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Andamento'}"><span class="label label-sm label-warning">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Arquivado'}"><span class="label label-sm label-info">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Extinto'}"><span class="label label-sm label-default">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Julgado'}"><span class="label label-sm label-success">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Suspenso'}"><span class="label label-sm label-danger">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Andamento'}"><a href="javascript:;" class="btn default btn-xs yellow-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Arquivado'}"><a href="javascript:;" class="btn default btn-xs blue-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Extinto'}"><a href="javascript:;" class="btn default btn-xs purple-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Julgado'}"><a href="javascript:;" class="btn default btn-xs green-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Suspenso'}"><a href="javascript:;" class="btn default btn-xs red-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ui:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- END SAMPLE TABLE PORTLET-->
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Apelido:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.apelido eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.apelido}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">RG:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.rg eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.rg} #{pessoaFisicaBean.enderecoPessoa.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{pessoaFisicaBean.enderecoPessoa.pessoa.rgOrgaoEmissor}#{pessoaFisicaBean.enderecoPessoa.pessoa.rgUfFk.uf eq null ? '' : '/'}#{pessoaFisicaBean.enderecoPessoa.pessoa.rgUfFk.uf}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Sexo:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.sexo eq 'M' ? 'Masculino' : pessoaFisicaBean.enderecoPessoa.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">T. de Eleitor:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.tituloDeEleitor eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.tituloDeEleitor}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Pai:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoPai eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoPai}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Nacionalidade:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.nacionalidadeFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nacionalidadeFk.tipo}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Mãe:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.nomeDaMae eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nomeDaMae}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Naturalidade:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.cidadeFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.cidadeFk.nome} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoFk eq null ? '' : '/'} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoFk eq null ? '' : pessoaFisicaBean.enderecoPessoa.pessoa.estadoFk.uf}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Estado Civil:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoCivilFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.estadoCivilFk.situacao}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">INSS:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.inss eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.inss}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Cônjuge:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoConjuge eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.nomeDoConjuge}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                </div>
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-2">Observações:</label>
-                                        <div class="col-md-10">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.observacoes eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.observacoes}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/row-->
-                            <h3 class="form-section">Domicílio Eleitoral</h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Zona:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.zona eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.zona}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Seção:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.secao eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.secao}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Local:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.local eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.local}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Cidade/Estado:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.cidadeEleitoralFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.cidadeEleitoralFk.nome} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{pessoaFisicaBean.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : pessoaFisicaBean.enderecoPessoa.pessoa.estadoEleitoralFk.uf}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Endereço:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.pessoa.endereco eq null ? '-' : pessoaFisicaBean.enderecoPessoa.pessoa.endereco}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!-- row/-->
-                            <h3 class="form-section">Endereço</h3>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">CEP:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                <ui:param name="cep" value="#{pessoaFisicaBean.enderecoPessoa.endereco.cep.substring(0,5)}-#{pessoaFisicaBean.enderecoPessoa.endereco.cep.substring(5,8)}" />
-                                                #{pessoaFisicaBean.enderecoPessoa.endereco.cep eq null ? '-' : cep}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Cidade/Estado:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.endereco.cidadeFk eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.cidadeFk.nome} #{pessoaFisicaBean.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{pessoaFisicaBean.enderecoPessoa.endereco.estadoFk eq null ? '' : pessoaFisicaBean.enderecoPessoa.endereco.estadoFk.uf}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Endereço:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.endereco.endereco eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.endereco}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Número:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.endereco.numero eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.numero}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Complemento:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.endereco.complemento eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.complemento}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label col-md-4">Bairro:</label>
-                                        <div class="col-md-8">
-                                            <p class="form-control-static">
-                                                #{pessoaFisicaBean.enderecoPessoa.endereco.bairro eq null ? '-' : pessoaFisicaBean.enderecoPessoa.endereco.bairro}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--/span-->
-                            </div>
-                            <!--/row-->
-                            <h3 class="form-section">Vínculos Empresariais</h3>
-                            <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <table class="table table-striped table-hover table-bordered vinculations">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:20%;text-align:center">
-                                                    CNPJ
-                                                </th>
-                                                <th style="width:20%;text-align:center">
-                                                    Função
-                                                </th>
-                                                <th style="width:20%;text-align:center">
-                                                    Capital de Participação
-                                                </th>
-                                                <th style="width:18%;text-align:center">
-                                                    Data de Início
-                                                </th>
-                                                <th style="width:18%;text-align:center">
-                                                    Data de Término
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="rows">
-                                            <ui:repeat value="#{pessoaFisicaBean.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
-                                                <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
-                                                <tr>
-                                                    <td style="text-align:center">
-                                                        <a href="javascript:;" class="pj-info">
-                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.id}"/>
-                                                            #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
-                                                        </a>
-                                                    </td>
-                                                    <td style="text-align:center">
-                                                        #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
-                                                    </td>
-                                                    <td style="text-align:center">
-                                                        #{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridica.capitalDeParticipacao}#{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '':'%'}
-                                                    </td>
-                                                    <td style="text-align:center">
-                                                        #{pessoaFisicaJuridica.dataDeInicio eq null ? '-' : pessoaFisicaJuridica.dataDeInicio}
-                                                    </td>
-                                                    <td style="text-align:center">
-                                                        #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
-                                                    </td>
-                                                </tr>
-                                            </ui:repeat>
-                                        </tbody>
-                                    </table>
                                 </div>
                             </div>
                         </div>

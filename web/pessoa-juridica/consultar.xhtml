@@ -595,6 +595,10 @@
                                     <a href="#tab_1_2_#{pessoaJuridicaBean.pessoaJuridica.cnpj}" data-toggle="tab">
                                         <i class="fa fa-exchange"></i> Sucessões Empresariais </a>
                                 </li>
+                                <li>
+                                    <a href="#tab_1_3_#{pessoaJuridicaBean.pessoaJuridica.cnpj}" data-toggle="tab">
+                                        <i class="fa fa-gavel"></i> Processos Envolvidos </a>
+                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade active in" id="tab_1_1_#{pessoaJuridicaBean.pessoaJuridica.cnpj}">
@@ -1031,6 +1035,91 @@
                                                     </div>
                                                 </div>
                                                 <h3 class="form-section"></h3> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab_1_3_#{pessoaJuridicaBean.pessoaJuridica.cnpj}">
+                                    <div layout="block" class="portlet box blue-chambray">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <i class="fa fa-gavel"></i>Processos Envolvidos
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body form">
+                                            <div class="form-actions top height-top">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- BEGIN LISTA CONTENT-->
+                                            <div class="form-body">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <!-- BEGIN SAMPLE TABLE PORTLET-->
+                                                        <table class="table table-striped table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        #
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Nº do Processo
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Nº da CDA
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Comarca
+                                                                    </th>
+                                                                    <th style="width:20%">
+                                                                        Situação
+                                                                    </th>
+                                                                    <th>
+                                                                    </th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <ui:repeat value="#{pessoaJuridicaBean.processoJudicialList}" var="processoJudicial" varStatus="status">
+                                                                    <tr>
+                                                                        <td>
+                                                                            #{status.index + 1}
+                                                                        </td>
+                                                                        <td>
+                                                                            #{processoJudicial.numeroDoProcesso}
+                                                                        </td>
+                                                                        <td>
+                                                                            #{processoJudicial.numeroDaCda}
+                                                                        </td>
+                                                                        <td>
+                                                                            #{processoJudicial.comarca}
+                                                                        </td>
+                                                                        <td>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Andamento'}"><span class="label label-sm label-warning">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Arquivado'}"><span class="label label-sm label-info">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Extinto'}"><span class="label label-sm label-default">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Julgado'}"><span class="label label-sm label-success">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Suspenso'}"><span class="label label-sm label-danger">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
+                                                                        </td>
+                                                                        <td>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Andamento'}"><a href="javascript:;" class="btn default btn-xs yellow-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Arquivado'}"><a href="javascript:;" class="btn default btn-xs blue-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Extinto'}"><a href="javascript:;" class="btn default btn-xs purple-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Julgado'}"><a href="javascript:;" class="btn default btn-xs green-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                            <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Suspenso'}"><a href="javascript:;" class="btn default btn-xs red-stripe pjud-info"><h:inputText class="object-id display-hide" value="#{processoJudicial.id}"/>Visualizar</a></ui:fragment>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ui:repeat>
+                                                            </tbody>
+                                                        </table>
+                                                        <!-- END SAMPLE TABLE PORTLET-->
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

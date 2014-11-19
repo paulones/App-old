@@ -84,6 +84,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<ExecutadoHistorico> executadoHistoricoList;
     private List<Situacao> situacaoList;
     private List<Procurador> procuradorList;
+    private List<ProcessoJudicial> executadoProcessoJudicialList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -283,9 +284,11 @@ public class ProcessoJudicialBean implements Serializable {
         if (processoJudicial.getExecutado().equals("PF")) {
             PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(executadoPF));
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+            executadoProcessoJudicialList = processoJudicialBO.findByExecutado(executadoPF, "PF");
         } else if (processoJudicial.getExecutado().equals("PJ")) {
             PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(executadoPJ));
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+            executadoProcessoJudicialList = processoJudicialBO.findByExecutado(executadoPJ, "PJ");
         }
     }
 
@@ -794,6 +797,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setProcuradorList(List<Procurador> procuradorList) {
         this.procuradorList = procuradorList;
+    }
+
+    public List<ProcessoJudicial> getExecutadoProcessoJudicialList() {
+        return executadoProcessoJudicialList;
+    }
+
+    public void setExecutadoProcessoJudicialList(List<ProcessoJudicial> executadoProcessoJudicialList) {
+        this.executadoProcessoJudicialList = executadoProcessoJudicialList;
     }
     
 }

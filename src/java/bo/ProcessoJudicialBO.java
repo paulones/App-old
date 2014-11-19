@@ -93,4 +93,12 @@ public class ProcessoJudicialBO implements Serializable{
         return new ProcessoJudicial();
     }
     
+    public List<ProcessoJudicial> findByExecutado(String executado, String tipoExecutado){
+        try { 
+            return processoJudicialDAO.findByExecutado(executado, tipoExecutado);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<ProcessoJudicial>();
+    }
 }
