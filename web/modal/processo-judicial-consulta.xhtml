@@ -1,0 +1,1434 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:panelGroup id="modal-pjud">
+        <c:if test="#{not empty templateBean.executado.processoJudicial.executado and templateBean.tabela eq 'PJUD'}">
+            <h:panelGroup layout="block" class="modal fade bs-modal-lg" id="largepjud" p:tabindex="-1" p:role="dialog" p:aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body modal-pessoa">
+                            <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-legal"></i>Processo Judicial #{templateBean.executado.processoJudicial.numeroDoProcesso}
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <div class="form-body">
+                                        <ul class="nav nav-tabs">
+                                            <li class="active">
+                                                <a href="#tab_1_1" data-toggle="tab">
+                                                    <i class="fa fa-file-text"></i>  Executado </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab_1_2" data-toggle="tab">
+                                                    <i class="fa fa-male"></i> Processo </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab_1_3" data-toggle="tab">
+                                                    <i class="fa fa-car"></i> Bens </a>
+                                            </li>
+                                            <li>
+                                                <a href="#tab_1_4" data-toggle="tab">
+                                                    <i class="fa fa-pencil"></i> Ato Processual </a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active in" id="tab_1_1">
+                                                <c:if test="#{templateBean.executado.processoJudicial.executado eq 'PF'}">
+                                                    <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                        <div class="portlet-title">
+                                                            <div class="caption">
+                                                                <i class="fa fa-user"></i>Pessoa Física
+                                                            </div>
+                                                        </div>
+                                                        <div class="portlet-body form">
+                                                            <!-- BEGIN LISTA CONTENT-->
+                                                            <div class="form-body">
+                                                                <h3 class="form-section">Informações Pessoais</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Nome:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.nome}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">CPF:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    <ui:param name="cpf" value="#{templateBean.executado.enderecoPessoa.pessoa.cpf.substring(0,3)}.#{templateBean.executado.enderecoPessoa.pessoa.cpf.substring(3,6)}.#{templateBean.executado.enderecoPessoa.pessoa.cpf.substring(6,9)}-#{templateBean.executado.enderecoPessoa.pessoa.cpf.substring(9)}" />
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.cpf eq null ? '-' : cpf eq '..-' ? '-' : cpf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Apelido:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.apelido eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.apelido}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">RG:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.rg eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.rg} #{templateBean.executado.enderecoPessoa.pessoa.rgOrgaoEmissor eq null ? '' : '-'} #{templateBean.executado.enderecoPessoa.pessoa.rgOrgaoEmissor}#{templateBean.executado.enderecoPessoa.pessoa.rgUfFk.uf eq null ? '' : '/'}#{templateBean.executado.enderecoPessoa.pessoa.rgUfFk.uf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Sexo:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.sexo eq 'M' ? 'Masculino' : templateBean.executado.enderecoPessoa.pessoa.sexo eq 'F' ? 'Feminino' : '-'}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">T. de Eleitor:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.tituloDeEleitor eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.tituloDeEleitor}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Pai:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.nomeDoPai eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.nomeDoPai}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Nacionalidade:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.nacionalidadeFk eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.nacionalidadeFk.tipo}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Mãe:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.nomeDaMae eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.nomeDaMae}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Naturalidade:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.cidadeFk eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.cidadeFk.nome} #{templateBean.executado.enderecoPessoa.pessoa.estadoFk eq null ? '' : '/'} #{templateBean.executado.enderecoPessoa.pessoa.estadoFk eq null ? '' : templateBean.executado.enderecoPessoa.pessoa.estadoFk.uf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Estado Civil:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.estadoCivilFk eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.estadoCivilFk.situacao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">INSS:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.inss eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.inss}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Cônjuge:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.nomeDoConjuge eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.nomeDoConjuge}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Observações:</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.observacoes eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.observacoes}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <h3 class="form-section">Domicílio Eleitoral</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Zona:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.zona eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.zona}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Seção:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.secao eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.secao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Local:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.local eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.local}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.cidadeEleitoralFk eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.cidadeEleitoralFk.nome} #{templateBean.executado.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : '/'} #{templateBean.executado.enderecoPessoa.pessoa.estadoEleitoralFk eq null ? '' : templateBean.executado.enderecoPessoa.pessoa.estadoEleitoralFk.uf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Endereço:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.pessoa.endereco eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.endereco}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!-- row/-->
+                                                                <h3 class="form-section">Endereço</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">CEP:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    <ui:param name="cep" value="#{templateBean.executado.enderecoPessoa.endereco.cep.substring(0,5)}-#{templateBean.executado.enderecoPessoa.endereco.cep.substring(5,8)}" />
+                                                                                    #{templateBean.executado.enderecoPessoa.endereco.cep eq null ? '-' : cep}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.endereco.cidadeFk eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.cidadeFk.nome} #{templateBean.executado.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{templateBean.executado.enderecoPessoa.endereco.estadoFk eq null ? '' : templateBean.executado.enderecoPessoa.endereco.estadoFk.uf}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Endereço:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.endereco.endereco eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.endereco}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Número:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.endereco.numero eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.numero}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Complemento:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.endereco.complemento eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.complemento}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-3">Bairro:</label>
+                                                                            <div class="col-md-9">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.enderecoPessoa.endereco.bairro eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.bairro}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <h3 class="form-section">Vínculos Empresariais</h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <table class="table table-striped table-hover table-bordered vinculations">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th style="width:20%;text-align:center">
+                                                                                        CNPJ
+                                                                                    </th>
+                                                                                    <th style="width:20%;text-align:center">
+                                                                                        Função
+                                                                                    </th>
+                                                                                    <th style="width:20%;text-align:center">
+                                                                                        Capital de Participação
+                                                                                    </th>
+                                                                                    <th style="width:18%;text-align:center">
+                                                                                        Data de Início
+                                                                                    </th>
+                                                                                    <th style="width:18%;text-align:center">
+                                                                                        Data de Término
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="rows">
+                                                                                <ui:repeat value="#{templateBean.executado.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                                    <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                    <tr>
+                                                                                        <td style="text-align:center">
+                                                                                            #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridica.capitalDeParticipacao}#{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridica.dataDeInicio eq null ? '-' : pessoaFisicaJuridica.dataDeInicio}
+                                                                                        </td>
+                                                                                        <td style="text-align:center">
+                                                                                            #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </ui:repeat>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <h3 class="form-section"></h3>
+                                                                <div class="row">
+                                                                    <div class="col-md-9">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Outras Informações:</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static">
+                                                                                    #{templateBean.executado.processoJudicial.outrasInformacoesExecutado eq null ? '-' : templateBean.executado.processoJudicial.outrasInformacoesExecutado}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="col-md-offset-9 col-md-9">
+                                                                            <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                            </div>
+                                                            <!-- END LISTA CONTENT-->
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </c:if>
+                                                <c:if test="#{templateBean.executado.processoJudicial.executado eq 'PJ'}">
+                                                    <input  class="display-hide" id="pj-id" value="#{templateBean.executado.processoJudicial.executadoFk}"/>
+                                                    <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                        <div class="portlet-title">
+                                                            <div class="caption">
+                                                                <i class="fa fa-institution"></i>Pessoa Jurídica
+                                                            </div>
+                                                        </div>
+                                                        <div class="portlet-body form">
+                                                            <div class="form-body">
+                                                                <ul class="nav nav-tabs">
+                                                                    <li class="active">
+                                                                        <a href="#modal_tab_1_1_#{templateBean.executado.enderecoPessoa.pessoa.cnpj}" data-toggle="tab">
+                                                                            <i class="fa fa-list-ul"></i>  Informações Gerais </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#modal_tab_1_2_#{templateBean.executado.enderecoPessoa.pessoa.cnpj}" data-toggle="tab">
+                                                                            <i class="fa fa-exchange"></i> Sucessões Empresariais </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="tab-content">
+                                                                    <div class="tab-pane fade active in" id="modal_tab_1_1_#{templateBean.executado.enderecoPessoa.pessoa.cnpj}">
+                                                                        <div layout="block" class="portlet box blue-chambray">
+                                                                            <div class="portlet-title">
+                                                                                <div class="caption">
+                                                                                    <i class="fa fa-list-ul"></i>Informações Gerais
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="portlet-body form">
+                                                                                <!-- BEGIN LISTA CONTENT-->
+                                                                                <div class="form-body">
+                                                                                    <h3 class="form-section">Informações Empresariais</h3>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Nome:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static nome">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.nome}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">CNPJ:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static cnpj">
+                                                                                                        <ui:param value="#{templateBean.executado.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{templateBean.executado.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{templateBean.executado.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{templateBean.executado.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{templateBean.executado.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.cnpj eq null ? '-' : cnpj}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Nome Fantasia: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.nomeFantasia eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.nomeFantasia}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Tipo Empresarial: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Inscrição Estadual: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.inscricaoEstadual eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.inscricaoEstadual}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Inscrição Municipal: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.inscricaoMunicipal eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.inscricaoMunicipal}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Situação: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.situacao eq null ? '-' : 'A' ? 'Ativo' : 'Inativo'}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Motivo da Desativação: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Data de Criação: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.dataDeCriacao eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.dataDeCriacao}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Grupo Econômico: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.grupoEconomico eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.grupoEconomico}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">NIRE: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.nire eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.nire}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">CNAE: </label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.cnae eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.cnae}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-9">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-2">Atividade Principal:</label>
+                                                                                                <div class="col-md-10">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.atividadePrincipal eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.atividadePrincipal}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-9">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-2">Atividades Secundárias</label>
+                                                                                                <div class="col-md-10">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.pessoa.atividadeSecundaria eq null ? '-' : templateBean.executado.enderecoPessoa.pessoa.atividadeSecundaria}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <h3 class="form-section">Endereço</h3>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">CEP:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        <ui:param name="cep" value="#{templateBean.executado.enderecoPessoa.endereco.cep.substring(0,5)}-#{templateBean.executado.enderecoPessoa.endereco.cep.substring(5,8)}" />
+                                                                                                        #{templateBean.executado.enderecoPessoa.endereco.cep eq null ? '-' : cep}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Cidade/Estado:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.endereco.cidadeFk eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.cidadeFk.nome} #{templateBean.executado.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{templateBean.executado.enderecoPessoa.endereco.estadoFk eq null ? '' : templateBean.executado.enderecoPessoa.endereco.estadoFk.uf}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Endereço:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.endereco.endereco eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.endereco}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Número:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.endereco.numero eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.numero}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Complemento:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.endereco.complemento eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.complemento}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Bairro:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{templateBean.executado.enderecoPessoa.endereco.bairro eq null ? '-' : templateBean.executado.enderecoPessoa.endereco.bairro}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <h3 class="form-section">Vínculos Administrativos</h3>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th style="width:20%;text-align:center">
+                                                                                                            CPF
+                                                                                                        </th>
+                                                                                                        <th style="width:20%;text-align:center">
+                                                                                                            Função
+                                                                                                        </th>
+                                                                                                        <th style="width:20%;text-align:center">
+                                                                                                            Capital de Participação
+                                                                                                        </th>
+                                                                                                        <th style="width:18%;text-align:center">
+                                                                                                            Data de Início
+                                                                                                        </th>
+                                                                                                        <th style="width:18%;text-align:center">
+                                                                                                            Data de Término
+                                                                                                        </th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody class="rows">
+                                                                                                    <ui:repeat value="#{templateBean.executado.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                                                        <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
+                                                                                                        <tr>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridica.capitalDeParticipacao}#{pessoaFisicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaFisicaJuridica.dataDeInicio eq null ? '-' : pessoaFisicaJuridica.dataDeInicio}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </ui:repeat>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <h3 class="form-section">Vínculos Empresariais</h3>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                                <thead>
+                                                                                                    <tr>
+                                                                                                        <th style="width:20%;text-align:center">
+                                                                                                            CNPJ
+                                                                                                        </th>
+                                                                                                        <th style="width:20%;text-align:center">
+                                                                                                            Capital de Participação
+                                                                                                        </th>
+                                                                                                        <th style="width:18%;text-align:center">
+                                                                                                            Data de Início
+                                                                                                        </th>
+                                                                                                        <th style="width:18%;text-align:center">
+                                                                                                            Data de Término
+                                                                                                        </th>
+                                                                                                    </tr>
+                                                                                                </thead>
+                                                                                                <tbody class="rows">
+                                                                                                    <ui:repeat value="#{templateBean.executado.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
+                                                                                                        <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                        <tr>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </ui:repeat>
+                                                                                                    <ui:repeat value="#{templateBean.executado.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
+                                                                                                        <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                        <tr>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
+                                                                                                            </td>
+                                                                                                            <td style="text-align:center">
+                                                                                                                #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </ui:repeat>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <h3 class="form-section"></h3>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-9">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-2">Outras Informações:</label>
+                                                                                                <div class="col-md-10">
+                                                                                                    <p class="form-control-static text-justify">
+                                                                                                        #{templateBean.executado.processoJudicial.outrasInformacoesExecutado eq null ? '-' : templateBean.executado.processoJudicial.outrasInformacoesExecutado}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="col-md-offset-9 col-md-9">
+                                                                                                <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                    </div>
+                                                                                </div>
+                                                                                <!-- END LISTA CONTENT-->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="tab-pane fade" id="modal_tab_1_2_#{templateBean.executado.enderecoPessoa.pessoa.cnpj}">
+                                                                        <div layout="block" class="portlet box blue-chambray">
+                                                                            <div class="portlet-title">
+                                                                                <div class="caption">
+                                                                                    <i class="fa fa-exchange"></i>Sucessões Empresariais
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="portlet-body form">
+                                                                                <!-- BEGIN LISTA CONTENT-->
+                                                                                <div class="form-body nestable-list">
+                                                                                    <span class="help-block">Para visualizar os dados de uma sucessão, clique no nome da empresa.</span>
+                                                                                    <br/>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="portlet-body">
+                                                                                                <div class="dd" id="nestable_list">
+                                                                                                    <ol class="dd-list">
+                                                                                                    </ol>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <h3 class="form-section"></h3>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                    </div>
+                                                                                    <!--/span-->
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="col-md-offset-9 col-md-9">
+                                                                                            <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/span-->
+                                                                                </div>
+
+                                                                                <br/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </c:if>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab_1_2">
+                                                <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="fa fa-file-text"></i>Processo
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body form">
+                                                        <!-- BEGIN LISTA CONTENT-->
+                                                        <div class="form-body">
+                                                            <h3 class="form-section">Identificação do Processo Judicial</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Nº do Processo:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.numeroDoProcesso}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Nº do Processo Anterior:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.numeroDoProcessoAnterior eq null ? '-' : templateBean.executado.processoJudicial.numeroDoProcessoAnterior}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Comarca:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.comarca}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Situação:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.situacaoFk.situacao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Vara:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.vara eq null ? '-' : templateBean.executado.processoJudicial.vara}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Vara Anterior:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.varaAnterior eq null ? '-' : templateBean.executado.processoJudicial.varaAnterior}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Nº do Recurso:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.recurso eq null ? '-' : templateBean.executado.processoJudicial.recurso}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Tipo do Recurso:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.tipoDeRecursoFk eq null ? '-' : templateBean.executado.processoJudicial.tipoDeRecursoFk.tipo}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Grupo de Especialização:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.grupoDeEspecializacao eq null ? '-' : templateBean.executado.processoJudicial.grupoDeEspecializacao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Procurador:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.procuradorFk eq null ? '-' : templateBean.executado.processoJudicial.procuradorFk.nome}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Distribuição:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.distribuicao eq null ? '-' : templateBean.executado.processoJudicial.distribuicao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Data do Ato:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.distribuicaoDataDoAto eq null ? '-' : templateBean.executado.processoJudicial.distribuicaoDataDoAto}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Despacho Inicial:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.despachoInicial eq null ? '-' : templateBean.executado.processoJudicial.despachoInicial}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Data do Ato:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.despachoInicialDataDoAto eq null ? '-' : templateBean.executado.processoJudicial.despachoInicialDataDoAto}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <h3 class="form-section">Identificação dos Vínculos Processuais</h3>
+                                                            <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{templateBean.executado.processoJudicial.vinculoProcessualCollection.isEmpty()}">
+                                                                Nenhum processo vinculado.
+                                                            </h:panelGroup>
+                                                            <ui:repeat var="vinculoProcessual" value="#{templateBean.executado.processoJudicial.vinculoProcessualCollection}">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Nº do Processo Vinculado:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static">
+                                                                                    #{vinculoProcessual.processo}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Tipo do Processo Vinculado:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static ">
+                                                                                    #{vinculoProcessual.tipoDeProcessoFk.tipo}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </ui:repeat>
+                                                            <h3 class="form-section">Identificação do Crédito Fiscal</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Nº da CDA:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.numeroDaCda}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Data de Inscrição:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.dataDeInscricao eq null ? '-' : templateBean.executado.processoJudicial.dataDeInscricao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Discriminação do Crédito/Imposto:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static money">
+                                                                                #{templateBean.executado.processoJudicial.discriminacaoDoCreditoImposto eq null ? '-' : templateBean.executado.processoJudicial.discriminacaoDoCreditoImposto}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Discriminação do Crédito/Multa:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static money">
+                                                                                #{templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta eq null ? '-' : templateBean.executado.processoJudicial.discriminacaoDoCreditoMulta}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Valor da Causa:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static money">
+                                                                                #{templateBean.executado.processoJudicial.valorDaCausa eq null ? '-' : templateBean.executado.processoJudicial.valorDaCausa}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Valor Atualizado:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static money">
+                                                                                #{templateBean.executado.processoJudicial.valorAtualizado eq null ? '-' : templateBean.executado.processoJudicial.valorAtualizado}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Fundamentação:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.fundamentacao eq null ? '-' : templateBean.executado.processoJudicial.fundamentacao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Fatos Geradores:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.fatosGeradores eq null ? '-' : templateBean.executado.processoJudicial.fatosGeradores.replaceAll(',', '; ')}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Valor Arrecadado:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static money">
+                                                                                #{templateBean.executado.processoJudicial.valorArrecadado eq null ? '-' : templateBean.executado.processoJudicial.valorArrecadado}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Fonte da Arrecadação:</label>
+                                                                        <div class="col-md-10">
+                                                                            <p class="form-control-static money">
+                                                                                #{templateBean.executado.processoJudicial.fonteDaArrecadacao eq null ? '-' : templateBean.executado.processoJudicial.fonteDaArrecadacao}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Notificação Administrativa:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static">
+                                                                                #{templateBean.executado.processoJudicial.notificacaoAdministrativa eq null ? '-' : templateBean.executado.processoJudicial.notificacaoAdministrativa}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Data do Ato:</label>
+                                                                        <div class="col-md-8">
+                                                                            <p class="form-control-static ">
+                                                                                #{templateBean.executado.processoJudicial.notificacaoAdministrativaDataDoAto eq null ? '-' : templateBean.executado.processoJudicial.notificacaoAdministrativaDataDoAto}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--/row-->
+                                                            <h3 class="form-section"></h3>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Outras Informações:</label>
+                                                                        <div class="col-md-9">
+                                                                            <p class="form-control-static text-justify">
+                                                                                #{templateBean.executado.processoJudicial.outrasInformacoesProcesso eq null ? '-' : templateBean.executado.processoJudicial.outrasInformacoesProcesso}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="col-md-offset-9 col-md-9">
+                                                                        <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab_1_3">
+                                                <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="fa fa-car"></i>Bens
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body form">
+                                                        <div class="form-body">
+                                                            <h3 class="form-section">Identificação dos Bens</h3>
+                                                            <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{templateBean.executado.processoJudicial.bemCollection.isEmpty()}">
+                                                                Nenhum bem registrado no processo.
+                                                            </h:panelGroup>
+                                                            <ui:repeat var="bem" value="#{templateBean.executado.processoJudicial.bemCollection}">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-2">Descrição:</label>
+                                                                            <div class="col-md-10">
+                                                                                <p class="form-control-static text-justify">
+                                                                                    #{bem.descricao eq null ? '-' : bem.descricao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-4">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-5">Data do Ato:</label>
+                                                                            <div class="col-md-5">
+                                                                                <p class="form-control-static">
+                                                                                    #{bem.dataDoAto eq null ? '-' : bem.dataDoAto}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                </div>
+                                                                <!--/row-->
+                                                            </ui:repeat>
+                                                            <h3 class="form-section"></h3>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Outras Informações:</label>
+                                                                        <div class="col-md-10">
+                                                                            <p class="form-control-static text-justify">
+                                                                                #{templateBean.executado.processoJudicial.outrasInformacoesBem eq null ? '-' : templateBean.executado.processoJudicial.outrasInformacoesBem}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="col-md-offset-9 col-md-9">
+                                                                        <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+                                            </div>
+                                            <div class="tab-pane fade" id="tab_1_4">
+                                                <h:panelGroup layout="block" class="portlet box blue-chambray">
+                                                    <div class="portlet-title">
+                                                        <div class="caption">
+                                                            <i class="fa fa-pencil"></i>Ato Processual
+                                                        </div>
+                                                    </div>
+                                                    <div class="portlet-body form">
+                                                        <div class="form-body">
+                                                            <h3 class="form-section">Identificação dos Atos Processuais</h3>
+
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Descrição:</label>
+                                                                        <div class="col-md-10">
+                                                                            <p class="form-control-static text-justify">
+                                                                                #{templateBean.executado.processoJudicial.atoProcessual eq null ? '-' : templateBean.executado.processoJudicial.atoProcessual}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                            <!--/row-->
+                                                            <h3 class="form-section"></h3>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Outras Informações:</label>
+                                                                        <div class="col-md-10">
+                                                                            <p class="form-control-static text-justify">
+                                                                                #{templateBean.executado.processoJudicial.outrasInformacoesAtoProcessual eq null ? '-' : templateBean.executado.processoJudicial.outrasInformacoesAtoProcessual}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                </div>
+                                                                <!--/span-->
+                                                                <div class="col-md-6">
+                                                                    <div class="col-md-offset-9 col-md-9">
+                                                                        <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                                    </div>
+                                                                </div>
+                                                                <!--/span-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </h:panelGroup>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                </div>
+            </h:panelGroup>
+        </c:if>
+    </h:panelGroup>
+</ui:composition>

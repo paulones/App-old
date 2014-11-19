@@ -1,0 +1,96 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:panelGroup id="modal-pjs">
+        <c:if test="#{not empty templateBean.pessoaJuridicaSucessao and templateBean.tabela eq 'PJS'}">
+            <h:panelGroup layout="block" class="modal fade bs-modal-lg" id="largepjs" p:tabindex="-1" p:role="dialog" p:aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body modal-pessoa">
+                            <div class="portlet box blue-chambray">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <span>#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome} </span><span><i class="fa fa-exchange"></i> #{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}</span> 
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <!-- BEGIN SUCESSAO CONTENT-->
+                                    <div class="form-body">
+                                        <h3 class="form-section">Informações da Sucessão</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Empresa Sucedida:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                            #{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">CNPJ:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                            <ui:param value="#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                            #{cnpj}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Empresa Sucessora:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                            #{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">CNPJ:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                            <ui:param value="#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{templateBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
+                                                            #{cnpj}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Data de Sucessao:</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-static">
+                                                            <h:outputText value="#{templateBean.pessoaJuridicaSucessao.dataDeSucessao}">
+                                                            </h:outputText>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </h:panelGroup>
+        </c:if>
+    </h:panelGroup>
+</ui:composition>
