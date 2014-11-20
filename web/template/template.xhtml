@@ -421,8 +421,8 @@
         <h:form prependId="false">
             <h:inputText id="id-modal" class="display-hide" value="#{templateBean.idfk}"/>
             <h:inputText id="tabela-modal" class="display-hide" value="#{templateBean.tabela}"/>
-            <h:commandLink class="show-modal">
-                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModal}" render=":modal-pf :modal-pj :modal-pjud :modal-pjs"/>
+            <h:commandLink class="show-info-modal">
+                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModal}" render=":modal-info-pf :modal-info-pj :modal-info-pjud :modal-info-pjs"/>
             </h:commandLink>
             <h:inputHidden id="sucessao-id" value="#{templateBean.sucessaoId}"></h:inputHidden>
             <h:commandLink class="sucessao-refresher">
@@ -505,14 +505,18 @@
                 </h:panelGroup>
             </h:panelGroup>
         </h:form>
-        <a class="btn default modal-pj display-hide" data-toggle="modal" href="#largepj"></a>
+        <a class="btn default modal-info-pj display-hide" data-toggle="modal" href="#largepj"></a>
         <ui:include src="../modal/pessoa-juridica-consulta.xhtml"></ui:include>
-        <a class="btn default modal-pjs display-hide" data-toggle="modal" href="#largepjs"></a>
+        <a class="btn default modal-info-pjs display-hide" data-toggle="modal" href="#largepjs"></a>
         <ui:include src="../modal/pessoa-juridica-sucessao-consulta.xhtml"></ui:include>
-        <a class="btn default modal-pf display-hide" data-toggle="modal" href="#largepf"></a>
+        <a class="btn default modal-info-pf display-hide" data-toggle="modal" href="#largepf"></a>
         <ui:include src="../modal/pessoa-fisica-consulta.xhtml"></ui:include>
-        <a class="btn default modal-pjud display-hide" data-toggle="modal" href="#largepjud"></a>
+        <a class="btn default modal-info-pjud display-hide" data-toggle="modal" href="#largepjud"></a>
         <ui:include src="../modal/processo-judicial-consulta.xhtml"></ui:include>
+        <a class="btn default modal-new-pj display-hide" data-toggle="modal" href="#largenewpj"></a>
+        <ui:include src="../modal/pessoa-juridica-cadastro.xhtml"></ui:include>
+        <a class="btn default modal-new-pf display-hide" data-toggle="modal" href="#largenewpf"></a>
+        <ui:include src="../modal/pessoa-fisica-cadastro.xhtml"></ui:include>
         <a class="btn default display-hide modal-activator" data-toggle="modal" href="#static"></a>
         <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
@@ -597,28 +601,38 @@
                 if (!executing) {
                     $('#id-modal').val($(this).find('.object-id').val());
                     $('#tabela-modal').val('PF');
-                    $('.show-modal').click();
+                    $('.show-info-modal').click();
                 }
             });
             $(document).on('click', '.pj-info', function() {
                 if (!executing) {
                     $('#id-modal').val($(this).find('.object-id').val());
                     $('#tabela-modal').val('PJ');
-                    $('.show-modal').click();
+                    $('.show-info-modal').click();
                 }
             });
             $(document).on('click', '.pjud-info', function() {
                 if (!executing) {
                     $('#id-modal').val($(this).find('.object-id').val());
                     $('#tabela-modal').val('PJUD');
-                    $('.show-modal').click();
+                    $('.show-info-modal').click();
                 }
             });
             $(document).on('click', '.pjs-info', function() {
                 if (!executing) {
                     $('#id-modal').val($(this).find('.object-id').val());
                     $('#tabela-modal').val('PJS');
-                    $('.show-modal').click();
+                    $('.show-info-modal').click();
+                }
+            });
+            $(document).on('click', '.pj-new', function() {
+                if (!executing) {
+                    $('.modal-new-pj').click();
+                }
+            });
+            $(document).on('click', '.pf-new', function() {
+                if (!executing) {
+                    $('.modal-new-pf').click();
                 }
             });
             var element;
@@ -655,18 +669,18 @@
                 }
                 if (data.status === 'success') {
                     setCursors(data.status);
-                    if ($(data.source).attr("class") === "show-modal") {
+                    if ($(data.source).attr("class") === "show-info-modal") {
                         if ($('#tabela-modal').val() === "PF") {
-                            $('.modal-pf').click();
+                            $('.modal-info-pf').click();
                         } else if ($('#tabela-modal').val() === "PJ") {
-                            $('.modal-pj').click();
-                            getSucessoes('#id-modal', '#modal-pj');
+                            $('.modal-info-pj').click();
+                            getSucessoes('#id-modal', '#modal-info-pj');
                         } else if ($('#tabela-modal').val() === "PJUD") {
-                            getMoneyMask('#modal-pjud');
-                            $('.modal-pjud').click();
-                            getSucessoes('#pj-id', '#modal-pjud');
+                            getMoneyMask('#modal-info-pjud');
+                            $('.modal-info-pjud').click();
+                            getSucessoes('#pj-id', '#modal-info-pjud');
                         } else if ($('#tabela-modal').val() === "PJS") {
-                            $('.modal-pjs').click();
+                            $('.modal-info-pjs').click();
                         }
                         $('.modal').find('table').dataTable({
                             destroy: true,
