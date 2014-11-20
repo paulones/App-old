@@ -6,21 +6,32 @@
 
 package bean;
 
+import bo.CidadeBO;
 import bo.EnderecoBO;
+import bo.EstadoBO;
+import bo.FuncaoBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
+import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
+import entidade.Cidade;
+import entidade.Endereco;
 import entidade.EnderecoPessoa;
+import entidade.Estado;
 import entidade.Executado;
+import entidade.Funcao;
 import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
+import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
@@ -33,7 +44,7 @@ import util.Cookie;
  * @author ipti004
  */
 @ManagedBean(name = "templateBean")
-@ViewScoped
+@SessionScoped
 public class TemplateBean implements Serializable{
     
     private Usuario usuario;
@@ -43,11 +54,21 @@ public class TemplateBean implements Serializable{
     private PessoaJuridicaBO pessoaJuridicaBO;
     private ProcessoJudicialBO processoJudicialBO;
     private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
+    private TipoEmpresarialBO tipoEmpresarialBO;
+    private EstadoBO estadoBO;
+    private CidadeBO cidadeBO;
+    private FuncaoBO funcaoBO;
     
     private EnderecoPessoa enderecoPessoa;
     private Executado executado;
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
     
+    private List<TipoEmpresarial> tipoEmpresarialList;
+    private List<Estado> estadoList;
+    private List<Cidade> cidadeEndList;
+    private List<Funcao> funcaoList;
+    
+    private String register;
     private String idfk;
     private String tabela;
     private String searchValue;
@@ -61,20 +82,52 @@ public class TemplateBean implements Serializable{
             pessoaJuridicaBO = new PessoaJuridicaBO();
             processoJudicialBO = new ProcessoJudicialBO();
             pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+            estadoBO = new EstadoBO();
+            tipoEmpresarialBO = new TipoEmpresarialBO();
+            cidadeBO = new CidadeBO();
+            funcaoBO = new FuncaoBO();
             usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
             
-            enderecoPessoa = new EnderecoPessoa();
+            enderecoPessoa = new EnderecoPessoa(new PessoaJuridica(), new Endereco());
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
             
-            searchValue = "";
+            cidadeEndList = new ArrayList<>();
             
+            searchValue = "";
+            register = "";
             idfk = "";
             tabela = "";
         }
     }
     
-    public void exibirModal() {
+    public void exibirModalNew(){
+        if (tabela.equals("PF")) {
+            
+        } else if (tabela.equals("PJ")) {
+            carregarFormularioModalPJ();
+        }
+    }
+    
+    public void carregarFormularioModalPJ() {
+        estadoList = estadoBO.findAll();
+        tipoEmpresarialList = tipoEmpresarialBO.findAll();
+        funcaoList = funcaoBO.findAll();
+    }
+    
+    public void getCidadesPeloEstado() { 
+        if (enderecoPessoa.getEndereco().getEstadoFk() != null) {
+            cidadeEndList = cidadeBO.getByStateId(enderecoPessoa.getEndereco().getEstadoFk().getId());
+        } else {
+            cidadeEndList.clear();
+        }
+    }
+    
+    public void cadastrarPJ(){
+        System.out.println("ae");
+    }
+    
+    public void exibirModalInfo() {
         if (tabela.equals("PF")) {
             PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(idfk));
             enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
@@ -173,6 +226,46 @@ public class TemplateBean implements Serializable{
 
     public void setSucessaoId(String sucessaoId) {
         this.sucessaoId = sucessaoId;
+    }
+
+    public String getRegister() {
+        return register;
+    }
+
+    public void setRegister(String register) {
+        this.register = register;
+    }
+
+    public List<TipoEmpresarial> getTipoEmpresarialList() {
+        return tipoEmpresarialList;
+    }
+
+    public void setTipoEmpresarialList(List<TipoEmpresarial> tipoEmpresarialList) {
+        this.tipoEmpresarialList = tipoEmpresarialList;
+    }
+
+    public List<Estado> getEstadoList() {
+        return estadoList;
+    }
+
+    public void setEstadoList(List<Estado> estadoList) {
+        this.estadoList = estadoList;
+    }
+
+    public List<Cidade> getCidadeEndList() {
+        return cidadeEndList;
+    }
+
+    public void setCidadeEndList(List<Cidade> cidadeEndList) {
+        this.cidadeEndList = cidadeEndList;
+    }
+
+    public List<Funcao> getFuncaoList() {
+        return funcaoList;
+    }
+
+    public void setFuncaoList(List<Funcao> funcaoList) {
+        this.funcaoList = funcaoList;
     }
 
 }

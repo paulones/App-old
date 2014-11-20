@@ -6,6 +6,7 @@
     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
         <h:panelGroup id="modal-new-pf">
+            <c:if test="#{not empty templateBean.enderecoPessoa.pessoa and templateBean.tabela eq 'PF'}">
             <h:panelGroup layout="block" class="modal fade bs-modal-lg" id="largenewpf" p:data-backdrop="static" p:data-keyboard="false" p:tabindex="-1">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -17,5 +18,6 @@
                 </div>
                 <!-- /.modal-dialog -->
             </h:panelGroup>
+            </c:if>
     </h:panelGroup>
 </ui:composition>

@@ -5,17 +5,341 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:form prependId="false" id="modal_pj_form" class="form-horizontal">
         <h:panelGroup id="modal-new-pj">
             <h:panelGroup layout="block" class="modal fade bs-modal-lg" id="largenewpj" p:data-backdrop="static" p:data-keyboard="false" p:tabindex="-1">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-body modal-pessoa">
-                            
+                            <div class="portlet box blue-chambray">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-edit"></i>Dados da Pessoa Jurídica
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <div class="form-body">
+                                        <div class="alert alert-danger form-error display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                            Há alguns erros no formulário. Digite os dados corretamente.
+                                        </div>
+                                        <span class="help-block">Campos com * são obrigatórios.</span>
+                                        <h3 class="form-section">Informações Empresariais</h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Nome <span class="required"> * </span></label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_name" autocomplete="off" value="#{templateBean.enderecoPessoa.pessoa.nome}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">CNPJ <span class="required"> * </span></label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_cnpj" value="#{templateBean.enderecoPessoa.pessoa.cnpj}" converter="maskConverter"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Nome Fantasia</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_alias" value="#{templateBean.enderecoPessoa.pessoa.nomeFantasia}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Tipo Empresarial</label>
+                                                    <div class="col-md-9">
+                                                        <h:selectOneMenu class="select2_category select2me form-control" p:placeholder="Selecione..." id="modal_pj_tipicidade" value="#{templateBean.enderecoPessoa.pessoa.tipoEmpresarialFk}" tabindex="1" converter="entityConverter">
+                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                            <f:selectItems value="#{templateBean.tipoEmpresarialList}" var="tipoEmpresarial" itemLabel="#{tipoEmpresarial.tipo}" itemValue="#{tipoEmpresarial}"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Inscrição Estadual</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_state" value="#{templateBean.enderecoPessoa.pessoa.inscricaoEstadual}" converter="maskConverter"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Inscrição Municipal</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_province" value="#{templateBean.enderecoPessoa.pessoa.inscricaoMunicipal}" p:maxlegth="30"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Situação</label>
+                                                    <div class="col-md-9">
+                                                        <div class="radio-list">
+                                                            <h:selectOneRadio id="modal_pj_situacao" value="#{templateBean.enderecoPessoa.pessoa.situacao}">
+                                                                <f:selectItem id="modal_pj_situacao-ativo" itemLabel="Ativo" itemValue="A"/>
+                                                                <f:selectItem id="modal_pj_situacao-inativo" itemLabel="Inativo" itemValue="I"/>
+                                                            </h:selectOneRadio>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <!--/row-->
+                                            <div class="col-md-6">
+                                                <div class="form-group modal_pj_reason">
+                                                    <label class="control-label col-md-3">Motivo da Desativação</label>
+                                                    <div class="col-md-9 ">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_reason" value="#{templateBean.enderecoPessoa.pessoa.motivoDaDesativacao}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Data de Criação</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control data-de-criacao" id="modal_pj_iniDate" p:placeholder="dd/mm/aaaa" value="#{templateBean.enderecoPessoa.pessoa.dataDeCriacao}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Grupo Econômico</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_group" value="#{templateBean.enderecoPessoa.pessoa.grupoEconomico}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">CNAE</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_cnae" value="#{templateBean.enderecoPessoa.pessoa.cnae}" converter="maskConverter"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">NIRE</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_nire" value="#{templateBean.enderecoPessoa.pessoa.nire}" converter="maskConverter"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row--><br/><br/>
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">Atividade Principal</label>
+                                                    <div class="col-md-10">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputTextarea class="form-control obs" rows="3" id="modal_pj_activity1" value="#{templateBean.enderecoPessoa.pessoa.atividadePrincipal}"/>
+                                                        </div>
+                                                        <span class="help-block">
+                                                            Informações gerais sobre a principal atividade da empresa.</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-9">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">Atividades Secundárias</label>
+                                                    <div class="col-md-10">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputTextarea class="form-control obs" rows="3" id="modal_pj_activity2" value="#{templateBean.enderecoPessoa.pessoa.atividadeSecundaria}"/>
+                                                        </div>
+                                                        <span class="help-block">
+                                                            Informações gerais sobre atividades extras exercidas pela empresa.</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/row-->
+                                        <h3 class="form-section">Endereço</h3>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">CEP</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_cep" value="#{templateBean.enderecoPessoa.endereco.cep}" converter="maskConverter"/></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Estado/Cidade</label>
+                                                    <div class="col-md-3">
+                                                        <h:selectOneMenu styleClass="select2_category select2me form-control" p:placeholder="UF" id="modal_pj_enduf" value="#{templateBean.enderecoPessoa.endereco.estadoFk}" tabindex="1" converter="entityConverter">
+                                                            <f:ajax execute="@this" class="ajaxCity" event="valueChange" listener="#{templateBean.getCidadesPeloEstado()}" render="modal_pj_city2" />
+                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                            <f:selectItems value="#{templateBean.estadoList}" var="estado" itemLabel="#{estado.uf}" itemValue="#{estado}"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                    <h:panelGroup layout="block" class="col-md-6" id="modal_pj_city2">
+                                                        <h:selectOneMenu class="select2_category select2me form-control modal_pj_endcity" p:placeholder="Cidade" id="modal_pj_endcity" value="#{templateBean.enderecoPessoa.endereco.cidadeFk}" tabindex="1" converter="entityConverter">
+                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                            <f:selectItems value="#{templateBean.cidadeEndList}" var="cidade" itemLabel="#{cidade.nome}" itemValue="#{cidade}"/>
+                                                        </h:selectOneMenu>
+                                                    </h:panelGroup>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Endereço</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_address" value="#{templateBean.enderecoPessoa.endereco.endereco}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Número</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" onkeyup="this.value = this.value.replace(/[^\d]/, '')" value="#{templateBean.enderecoPessoa.endereco.numero}" id="modal_pj_number"/>
+                                                        </div> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Complemento</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_complement" value="#{templateBean.enderecoPessoa.endereco.complemento}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Bairro</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_pj_neighborhood" value="#{templateBean.enderecoPessoa.endereco.bairro}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                        <h3 class="form-section"></h3> 
+                                        <!--/row-->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-md-offset-9 col-md-3">
+                                                    <div class="col-md-5">
+                                                        <button type="button" data-dismiss="modal" class="btn blue-chambray">Fechar</button>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <button type="submit" class="modal_pj_submit-pj btn blue-chambray">
+                                                            <i class="fa fa-save"></i> Cadastrar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <h:commandLink styleClass="modal_pj_register">
+                                                    <f:ajax listener="#{templateBean.cadastrarPJ()}"/>
+                                                </h:commandLink>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-content -->
+                    <!-- /.modal-dialog -->
                 </div>
-                <!-- /.modal-dialog -->
+
             </h:panelGroup>
-    </h:panelGroup>
+        </h:panelGroup>
+    </h:form>
 </ui:composition>

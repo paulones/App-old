@@ -422,7 +422,10 @@
             <h:inputText id="id-modal" class="display-hide" value="#{templateBean.idfk}"/>
             <h:inputText id="tabela-modal" class="display-hide" value="#{templateBean.tabela}"/>
             <h:commandLink class="show-info-modal">
-                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModal}" render=":modal-info-pf :modal-info-pj :modal-info-pjud :modal-info-pjs"/>
+                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModalInfo}" render=":modal-info-pf :modal-info-pj :modal-info-pjud :modal-info-pjs"/>
+            </h:commandLink>
+            <h:commandLink class="show-new-modal">
+                <f:ajax execute="tabela-modal" listener="#{templateBean.exibirModalNew}" render=":modal-new-pf :modal_pj_form:modal-new-pj"/>
             </h:commandLink>
             <h:inputHidden id="sucessao-id" value="#{templateBean.sucessaoId}"></h:inputHidden>
             <h:commandLink class="sucessao-refresher">
@@ -493,8 +496,7 @@
                                         <label class="control-label col-md-3">Data de Sucessao:</label>
                                         <div class="col-md-9">
                                             <p class="form-control-static">
-                                                <h:outputText value="#{templateBean.pessoaJuridicaSucessao.dataDeSucessao}">
-                                                </h:outputText>
+                                                #{templateBean.pessoaJuridicaSucessao.dataDeSucessao  eq null ? '-' : templateBean.pessoaJuridicaSucessao.dataDeSucessao}
                                             </p>
                                         </div>
                                     </div>
@@ -561,6 +563,7 @@
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/select2/select2_locale_pt-BR.js"></script>
         <script src="../assets/global/scripts/combined_metronic-layout.min.js" type="text/javascript"></script>
+        <script src="../assets/admin/pages/scripts/modal-pj-cadastrar.js" type="text/javascript"></script>
         <ui:insert name="page-scripts"></ui:insert>
 
         <script>
@@ -627,12 +630,14 @@
             });
             $(document).on('click', '.pj-new', function() {
                 if (!executing) {
-                    $('.modal-new-pj').click();
+                    $('#tabela-modal').val('PJ');
+                    $('.show-new-modal').click();
                 }
             });
             $(document).on('click', '.pf-new', function() {
                 if (!executing) {
-                    $('.modal-new-pf').click();
+                    $('#tabela-modal').val('PF');
+                    $('.show-new-modal').click();
                 }
             });
             var element;
@@ -695,6 +700,14 @@
                             },
                             "ordering": false
                         });
+                    } else if ($(data.source).attr("class") === "show-new-modal") {
+                        if ($('#tabela-modal').val() === "PF") {
+                            $('.modal-new-pf').click();
+                        }
+                        else if ($('#tabela-modal').val() === "PJ") {
+                            $('.modal-new-pj').click();
+                            ModalPJCad.init();
+                        }
                     } else if ($(data.source).attr('class') === 'sucessao-refresher') {
                         $(element).closest('.nestable-list').find('.sucessao-info').remove();
                         $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));
@@ -952,6 +965,7 @@
                     return diacriticsMap[a] || a;
                 });
             }
+            
             //]]>
         </script>
     </h:body>
