@@ -61,20 +61,19 @@ var PJSuc = function() {
                 return value.match(reg) ? true : false;
             }
             handleValidation();
-
             verPessoaJuridica();
-            $('.cnpj').change(verPessoaJuridica);
+            $('.cnpjVinculate').change(verPessoaJuridica);
             function verPessoaJuridica() {
-                var empty = $('.cnpj').filter(function() {
+                var empty = $('.cnpjVinculate').filter(function() {
                     return this.value === "";
                 });
                 empty.length ? $('.submit-sucessao').hide() : $('.submit-sucessao').show();
-                $.each($('.cnpj'), function() {
+                $.each($('.cnpjVinculate'), function() {
                     if ($(this).val() !== '') {
-                        $(this).closest('.row').find('.btn').show();
+                        $(this).closest('.row').find('.pj-info').show();
                         $(this).closest('.row').find('.pj-info').children('.object-id').val($(this).val());
                     } else {
-                        $(this).closest('.row').find('.btn').hide();
+                        $(this).closest('.row').find('.pj-info').hide();
                     }
                 })
             }
@@ -85,7 +84,7 @@ var PJSuc = function() {
                 cache: false
             })
                     .done(function(data) {
-                        $('.cnpj').select2({
+                        $('.cnpjVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {
                                     return metric.id === element.val();

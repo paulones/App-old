@@ -80,46 +80,49 @@
                                     <h:messages layout="table" class="p-info"/>
                                 </h:panelGroup>
                             </h:panelGroup>
-                            <span class="help-block">É necessário que tanto a empresa sucedida quanto a sucessora estejam cadastradas no sistema.</span>
                             <h3 class="form-section">Empresa Sucedida</h3>
                             <!--/row-->
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-7">
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
                                         <div class="col-md-10">
-                                            <h:inputText class="select2_category form-control cnpj" id="sucedida" value="#{sucessaoBean.sucedida}">
+                                            <h:inputText class="select2_category form-control cnpjVinculate" id="sucedida" value="#{sucessaoBean.sucedida}">
                                                 <f:ajax event="change" execute="sucedida sucessora" listener="#{sucessaoBean.checkSucessoes}" render="alerts"/>
                                             </h:inputText>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-5">
                                     <a href="javascript:;" class="btn blue-chambray pj-info" id="view-sucedida">
                                         <h:inputText class="object-id display-hide"/>
                                         <i class="fa fa-plus-circle"></i> Visualizar Sucedida
                                     </a>
+                                    <a href="javascript:;" class="btn blue-chambray pj-new">
+                                            Novo cadastro <i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                             <!--/row-->
                             <h3 class="form-section">Empresa Sucessora</h3>
                             <!--/row-->
                             <div class="row">
-                                <div class="col-md-9">
+                                <div class="col-md-7">
                                     <div class="form-group">
                                         <label class="control-label col-md-2">CNPJ</label>
                                         <div class="col-md-10">
-                                            <h:inputText class="select2_category form-control cnpj" id="sucessora" value="#{sucessaoBean.sucessora}">
+                                            <h:inputText class="select2_category form-control cnpjVinculate" id="sucessora" value="#{sucessaoBean.sucessora}">
                                                 <f:ajax event="change" execute="sucessora sucedida" listener="#{sucessaoBean.checkSucessoes}" render="alerts"/>
                                             </h:inputText>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-5">
                                     <a href="javascript:;" class="btn blue-chambray pj-info" id="view-sucessora">
                                         <h:inputText class="object-id display-hide"/>
                                         <i class="fa fa-plus-circle"></i> Visualizar Sucessora
                                     </a>
+                                    <a href="javascript:;" class="btn blue-chambray pj-new">
+                                            Novo cadastro <i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                             <br/>
