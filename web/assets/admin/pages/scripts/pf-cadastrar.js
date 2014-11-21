@@ -322,16 +322,16 @@ var PFCad = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
-                        $('.endcity').select2();
+                        $('.endcity').select2({allowClear:true});
                     } else if ($(data.source).attr("id") === "natuf") {
-                        $('.natcity').select2();
+                        $('.natcity').select2({allowClear:true});
                     } else if ($(data.source).attr("id") === "eleuf") {
-                        $('.elecity').select2();
+                        $('.elecity').select2({allowClear:true});
                     } else if ($(data.source).attr("class") === "delete") {
                         $('.table-refresher').click();
                     } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
                         $('.date').mask("99/99/9999");
-                        $('.funcao').select2();
+                        $('.funcao').select2({allowClear:true});
                         $('.capital').keyup(checkCapital);
                         $('.initial-date,.final-date').keyup(checkDates);
                         $('.date-error').hide();

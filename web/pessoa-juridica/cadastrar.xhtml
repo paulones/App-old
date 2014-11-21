@@ -374,7 +374,7 @@
                                 <h3 class="form-section">Vínculos Administrativos</h3>
                                 <!--/row-->
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-8">
                                         <div class="form-group">
                                             <label class="control-label col-md-2">CPF</label>
                                             <div class="col-md-10">
@@ -382,12 +382,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <button  class="btn blue-chambray" id="vinculatePF">
                                             <i class="fa fa-plus-circle"></i> Vincular</button>
                                         <h:commandLink styleClass="vinculatePF">
                                             <f:ajax event="click" execute="pessoafisica pessoaFisicaJuridica" listener="#{pessoaJuridicaBean.vincularPessoaFisica}" render="pessoaFisicaJuridica"/>
                                         </h:commandLink>
+                                        <a href="javascript:;" class="btn blue-chambray pf-new">
+                                            Novo cadastro <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
                                 <!--/row-->
@@ -464,7 +466,7 @@
                                 <h3 class="form-section">Vínculos Empresariais</h3>
                                 <!--/row-->
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-md-8">
                                         <div class="form-group">
                                             <label class="control-label col-md-2">CNPJ</label>
                                             <div class="col-md-10">
@@ -472,12 +474,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-4">
                                         <button  class="btn blue-chambray" id="vinculatePJ">
                                             <i class="fa fa-plus-circle"></i> Vincular</button>
                                         <h:commandLink styleClass="vinculatePJ">
                                             <f:ajax event="click" execute="pessoajuridica pessoaJuridicaJuridica" listener="#{pessoaJuridicaBean.vincularPessoaJuridica}" render="pessoaJuridicaJuridica"/>
                                         </h:commandLink>
+                                        <a href="javascript:;" class="btn blue-chambray pj-new">
+                                            Novo cadastro <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
                                 <!--/row-->

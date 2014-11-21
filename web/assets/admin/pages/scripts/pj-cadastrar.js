@@ -366,7 +366,7 @@ var PJCad = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
-                        $('.endcity').select2();
+                        $('.endcity').select2({allowClear:true});
                     } else if ($(data.source).attr("class") === "delete-pfj") {
                         $('.pfj-refresher').click();
                     } else if ($(data.source).attr("class") === "delete-pjj") {
@@ -374,7 +374,7 @@ var PJCad = function() {
                     } else if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "vinculatePJ" || $(data.source).attr("class") === "pfj-refresher" || $(data.source).attr("class") === "pjj-refresher") {
                         $('.date').mask("99/99/9999");
                         if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "pfj-refresher") {
-                            $('.funcao').select2();
+                            $('.funcao').select2({allowClear:true});
                             $('.date-error-pfj').hide();
                             if ($('.rows-pfj').children().length === 0) {
                                 $('.rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');

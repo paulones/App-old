@@ -43,3 +43,9 @@ textarea{resize:none}
 #modal_pj_situacao .radio{margin-right:4px}
 #modal_pj_situacao label{margin-right:33px}
 #modal_pj_situacao input{margin-left:-9px}
+/*cadastroPFMODAL*/
+.modal_pf_obs{resize:none}
+#modal_pf_gender{margin-top:7px}
+#modal_pf_gender .radio{margin-right:4px}
+#modal_pf_gender label{margin-right:33px}
+#modal_pf_gender input{margin-left:-9px}

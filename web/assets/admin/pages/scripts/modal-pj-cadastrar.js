@@ -333,7 +333,7 @@ var ModalPJCad = function() {
 
     return {
         init: function() {
-            $("#modal_pj_tipicidade").select2();
+            $("#modal_pj_tipicidade").select2({allowClear:true});
             $("#modal_pj_enduf").select2({allowClear: true});
             $("#modal_pj_endcity").select2();
             $("#modal-new-pj input[type=radio]").uniform();
@@ -368,7 +368,7 @@ var ModalPJCad = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "modal_pj_enduf") {
-                        $('.modal_pj_endcity').select2();
+                        $('.modal_pj_endcity').select2({allowClear:true});
                     } else if ($(data.source).attr("class") === "modal_pj_delete-pfj") {
                         $('.modal_pj_pfj-refresher').click();
                     } else if ($(data.source).attr("class") === "modal_pj_delete-pjj") {
@@ -376,7 +376,7 @@ var ModalPJCad = function() {
                     } else if ($(data.source).attr("class") === "modal_pj_vinculatePF" || $(data.source).attr("class") === "modal_pj_vinculatePJ" || $(data.source).attr("class") === "modal_pj_pfj-refresher" || $(data.source).attr("class") === "modal_pj_pjj-refresher") {
                         $('.modal_pj_date').mask("99/99/9999");
                         if ($(data.source).attr("class") === "modal_pj_vinculatePF" || $(data.source).attr("class") === "modal_pj_pfj-refresher") {
-                            $('select.modal_pj_funcao').select2();
+                            $('select.modal_pj_funcao').select2({allowClear:true});
                             $('.modal_pj_date-error-pfj').hide();
                             if ($('.modal_pj_rows-pfj').children().length === 0) {
                                 $('.modal_pj_rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');

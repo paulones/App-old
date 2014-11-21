@@ -314,6 +314,18 @@ public class ReaverResource {
     }
     
     @GET
+    @Path("/checkCPF")
+    @Produces("application/json")
+    public String checkCPF(@QueryParam("cpf") String cpf) {
+        PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
+        PessoaFisica pessoaFisica = pessoaFisicaBO.findByCPF(cpf);
+        if (pessoaFisica == null){
+            return "true";
+        } else
+            return "false";
+    }
+    
+    @GET
     @Path("/getArrecadacao")
     @Produces("application/json")
     public String getArrecadacao(@QueryParam("ano") Integer ano) {

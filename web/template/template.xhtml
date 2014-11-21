@@ -425,7 +425,7 @@
                 <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModalInfo}" render=":modal-info-pf :modal-info-pj :modal-info-pjud :modal-info-pjs"/>
             </h:commandLink>
             <h:commandLink class="show-new-modal">
-                <f:ajax execute="tabela-modal" listener="#{templateBean.exibirModalNew}" render=":modal-new-pf :modal_pj_form:modal-new-pj"/>
+                <f:ajax execute="tabela-modal" listener="#{templateBean.exibirModalNew}" render=":modal_pf_form:modal-new-pf :modal_pj_form:modal-new-pj"/>
             </h:commandLink>
             <h:inputHidden id="sucessao-id" value="#{templateBean.sucessaoId}"></h:inputHidden>
             <h:commandLink class="sucessao-refresher">
@@ -563,6 +563,7 @@
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/select2/select2_locale_pt-BR.js"></script>
         <script src="../assets/global/scripts/combined_metronic-layout.min.js" type="text/javascript"></script>
+        <script src="../assets/admin/pages/scripts/modal-pf-cadastrar.js" type="text/javascript"></script>
         <script src="../assets/admin/pages/scripts/modal-pj-cadastrar.js" type="text/javascript"></script>
         <ui:insert name="page-scripts"></ui:insert>
 
@@ -703,6 +704,7 @@
                     } else if ($(data.source).attr("class") === "show-new-modal") {
                         if ($('#tabela-modal').val() === "PF") {
                             $('.modal-new-pf').click();
+                            ModalPFCad.init();
                         }
                         else if ($('#tabela-modal').val() === "PJ") {
                             $('.modal-new-pj').click();
@@ -711,7 +713,10 @@
                     } else if ($(data.source).attr('class') === "modal_pj_register") {
                         $('#largenewpj').modal("hide");
                         refreshCNPJDropdown(".cnpjVinculate");
-                    }else if ($(data.source).attr('class') === 'sucessao-refresher') {
+                    } else if ($(data.source).attr('class') === "modal_pf_register") {
+                        $('#largenewpf').modal("hide");
+                        refreshCPFDropdown(".cpfVinculate");
+                    } else if ($(data.source).attr('class') === 'sucessao-refresher') {
                         $(element).closest('.nestable-list').find('.sucessao-info').remove();
                         $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));
                     }
@@ -757,6 +762,47 @@
                             placeholder: "Selecione...",
                             allowClear: true,
                         }).select2("val",$("#modal_pj_id").val());
+                    });
+            }
+            
+            function refreshCPFDropdown(classe){
+                $.ajax({
+                url: "/webresources/reaver/getPessoasFisicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $(classe).select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (removeDiacritics(metric.text.toLowerCase()).indexOf(removeDiacritics(term)) >= 0);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
+                        }).select2("val",$("#modal_pf_id").val());
                     });
             }
 
