@@ -256,7 +256,7 @@ public class ReaverResource {
                     + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesBem() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + (pjud.getProcuradorFk()== null ? "" : pjud.getProcuradorFk().getNome()) + " "
                     + pjud.getRecurso() + " " + pjud.getValorAtualizado() + " " + pjud.getValorDaCausa() + " " + pjud.getVara() + " " + pjud.getVaraAnterior() + " " + (pjud.getTipoDeRecursoFk() == null ? "" : pjud.getTipoDeRecursoFk().getTipo());
             for (Bem bem : pjud.getBemCollection()) {
-                detalhes += " " + bem.getDescricao() + " " + bem.getDataDoAto();
+                detalhes += " " + bem.getDescricao() + " " + bem.getDataDoAto() + " " + bem.getValor();
             }
             for (VinculoProcessual vp : pjud.getVinculoProcessualCollection()) {
                 detalhes += " " + vp.getProcesso() + " " + vp.getTipoDeProcessoFk().getTipo();

@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Bem.findAll", query = "SELECT b FROM Bem b"),
     @NamedQuery(name = "Bem.findById", query = "SELECT b FROM Bem b WHERE b.id = :id"),
+    @NamedQuery(name = "Bem.findByValor", query = "SELECT b FROM Bem b WHERE b.valor = :valor"),
     @NamedQuery(name = "Bem.findByDescricao", query = "SELECT b FROM Bem b WHERE b.descricao = :descricao"),
     @NamedQuery(name = "Bem.findByDataDoAto", query = "SELECT b FROM Bem b WHERE b.dataDoAto = :dataDoAto")})
 public class Bem implements Serializable {
@@ -49,6 +51,8 @@ public class Bem implements Serializable {
     @Size(max = 10)
     @Column(name = "data_do_ato")
     private String dataDoAto;
+    @Column(name = "valor")
+    private BigDecimal valor; 
     @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicial processoJudicialFk;
@@ -97,6 +101,14 @@ public class Bem implements Serializable {
         this.processoJudicialFk = processoJudicialFk;
     }
 
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -123,6 +135,9 @@ public class Bem implements Serializable {
             return false;
         }
         if (!Objects.equals(this.dataDoAto, other.dataDoAto)) {
+            return false;
+        }
+        if (!Objects.equals(this.valor, other.valor)) {
             return false;
         }
         return true;

@@ -958,8 +958,12 @@
                 $('#pessoa-juridica').hide();
                 if ($('#cpf').val() !== "") {
                     $('.button-pessoa-fisica').show();
+                    $('.button-pessoa-fisica').closest('.form-group').removeClass('has-error');
+                    $('.button-pessoa-fisica').closest('.form-group').find('.help-block').remove();
                 } else if ($('#cnpj').val() !== "") {
                     $('.button-pessoa-juridica').show();
+                    $('.button-pessoa-juridica').closest('.form-group').removeClass('has-error');
+                    $('.button-pessoa-juridica').closest('.form-group').find('.help-block').remove();
                 } else {
                     $('.button-pessoa-fisica').hide();
                     $('.button-pessoa-juridica').hide();

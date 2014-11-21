@@ -170,6 +170,9 @@ var PjudCon = function() {
         $.each($('.tab2'), function() {
             getMoneyMask($(this));
         });
+        $.each($('.tab3'), function() {
+            getMoneyMask($(this));
+        });
         var atual;
         $.each($('.data-de-modificacao'), function() {
             if ($(this).html().indexOf('Atual') !== -1) {

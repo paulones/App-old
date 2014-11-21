@@ -252,6 +252,7 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void adicionarBens() {
+        System.out.println(bemList.size());
         if (bens > bemList.size()) {
             bens = bemList.isEmpty() ? bens : bens - bemList.size();
             for (int i = 0; i < bens; i++) {
@@ -263,7 +264,6 @@ public class ProcessoJudicialBean implements Serializable {
                 bemList.remove(bemList.size() - 1);
             }
         }
-
     }
 
     public void adicionarVinculosProcessuais() {
@@ -336,7 +336,7 @@ public class ProcessoJudicialBean implements Serializable {
                 }
                 processoJudicialBO.create(processoJudicial);
                 for (Bem bem : bemList) {
-                    if (bem.getDescricao() != null || bem.getDataDoAto() != null) {
+                    if (bem.getDescricao() != null || bem.getDataDoAto() != null || bem.getValor() != null) {
                         bem.setProcessoJudicialFk(processoJudicial);
                         bemBO.create(bem);
                     }
@@ -363,7 +363,7 @@ public class ProcessoJudicialBean implements Serializable {
                 boolean identical = true;
                 for (Iterator<Bem> iterator = bemList.iterator(); iterator.hasNext();) {
                     Bem bem = iterator.next();
-                    if (bem.getDescricao() == null && bem.getDataDoAto() == null) {
+                    if (bem.getDescricao() == null && bem.getDataDoAto() == null && bem.getValor() == null) {
                         iterator.remove();
                     }
                 }
@@ -526,6 +526,7 @@ public class ProcessoJudicialBean implements Serializable {
             BemHistorico bemHistorico = new BemHistorico();
             bemHistorico.setDataDoAto(bem.getDataDoAto());
             bemHistorico.setDescricao(bem.getDescricao());
+            bemHistorico.setValor(bem.getValor());
             bemHistoricoList.add(bemHistorico);
         }
 
@@ -586,6 +587,7 @@ public class ProcessoJudicialBean implements Serializable {
             BemHistorico bemHistorico = new BemHistorico();
             bemHistorico.setDataDoAto(bem.getDataDoAto());
             bemHistorico.setDescricao(bem.getDescricao());
+            bemHistorico.setValor(bem.getValor());
             bemHistoricoList.add(bemHistorico);
         }
         processoJudicialHistorico.setBemHistoricoCollection(bemHistoricoList);

@@ -176,11 +176,6 @@ var PjudCad = function() {
 
         $('.button-submit').click(function(e) {
             if ($('#submit_form').validate().form()) {
-                $.each($('.money'), function() {
-                    $($(this)).val(function(i, val) {
-                        return val.replace('R$', '').replace(" ", "").replace(/\./g, "").replace(",", ".");
-                    });
-                });
                 $('.submit-pjud').click();
             }
             return false;
@@ -322,6 +317,9 @@ var PjudCad = function() {
                     date: true,
                     required: false
                 },
+                bemvalor: {
+                    required: false
+                },
                 vinculo: {
                     required: true
                 },
@@ -335,20 +333,24 @@ var PjudCad = function() {
             $('#bens').mask("99");
             $('#vinculos').mask("99");
             $('.date').mask("99/99/9999");
-            $('.money').maskMoney({
-                prefix: 'R$ ',
-                symbol: 'R$', // Simbolo
-                decimal: ',', // Separador do decimal
-                precision: 2, // Precisão
-                thousands: '.', // Separador para os milhares
-                allowZero: false, // Permite que o digito 0 seja o primeiro caractere
-                showSymbol: true // Exibe/Oculta o símbolo
-            });
-            $.each($('.money'), function() {
-                if ($(this).val() !== "") {
-                    $(this).maskMoney('mask');
-                }
-            });
+
+            maskMoney();
+            function maskMoney() {
+                $('.money').maskMoney({
+                    prefix: 'R$ ',
+                    symbol: 'R$', // Simbolo
+                    decimal: ',', // Separador do decimal
+                    precision: 2, // Precisão
+                    thousands: '.', // Separador para os milhares
+                    allowZero: false, // Permite que o digito 0 seja o primeiro caractere
+                    showSymbol: true // Exibe/Oculta o símbolo
+                });
+                $.each($('.money'), function() {
+                    if ($(this).val() !== "") {
+                        $(this).maskMoney('mask');
+                    }
+                });
+            }
 
             $('.masked-numbers').keypress(numeroDoProcesso);
             function numeroDoProcesso(e) {
@@ -526,6 +528,7 @@ var PjudCad = function() {
                 if (data.status === "success") {
                     if ($(data.source).hasClass("bens")) {
                         $('.bemdata').mask("99/99/9999");
+                        maskMoney();
                     } else if ($(data.source).hasClass("vinculos")) {
                         $('.vinculotipo').select2({
                             allowClear: true,

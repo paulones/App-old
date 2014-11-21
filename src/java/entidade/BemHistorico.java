@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "BemHistorico.findAll", query = "SELECT b FROM BemHistorico b"),
     @NamedQuery(name = "BemHistorico.findById", query = "SELECT b FROM BemHistorico b WHERE b.id = :id"),
+    @NamedQuery(name = "BemHistorico.findByValor", query = "SELECT b FROM BemHistorico b WHERE b.valor = :valor"),
     @NamedQuery(name = "BemHistorico.findByDescricao", query = "SELECT b FROM BemHistorico b WHERE b.descricao = :descricao"),
     @NamedQuery(name = "BemHistorico.findByDataDoAto", query = "SELECT b FROM BemHistorico b WHERE b.dataDoAto = :dataDoAto")})
 public class BemHistorico implements Serializable {
@@ -46,6 +48,8 @@ public class BemHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_do_ato")
     private String dataDoAto;
+    @Column(name = "valor")
+    private BigDecimal valor;
     @JoinColumn(name = "processo_judicial_historico_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicialHistorico processoJudicialHistoricoFk;
@@ -87,6 +91,14 @@ public class BemHistorico implements Serializable {
 
     public void setProcessoJudicialHistoricoFk(ProcessoJudicialHistorico processoJudicialHistoricoFk) {
         this.processoJudicialHistoricoFk = processoJudicialHistoricoFk;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
     }
 
     @Override
