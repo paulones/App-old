@@ -137,7 +137,7 @@ var ModalPJCad = function() {
                 $(".modal_pj_date-error-pjj").hide();
                 success.hide();
                 error.show();
-                $(".modal").animate({ scrollTop: 0 }, 'fast');
+                $(".modal").animate({scrollTop: 0}, 'fast');
             },
             errorPlacement: function(error, element) { // render error placement for each input type
                 if (element.parent(".input-group").size() > 0) {
@@ -155,7 +155,11 @@ var ModalPJCad = function() {
                 } else {
                     var icon = $(element).parent('.input-icon').children('i');
                     icon.removeClass('fa-check').addClass("fa-warning");
-                    icon.attr("data-original-title", error.text()).tooltip().on('show', function(e) {e.stopPropagation();}).on('hide', function(e) {e.stopPropagation();});
+                    icon.attr("data-original-title", error.text()).tooltip().on('show', function(e) {
+                        e.stopPropagation();
+                    }).on('hide', function(e) {
+                        e.stopPropagation();
+                    });
                 }
 
             },
@@ -177,7 +181,7 @@ var ModalPJCad = function() {
         });
     }
 
-    $(document).on("click",".modal_pj_submit-pj", function(e) {
+    $(document).on("click", ".modal_pj_submit-pj", function(e) {
         if ($('#modal_pj_form').validate().form()) {
             $(".modal_pj_date-error-pfj").hide();
             $(".modal_pj_date-error-pjj").hide();
@@ -304,6 +308,7 @@ var ModalPJCad = function() {
         var table = $('.modal_pj_vinculations');
 
         var oTable = table.dataTable({
+            destroy:true,
             paginate: false,
             lengthMenu: false,
             info: false,
@@ -329,13 +334,13 @@ var ModalPJCad = function() {
     return {
         init: function() {
             $("#modal_pj_tipicidade").select2();
-            $("#modal_pj_enduf").select2({allowClear:true});
+            $("#modal_pj_enduf").select2({allowClear: true});
             $("#modal_pj_endcity").select2();
             $("#modal-new-pj input[type=radio]").uniform();
-            
-            
-            
-            $.validator.addMethod("cnpj", validaCNPJ, "Digite um CNPJ v&aacute;lido.");
+
+
+
+            $.validator.addMethod("cnpj", validaCNPJ, "CNPJ inv&aacute;lido ou j&aacute; existente no sistema.");
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
             $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
 
@@ -371,7 +376,7 @@ var ModalPJCad = function() {
                     } else if ($(data.source).attr("class") === "modal_pj_vinculatePF" || $(data.source).attr("class") === "modal_pj_vinculatePJ" || $(data.source).attr("class") === "modal_pj_pfj-refresher" || $(data.source).attr("class") === "modal_pj_pjj-refresher") {
                         $('.modal_pj_date').mask("99/99/9999");
                         if ($(data.source).attr("class") === "modal_pj_vinculatePF" || $(data.source).attr("class") === "modal_pj_pfj-refresher") {
-                            $('.modal_pj_funcao').select2();
+                            $('select.modal_pj_funcao').select2();
                             $('.modal_pj_date-error-pfj').hide();
                             if ($('.modal_pj_rows-pfj').children().length === 0) {
                                 $('.modal_pj_rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
@@ -519,7 +524,26 @@ var ModalPJCad = function() {
                 if (((dig1 * 10) + dig2) != digito)
                     return false;
                 else {
-                    return true;
+                    var status = true;
+                    if (value.length === 14) {
+                        $.ajax({
+                            async: false,
+                            url: "/webresources/reaver/checkCNPJ",
+                            dataType: "json",
+                            cache: false,
+                            data: {
+                                cnpj: value
+                            },
+                            success: function(data, textStatus, jqXHR) {
+                                if (String(data) === "true") {
+                                    status = true;
+                                } else {
+                                    status = false;
+                                }
+                            }
+                        })
+                        return status;
+                    }
                 }
 
             }

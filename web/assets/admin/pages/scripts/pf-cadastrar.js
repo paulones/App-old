@@ -348,7 +348,7 @@ var PFCad = function() {
                 cache: false
             })
                     .done(function(data) {
-                        $('.cnpj').select2({
+                        $('.cnpjVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {
                                     return metric.id === element.val();

@@ -302,6 +302,18 @@ public class ReaverResource {
     }
     
     @GET
+    @Path("/checkCNPJ")
+    @Produces("application/json")
+    public String checkCNPJ(@QueryParam("cnpj") String cnpj) {
+        PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
+        PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findByCNPJ(cnpj);
+        if (pessoaJuridica == null){
+            return "true";
+        } else
+            return "false";
+    }
+    
+    @GET
     @Path("/getArrecadacao")
     @Produces("application/json")
     public String getArrecadacao(@QueryParam("ano") Integer ano) {

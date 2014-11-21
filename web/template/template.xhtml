@@ -687,7 +687,7 @@
                         } else if ($('#tabela-modal').val() === "PJS") {
                             $('.modal-info-pjs').click();
                         }
-                        $('.modal').find('table').dataTable({
+                        $('.modal-info').find('table').dataTable({
                             destroy: true,
                             paginate: false,
                             lengthMenu: false,
@@ -708,13 +708,57 @@
                             $('.modal-new-pj').click();
                             ModalPJCad.init();
                         }
-                    } else if ($(data.source).attr('class') === 'sucessao-refresher') {
+                    } else if ($(data.source).attr('class') === "modal_pj_register") {
+                        $('#largenewpj').modal("hide");
+                        refreshCNPJDropdown(".cnpjVinculate");
+                    }else if ($(data.source).attr('class') === 'sucessao-refresher') {
                         $(element).closest('.nestable-list').find('.sucessao-info').remove();
                         $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));
                     }
                     executing = false;
                 }
             });
+
+            function refreshCNPJDropdown(classe){
+                $.ajax({
+                url: "/webresources/reaver/getPessoasJuridicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        $(classe).select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (removeDiacritics(metric.text.toLowerCase()).indexOf(removeDiacritics(term)) >= 0);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
+                        }).select2("val",$("#modal_pj_id").val());
+                    });
+            }
 
             function getMoneyMask(parent) {
                 $.each($(parent).find('.money'), function() {
