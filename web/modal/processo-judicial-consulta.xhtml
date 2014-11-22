@@ -1315,12 +1315,23 @@
                                                             </h:panelGroup>
                                                             <ui:repeat var="bem" value="#{templateBean.executado.processoJudicial.bemCollection}">
                                                                 <div class="row">
-                                                                    <div class="col-md-8">
+                                                                    <div class="col-md-5">
                                                                         <div class="form-group">
-                                                                            <label class="control-label col-md-2">Descrição:</label>
-                                                                            <div class="col-md-10">
+                                                                            <label class="control-label col-md-4">Descrição:</label>
+                                                                            <div class="col-md-8">
                                                                                 <p class="form-control-static text-justify">
                                                                                     #{bem.descricao eq null ? '-' : bem.descricao}
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--/span-->
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label class="control-label col-md-4">Valor:</label>
+                                                                            <div class="col-md-8">
+                                                                                <p class="form-control-static money">
+                                                                                    #{bem.valor eq null ? '-' : bem.valor}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
@@ -1329,7 +1340,7 @@
                                                                     <div class="col-md-4">
                                                                         <div class="form-group">
                                                                             <label class="control-label col-md-5">Data do Ato:</label>
-                                                                            <div class="col-md-5">
+                                                                            <div class="col-md-7">
                                                                                 <p class="form-control-static">
                                                                                     #{bem.dataDoAto eq null ? '-' : bem.dataDoAto}
                                                                                 </p>
