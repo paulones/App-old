@@ -228,10 +228,10 @@ public class TemplateBean implements Serializable {
             }
         } else if (tabela.equals("PJ")) {
             PessoaJuridicaJuridica pessoaJuridicaJuridica = new PessoaJuridicaJuridica();
-            pessoaJuridicaJuridica.setPessoaJuridicaSocioBFk(pessoaJuridica);
+            pessoaJuridicaJuridica.setPessoaJuridicaSecundariaFk(pessoaJuridica);
             boolean exists = false;
             for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
-                if (pjj.getPessoaJuridicaSocioBFk().getId().equals(pessoaJuridica.getId())) {
+                if (pjj.getPessoaJuridicaSecundariaFk().getId().equals(pessoaJuridica.getId())) {
                     exists = true;
                 }
             }
@@ -281,7 +281,7 @@ public class TemplateBean implements Serializable {
             pessoaFisicaJuridicaBO.create(pfj);
         }
         for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
-            pjj.setPessoaJuridicaSocioAFk(pessoaJuridica);
+            pjj.setPessoaJuridicaPrimariaFk(pessoaJuridica);
             pessoaJuridicaJuridicaBO.create(pjj);
         }
         GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'C');

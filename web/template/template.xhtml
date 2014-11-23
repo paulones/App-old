@@ -643,7 +643,6 @@
                     cpfDropdown = $(this).closest(".row").find(".cpfVinculate");
                     $('#tabela-modal').val('PF');
                     $('.show-new-modal').click();
-                    console.log("." + $(cpfDropdown).attr("class"));
                 }
             });
             var element;
@@ -655,6 +654,21 @@
                     element = $(this);
                 }
             });
+
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                        results = regex.exec(location.search);
+                return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+            }
+            
+            Array.prototype.removeValue = function(name, value) {
+                var array = $.map(this, function(v, i) {
+                    return v[name] === value ? null : v;
+                });
+                this.length = 0; //clear original array
+                this.push.apply(this, array); //push all elements except the one we want to delete
+            }
 
             function setCursors(ajax) {
                 if (ajax === "begin") {

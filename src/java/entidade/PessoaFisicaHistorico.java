@@ -7,8 +7,10 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +20,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -49,6 +53,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PessoaFisicaHistorico.findByObservacoes", query = "SELECT p FROM PessoaFisicaHistorico p WHERE p.observacoes = :observacoes"),
     @NamedQuery(name = "PessoaFisicaHistorico.findByDataDeModificacao", query = "SELECT p FROM PessoaFisicaHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
 public class PessoaFisicaHistorico implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaHistoricoFk")
+    private Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection;
     @Column(name = "zona")
     private Integer zona;
     @Column(name = "secao")
@@ -398,6 +404,15 @@ public class PessoaFisicaHistorico implements Serializable {
 
     public void setEstadoEleitoralFk(Estado estadoEleitoralFk) {
         this.estadoEleitoralFk = estadoEleitoralFk;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaFisicaHistorico> getPessoaFisicaFisicaHistoricoCollection() {
+        return pessoaFisicaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaFisicaHistoricoCollection(Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection) {
+        this.pessoaFisicaFisicaHistoricoCollection = pessoaFisicaFisicaHistoricoCollection;
     }
     
 }

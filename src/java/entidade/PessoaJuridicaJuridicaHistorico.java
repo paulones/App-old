@@ -53,12 +53,12 @@ public class PessoaJuridicaJuridicaHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_de_termino")
     private String dataDeTermino;
-    @JoinColumn(name = "pessoa_juridica_socio_a_fk", referencedColumnName = "id")
+    @JoinColumn(name = "pessoa_juridica_primaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaJuridica pessoaJuridicaSocioAFk;
-    @JoinColumn(name = "pessoa_juridica_socio_b_fk", referencedColumnName = "id")
+    private PessoaJuridica pessoaJuridicaPrimariaFk;
+    @JoinColumn(name = "pessoa_juridica_secundaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaJuridica pessoaJuridicaSocioBFk;
+    private PessoaJuridica pessoaJuridicaSecundariaFk;
 
     public PessoaJuridicaJuridicaHistorico() {
     }
@@ -99,21 +99,23 @@ public class PessoaJuridicaJuridicaHistorico implements Serializable {
         this.dataDeTermino = dataDeTermino;
     }
 
-    public PessoaJuridica getPessoaJuridicaSocioAFk() {
-        return pessoaJuridicaSocioAFk;
+    public PessoaJuridica getPessoaJuridicaPrimariaFk() {
+        return pessoaJuridicaPrimariaFk;
     }
 
-    public void setPessoaJuridicaSocioAFk(PessoaJuridica pessoaJuridicaSocioAFk) {
-        this.pessoaJuridicaSocioAFk = pessoaJuridicaSocioAFk;
+    public void setPessoaJuridicaPrimariaFk(PessoaJuridica pessoaJuridicaPrimariaFk) {
+        this.pessoaJuridicaPrimariaFk = pessoaJuridicaPrimariaFk;
     }
 
-    public PessoaJuridica getPessoaJuridicaSocioBFk() {
-        return pessoaJuridicaSocioBFk;
+    public PessoaJuridica getPessoaJuridicaSecundariaFk() {
+        return pessoaJuridicaSecundariaFk;
     }
 
-    public void setPessoaJuridicaSocioBFk(PessoaJuridica pessoaJuridicaSocioBFk) {
-        this.pessoaJuridicaSocioBFk = pessoaJuridicaSocioBFk;
+    public void setPessoaJuridicaSecundariaFk(PessoaJuridica pessoaJuridicaSecundariaFk) {
+        this.pessoaJuridicaSecundariaFk = pessoaJuridicaSecundariaFk;
     }
+
+    
 
     @Override
     public int hashCode() {

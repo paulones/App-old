@@ -53,6 +53,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaFisica.findByObservacoes", query = "SELECT p FROM PessoaFisica p WHERE p.observacoes = :observacoes"),
     @NamedQuery(name = "PessoaFisica.findByStatus", query = "SELECT p FROM PessoaFisica p WHERE p.status = :status")})
 public class PessoaFisica implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaAFk")
+    private Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaBFk")
+    private Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection1;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaAFk")
+    private Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaBFk")
+    private Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection1;
     @Column(name = "zona")
     private Integer zona;
     @Column(name = "secao")
@@ -500,6 +508,42 @@ public class PessoaFisica implements Serializable {
 
     public void setEstadoEleitoralFk(Estado estadoEleitoralFk) {
         this.estadoEleitoralFk = estadoEleitoralFk;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaFisica> getPessoaFisicaFisicaCollection() {
+        return pessoaFisicaFisicaCollection;
+    }
+
+    public void setPessoaFisicaFisicaCollection(Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection) {
+        this.pessoaFisicaFisicaCollection = pessoaFisicaFisicaCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaFisica> getPessoaFisicaFisicaCollection1() {
+        return pessoaFisicaFisicaCollection1;
+    }
+
+    public void setPessoaFisicaFisicaCollection1(Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection1) {
+        this.pessoaFisicaFisicaCollection1 = pessoaFisicaFisicaCollection1;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaFisicaHistorico> getPessoaFisicaFisicaHistoricoCollection() {
+        return pessoaFisicaFisicaHistoricoCollection;
+    }
+
+    public void setPessoaFisicaFisicaHistoricoCollection(Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection) {
+        this.pessoaFisicaFisicaHistoricoCollection = pessoaFisicaFisicaHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisicaFisicaHistorico> getPessoaFisicaFisicaHistoricoCollection1() {
+        return pessoaFisicaFisicaHistoricoCollection1;
+    }
+
+    public void setPessoaFisicaFisicaHistoricoCollection1(Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection1) {
+        this.pessoaFisicaFisicaHistoricoCollection1 = pessoaFisicaFisicaHistoricoCollection1;
     }
     
 }

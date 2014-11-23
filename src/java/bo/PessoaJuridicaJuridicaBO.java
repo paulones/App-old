@@ -40,47 +40,12 @@ public class PessoaJuridicaJuridicaBO implements Serializable{
         }
     }
     
-    public void destroyByPJA(Integer idPj){
+    public void destroyByPJBOrPJA(Integer idPj){
         try {
-            pessoaJuridicaJuridicaDAO.destroyByPJA(idPj);
+            pessoaJuridicaJuridicaDAO.destroyByPJBOrPJA(idPj);
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    
-    public void destroyByPJB(Integer idPj){
-        try {
-            pessoaJuridicaJuridicaDAO.destroyByPJB(idPj);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public PessoaJuridicaJuridica findByPJAndPJ(Integer idPjA, Integer idPjB){
-        try { 
-            return pessoaJuridicaJuridicaDAO.findByPJAndPJ(idPjA, idPjB);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    public List<PessoaJuridicaJuridica> findAllByPJA(Integer id){
-        try { 
-            return pessoaJuridicaJuridicaDAO.findAllByPJA(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<PessoaJuridicaJuridica>();
-    }
-    
-    public List<PessoaJuridicaJuridica> findAllByPJB(Integer id){
-        try { 
-            return pessoaJuridicaJuridicaDAO.findAllByPJB(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<PessoaJuridicaJuridica>();
     }
     
     public List<PessoaJuridicaJuridica> findAllByPJAOrPJB(Integer id){

@@ -229,12 +229,8 @@ var PFCad = function() {
 
     var checkCapital = function() {
         $(this).val($(this).val().replace(/,/g, "."));
-        var soma = 0;
-        $.each($('.capital'), function() {
-            soma += Number($(this).val());
-        });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
-            if ($(this).val() > 100 || soma > 100) {
+            if ($(this).val() > 100) {
                 $('.date-error').html("A soma dos percentuais de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
                 $('.date-error').show();
                 $(this).val("");

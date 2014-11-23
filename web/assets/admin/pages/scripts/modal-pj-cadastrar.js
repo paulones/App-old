@@ -133,8 +133,7 @@ var ModalPJCad = function() {
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit
-                $(".modal_pj_date-error-pfj").hide();
-                $(".modal_pj_date-error-pjj").hide();
+                $(".modal_pj_date-error").hide();
                 success.hide();
                 error.show();
                 $(".modal").animate({scrollTop: 0}, 'fast');
@@ -183,20 +182,14 @@ var ModalPJCad = function() {
 
     $(document).on("click", ".modal_pj_submit-pj", function(e) {
         if ($('#modal_pj_form').validate().form()) {
-            $(".modal_pj_date-error-pfj").hide();
-            $(".modal_pj_date-error-pjj").hide();
+            $(".modal_pj_date-error").hide();
             $(".modal_pj_register").click();
         }
         return false;
     });
 
     var checkDates = function() {
-        var dateError;
-        if ($(this).parents("#modal_pj_pessoaJuridicaJuridica").length > 0) {
-            dateError = ".modal_pj_date-error-pjj";
-        } else {
-            dateError = ".modal_pj_date-error-pfj";
-        }
+        var dateError = ".modal_pj_date-error";
         if ($(this).val().length == 10) {
             var result;
             var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
@@ -274,12 +267,7 @@ var ModalPJCad = function() {
 
 
     var checkCapital = function() {
-        var dateError;
-        if ($(this).parents("#modal_pj_pessoaJuridicaJuridica").length > 0) {
-            dateError = ".modal_pj_date-error-pjj";
-        } else if ($(this).parents("#modal_pj_pessoaFisicaJuridica").length > 0) {
-            dateError = ".modal_pj_date-error-pfj";
-        }
+        var dateError = ".modal_pj_date-error";
         $(this).val($(this).val().replace(/,/g, "."));
         var soma = 0;
         $.each($('.modal_pj_capital-pfj'), function() {
@@ -290,7 +278,7 @@ var ModalPJCad = function() {
         });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
             if ($(this).val() > 100 || soma > 100) {
-                $(dateError).html("A soma dos percentuais de participa&ccedil;&atilde;o dos v&iacute;nculos administrativos e empresariais n&atilde;o pode exceder 100%.");
+                $(dateError).html("A soma dos percentuais de participa&ccedil;&atilde;o dos v&iacute;nculos administrativos n&atilde;o pode exceder 100%.");
                 $(dateError).show();
                 $(this).val("");
             } else {
@@ -377,13 +365,13 @@ var ModalPJCad = function() {
                         $('.modal_pj_date').mask("99/99/9999");
                         if ($(data.source).attr("class") === "modal_pj_vinculatePF" || $(data.source).attr("class") === "modal_pj_pfj-refresher") {
                             $('select.modal_pj_funcao').select2({allowClear:true});
-                            $('.modal_pj_date-error-pfj').hide();
+                            $('.modal_pj_date-error').hide();
                             if ($('.modal_pj_rows-pfj').children().length === 0) {
                                 $('.modal_pj_rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                             }
                             $('.modal_pj_capital-pfj').keyup(checkCapital);
                         } else {
-                            $('.modal_pj_date-error-pjj').hide();
+                            $('.modal_pj_date-error').hide();
                             if ($('.modal_pj_rows-pjj').children().length === 0) {
                                 $('.modal_pj_rows-pjj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                             }
@@ -401,6 +389,9 @@ var ModalPJCad = function() {
                 cache: false
             })
                     .done(function(data) {
+                        if (getParameterByName("id") !== "" && window.location.href.indexOf("pessoa-fisica") >= 0) {
+                            data.removeValue("id", getParameterByName("id"));
+                        }
                         $('.modal_pj_cpfVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {
@@ -440,6 +431,9 @@ var ModalPJCad = function() {
                 cache: false
             })
                     .done(function(data) {
+                        if (getParameterByName("id") !== "" && window.location.href.indexOf("pessoa-juridica") >= 0) {
+                            data.removeValue("id", getParameterByName("id"));
+                        }
                         $('.modal_pj_cnpjVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {

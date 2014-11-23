@@ -233,12 +233,8 @@ var ModalPFCad = function() {
 
     var checkCapital = function() {
         $(this).val($(this).val().replace(/,/g, "."));
-        var soma = 0;
-        $.each($('.modal_pf_capital'), function() {
-            soma += Number($(this).val());
-        });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
-            if ($(this).val() > 100 || soma > 100) {
+            if ($(this).val() > 100) {
                 $('.modal_pf_date-error').html("A soma dos percentuais de participa&ccedil;&atilde;o n&atilde;o pode exceder 100%.");
                 $('.modal_pf_date-error').show();
                 $(this).val("");
@@ -286,9 +282,9 @@ var ModalPFCad = function() {
             $("#modal_pf_nationality").select2({allowClear: true});
             $("#modal_pf_natuf").select2({allowClear: true});
             $("#modal_pf_natcity").select2();
-            $("#modal_pf_eleuf").select2({allowClear:true});
+            $("#modal_pf_eleuf").select2({allowClear: true});
             $("#modal_pf_elecity").select2();
-            $("#modal_pf_enduf").select2({allowClear:true});
+            $("#modal_pf_enduf").select2({allowClear: true});
             $("#modal_pf_endcity").select2();
             $("#modal_pf_estcivil").select2({allowClear: true});
             $("#modal-new-pf input[type=radio]").uniform();
@@ -328,16 +324,16 @@ var ModalPFCad = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "modal_pf_enduf") {
-                        $('.modal_pf_endcity').select2({allowClear:true});
+                        $('.modal_pf_endcity').select2({allowClear: true});
                     } else if ($(data.source).attr("id") === "modal_pf_natuf") {
-                        $('.modal_pf_natcity').select2({allowClear:true});
+                        $('.modal_pf_natcity').select2({allowClear: true});
                     } else if ($(data.source).attr("id") === "modal_pf_eleuf") {
-                        $('.modal_pf_elecity').select2({allowClear:true});
+                        $('.modal_pf_elecity').select2({allowClear: true});
                     } else if ($(data.source).attr("class") === "modal_pf_delete") {
                         $('.modal_pf_table-refresher').click();
                     } else if ($(data.source).attr("class") === "modal_pf_vinculate" || $(data.source).attr("class") === "modal_pf_table-refresher") {
                         $('.modal_pf_date').mask("99/99/9999");
-                        $('select.modal_pf_funcao').select2({allowClear:true});
+                        $('select.modal_pf_funcao').select2({allowClear: true});
                         $('.modal_pf_capital').keyup(checkCapital);
                         $('.modal_pf_initial-date,.modal_pf_final-date').keyup(checkDates);
                         $('.modal_pf_date-error').hide();
@@ -354,6 +350,9 @@ var ModalPFCad = function() {
                 cache: false
             })
                     .done(function(data) {
+                        if (getParameterByName("id") !== "" && window.location.href.indexOf("pessoa-juridica") >= 0) {
+                            data.removeValue("id", getParameterByName("id"));
+                        }
                         $('.modal_pf_cnpjVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {
@@ -362,6 +361,7 @@ var ModalPFCad = function() {
                                 callback(selection);
                             },
                             query: function(options) {
+
                                 var pageSize = 100;
                                 var startIndex = (options.page - 1) * pageSize;
                                 var filteredData = data;
@@ -456,25 +456,25 @@ var ModalPFCad = function() {
                 if (Resto != parseInt(value.substring(10, 11)))
                     return false;
                 var status = true;
-                    if (value.length === 11) {
-                        $.ajax({
-                            async: false,
-                            url: "/webresources/reaver/checkCPF",
-                            dataType: "json",
-                            cache: false,
-                            data: {
-                                cpf: value
-                            },
-                            success: function(data, textStatus, jqXHR) {
-                                if (String(data) === "true") {
-                                    status = true;
-                                } else {
-                                    status = false;
-                                }
+                if (value.length === 11) {
+                    $.ajax({
+                        async: false,
+                        url: "/webresources/reaver/checkCPF",
+                        dataType: "json",
+                        cache: false,
+                        data: {
+                            cpf: value
+                        },
+                        success: function(data, textStatus, jqXHR) {
+                            if (String(data) === "true") {
+                                status = true;
+                            } else {
+                                status = false;
                             }
-                        })
-                        return status;
-                    }
+                        }
+                    })
+                    return status;
+                }
             }
 
             function validaTitulo(value, element) {

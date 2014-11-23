@@ -6,6 +6,7 @@
 
 package dao;
 
+import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import java.io.Serializable;
@@ -19,8 +20,11 @@ import entidade.EstadoCivil;
 import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaFisicaHistorico;
 import entidade.PessoaFisicaHistorico;
 import entidade.Usuario;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,10 +46,12 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
     }
 
     public void create(PessoaFisicaHistorico pessoaFisicaHistorico) throws RollbackFailureException, Exception {
+        if (pessoaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection() == null) {
+            pessoaFisicaHistorico.setPessoaFisicaFisicaHistoricoCollection(new ArrayList<PessoaFisicaFisicaHistorico>());
+        }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Cidade cidadeFk = pessoaFisicaHistorico.getCidadeFk();
             if (cidadeFk != null) {
                 cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
@@ -96,6 +102,12 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 estadoEleitoralFk = em.getReference(estadoEleitoralFk.getClass(), estadoEleitoralFk.getId());
                 pessoaFisicaHistorico.setEstadoEleitoralFk(estadoEleitoralFk);
             }
+            Collection<PessoaFisicaFisicaHistorico> attachedPessoaFisicaFisicaHistoricoCollection = new ArrayList<PessoaFisicaFisicaHistorico>();
+            for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistoricoToAttach : pessoaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection()) {
+                pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistoricoToAttach = em.getReference(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistoricoToAttach.getClass(), pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaFisicaHistoricoCollection.add(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistoricoToAttach);
+            }
+            pessoaFisicaHistorico.setPessoaFisicaFisicaHistoricoCollection(attachedPessoaFisicaFisicaHistoricoCollection);
             em.persist(pessoaFisicaHistorico);
             if (cidadeFk != null) {
                 cidadeFk.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
@@ -137,6 +149,15 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 estadoEleitoralFk.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
                 estadoEleitoralFk = em.merge(estadoEleitoralFk);
             }
+            for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico : pessoaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection()) {
+                PessoaFisicaHistorico oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.getPessoaFisicaHistoricoFk();
+                pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.setPessoaFisicaHistoricoFk(pessoaFisicaHistorico);
+                pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
+                if (oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico != null) {
+                    oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
+                    oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -152,11 +173,10 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
         }
     }
 
-    public void edit(PessoaFisicaHistorico pessoaFisicaHistorico) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(PessoaFisicaHistorico pessoaFisicaHistorico) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             PessoaFisicaHistorico persistentPessoaFisicaHistorico = em.find(PessoaFisicaHistorico.class, pessoaFisicaHistorico.getId());
             Cidade cidadeFkOld = persistentPessoaFisicaHistorico.getCidadeFk();
             Cidade cidadeFkNew = pessoaFisicaHistorico.getCidadeFk();
@@ -178,6 +198,20 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
             Cidade cidadeEleitoralFkNew = pessoaFisicaHistorico.getCidadeEleitoralFk();
             Estado estadoEleitoralFkOld = persistentPessoaFisicaHistorico.getEstadoEleitoralFk();
             Estado estadoEleitoralFkNew = pessoaFisicaHistorico.getEstadoEleitoralFk();
+            Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollectionOld = persistentPessoaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection();
+            Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollectionNew = pessoaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection();
+            List<String> illegalOrphanMessages = null;
+            for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionOldPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollectionOld) {
+                if (!pessoaFisicaFisicaHistoricoCollectionNew.contains(pessoaFisicaFisicaHistoricoCollectionOldPessoaFisicaFisicaHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollectionOldPessoaFisicaFisicaHistorico + " since its pessoaFisicaHistoricoFk field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (cidadeFkNew != null) {
                 cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
                 pessoaFisicaHistorico.setCidadeFk(cidadeFkNew);
@@ -218,6 +252,13 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 estadoEleitoralFkNew = em.getReference(estadoEleitoralFkNew.getClass(), estadoEleitoralFkNew.getId());
                 pessoaFisicaHistorico.setEstadoEleitoralFk(estadoEleitoralFkNew);
             }
+            Collection<PessoaFisicaFisicaHistorico> attachedPessoaFisicaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaFisicaHistorico>();
+            for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistoricoToAttach : pessoaFisicaFisicaHistoricoCollectionNew) {
+                pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistoricoToAttach = em.getReference(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistoricoToAttach.getClass(), pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistoricoToAttach.getId());
+                attachedPessoaFisicaFisicaHistoricoCollectionNew.add(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistoricoToAttach);
+            }
+            pessoaFisicaFisicaHistoricoCollectionNew = attachedPessoaFisicaFisicaHistoricoCollectionNew;
+            pessoaFisicaHistorico.setPessoaFisicaFisicaHistoricoCollection(pessoaFisicaFisicaHistoricoCollectionNew);
             pessoaFisicaHistorico = em.merge(pessoaFisicaHistorico);
             if (cidadeFkOld != null && !cidadeFkOld.equals(cidadeFkNew)) {
                 cidadeFkOld.getPessoaFisicaHistoricoCollection().remove(pessoaFisicaHistorico);
@@ -299,6 +340,17 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
                 estadoEleitoralFkNew.getPessoaFisicaHistoricoCollection().add(pessoaFisicaHistorico);
                 estadoEleitoralFkNew = em.merge(estadoEleitoralFkNew);
             }
+            for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollectionNew) {
+                if (!pessoaFisicaFisicaHistoricoCollectionOld.contains(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico)) {
+                    PessoaFisicaHistorico oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.getPessoaFisicaHistoricoFk();
+                    pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.setPessoaFisicaHistoricoFk(pessoaFisicaHistorico);
+                    pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
+                    if (oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico != null && !oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.equals(pessoaFisicaHistorico)) {
+                        oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
+                        oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaHistoricoFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -321,17 +373,27 @@ public class PessoaFisicaHistoricoDAO implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             PessoaFisicaHistorico pessoaFisicaHistorico;
             try {
                 pessoaFisicaHistorico = em.getReference(PessoaFisicaHistorico.class, id);
                 pessoaFisicaHistorico.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pessoaFisicaHistorico with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollectionOrphanCheck = pessoaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection();
+            for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionOrphanCheckPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This PessoaFisicaHistorico (" + pessoaFisicaHistorico + ") cannot be destroyed since the PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollectionOrphanCheckPessoaFisicaFisicaHistorico + " in its pessoaFisicaFisicaHistoricoCollection field has a non-nullable pessoaFisicaHistoricoFk field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             Cidade cidadeFk = pessoaFisicaHistorico.getCidadeFk();
             if (cidadeFk != null) {

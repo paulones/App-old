@@ -53,12 +53,12 @@ public class PessoaJuridicaJuridica implements Serializable {
     @Size(max = 10)
     @Column(name = "data_de_termino")
     private String dataDeTermino;
-    @JoinColumn(name = "pessoa_juridica_socio_a_fk", referencedColumnName = "id")
+    @JoinColumn(name = "pessoa_juridica_primaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaJuridica pessoaJuridicaSocioAFk;
-    @JoinColumn(name = "pessoa_juridica_socio_b_fk", referencedColumnName = "id")
+    private PessoaJuridica pessoaJuridicaPrimariaFk;
+    @JoinColumn(name = "pessoa_juridica_secundaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaJuridica pessoaJuridicaSocioBFk;
+    private PessoaJuridica pessoaJuridicaSecundariaFk;
 
     public PessoaJuridicaJuridica() {
     }
@@ -99,22 +99,22 @@ public class PessoaJuridicaJuridica implements Serializable {
         this.dataDeTermino = dataDeTermino;
     }
 
-    public PessoaJuridica getPessoaJuridicaSocioAFk() {
-        return pessoaJuridicaSocioAFk;
+    public PessoaJuridica getPessoaJuridicaPrimariaFk() {
+        return pessoaJuridicaPrimariaFk;
     }
 
-    public void setPessoaJuridicaSocioAFk(PessoaJuridica pessoaJuridicaSocioAFk) {
-        this.pessoaJuridicaSocioAFk = pessoaJuridicaSocioAFk;
+    public void setPessoaJuridicaPrimariaFk(PessoaJuridica pessoaJuridicaPrimariaFk) {
+        this.pessoaJuridicaPrimariaFk = pessoaJuridicaPrimariaFk;
     }
 
-    public PessoaJuridica getPessoaJuridicaSocioBFk() {
-        return pessoaJuridicaSocioBFk;
+    public PessoaJuridica getPessoaJuridicaSecundariaFk() {
+        return pessoaJuridicaSecundariaFk;
     }
 
-    public void setPessoaJuridicaSocioBFk(PessoaJuridica pessoaJuridicaSocioBFk) {
-        this.pessoaJuridicaSocioBFk = pessoaJuridicaSocioBFk;
+    public void setPessoaJuridicaSecundariaFk(PessoaJuridica pessoaJuridicaSecundariaFk) {
+        this.pessoaJuridicaSecundariaFk = pessoaJuridicaSecundariaFk;
     }
-    
+
     public List<String> changedValues(Object obj) {
         List<String> list = new ArrayList<>();
         final PessoaJuridicaJuridica other = (PessoaJuridicaJuridica) obj;
@@ -127,11 +127,11 @@ public class PessoaJuridicaJuridica implements Serializable {
         if (!Objects.equals(this.dataDeTermino, other.dataDeTermino)) {
             list.add("dataDeTermino");
         }
-        if (!Objects.equals(this.pessoaJuridicaSocioBFk, other.pessoaJuridicaSocioBFk)) {
-            list.add("pessoaFisicaFk");
+        if (!Objects.equals(this.pessoaJuridicaPrimariaFk, other.pessoaJuridicaPrimariaFk)) {
+            list.add("pessoaJuridicaPrimariaFk");
         }
-        if (!Objects.equals(this.pessoaJuridicaSocioAFk, other.pessoaJuridicaSocioAFk)) {
-            list.add("pessoaJuridicaFk");
+        if (!Objects.equals(this.pessoaJuridicaSecundariaFk, other.pessoaJuridicaSecundariaFk)) {
+            list.add("pessoaJuridicaSecundariaFk");
         }
         return list;
     }

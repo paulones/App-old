@@ -133,8 +133,7 @@ var PJCad = function() {
                 }
             },
             invalidHandler: function(event, validator) { //display error alert on form submit
-                $(".date-error-pfj").hide();
-                $(".date-error-pjj").hide();
+                $(".date-error").hide();
                 success.hide();
                 error.show();
                 Metronic.scrollTo(error, -200);
@@ -179,20 +178,14 @@ var PJCad = function() {
 
     $('.submit-pj').click(function(e) {
         if ($('#form').validate().form()) {
-            $(".date-error-pfj").hide();
-            $(".date-error-pjj").hide();
+            $(".date-error").hide();
             $(".register").click();
         }
         return false;
     });
 
     var checkDates = function() {
-        var dateError;
-        if ($(this).parents("#pessoaJuridicaJuridica").length > 0) {
-            dateError = ".date-error-pjj";
-        } else {
-            dateError = ".date-error-pfj";
-        }
+        var dateError = ".date-error";
         if ($(this).val().length == 10) {
             var result;
             var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
@@ -270,12 +263,7 @@ var PJCad = function() {
 
 
     var checkCapital = function() {
-        var dateError;
-        if ($(this).parents("#pessoaJuridicaJuridica").length > 0) {
-            dateError = ".date-error-pjj";
-        } else if ($(this).parents("#pessoaFisicaJuridica").length > 0) {
-            dateError = ".date-error-pfj";
-        }
+        var dateError = ".date-error";
         $(this).val($(this).val().replace(/,/g, "."));
         var soma = 0;
         $.each($('.capital-pfj'), function() {
@@ -286,7 +274,7 @@ var PJCad = function() {
         });
         if ($(this).val().match(/^\d{0,3}(?:\.\d{0,2}){0,1}$/)) {
             if ($(this).val() > 100 || soma > 100) {
-                $(dateError).html("A soma dos percentuais de participa&ccedil;&atilde;o dos v&iacute;nculos administrativos e empresariais n&atilde;o pode exceder 100%.");
+                $(dateError).html("A soma dos percentuais de participa&ccedil;&atilde;o dos v&iacute;nculos administrativos n&atilde;o pode exceder 100%.");
                 $(dateError).show();
                 $(this).val("");
             } else {
@@ -366,28 +354,28 @@ var PJCad = function() {
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
-                        $('.endcity').select2({allowClear:true});
+                        $('.endcity').select2({allowClear: true});
                     } else if ($(data.source).attr("class") === "delete-pfj") {
                         $('.pfj-refresher').click();
                     } else if ($(data.source).attr("class") === "delete-pjj") {
                         $('.pjj-refresher').click();
-                    } else if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "vinculatePJ" || $(data.source).attr("class") === "pfj-refresher" || $(data.source).attr("class") === "pjj-refresher") {
+                    } else if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "vinculatePJ"
+                            || $(data.source).attr("class") === "pfj-refresher" || $(data.source).attr("class") === "pjj-refresher") {
                         $('.date').mask("99/99/9999");
                         if ($(data.source).attr("class") === "vinculatePF" || $(data.source).attr("class") === "pfj-refresher") {
-                            $('.funcao').select2({allowClear:true});
-                            $('.date-error-pfj').hide();
+                            $('.funcao').select2({allowClear: true});
+                            $('.date-error').hide();
                             if ($('.rows-pfj').children().length === 0) {
                                 $('.rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                             }
                             $('.capital-pfj').keyup(checkCapital);
-                        } else {
-                            $('.date-error-pjj').hide();
+                        } else if ($(data.source).attr("class") === "vinculatePJ" || $(data.source).attr("class") === "pjj-refresher") {
+                            $('.date-error').hide();
                             if ($('.rows-pjj').children().length === 0) {
                                 $('.rows-pjj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                             }
                             $('.capital-pjj').keyup(checkCapital);
-                        }
-
+                        } 
                         $('.initial-date,.final-date').keyup(checkDates);
                     }
                 }
@@ -438,6 +426,9 @@ var PJCad = function() {
                 cache: false
             })
                     .done(function(data) {
+                        if (getParameterByName("id") !== "" && window.location.href.indexOf("pessoa-juridica") >= 0) {
+                            data.removeValue("id", getParameterByName("id"));
+                        }
                         $('.cnpjVinculate').select2({
                             initSelection: function(element, callback) {
                                 var selection = _.find(data, function(metric) {

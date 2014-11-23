@@ -176,7 +176,7 @@ var PJCon = function() {
                     var informacoes = false;
                     var endereco = false;
                     var vinculoAdministrativo = false;
-                    var vinculoEmpresarial = false;
+                    var participacao = false;
                     $.each($(this).find('.form-control-static'), function(index) {
                         if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                             $(this).parent().parent().css("color", "#a94442");
@@ -189,7 +189,9 @@ var PJCon = function() {
                     });
 
                     vinculoAdministrativo = checkChanges('.rows-pfj tr');
-                    vinculoEmpresarial = checkChanges('.rows-pjj tr');
+                    vinculoAdministrativo = checkChanges('.rows-pjj tr');
+                    
+                    participacao = checkChanges('.rows-pjj-part tr');
 
                     function checkChanges(tr) {
                         var changed = false;
@@ -242,8 +244,8 @@ var PJCon = function() {
                     if (vinculoAdministrativo) {
                         description += "V&iacute;nculos Administrativos, "
                     }
-                    if (vinculoEmpresarial) {
-                        description += "V&iacute;nculos Empresariais, "
+                    if (participacao) {
+                        description += "Participa&ccedil;&atilde;o em outras Empresas, "
                     }
                     description = description.substring(0, description.length - 2) + ".";
                     if (description.indexOf(",") !== -1) {

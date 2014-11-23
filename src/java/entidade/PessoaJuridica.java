@@ -122,13 +122,13 @@ public class PessoaJuridica implements Serializable {
     private Collection<PessoaJuridicaSucessao> pessoaJuridicaSucessaoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucessoraFk")
     private Collection<PessoaJuridicaSucessao> pessoaJuridicaSucessaoCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioAFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaPrimariaFk")
     private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioBFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSecundariaFk")
     private Collection<PessoaJuridicaJuridicaHistorico> pessoaJuridicaJuridicaHistoricoCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioAFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaPrimariaFk")
     private Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSocioBFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSecundariaFk")
     private Collection<PessoaJuridicaJuridica> pessoaJuridicaJuridicaCollection1;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaFk")
     private Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollection;

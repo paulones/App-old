@@ -874,6 +874,8 @@
                                                                                                         </div>
                                                                                                         <!--/row-->
                                                                                                         <h3 class="form-section">Vínculos Administrativos</h3>
+                                                                                                        <h4 class="help-block">Pessoa Física</h4>
+                                                                                                        <br/>
                                                                                                         <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-12">
@@ -925,8 +927,9 @@
                                                                                                                 </table>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                        <h3 class="form-section">Vínculos Empresariais</h3>
-                                                                                                        <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
+                                                                                                        <br/>
+                                                                                                        <h4 class="help-block">Pessoa Jurídica</h4>
+                                                                                                        <br/>
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-12">
                                                                                                                 <table class="table table-striped table-hover table-bordered vinculations">
@@ -948,12 +951,12 @@
                                                                                                                     </thead>
                                                                                                                     <tbody class="rows-pjj">
                                                                                                                         <ui:repeat value="#{executadoHistorico.enderecoPessoaJuridica.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
-                                                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                                             <tr>
                                                                                                                                 <td style="text-align:center">
                                                                                                                                     <a href="javascript:;" class="pj-info">
-                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
-                                                                                                                                        <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}</span>
+                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.id}"/>
+                                                                                                                                        <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.nome}</span>
                                                                                                                                     </a>
                                                                                                                                 </td>
                                                                                                                                 <td style="text-align:center">
@@ -967,13 +970,39 @@
                                                                                                                                 </td>
                                                                                                                             </tr>
                                                                                                                         </ui:repeat>
+                                                                                                                    </tbody>
+                                                                                                                </table>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <h3 class="form-section">Participação em outras Empresas</h3>
+                                                                                                        <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                                                    <thead>
+                                                                                                                        <tr>
+                                                                                                                            <th style="width:20%;text-align:center">
+                                                                                                                                CNPJ
+                                                                                                                            </th>
+                                                                                                                            <th style="width:20%;text-align:center">
+                                                                                                                                Capital de Participação
+                                                                                                                            </th>
+                                                                                                                            <th style="width:18%;text-align:center">
+                                                                                                                                Data de Início
+                                                                                                                            </th>
+                                                                                                                            <th style="width:18%;text-align:center">
+                                                                                                                                Data de Término
+                                                                                                                            </th>
+                                                                                                                        </tr>
+                                                                                                                    </thead>
+                                                                                                                    <tbody class="rows-pjj-part">
                                                                                                                         <ui:repeat value="#{executadoHistorico.enderecoPessoaJuridica.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
-                                                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                                             <tr>
                                                                                                                                 <td style="text-align:center">
                                                                                                                                     <a href="javascript:;" class="pj-info">
-                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
-                                                                                                                                        <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}</span>
+                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.id}"/>
+                                                                                                                                        <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.nome}</span>
                                                                                                                                     </a>
                                                                                                                                 </td>
                                                                                                                                 <td style="text-align:center">
@@ -2277,6 +2306,8 @@
                                                                         </div>
                                                                         <!--/row-->
                                                                         <h3 class="form-section">Vínculos Administrativos</h3>
+                                                                        <h4 class="help-block">Pessoa Física</h4>
+                                                                        <br/>
                                                                         <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
                                                                         <div class="row">
                                                                             <div class="col-md-12">
@@ -2329,7 +2360,9 @@
                                                                             </div>
                                                                         </div>
                                                                         <!--/row-->
-                                                                        <h3 class="form-section">Vínculos Empresariais</h3>
+                                                                        <br/>
+                                                                        <h4 class="help-block">Pessoa Jurídica</h4>
+                                                                        <br/>
                                                                         <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
                                                                         <div class="row">
                                                                             <div class="col-md-12">
@@ -2352,12 +2385,12 @@
                                                                                     </thead>
                                                                                     <tbody class="rows">
                                                                                         <ui:repeat value="#{processoJudicialBean.executado.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
-                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                             <tr>
                                                                                                 <td style="text-align:center">
                                                                                                     <a href="javascript:;" class="pj-info">
-                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.id}"/>
-                                                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioBFk.nome}
+                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.id}"/>
+                                                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.nome}
                                                                                                     </a>
                                                                                                 </td>
                                                                                                 <td style="text-align:center">
@@ -2371,13 +2404,39 @@
                                                                                                 </td>
                                                                                             </tr>
                                                                                         </ui:repeat>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                        </div>
+                                                                        <h3 class="form-section">Participação em outras Empresas</h3>
+                                                                        <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th style="width:20%;text-align:center">
+                                                                                                CNPJ
+                                                                                            </th>
+                                                                                            <th style="width:20%;text-align:center">
+                                                                                                Capital de Participação
+                                                                                            </th>
+                                                                                            <th style="width:18%;text-align:center">
+                                                                                                Data de Início
+                                                                                            </th>
+                                                                                            <th style="width:18%;text-align:center">
+                                                                                                Data de Término
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody class="rows">
                                                                                         <ui:repeat value="#{processoJudicialBean.executado.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
-                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                            <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                             <tr>
                                                                                                 <td style="text-align:center">
                                                                                                     <a href="javascript:;" class="pj-info">
-                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.id}"/>
-                                                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSocioAFk.nome}
+                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.id}"/>
+                                                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.nome}
                                                                                                     </a>
                                                                                                 </td>
                                                                                                 <td style="text-align:center">

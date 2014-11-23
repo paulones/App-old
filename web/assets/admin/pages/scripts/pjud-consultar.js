@@ -229,6 +229,7 @@ var PjudCon = function() {
             var checkSucessorasChanges = checkSucessoes('.sucessoras');
             var checkPfjChanges = checkChangesTable('.rows-pfj tr');
             var checkPjjChanges = checkChangesTable('.rows-pjj tr');
+            var checkPjjPartChanges = checkChangesTable('.rows-pjj-part tr');
             var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab3');
             var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
             bens = (!bens) ? checkBensChanges : true;
@@ -237,6 +238,7 @@ var PjudCon = function() {
             executado = (!executado) ? checkSucessorasChanges : true;
             executado = (!executado) ? checkPfjChanges : true;
             executado = (!executado) ? checkPjjChanges : true;
+            executado = (!executado) ? checkPjjPartChanges : true;
 
             function checkChangesTable(tr) {
                 var changed = false;
