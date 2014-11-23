@@ -53,13 +53,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaFisica.findByObservacoes", query = "SELECT p FROM PessoaFisica p WHERE p.observacoes = :observacoes"),
     @NamedQuery(name = "PessoaFisica.findByStatus", query = "SELECT p FROM PessoaFisica p WHERE p.status = :status")})
 public class PessoaFisica implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaAFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaPrimariaFk")
     private Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaBFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaSecundariaFk")
     private Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaAFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaPrimariaFk")
     private Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaBFk")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaFisicaSecundariaFk")
     private Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection1;
     @Column(name = "zona")
     private Integer zona;

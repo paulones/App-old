@@ -13,6 +13,7 @@ import bo.FuncaoBO;
 import bo.NacionalidadeBO;
 import bo.PaisBO;
 import bo.PessoaFisicaBO;
+import bo.PessoaFisicaFisicaBO;
 import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaJuridicaBO;
@@ -20,6 +21,7 @@ import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
+import bo.VinculoSocialBO;
 import entidade.Cidade;
 import entidade.Endereco;
 import entidade.EnderecoPessoa;
@@ -30,6 +32,7 @@ import entidade.Funcao;
 import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaJuridica;
@@ -37,6 +40,7 @@ import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
+import entidade.VinculoSocial;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,6 +68,7 @@ public class TemplateBean implements Serializable {
     private PessoaJuridicaBO pessoaJuridicaBO;
     private ProcessoJudicialBO processoJudicialBO;
     private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
+    private PessoaFisicaFisicaBO pessoaFisicaFisicaBO;
     private PessoaFisicaJuridicaBO pessoaFisicaJuridicaBO;
     private PessoaJuridicaJuridicaBO pessoaJuridicaJuridicaBO;
     private TipoEmpresarialBO tipoEmpresarialBO;
@@ -73,6 +78,7 @@ public class TemplateBean implements Serializable {
     private EstadoBO estadoBO;
     private CidadeBO cidadeBO;
     private FuncaoBO funcaoBO;
+    private VinculoSocialBO vinculoSocialBO;
 
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaFisica;
@@ -89,7 +95,9 @@ public class TemplateBean implements Serializable {
     private List<Cidade> cidadeEleList;
     private List<Cidade> cidadeNatList;
     private List<Funcao> funcaoList;
+    private List<VinculoSocial> vinculoSocialList;
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
+    private List<PessoaFisicaFisica> pessoaFisicaFisicaList;
     private List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList;
 
     private String pfVId;
@@ -108,6 +116,7 @@ public class TemplateBean implements Serializable {
             pessoaJuridicaBO = new PessoaJuridicaBO();
             processoJudicialBO = new ProcessoJudicialBO();
             pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
+            pessoaFisicaFisicaBO = new PessoaFisicaFisicaBO();
             pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
             pessoaJuridicaJuridicaBO = new PessoaJuridicaJuridicaBO();
             estadoBO = new EstadoBO();
@@ -117,6 +126,7 @@ public class TemplateBean implements Serializable {
             paisBO = new PaisBO();
             nacionalidadeBO = new NacionalidadeBO();
             estadoCivilBO = new EstadoCivilBO();
+            vinculoSocialBO = new VinculoSocialBO();
             usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
 
             enderecoPessoa = new EnderecoPessoa();
@@ -137,10 +147,12 @@ public class TemplateBean implements Serializable {
     }
 
     public void exibirModalNew() {
+        pessoaFisicaFisicaList = new ArrayList<>();
         pessoaFisicaJuridicaList = new ArrayList<>();
         pessoaJuridicaJuridicaList = new ArrayList<>();
         if (tabela.equals("PF")) {
             enderecoPessoaFisica = new EnderecoPessoa(new PessoaFisica(), new Endereco());
+            pfVId = "";
             pjVId = "";
             carregarFormularioModalPF();
         } else if (tabela.equals("PJ")) {
@@ -158,6 +170,7 @@ public class TemplateBean implements Serializable {
         nacionalidadeList = nacionalidadeBO.findAll();
         estadoCivilList = estadoCivilBO.findAll();
         funcaoList = funcaoBO.findAll();
+        vinculoSocialList = vinculoSocialBO.findAll();
     }
 
     public void carregarFormularioModalPJ() {
@@ -195,17 +208,36 @@ public class TemplateBean implements Serializable {
 
     public void vincularPessoaFisica() {
         PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfVId));
-        PessoaFisicaJuridica pessoaFisicaJuridica = new PessoaFisicaJuridica();
-        pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
-        boolean exists = false;
-        for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-            if (pfj.getPessoaFisicaFk().getId().equals(pessoaFisica.getId())) {
-                exists = true;
+        if (tabela.equals("PF")) {
+            PessoaFisicaFisica pessoaFisicaFisica = new PessoaFisicaFisica();
+            pessoaFisicaFisica.setPessoaFisicaSecundariaFk(pessoaFisica);
+            boolean exists = false;
+            for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+                if (pff.getPessoaFisicaSecundariaFk().getId().equals(pessoaFisica.getId())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                pessoaFisicaFisicaList.add(pessoaFisicaFisica);
+            }
+        } else if (tabela.equals("PJ")) {
+            PessoaFisicaJuridica pessoaFisicaJuridica = new PessoaFisicaJuridica();
+            pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
+            boolean exists = false;
+            for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                if (pfj.getPessoaFisicaFk().getId().equals(pessoaFisica.getId())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                pessoaFisicaJuridicaList.add(pessoaFisicaJuridica);
             }
         }
-        if (!exists) {
-            pessoaFisicaJuridicaList.add(pessoaFisicaJuridica);
-        }
+
+    }
+
+    public void removerVinculoFisicoSocial(int index) {
+        pessoaFisicaFisicaList.remove(index);
     }
 
     public void removerVinculoFisico(int index) {
@@ -263,6 +295,10 @@ public class TemplateBean implements Serializable {
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
             pfj.setPessoaFisicaFk(pessoaFisica);
             pessoaFisicaJuridicaBO.create(pfj);
+        }
+        for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+            pff.setPessoaFisicaPrimariaFk(pessoaFisica);
+            pessoaFisicaFisicaBO.create(pff);
         }
         GeradorLog.criar(pessoaFisica.getId(), "PF", 'C');
     }
@@ -516,4 +552,19 @@ public class TemplateBean implements Serializable {
         this.cidadeNatList = cidadeNatList;
     }
 
+    public List<VinculoSocial> getVinculoSocialList() {
+        return vinculoSocialList;
+    }
+
+    public void setVinculoSocialList(List<VinculoSocial> vinculoSocialList) {
+        this.vinculoSocialList = vinculoSocialList;
+    }
+
+    public List<PessoaFisicaFisica> getPessoaFisicaFisicaList() {
+        return pessoaFisicaFisicaList;
+    }
+
+    public void setPessoaFisicaFisicaList(List<PessoaFisicaFisica> pessoaFisicaFisicaList) {
+        this.pessoaFisicaFisicaList = pessoaFisicaFisicaList;
+    }
 }

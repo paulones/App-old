@@ -159,10 +159,13 @@ var PFCad = function() {
 
             },
             highlight: function(element) { // hightlight error inputs
-                $(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                if ($(element).hasClass("vinculosocial")) {
+                    $(element).closest('td').removeClass("has-success").addClass('has-error');
+                } else {
+                    $(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group   
+                }
             },
             unhighlight: function(element) { // revert the change done by hightlight
-
             },
             success: function(label, element) {
                 var icon = $(element).parent('.input-icon').children('i');
@@ -183,6 +186,14 @@ var PFCad = function() {
         }
         return false;
     });
+
+    $(document).on("change", ".vinculosocial", function() {
+        if ($(this).val() !== "") {
+            $(this).parent().removeClass("has-error");
+        } else {
+            $(this).parent().addClass("has-error");
+        }
+    })
 
     var checkDates = function() {
         if ($(this).val().length == 10) {
@@ -247,7 +258,7 @@ var PFCad = function() {
     var handleTable = function() {
 
 
-        var table = $('#vinculations');
+        var table = $('.vinculations');
 
         var oTable = table.dataTable({
             paginate: false,
@@ -286,6 +297,11 @@ var PFCad = function() {
             $.validator.addMethod("cpf", validaCPF, "Digite um CPF v&aacute;lido.");
             $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
             $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
+            $.validator.addClassRules({
+                vinculosocial: {
+                    required: true
+                }
+            });
 
             handleValidation();
             handleTable();
@@ -308,35 +324,90 @@ var PFCad = function() {
                     }
                 });
             });
-            $('#vinculate').click(function(e) {
+            $('#vinculatePFJ').click(function(e) {
                 e.preventDefault();
                 if ($('#pessoajuridica').val() !== "") {
-                    $('.vinculate').click();
+                    $('.vinculatePFJ').click();
+                }
+            });
+            $('#vinculatePFF').click(function(e) {
+                e.preventDefault();
+                if ($('#pessoafisica').val() !== "") {
+                    $('.vinculatePFF').click();
                 }
             });
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr("id") === "enduf") {
-                        $('.endcity').select2({allowClear:true});
+                        $('.endcity').select2({allowClear: true});
                     } else if ($(data.source).attr("id") === "natuf") {
-                        $('.natcity').select2({allowClear:true});
+                        $('.natcity').select2({allowClear: true});
                     } else if ($(data.source).attr("id") === "eleuf") {
-                        $('.elecity').select2({allowClear:true});
-                    } else if ($(data.source).attr("class") === "delete") {
-                        $('.table-refresher').click();
-                    } else if ($(data.source).attr("class") === "vinculate" || $(data.source).attr("class") === "table-refresher") {
+                        $('.elecity').select2({allowClear: true});
+                    } else if ($(data.source).attr("class") === "delete-pfj") {
+                        $('.table-refresher-pfj').click();
+                    } else if ($(data.source).attr("class") === "delete-pff") {
+                        $('.table-refresher-pff').click();
+                    } else if ($(data.source).attr("class") === "vinculatePFJ" || $(data.source).attr("class") === "table-refresher-pfj") {
                         $('.date').mask("99/99/9999");
-                        $('.funcao').select2({allowClear:true});
+                        $('.funcao').select2({allowClear: true});
                         $('.capital').keyup(checkCapital);
                         $('.initial-date,.final-date').keyup(checkDates);
                         $('.date-error').hide();
-                        if ($('.rows').children().length == 0) {
-                            $('.rows').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        if ($('.rows-pfj').children().length == 0) {
+                            $('.rows-pfj').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
+                        }
+                    } else if ($(data.source).attr("class") === "vinculatePFF" || $(data.source).attr("class") === "table-refresher-pff") {
+                        $('.vinculosocial').select2({allowClear: true});
+                        if ($('.rows-pff').children().length == 0) {
+                            $('.rows-pff').append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Sem V&iacute;nculos.</td></tr>');
                         }
                     }
                 }
             });
+
+            $.ajax({
+                url: "/webresources/reaver/getPessoasFisicas",
+                dataType: "json",
+                cache: false
+            })
+                    .done(function(data) {
+                        if (getParameterByName("id") !== "" && window.location.href.indexOf("pessoa-fisica") >= 0) {
+                            data.removeValue("id", getParameterByName("id"));
+                        }
+                        $('.cpfVinculate').select2({
+                            initSelection: function(element, callback) {
+                                var selection = _.find(data, function(metric) {
+                                    return metric.id === element.val();
+                                })
+                                callback(selection);
+                            },
+                            query: function(options) {
+                                var pageSize = 100;
+                                var startIndex = (options.page - 1) * pageSize;
+                                var filteredData = data;
+
+                                if (options.term && options.term.length > 0) {
+                                    if (!options.context) {
+                                        var term = options.term.toLowerCase();
+                                        options.context = data.filter(function(metric) {
+                                            return (removeDiacritics(metric.text.toLowerCase()).indexOf(removeDiacritics(term)) >= 0);
+                                        });
+                                    }
+                                    filteredData = options.context;
+                                }
+
+                                options.callback({
+                                    context: filteredData,
+                                    results: filteredData.slice(startIndex, startIndex + pageSize),
+                                    more: (startIndex + pageSize) < filteredData.length
+                                });
+                            },
+                            placeholder: "Selecione...",
+                            allowClear: true,
+                        });
+                    });
 
             $.ajax({
                 url: "/webresources/reaver/getPessoasJuridicas",

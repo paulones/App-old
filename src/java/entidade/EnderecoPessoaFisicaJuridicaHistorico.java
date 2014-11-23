@@ -53,7 +53,6 @@ public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
         this.pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoList;
     }
 
-
     @Override
     public int hashCode() {
         int hash = 5;

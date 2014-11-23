@@ -41,15 +41,15 @@ public class PessoaFisicaFisicaHistoricoDAO implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
-            PessoaFisica pessoaFisicaAFk = pessoaFisicaFisicaHistorico.getPessoaFisicaAFk();
-            if (pessoaFisicaAFk != null) {
-                pessoaFisicaAFk = em.getReference(pessoaFisicaAFk.getClass(), pessoaFisicaAFk.getId());
-                pessoaFisicaFisicaHistorico.setPessoaFisicaAFk(pessoaFisicaAFk);
+            PessoaFisica pessoaFisicaPrimariaFk = pessoaFisicaFisicaHistorico.getPessoaFisicaPrimariaFk();
+            if (pessoaFisicaPrimariaFk != null) {
+                pessoaFisicaPrimariaFk = em.getReference(pessoaFisicaPrimariaFk.getClass(), pessoaFisicaPrimariaFk.getId());
+                pessoaFisicaFisicaHistorico.setPessoaFisicaPrimariaFk(pessoaFisicaPrimariaFk);
             }
-            PessoaFisica pessoaFisicaBFk = pessoaFisicaFisicaHistorico.getPessoaFisicaBFk();
-            if (pessoaFisicaBFk != null) {
-                pessoaFisicaBFk = em.getReference(pessoaFisicaBFk.getClass(), pessoaFisicaBFk.getId());
-                pessoaFisicaFisicaHistorico.setPessoaFisicaBFk(pessoaFisicaBFk);
+            PessoaFisica pessoaFisicaSecundariaFk = pessoaFisicaFisicaHistorico.getPessoaFisicaSecundariaFk();
+            if (pessoaFisicaSecundariaFk != null) {
+                pessoaFisicaSecundariaFk = em.getReference(pessoaFisicaSecundariaFk.getClass(), pessoaFisicaSecundariaFk.getId());
+                pessoaFisicaFisicaHistorico.setPessoaFisicaSecundariaFk(pessoaFisicaSecundariaFk);
             }
             PessoaFisicaHistorico pessoaFisicaHistoricoFk = pessoaFisicaFisicaHistorico.getPessoaFisicaHistoricoFk();
             if (pessoaFisicaHistoricoFk != null) {
@@ -62,13 +62,13 @@ public class PessoaFisicaFisicaHistoricoDAO implements Serializable {
                 pessoaFisicaFisicaHistorico.setVinculoSocialFk(vinculoSocialFk);
             }
             em.persist(pessoaFisicaFisicaHistorico);
-            if (pessoaFisicaAFk != null) {
-                pessoaFisicaAFk.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
-                pessoaFisicaAFk = em.merge(pessoaFisicaAFk);
+            if (pessoaFisicaPrimariaFk != null) {
+                pessoaFisicaPrimariaFk.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
+                pessoaFisicaPrimariaFk = em.merge(pessoaFisicaPrimariaFk);
             }
-            if (pessoaFisicaBFk != null) {
-                pessoaFisicaBFk.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
-                pessoaFisicaBFk = em.merge(pessoaFisicaBFk);
+            if (pessoaFisicaSecundariaFk != null) {
+                pessoaFisicaSecundariaFk.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
+                pessoaFisicaSecundariaFk = em.merge(pessoaFisicaSecundariaFk);
             }
             if (pessoaFisicaHistoricoFk != null) {
                 pessoaFisicaHistoricoFk.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
@@ -98,21 +98,21 @@ public class PessoaFisicaFisicaHistoricoDAO implements Serializable {
         try {
             em = getEntityManager();em.getTransaction().begin();
             PessoaFisicaFisicaHistorico persistentPessoaFisicaFisicaHistorico = em.find(PessoaFisicaFisicaHistorico.class, pessoaFisicaFisicaHistorico.getId());
-            PessoaFisica pessoaFisicaAFkOld = persistentPessoaFisicaFisicaHistorico.getPessoaFisicaAFk();
-            PessoaFisica pessoaFisicaAFkNew = pessoaFisicaFisicaHistorico.getPessoaFisicaAFk();
-            PessoaFisica pessoaFisicaBFkOld = persistentPessoaFisicaFisicaHistorico.getPessoaFisicaBFk();
-            PessoaFisica pessoaFisicaBFkNew = pessoaFisicaFisicaHistorico.getPessoaFisicaBFk();
+            PessoaFisica pessoaFisicaPrimariaFkOld = persistentPessoaFisicaFisicaHistorico.getPessoaFisicaPrimariaFk();
+            PessoaFisica pessoaFisicaPrimariaFkNew = pessoaFisicaFisicaHistorico.getPessoaFisicaPrimariaFk();
+            PessoaFisica pessoaFisicaSecundariaFkOld = persistentPessoaFisicaFisicaHistorico.getPessoaFisicaSecundariaFk();
+            PessoaFisica pessoaFisicaSecundariaFkNew = pessoaFisicaFisicaHistorico.getPessoaFisicaSecundariaFk();
             PessoaFisicaHistorico pessoaFisicaHistoricoFkOld = persistentPessoaFisicaFisicaHistorico.getPessoaFisicaHistoricoFk();
             PessoaFisicaHistorico pessoaFisicaHistoricoFkNew = pessoaFisicaFisicaHistorico.getPessoaFisicaHistoricoFk();
             VinculoSocial vinculoSocialFkOld = persistentPessoaFisicaFisicaHistorico.getVinculoSocialFk();
             VinculoSocial vinculoSocialFkNew = pessoaFisicaFisicaHistorico.getVinculoSocialFk();
-            if (pessoaFisicaAFkNew != null) {
-                pessoaFisicaAFkNew = em.getReference(pessoaFisicaAFkNew.getClass(), pessoaFisicaAFkNew.getId());
-                pessoaFisicaFisicaHistorico.setPessoaFisicaAFk(pessoaFisicaAFkNew);
+            if (pessoaFisicaPrimariaFkNew != null) {
+                pessoaFisicaPrimariaFkNew = em.getReference(pessoaFisicaPrimariaFkNew.getClass(), pessoaFisicaPrimariaFkNew.getId());
+                pessoaFisicaFisicaHistorico.setPessoaFisicaPrimariaFk(pessoaFisicaPrimariaFkNew);
             }
-            if (pessoaFisicaBFkNew != null) {
-                pessoaFisicaBFkNew = em.getReference(pessoaFisicaBFkNew.getClass(), pessoaFisicaBFkNew.getId());
-                pessoaFisicaFisicaHistorico.setPessoaFisicaBFk(pessoaFisicaBFkNew);
+            if (pessoaFisicaSecundariaFkNew != null) {
+                pessoaFisicaSecundariaFkNew = em.getReference(pessoaFisicaSecundariaFkNew.getClass(), pessoaFisicaSecundariaFkNew.getId());
+                pessoaFisicaFisicaHistorico.setPessoaFisicaSecundariaFk(pessoaFisicaSecundariaFkNew);
             }
             if (pessoaFisicaHistoricoFkNew != null) {
                 pessoaFisicaHistoricoFkNew = em.getReference(pessoaFisicaHistoricoFkNew.getClass(), pessoaFisicaHistoricoFkNew.getId());
@@ -123,21 +123,21 @@ public class PessoaFisicaFisicaHistoricoDAO implements Serializable {
                 pessoaFisicaFisicaHistorico.setVinculoSocialFk(vinculoSocialFkNew);
             }
             pessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistorico);
-            if (pessoaFisicaAFkOld != null && !pessoaFisicaAFkOld.equals(pessoaFisicaAFkNew)) {
-                pessoaFisicaAFkOld.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
-                pessoaFisicaAFkOld = em.merge(pessoaFisicaAFkOld);
+            if (pessoaFisicaPrimariaFkOld != null && !pessoaFisicaPrimariaFkOld.equals(pessoaFisicaPrimariaFkNew)) {
+                pessoaFisicaPrimariaFkOld.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
+                pessoaFisicaPrimariaFkOld = em.merge(pessoaFisicaPrimariaFkOld);
             }
-            if (pessoaFisicaAFkNew != null && !pessoaFisicaAFkNew.equals(pessoaFisicaAFkOld)) {
-                pessoaFisicaAFkNew.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
-                pessoaFisicaAFkNew = em.merge(pessoaFisicaAFkNew);
+            if (pessoaFisicaPrimariaFkNew != null && !pessoaFisicaPrimariaFkNew.equals(pessoaFisicaPrimariaFkOld)) {
+                pessoaFisicaPrimariaFkNew.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
+                pessoaFisicaPrimariaFkNew = em.merge(pessoaFisicaPrimariaFkNew);
             }
-            if (pessoaFisicaBFkOld != null && !pessoaFisicaBFkOld.equals(pessoaFisicaBFkNew)) {
-                pessoaFisicaBFkOld.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
-                pessoaFisicaBFkOld = em.merge(pessoaFisicaBFkOld);
+            if (pessoaFisicaSecundariaFkOld != null && !pessoaFisicaSecundariaFkOld.equals(pessoaFisicaSecundariaFkNew)) {
+                pessoaFisicaSecundariaFkOld.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
+                pessoaFisicaSecundariaFkOld = em.merge(pessoaFisicaSecundariaFkOld);
             }
-            if (pessoaFisicaBFkNew != null && !pessoaFisicaBFkNew.equals(pessoaFisicaBFkOld)) {
-                pessoaFisicaBFkNew.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
-                pessoaFisicaBFkNew = em.merge(pessoaFisicaBFkNew);
+            if (pessoaFisicaSecundariaFkNew != null && !pessoaFisicaSecundariaFkNew.equals(pessoaFisicaSecundariaFkOld)) {
+                pessoaFisicaSecundariaFkNew.getPessoaFisicaFisicaHistoricoCollection().add(pessoaFisicaFisicaHistorico);
+                pessoaFisicaSecundariaFkNew = em.merge(pessoaFisicaSecundariaFkNew);
             }
             if (pessoaFisicaHistoricoFkOld != null && !pessoaFisicaHistoricoFkOld.equals(pessoaFisicaHistoricoFkNew)) {
                 pessoaFisicaHistoricoFkOld.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
@@ -188,15 +188,15 @@ public class PessoaFisicaFisicaHistoricoDAO implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The pessoaFisicaFisicaHistorico with id " + id + " no longer exists.", enfe);
             }
-            PessoaFisica pessoaFisicaAFk = pessoaFisicaFisicaHistorico.getPessoaFisicaAFk();
-            if (pessoaFisicaAFk != null) {
-                pessoaFisicaAFk.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
-                pessoaFisicaAFk = em.merge(pessoaFisicaAFk);
+            PessoaFisica pessoaFisicaPrimariaFk = pessoaFisicaFisicaHistorico.getPessoaFisicaPrimariaFk();
+            if (pessoaFisicaPrimariaFk != null) {
+                pessoaFisicaPrimariaFk.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
+                pessoaFisicaPrimariaFk = em.merge(pessoaFisicaPrimariaFk);
             }
-            PessoaFisica pessoaFisicaBFk = pessoaFisicaFisicaHistorico.getPessoaFisicaBFk();
-            if (pessoaFisicaBFk != null) {
-                pessoaFisicaBFk.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
-                pessoaFisicaBFk = em.merge(pessoaFisicaBFk);
+            PessoaFisica pessoaFisicaSecundariaFk = pessoaFisicaFisicaHistorico.getPessoaFisicaSecundariaFk();
+            if (pessoaFisicaSecundariaFk != null) {
+                pessoaFisicaSecundariaFk.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistorico);
+                pessoaFisicaSecundariaFk = em.merge(pessoaFisicaSecundariaFk);
             }
             PessoaFisicaHistorico pessoaFisicaHistoricoFk = pessoaFisicaFisicaHistorico.getPessoaFisicaHistoricoFk();
             if (pessoaFisicaHistoricoFk != null) {

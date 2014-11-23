@@ -40,12 +40,12 @@ public class PessoaFisicaFisica implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "pessoa_fisica_a_fk", referencedColumnName = "id")
+    @JoinColumn(name = "pessoa_fisica_primaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaFisica pessoaFisicaAFk;
-    @JoinColumn(name = "pessoa_fisica_b_fk", referencedColumnName = "id")
+    private PessoaFisica pessoaFisicaPrimariaFk;
+    @JoinColumn(name = "pessoa_fisica_secundaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaFisica pessoaFisicaBFk;
+    private PessoaFisica pessoaFisicaSecundariaFk;
     @JoinColumn(name = "vinculo_social_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private VinculoSocial vinculoSocialFk;
@@ -65,20 +65,20 @@ public class PessoaFisicaFisica implements Serializable {
         this.id = id;
     }
 
-    public PessoaFisica getPessoaFisicaAFk() {
-        return pessoaFisicaAFk;
+    public PessoaFisica getPessoaFisicaPrimariaFk() {
+        return pessoaFisicaPrimariaFk;
     }
 
-    public void setPessoaFisicaAFk(PessoaFisica pessoaFisicaAFk) {
-        this.pessoaFisicaAFk = pessoaFisicaAFk;
+    public void setPessoaFisicaPrimariaFk(PessoaFisica pessoaFisicaPrimariaFk) {
+        this.pessoaFisicaPrimariaFk = pessoaFisicaPrimariaFk;
     }
 
-    public PessoaFisica getPessoaFisicaBFk() {
-        return pessoaFisicaBFk;
+    public PessoaFisica getPessoaFisicaSecundariaFk() {
+        return pessoaFisicaSecundariaFk;
     }
 
-    public void setPessoaFisicaBFk(PessoaFisica pessoaFisicaBFk) {
-        this.pessoaFisicaBFk = pessoaFisicaBFk;
+    public void setPessoaFisicaSecundariaFk(PessoaFisica pessoaFisicaSecundariaFk) {
+        this.pessoaFisicaSecundariaFk = pessoaFisicaSecundariaFk;
     }
 
     public VinculoSocial getVinculoSocialFk() {
@@ -112,11 +112,11 @@ public class PessoaFisicaFisica implements Serializable {
     public List<String> changedValues(Object obj) {
         List<String> list = new ArrayList<>();
         final PessoaFisicaFisica other = (PessoaFisicaFisica) obj;
-        if (!Objects.equals(this.pessoaFisicaAFk, other.pessoaFisicaAFk)) {
-            list.add("pessoaFisicaAFk");
+        if (!Objects.equals(this.pessoaFisicaPrimariaFk, other.pessoaFisicaPrimariaFk)) {
+            list.add("pessoaFisicaPrimariaFk");
         }
-        if (!Objects.equals(this.pessoaFisicaBFk, other.pessoaFisicaBFk)) {
-            list.add("pessoaFisicaBFk");
+        if (!Objects.equals(this.pessoaFisicaSecundariaFk, other.pessoaFisicaSecundariaFk)) {
+            list.add("pessoaFisicaSecundariaFk");
         }
         if (!Objects.equals(this.vinculoSocialFk, other.vinculoSocialFk)) {
             list.add("vinculoSocialFk");

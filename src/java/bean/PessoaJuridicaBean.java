@@ -28,7 +28,6 @@ import entidade.Endereco;
 import entidade.EnderecoHistorico;
 import entidade.EnderecoPessoa;
 import entidade.EnderecoPessoaFisicaJuridicaHistorico;
-import entidade.EnderecoPessoaJuridicaJuridicaHistorico;
 import entidade.Estado;
 import entidade.Funcao;
 import entidade.PessoaFisica;

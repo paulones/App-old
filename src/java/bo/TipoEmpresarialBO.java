@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class TipoEmpresarialBO  implements Serializable{
     
-    TipoEmpresarialDAO tipoEmpresarialDAO;
+    private TipoEmpresarialDAO tipoEmpresarialDAO;
     
     public TipoEmpresarialBO (){
         tipoEmpresarialDAO = new TipoEmpresarialDAO();

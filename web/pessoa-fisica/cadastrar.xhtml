@@ -485,9 +485,9 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <button  class="btn blue-chambray" id="vinculate">
+                                        <button  class="btn blue-chambray" id="vinculatePFJ">
                                             <i class="fa fa-plus-circle"></i> Vincular</button>
-                                        <h:commandLink styleClass="vinculate">
+                                        <h:commandLink styleClass="vinculatePFJ">
                                             <f:ajax event="click" execute="pessoajuridica pessoaFisicaJuridica" listener="#{pessoaFisicaBean.vincularPessoaJuridica}" render="pessoaFisicaJuridica"/>
                                         </h:commandLink>
                                         <a href="javascript:;" class="btn blue-chambray pj-new">
@@ -496,13 +496,13 @@
                                 </div>
                                 <!--/row-->
                                 <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
-                                <h:commandLink class="table-refresher">
+                                <h:commandLink class="table-refresher-pfj">
                                     <f:ajax render="pessoaFisicaJuridica"/>
                                 </h:commandLink>
                                 <h:panelGroup id="pessoaFisicaJuridica">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <table class="table table-striped table-hover table-bordered" id="vinculations">
+                                            <table class="table table-striped table-hover table-bordered vinculations">
                                                 <thead>
                                                     <tr>
                                                         <th style="width:20%">
@@ -524,7 +524,7 @@
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody class="rows">
+                                                <tbody class="rows-pfj">
                                                     <ui:repeat value="#{pessoaFisicaBean.pessoaFisicaJuridicaList}" var="pessoaFisicaJuridica" varStatus="status">
                                                         <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                         <tr>
@@ -550,7 +550,7 @@
                                                                 <h:inputText  class="form-control input-small date final-date" p:placeholder="dd/mm/aaaa" value="#{pessoaFisicaJuridica.dataDeTermino}"/>
                                                             </td>
                                                             <td>
-                                                                <h:commandLink class="delete">
+                                                                <h:commandLink class="delete-pfj">
                                                                     <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerVinculo(status.index)}"/>
                                                                     <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
                                                             </td>
@@ -564,6 +564,99 @@
                                 <div class="alert alert-danger date-error display-hide">
                                     <button class="close" data-close="alert"></button>
                                 </div>
+                                <h3 class="form-section">Vínculos Sociais</h3>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-2">CPF</label>
+                                            <div class="col-md-10">
+                                                <h:inputText p:type="hidden" class="cpfVinculate select2_category form-control" id="pessoafisica" value="#{pessoaFisicaBean.pfId}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button  class="btn blue-chambray" id="vinculatePFF">
+                                            <i class="fa fa-plus-circle"></i> Vincular</button>
+                                        <h:commandLink styleClass="vinculatePFF">
+                                            <f:ajax event="click" execute="pessoafisica pessoaFisicaFisica" listener="#{pessoaFisicaBean.vincularPessoaFisica()}" render="pessoaFisicaFisica"/>
+                                        </h:commandLink>
+                                        <a href="javascript:;" class="btn blue-chambray pf-new">
+                                            Novo cadastro <i class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                                <!--/row-->
+                                <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
+                                <h:commandLink class="table-refresher-pff">
+                                    <f:ajax render="pessoaFisicaFisica"/>
+                                </h:commandLink>
+                                <h:panelGroup id="pessoaFisicaFisica">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-hover table-bordered vinculations">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            CPF
+                                                        </th>
+                                                        <th>
+                                                            Vínculo <span style="color:#e02222">*</span>
+                                                        </th>
+                                                        <th style="width:3%">
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="rows-pff">
+                                                    <ui:repeat value="#{pessoaFisicaBean.pessoaFisicaFisicaList}" var="pessoaFisicaFisica" varStatus="status">
+                                                        <ui:fragment rendered="#{pessoaFisicaBean.pessoaFisica.id eq pessoaFisicaFisica.pessoaFisicaPrimariaFk.id}">
+                                                            <ui:param value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(9)}" name="cpf"/>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="javascript:;" class="pf-info">
+                                                                        <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.id}"/>
+                                                                        #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <h:selectOneMenu styleClass="select2_category select2me form-control vinculosocial" p:placeholder="Selecione..." value="#{pessoaFisicaFisica.vinculoSocialFk}" tabindex="1" converter="entityConverter">
+                                                                        <f:selectItem itemLabel="" itemValue=""/>
+                                                                        <f:selectItems value="#{pessoaFisicaBean.vinculoSocialList}" var="vinculoSocial" itemLabel="#{vinculoSocial.vinculo}" itemValue="#{vinculoSocial}"/>
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                                <td>
+                                                                    <h:commandLink class="delete-pff">
+                                                                        <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerVinculoSocial(index)}"/>
+                                                                        <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:fragment>
+                                                        <ui:fragment rendered="#{pessoaFisicaBean.pessoaFisica.id eq pessoaFisicaFisica.pessoaFisicaSecundariaFk.id}">
+                                                            <ui:param value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(9)}" name="cpf"/>
+                                                            <tr>
+                                                                <td>
+                                                                    <a href="javascript:;" class="pf-info">
+                                                                        <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.id}"/>
+                                                                        #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.nome}
+                                                                    </a>
+                                                                </td>
+                                                                <td>
+                                                                    <h:selectOneMenu styleClass="select2_category select2me form-control vinculosocial" p:placeholder="Selecione..." value="#{pessoaFisicaFisica.vinculoSocialFk}" tabindex="1" converter="entityConverter">
+                                                                        <f:selectItem itemLabel="" itemValue=""/>
+                                                                        <f:selectItems value="#{pessoaFisicaBean.vinculoSocialList}" var="vinculoSocial" itemLabel="#{vinculoSocial.vinculo}" itemValue="#{vinculoSocial}"/>
+                                                                    </h:selectOneMenu>
+                                                                </td>
+                                                                <td>
+                                                                    <h:commandLink class="delete-pff">
+                                                                        <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerVinculoSocial(index)}"/>
+                                                                        <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                                </td>
+                                                            </tr>
+                                                        </ui:fragment>
+                                                    </ui:repeat>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
                             </div>
                             <div class="form-actions right">
                                 <div class="row">

@@ -224,39 +224,39 @@ public class PessoaFisicaDAO implements Serializable {
                 }
             }
             for (PessoaFisicaFisica pessoaFisicaFisicaCollectionPessoaFisicaFisica : pessoaFisica.getPessoaFisicaFisicaCollection()) {
-                PessoaFisica oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica = pessoaFisicaFisicaCollectionPessoaFisicaFisica.getPessoaFisicaAFk();
-                pessoaFisicaFisicaCollectionPessoaFisicaFisica.setPessoaFisicaAFk(pessoaFisica);
+                PessoaFisica oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica = pessoaFisicaFisicaCollectionPessoaFisicaFisica.getPessoaFisicaPrimariaFk();
+                pessoaFisicaFisicaCollectionPessoaFisicaFisica.setPessoaFisicaPrimariaFk(pessoaFisica);
                 pessoaFisicaFisicaCollectionPessoaFisicaFisica = em.merge(pessoaFisicaFisicaCollectionPessoaFisicaFisica);
-                if (oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica != null) {
-                    oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica.getPessoaFisicaFisicaCollection().remove(pessoaFisicaFisicaCollectionPessoaFisicaFisica);
-                    oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica = em.merge(oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica);
+                if (oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica != null) {
+                    oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica.getPessoaFisicaFisicaCollection().remove(pessoaFisicaFisicaCollectionPessoaFisicaFisica);
+                    oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica = em.merge(oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionPessoaFisicaFisica);
                 }
             }
             for (PessoaFisicaFisica pessoaFisicaFisicaCollection1PessoaFisicaFisica : pessoaFisica.getPessoaFisicaFisicaCollection1()) {
-                PessoaFisica oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica = pessoaFisicaFisicaCollection1PessoaFisicaFisica.getPessoaFisicaBFk();
-                pessoaFisicaFisicaCollection1PessoaFisicaFisica.setPessoaFisicaBFk(pessoaFisica);
+                PessoaFisica oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica = pessoaFisicaFisicaCollection1PessoaFisicaFisica.getPessoaFisicaSecundariaFk();
+                pessoaFisicaFisicaCollection1PessoaFisicaFisica.setPessoaFisicaSecundariaFk(pessoaFisica);
                 pessoaFisicaFisicaCollection1PessoaFisicaFisica = em.merge(pessoaFisicaFisicaCollection1PessoaFisicaFisica);
-                if (oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica != null) {
-                    oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica.getPessoaFisicaFisicaCollection1().remove(pessoaFisicaFisicaCollection1PessoaFisicaFisica);
-                    oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica = em.merge(oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica);
+                if (oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica != null) {
+                    oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica.getPessoaFisicaFisicaCollection1().remove(pessoaFisicaFisicaCollection1PessoaFisicaFisica);
+                    oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica = em.merge(oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1PessoaFisicaFisica);
                 }
             }
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico : pessoaFisica.getPessoaFisicaFisicaHistoricoCollection()) {
-                PessoaFisica oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.getPessoaFisicaAFk();
-                pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.setPessoaFisicaAFk(pessoaFisica);
+                PessoaFisica oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.getPessoaFisicaPrimariaFk();
+                pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.setPessoaFisicaPrimariaFk(pessoaFisica);
                 pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
-                if (oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico != null) {
-                    oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
-                    oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
+                if (oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico != null) {
+                    oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
+                    oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionPessoaFisicaFisicaHistorico);
                 }
             }
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico : pessoaFisica.getPessoaFisicaFisicaHistoricoCollection1()) {
-                PessoaFisica oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico.getPessoaFisicaBFk();
-                pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico.setPessoaFisicaBFk(pessoaFisica);
+                PessoaFisica oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico.getPessoaFisicaSecundariaFk();
+                pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico.setPessoaFisicaSecundariaFk(pessoaFisica);
                 pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico);
-                if (oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico != null) {
-                    oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection1().remove(pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico);
-                    oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico);
+                if (oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico != null) {
+                    oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection1().remove(pessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico);
+                    oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1PessoaFisicaFisicaHistorico);
                 }
             }
             em.getTransaction().commit();
@@ -341,7 +341,7 @@ public class PessoaFisicaDAO implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PessoaFisicaFisica " + pessoaFisicaFisicaCollectionOldPessoaFisicaFisica + " since its pessoaFisicaAFk field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PessoaFisicaFisica " + pessoaFisicaFisicaCollectionOldPessoaFisicaFisica + " since its pessoaFisicaPrimariaFk field is not nullable.");
                 }
             }
             for (PessoaFisicaFisica pessoaFisicaFisicaCollection1OldPessoaFisicaFisica : pessoaFisicaFisicaCollection1Old) {
@@ -349,7 +349,7 @@ public class PessoaFisicaDAO implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PessoaFisicaFisica " + pessoaFisicaFisicaCollection1OldPessoaFisicaFisica + " since its pessoaFisicaBFk field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PessoaFisicaFisica " + pessoaFisicaFisicaCollection1OldPessoaFisicaFisica + " since its pessoaFisicaSecundariaFk field is not nullable.");
                 }
             }
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionOldPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollectionOld) {
@@ -357,7 +357,7 @@ public class PessoaFisicaDAO implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollectionOldPessoaFisicaFisicaHistorico + " since its pessoaFisicaAFk field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollectionOldPessoaFisicaFisicaHistorico + " since its pessoaFisicaPrimariaFk field is not nullable.");
                 }
             }
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollection1OldPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollection1Old) {
@@ -365,7 +365,7 @@ public class PessoaFisicaDAO implements Serializable {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollection1OldPessoaFisicaFisicaHistorico + " since its pessoaFisicaBFk field is not nullable.");
+                    illegalOrphanMessages.add("You must retain PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollection1OldPessoaFisicaFisicaHistorico + " since its pessoaFisicaSecundariaFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -564,45 +564,45 @@ public class PessoaFisicaDAO implements Serializable {
             }
             for (PessoaFisicaFisica pessoaFisicaFisicaCollectionNewPessoaFisicaFisica : pessoaFisicaFisicaCollectionNew) {
                 if (!pessoaFisicaFisicaCollectionOld.contains(pessoaFisicaFisicaCollectionNewPessoaFisicaFisica)) {
-                    PessoaFisica oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica = pessoaFisicaFisicaCollectionNewPessoaFisicaFisica.getPessoaFisicaAFk();
-                    pessoaFisicaFisicaCollectionNewPessoaFisicaFisica.setPessoaFisicaAFk(pessoaFisica);
+                    PessoaFisica oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica = pessoaFisicaFisicaCollectionNewPessoaFisicaFisica.getPessoaFisicaPrimariaFk();
+                    pessoaFisicaFisicaCollectionNewPessoaFisicaFisica.setPessoaFisicaPrimariaFk(pessoaFisica);
                     pessoaFisicaFisicaCollectionNewPessoaFisicaFisica = em.merge(pessoaFisicaFisicaCollectionNewPessoaFisicaFisica);
-                    if (oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica != null && !oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica.equals(pessoaFisica)) {
-                        oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica.getPessoaFisicaFisicaCollection().remove(pessoaFisicaFisicaCollectionNewPessoaFisicaFisica);
-                        oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica = em.merge(oldPessoaFisicaAFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica);
+                    if (oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica != null && !oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica.equals(pessoaFisica)) {
+                        oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica.getPessoaFisicaFisicaCollection().remove(pessoaFisicaFisicaCollectionNewPessoaFisicaFisica);
+                        oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica = em.merge(oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaCollectionNewPessoaFisicaFisica);
                     }
                 }
             }
             for (PessoaFisicaFisica pessoaFisicaFisicaCollection1NewPessoaFisicaFisica : pessoaFisicaFisicaCollection1New) {
                 if (!pessoaFisicaFisicaCollection1Old.contains(pessoaFisicaFisicaCollection1NewPessoaFisicaFisica)) {
-                    PessoaFisica oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica = pessoaFisicaFisicaCollection1NewPessoaFisicaFisica.getPessoaFisicaBFk();
-                    pessoaFisicaFisicaCollection1NewPessoaFisicaFisica.setPessoaFisicaBFk(pessoaFisica);
+                    PessoaFisica oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica = pessoaFisicaFisicaCollection1NewPessoaFisicaFisica.getPessoaFisicaSecundariaFk();
+                    pessoaFisicaFisicaCollection1NewPessoaFisicaFisica.setPessoaFisicaSecundariaFk(pessoaFisica);
                     pessoaFisicaFisicaCollection1NewPessoaFisicaFisica = em.merge(pessoaFisicaFisicaCollection1NewPessoaFisicaFisica);
-                    if (oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica != null && !oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica.equals(pessoaFisica)) {
-                        oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica.getPessoaFisicaFisicaCollection1().remove(pessoaFisicaFisicaCollection1NewPessoaFisicaFisica);
-                        oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica = em.merge(oldPessoaFisicaBFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica);
+                    if (oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica != null && !oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica.equals(pessoaFisica)) {
+                        oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica.getPessoaFisicaFisicaCollection1().remove(pessoaFisicaFisicaCollection1NewPessoaFisicaFisica);
+                        oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica = em.merge(oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaCollection1NewPessoaFisicaFisica);
                     }
                 }
             }
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollectionNew) {
                 if (!pessoaFisicaFisicaHistoricoCollectionOld.contains(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico)) {
-                    PessoaFisica oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.getPessoaFisicaAFk();
-                    pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.setPessoaFisicaAFk(pessoaFisica);
+                    PessoaFisica oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.getPessoaFisicaPrimariaFk();
+                    pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.setPessoaFisicaPrimariaFk(pessoaFisica);
                     pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
-                    if (oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico != null && !oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.equals(pessoaFisica)) {
-                        oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
-                        oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaAFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
+                    if (oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico != null && !oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.equals(pessoaFisica)) {
+                        oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection().remove(pessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
+                        oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaPrimariaFkOfPessoaFisicaFisicaHistoricoCollectionNewPessoaFisicaFisicaHistorico);
                     }
                 }
             }
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollection1New) {
                 if (!pessoaFisicaFisicaHistoricoCollection1Old.contains(pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico)) {
-                    PessoaFisica oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.getPessoaFisicaBFk();
-                    pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.setPessoaFisicaBFk(pessoaFisica);
+                    PessoaFisica oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico = pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.getPessoaFisicaSecundariaFk();
+                    pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.setPessoaFisicaSecundariaFk(pessoaFisica);
                     pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico = em.merge(pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico);
-                    if (oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico != null && !oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.equals(pessoaFisica)) {
-                        oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection1().remove(pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico);
-                        oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaBFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico);
+                    if (oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico != null && !oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.equals(pessoaFisica)) {
+                        oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico.getPessoaFisicaFisicaHistoricoCollection1().remove(pessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico);
+                        oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico = em.merge(oldPessoaFisicaSecundariaFkOfPessoaFisicaFisicaHistoricoCollection1NewPessoaFisicaFisicaHistorico);
                     }
                 }
             }
@@ -666,28 +666,28 @@ public class PessoaFisicaDAO implements Serializable {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisica " + pessoaFisicaFisicaCollectionOrphanCheckPessoaFisicaFisica + " in its pessoaFisicaFisicaCollection field has a non-nullable pessoaFisicaAFk field.");
+                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisica " + pessoaFisicaFisicaCollectionOrphanCheckPessoaFisicaFisica + " in its pessoaFisicaFisicaCollection field has a non-nullable pessoaFisicaPrimariaFk field.");
             }
             Collection<PessoaFisicaFisica> pessoaFisicaFisicaCollection1OrphanCheck = pessoaFisica.getPessoaFisicaFisicaCollection1();
             for (PessoaFisicaFisica pessoaFisicaFisicaCollection1OrphanCheckPessoaFisicaFisica : pessoaFisicaFisicaCollection1OrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisica " + pessoaFisicaFisicaCollection1OrphanCheckPessoaFisicaFisica + " in its pessoaFisicaFisicaCollection1 field has a non-nullable pessoaFisicaBFk field.");
+                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisica " + pessoaFisicaFisicaCollection1OrphanCheckPessoaFisicaFisica + " in its pessoaFisicaFisicaCollection1 field has a non-nullable pessoaFisicaSecundariaFk field.");
             }
             Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollectionOrphanCheck = pessoaFisica.getPessoaFisicaFisicaHistoricoCollection();
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollectionOrphanCheckPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollectionOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollectionOrphanCheckPessoaFisicaFisicaHistorico + " in its pessoaFisicaFisicaHistoricoCollection field has a non-nullable pessoaFisicaAFk field.");
+                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollectionOrphanCheckPessoaFisicaFisicaHistorico + " in its pessoaFisicaFisicaHistoricoCollection field has a non-nullable pessoaFisicaPrimariaFk field.");
             }
             Collection<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoCollection1OrphanCheck = pessoaFisica.getPessoaFisicaFisicaHistoricoCollection1();
             for (PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistoricoCollection1OrphanCheckPessoaFisicaFisicaHistorico : pessoaFisicaFisicaHistoricoCollection1OrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollection1OrphanCheckPessoaFisicaFisicaHistorico + " in its pessoaFisicaFisicaHistoricoCollection1 field has a non-nullable pessoaFisicaBFk field.");
+                illegalOrphanMessages.add("This PessoaFisica (" + pessoaFisica + ") cannot be destroyed since the PessoaFisicaFisicaHistorico " + pessoaFisicaFisicaHistoricoCollection1OrphanCheckPessoaFisicaFisicaHistorico + " in its pessoaFisicaFisicaHistoricoCollection1 field has a non-nullable pessoaFisicaSecundariaFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

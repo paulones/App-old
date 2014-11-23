@@ -14,6 +14,8 @@ import bo.FuncaoBO;
 import bo.NacionalidadeBO;
 import bo.PaisBO;
 import bo.PessoaFisicaBO;
+import bo.PessoaFisicaFisicaBO;
+import bo.PessoaFisicaFisicaHistoricoBO;
 import bo.PessoaFisicaHistoricoBO;
 import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaFisicaJuridicaHistoricoBO;
@@ -21,6 +23,7 @@ import bo.PessoaJuridicaBO;
 import bo.ProcessoJudicialBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
+import bo.VinculoSocialBO;
 import entidade.Cidade;
 import entidade.Endereco;
 import entidade.EnderecoHistorico;
@@ -32,11 +35,14 @@ import entidade.Funcao;
 import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaFisica;
+import entidade.PessoaFisicaFisicaHistorico;
 import entidade.PessoaFisicaHistorico;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaFisicaJuridicaHistorico;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
+import entidade.VinculoSocial;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -65,6 +71,7 @@ public class PessoaFisicaBean implements Serializable {
     private Endereco oldEndereco;
     private PessoaJuridica pessoaJuridica;
     private PessoaFisicaJuridica pessoaFisicaJuridica;
+    private PessoaFisicaFisica pessoaFisicaFisica;
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaModal;
     private PessoaFisicaHistorico pessoaFisicaHistorico;
@@ -88,11 +95,15 @@ public class PessoaFisicaBean implements Serializable {
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
     private List<Funcao> funcaoList;
     private List<PessoaFisicaJuridica> oldPessoaFisicaJuridicaList;
+    private List<PessoaFisicaFisica> oldPessoaFisicaFisicaList;
     private List<PessoaFisicaHistorico> pessoaFisicaHistoricoList;
+    private List<PessoaFisicaFisica> pessoaFisicaFisicaList;
+    private List<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoList;
     private List<EnderecoHistorico> enderecoHistoricoList;
     private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
     private List<EnderecoPessoaFisicaJuridicaHistorico> enderecoPessoaFisicaJuridicaHistoricoList;
     private List<ProcessoJudicial> processoJudicialList;
+    private List<VinculoSocial> vinculoSocialList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -106,8 +117,11 @@ public class PessoaFisicaBean implements Serializable {
     private CidadeBO cidadeBO;
     private PessoaFisicaHistoricoBO pessoaFisicaHistoricoBO;
     private EnderecoHistoricoBO enderecoHistoricoBO;
+    private PessoaFisicaFisicaBO pessoaFisicaFisicaBO;
+    private PessoaFisicaFisicaHistoricoBO pessoaFisicaFisicaHistoricoBO;
     private PessoaFisicaJuridicaHistoricoBO pessoaFisicaJuridicaHistoricoBO;
     private ProcessoJudicialBO processoJudicialBO;
+    private VinculoSocialBO vinculoSocialBO;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -128,10 +142,14 @@ public class PessoaFisicaBean implements Serializable {
             enderecoHistoricoBO = new EnderecoHistoricoBO();
             pessoaFisicaJuridicaHistoricoBO = new PessoaFisicaJuridicaHistoricoBO();
             processoJudicialBO = new ProcessoJudicialBO();
+            pessoaFisicaFisicaBO = new PessoaFisicaFisicaBO();
+            pessoaFisicaFisicaHistoricoBO = new PessoaFisicaFisicaHistoricoBO();
+            vinculoSocialBO = new VinculoSocialBO();
 
             endereco = new Endereco();
             pessoaJuridica = new PessoaJuridica();
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
+            pessoaFisicaFisica = new PessoaFisicaFisica();
             enderecoPessoa = new EnderecoPessoa();
 
             register = "";
@@ -142,6 +160,7 @@ public class PessoaFisicaBean implements Serializable {
             cidadeEndList = new ArrayList<>();
             cidadeEleList = new ArrayList<>();
             pessoaFisicaJuridicaList = new ArrayList<>();
+            pessoaFisicaFisicaList = new ArrayList<>();
             
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             pessoaFisica = new PessoaFisica();
@@ -163,12 +182,14 @@ public class PessoaFisicaBean implements Serializable {
                         } else {
                             edit = true;
                             endereco = enderecoBO.findPFAddress(id);
+                            pessoaFisicaFisicaList = pessoaFisicaFisicaBO.findAllByPFAOrPFB(id);
                             pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
 
                             oldPessoaFisica = pessoaFisicaBO.findPessoaFisica(id);
                             oldEndereco = enderecoBO.findPFAddress(id);
                             oldPessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
-                            prepararHistorico(pessoaFisica, endereco, pessoaFisicaJuridicaList);
+                            oldPessoaFisicaFisicaList = pessoaFisicaFisicaBO.findAllByPFAOrPFB(id);
+                            prepararHistorico(pessoaFisica, endereco, pessoaFisicaJuridicaList, pessoaFisicaFisicaList);
 
                             carregarFormulario();
                             getCidadesPeloEstado();
@@ -195,10 +216,12 @@ public class PessoaFisicaBean implements Serializable {
                         } else {
                             history = true;
                             endereco = enderecoBO.findPFAddress(id);
+                            pessoaFisicaFisicaList = pessoaFisicaFisicaBO.findAllByPFAOrPFB(id);
                             pessoaFisicaJuridicaList = pessoaFisicaJuridicaBO.findAllByPF(id);
 
                             pessoaFisicaHistoricoList = new ArrayList<>();
                             enderecoHistoricoList = new ArrayList<>();
+                            pessoaFisicaFisicaHistoricoList = new ArrayList<>();
                             pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
 
                             pessoaFisicaHistoricoList = pessoaFisicaHistoricoBO.findAllByPF(id);
@@ -207,7 +230,7 @@ public class PessoaFisicaBean implements Serializable {
 
                             enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
                             EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
-                            enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaFisica, endereco, pessoaFisicaJuridicaList);
+                            enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaFisica, endereco, pessoaFisicaJuridicaList, pessoaFisicaFisicaList);
                             enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
                             for (PessoaFisicaHistorico pfh : pessoaFisicaHistoricoList) {
                                 for (EnderecoHistorico eh : enderecoHistoricoList) {
@@ -243,6 +266,7 @@ public class PessoaFisicaBean implements Serializable {
         estadoCivilList = estadoCivilBO.findAll();
         pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
         funcaoList = funcaoBO.findAll();
+        vinculoSocialList = vinculoSocialBO.findAll();
     }
 
     public void getCidadesPeloEstado() { // Renderizar cidades baseado no estado escolhido
@@ -288,6 +312,10 @@ public class PessoaFisicaBean implements Serializable {
                     pfj.setPessoaFisicaFk(pessoaFisica);
                     pessoaFisicaJuridicaBO.create(pfj);
                 }
+                for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+                    pff.setPessoaFisicaPrimariaFk(pessoaFisica);
+                    pessoaFisicaFisicaBO.create(pff);
+                }
                 register = "success";
                 pjId = "";
                 GeradorLog.criar(pessoaFisica.getId(), "PF", 'C');
@@ -308,27 +336,45 @@ public class PessoaFisicaBean implements Serializable {
                 if (pessoaFisica.getEstadoFk() != null) {
                     pessoaFisica.setPaisFk(paisBO.findBrasil());
                 }
-                boolean identical = true;
+                boolean identicalPfj = true;
                 if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
-                    identical = false;
+                    identicalPfj = false;
                 } else {
                     for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
                         for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
                             if (pfj.changedValues(oldPfj).isEmpty()) {
-                                identical = true;
+                                identicalPfj = true;
                                 break;
                             } else {
-                                identical = false;
+                                identicalPfj = false;
                             }
                         }
-                        if (!identical) {
+                        if (!identicalPfj) {
+                            break;
+                        }
+                    }
+                }
+                boolean identicalPff = true;
+                if (oldPessoaFisicaFisicaList.size() != pessoaFisicaFisicaList.size()) {
+                    identicalPff = false;
+                } else {
+                    for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
+                        for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
+                            if (pfj.changedValues(oldPfj).isEmpty()) {
+                                identicalPff = true;
+                                break;
+                            } else {
+                                identicalPff = false;
+                            }
+                        }
+                        if (!identicalPff) {
                             break;
                         }
                     }
                 }
                 if (oldPessoaFisica.changedValues(pessoaFisica).isEmpty()
                         && oldEndereco.changedValues(endereco).isEmpty()
-                        && identical) {
+                        && identicalPfj && identicalPff) {
                     Cookie.addCookie("FacesMessage", "fail", 10);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 } else {
@@ -345,10 +391,18 @@ public class PessoaFisicaBean implements Serializable {
                     for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
                         pessoaFisicaJuridicaBO.create(pfj);
                     }
+                    pessoaFisicaFisicaBO.destroyByPFBOrPFA(pessoaFisica.getId());
+                    for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+                        pessoaFisicaFisicaBO.create(pff);
+                    }
                     for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
                         pfjh.setTipo("PF");
                         pfjh.setIdFk(pessoaFisicaHistorico.getId());
                         pessoaFisicaJuridicaHistoricoBO.create(pfjh);
+                    }
+                    for (PessoaFisicaFisicaHistorico pffh : pessoaFisicaFisicaHistoricoList) {
+                        pffh.setPessoaFisicaHistoricoFk(pessoaFisicaHistorico);
+                        pessoaFisicaFisicaHistoricoBO.create(pffh);
                     }
                     GeradorLog.criar(pessoaFisica.getId(), "PF", 'U');
                     Cookie.addCookie("FacesMessage", "success", 10);
@@ -378,6 +432,10 @@ public class PessoaFisicaBean implements Serializable {
     public void removerVinculo(int index) {
         pessoaFisicaJuridicaList.remove(index);
     }
+    
+    public void removerVinculoSocial(int index) {
+        pessoaFisicaFisicaList.remove(index);
+    }
 
     public void removerPessoaFisica() {
         pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfId));
@@ -406,8 +464,27 @@ public class PessoaFisicaBean implements Serializable {
             pessoaFisicaJuridica = new PessoaFisicaJuridica();
         }
     }
+    
+    public void vincularPessoaFisica() {
+        if (edit) {
+            pessoaFisicaFisica.setPessoaFisicaPrimariaFk(pessoaFisica);
+        }
+        PessoaFisica pessoaFisicaVinculo = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfId));
+        pessoaFisicaFisica.setPessoaFisicaSecundariaFk(pessoaFisicaVinculo);
+        boolean exists = false;
+        for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+            if ((pff.getPessoaFisicaSecundariaFk() != null && pff.getPessoaFisicaSecundariaFk().getId().equals(pessoaFisicaVinculo.getId())) 
+                    || (pff.getPessoaFisicaPrimariaFk() != null &&  pff.getPessoaFisicaPrimariaFk().getId().equals(pessoaFisicaVinculo.getId()))) {
+                exists = true;
+            }
+        }
+        if (!exists) {
+            pessoaFisicaFisicaList.add(pessoaFisicaFisica);
+            pessoaFisicaFisica = new PessoaFisicaFisica();
+        }
+    }
 
-    public void prepararHistorico(PessoaFisica pessoaFisica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList) {
+    public void prepararHistorico(PessoaFisica pessoaFisica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaFisicaFisica> pessoaFisicaFisicaList) {
         /*
          Montar entidades dos históricos de alteração 
          */
@@ -461,9 +538,17 @@ public class PessoaFisicaBean implements Serializable {
             pfjh.setPessoaJuridicaFk(pfj.getPessoaJuridicaFk());
             pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
+        
+        for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+            PessoaFisicaFisicaHistorico pffh = new PessoaFisicaFisicaHistorico();
+            pffh.setPessoaFisicaPrimariaFk(pff.getPessoaFisicaPrimariaFk());
+            pffh.setPessoaFisicaSecundariaFk(pff.getPessoaFisicaSecundariaFk());
+            pffh.setVinculoSocialFk(pff.getVinculoSocialFk());
+            pessoaFisicaFisicaHistoricoList.add(pffh);
+        }
     }
 
-    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaFisica pessoaFisica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList) {
+    private EnderecoPessoaFisicaJuridicaHistorico prepararRegistroAtual(PessoaFisica pessoaFisica, Endereco endereco, List<PessoaFisicaJuridica> pessoaFisicaJuridicaList, List<PessoaFisicaFisica> pessoaFisicaFisicaList) {
         /*
          Montar registro atual como uma entidade de histórico para facilitar o ui:repeat do form
          */
@@ -471,6 +556,7 @@ public class PessoaFisicaBean implements Serializable {
         PessoaFisicaHistorico pessoaFisicaHistorico = new PessoaFisicaHistorico();
         EnderecoHistorico enderecoHistorico = new EnderecoHistorico();
         List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+        List<PessoaFisicaFisicaHistorico> pessoaFisicaFisicaHistoricoList = new ArrayList<>();
 
         pessoaFisicaHistorico.setApelido(pessoaFisica.getApelido());
         pessoaFisicaHistorico.setCidadeFk(pessoaFisica.getCidadeFk());
@@ -516,7 +602,15 @@ public class PessoaFisicaBean implements Serializable {
             pfjh.setPessoaJuridicaFk(pfj.getPessoaJuridicaFk());
             pessoaFisicaJuridicaHistoricoList.add(pfjh);
         }
-
+        
+        for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+            PessoaFisicaFisicaHistorico pffh = new PessoaFisicaFisicaHistorico();
+            pffh.setPessoaFisicaPrimariaFk(pff.getPessoaFisicaPrimariaFk());
+            pffh.setPessoaFisicaSecundariaFk(pff.getPessoaFisicaSecundariaFk());
+            pffh.setVinculoSocialFk(pff.getVinculoSocialFk());
+            pessoaFisicaFisicaHistoricoList.add(pffh);
+        }
+        pessoaFisicaHistorico.setPessoaFisicaFisicaHistoricoCollection(pessoaFisicaFisicaHistoricoList);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaHistorico(pessoaFisicaHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setEnderecoHistorico(enderecoHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaFisicaJuridicaHistoricoList(pessoaFisicaJuridicaHistoricoList);
@@ -713,6 +807,22 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setProcessoJudicialList(List<ProcessoJudicial> processoJudicialList) {
         this.processoJudicialList = processoJudicialList;
+    }
+
+    public List<PessoaFisicaFisica> getPessoaFisicaFisicaList() {
+        return pessoaFisicaFisicaList;
+    }
+
+    public void setPessoaFisicaFisicaList(List<PessoaFisicaFisica> pessoaFisicaFisicaList) {
+        this.pessoaFisicaFisicaList = pessoaFisicaFisicaList;
+    }
+
+    public List<VinculoSocial> getVinculoSocialList() {
+        return vinculoSocialList;
+    }
+
+    public void setVinculoSocialList(List<VinculoSocial> vinculoSocialList) {
+        this.vinculoSocialList = vinculoSocialList;
     }
     
 }

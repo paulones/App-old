@@ -37,12 +37,12 @@ public class PessoaFisicaFisicaHistorico implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @JoinColumn(name = "pessoa_fisica_a_fk", referencedColumnName = "id")
+    @JoinColumn(name = "pessoa_fisica_primaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaFisica pessoaFisicaAFk;
-    @JoinColumn(name = "pessoa_fisica_b_fk", referencedColumnName = "id")
+    private PessoaFisica pessoaFisicaPrimariaFk;
+    @JoinColumn(name = "pessoa_fisica_secundaria_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private PessoaFisica pessoaFisicaBFk;
+    private PessoaFisica pessoaFisicaSecundariaFk;
     @JoinColumn(name = "pessoa_fisica_historico_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private PessoaFisicaHistorico pessoaFisicaHistoricoFk;
@@ -65,20 +65,20 @@ public class PessoaFisicaFisicaHistorico implements Serializable {
         this.id = id;
     }
 
-    public PessoaFisica getPessoaFisicaAFk() {
-        return pessoaFisicaAFk;
+    public PessoaFisica getPessoaFisicaPrimariaFk() {
+        return pessoaFisicaPrimariaFk;
     }
 
-    public void setPessoaFisicaAFk(PessoaFisica pessoaFisicaAFk) {
-        this.pessoaFisicaAFk = pessoaFisicaAFk;
+    public void setPessoaFisicaPrimariaFk(PessoaFisica pessoaFisicaPrimariaFk) {
+        this.pessoaFisicaPrimariaFk = pessoaFisicaPrimariaFk;
     }
 
-    public PessoaFisica getPessoaFisicaBFk() {
-        return pessoaFisicaBFk;
+    public PessoaFisica getPessoaFisicaSecundariaFk() {
+        return pessoaFisicaSecundariaFk;
     }
 
-    public void setPessoaFisicaBFk(PessoaFisica pessoaFisicaBFk) {
-        this.pessoaFisicaBFk = pessoaFisicaBFk;
+    public void setPessoaFisicaSecundariaFk(PessoaFisica pessoaFisicaSecundariaFk) {
+        this.pessoaFisicaSecundariaFk = pessoaFisicaSecundariaFk;
     }
 
     public PessoaFisicaHistorico getPessoaFisicaHistoricoFk() {

@@ -173,7 +173,6 @@ public class ReaverResource {
         List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
         for (PessoaJuridica pj : pessoaJuridicaList) {
             Endereco end = enderecoBO.findPJAddress(pj.getId());
-//            String cnpj = pj.getCnpj()== null ? "-" : pj.getCnpj();
             String cnpj = pj.getCnpj() == null ? "-" : pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             String nomeFantasia = pj.getNomeFantasia() == null ? "-" : pj.getNomeFantasia();
             String tipoEmpresarial = pj.getTipoEmpresarialFk() == null ? "-" : pj.getTipoEmpresarialFk().getTipo();
@@ -186,6 +185,18 @@ public class ReaverResource {
                 detalhes += " " + (pfj.getPessoaFisicaFk().getCpf() == null ? "" : pfj.getPessoaFisicaFk().getCpf().substring(0, 3) + "." + pfj.getPessoaFisicaFk().getCpf().substring(3, 6) + "." + pfj.getPessoaFisicaFk().getCpf().substring(6, 9) + "-" + pfj.getPessoaFisicaFk().getCpf().substring(9)) + " "
                         + pfj.getPessoaFisicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " "
                         + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
+            }
+            for (PessoaJuridicaJuridica pjj : (List<PessoaJuridicaJuridica>) pj.getPessoaJuridicaJuridicaCollection()) {
+                detalhes += " " + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(12) + " "
+                        + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(12) + " "
+                        + pjj.getPessoaJuridicaPrimariaFk().getNome() + " " + pjj.getPessoaJuridicaSecundariaFk().getNome() + " "
+                        + pjj.getCapitalDeParticipacao() + " " + pjj.getDataDeInicio() + " " + pjj.getDataDeTermino();
+            }
+            for (PessoaJuridicaJuridica pjj : (List<PessoaJuridicaJuridica>) pj.getPessoaJuridicaJuridicaCollection1()) {
+                detalhes += " " + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(12) + " "
+                        + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(12) + " "
+                        + pjj.getPessoaJuridicaPrimariaFk().getNome() + " " + pjj.getPessoaJuridicaSecundariaFk().getNome() + " "
+                        + pjj.getCapitalDeParticipacao() + " " + pjj.getDataDeInicio() + " " + pjj.getDataDeTermino();
             }
             detalhes = detalhes.replace("null", "");
 
@@ -247,13 +258,25 @@ public class ReaverResource {
                     String cpf = pfj.getPessoaFisicaFk().getCpf().substring(0, 3) + "." + pfj.getPessoaFisicaFk().getCpf().substring(3, 6) + "." + pfj.getPessoaFisicaFk().getCpf().substring(6, 9) + "-" + pfj.getPessoaFisicaFk().getCpf().substring(9);
                     detalhes += " " + cpf + " " + pfj.getPessoaFisicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
                 }
+                for (PessoaJuridicaJuridica pjj : (List<PessoaJuridicaJuridica>) pj.getPessoaJuridicaJuridicaCollection()) {
+                    detalhes += " " + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(12) + " "
+                            + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(12) + " "
+                            + pjj.getPessoaJuridicaPrimariaFk().getNome() + " " + pjj.getPessoaJuridicaSecundariaFk().getNome() + " "
+                            + pjj.getCapitalDeParticipacao() + " " + pjj.getDataDeInicio() + " " + pjj.getDataDeTermino();
+                }
+                for (PessoaJuridicaJuridica pjj : (List<PessoaJuridicaJuridica>) pj.getPessoaJuridicaJuridicaCollection1()) {
+                    detalhes += " " + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaPrimariaFk().getCnpj().substring(12) + " "
+                            + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(12) + " "
+                            + pjj.getPessoaJuridicaPrimariaFk().getNome() + " " + pjj.getPessoaJuridicaSecundariaFk().getNome() + " "
+                            + pjj.getCapitalDeParticipacao() + " " + pjj.getDataDeInicio() + " " + pjj.getDataDeTermino();
+                }
             }
             detalhes += " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk() == null ? "" : end.getEstadoFk().getUf()) + " "
                     + end.getNumero() + " " + end.getComplemento() + " " + end.getEndereco();
             detalhes += " " + pjud.getAtoProcessual() + " " + pjud.getDataDeInscricao() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
                     + pjud.getDiscriminacaoDoCreditoImposto() + " " + pjud.getDiscriminacaoDoCreditoMulta() + " " + pjud.getDistribuicao() + " " + pjud.getDistribuicaoDataDoAto() + " " + (pjud.getFatosGeradores() == null ? "" : pjud.getFatosGeradores().replace(",", "; ")) + " "
                     + pjud.getFundamentacao() + " " + pjud.getGrupoDeEspecializacao() + " " + pjud.getNotificacaoAdministrativa() + " " + pjud.getNotificacaoAdministrativaDataDoAto() + " " + pjud.getNumeroDoProcessoAnterior() + " "
-                    + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesBem() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + (pjud.getProcuradorFk()== null ? "" : pjud.getProcuradorFk().getNome()) + " "
+                    + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesBem() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + (pjud.getProcuradorFk() == null ? "" : pjud.getProcuradorFk().getNome()) + " "
                     + pjud.getRecurso() + " " + pjud.getValorAtualizado() + " " + pjud.getValorDaCausa() + " " + pjud.getVara() + " " + pjud.getVaraAnterior() + " " + (pjud.getTipoDeRecursoFk() == null ? "" : pjud.getTipoDeRecursoFk().getTipo());
             for (Bem bem : pjud.getBemCollection()) {
                 detalhes += " " + bem.getDescricao() + " " + bem.getDataDoAto() + " " + bem.getValor();
@@ -288,43 +311,45 @@ public class ReaverResource {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pf"+i, chartsBO.countPFByMonth(ano, i));
+            jsonObject.put("pf" + i, chartsBO.countPFByMonth(ano, i));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pj"+i, chartsBO.countPJByMonth(ano, i));
+            jsonObject.put("pj" + i, chartsBO.countPJByMonth(ano, i));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pjud"+i, chartsBO.countPJUDByMonth(ano, i));
+            jsonObject.put("pjud" + i, chartsBO.countPJUDByMonth(ano, i));
         }
         jsonArray.put(jsonObject);
-        
+
         return jsonArray.toString();
     }
-    
+
     @GET
     @Path("/checkCNPJ")
     @Produces("application/json")
     public String checkCNPJ(@QueryParam("cnpj") String cnpj) {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findByCNPJ(cnpj);
-        if (pessoaJuridica == null){
+        if (pessoaJuridica == null) {
             return "true";
-        } else
+        } else {
             return "false";
+        }
     }
-    
+
     @GET
     @Path("/checkCPF")
     @Produces("application/json")
     public String checkCPF(@QueryParam("cpf") String cpf) {
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         PessoaFisica pessoaFisica = pessoaFisicaBO.findByCPF(cpf);
-        if (pessoaFisica == null){
+        if (pessoaFisica == null) {
             return "true";
-        } else
+        } else {
             return "false";
+        }
     }
-    
+
     @GET
     @Path("/getArrecadacao")
     @Produces("application/json")
@@ -333,17 +358,17 @@ public class ReaverResource {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("value"+i, chartsBO.sumPJUDValueBeforeMonth(ano, i));
+            jsonObject.put("value" + i, chartsBO.sumPJUDValueBeforeMonth(ano, i));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("arrecadacao"+i, chartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i));
+            jsonObject.put("arrecadacao" + i, chartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i));
         }
         jsonObject.put("count", chartsBO.countPJUDValueBeforeMonth(ano, 12));
         jsonArray.put(jsonObject);
-        
+
         return jsonArray.toString();
     }
-    
+
     @GET
     @Path("/getPizza")
     @Produces("application/json")
@@ -357,10 +382,10 @@ public class ReaverResource {
         jsonObject.put("Julgado", chartsBO.getPJUDSituations("Julgado"));
         jsonObject.put("Suspenso", chartsBO.getPJUDSituations("Suspenso"));
         jsonArray.put(jsonObject);
-        
+
         return jsonArray.toString();
     }
-    
+
     @GET
     @Path("/getLogs")
     @Produces("application/json")
@@ -396,14 +421,14 @@ public class ReaverResource {
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             tabela += "<span class='feed-label'>Pessoa Física ";
             String info = pf.getNome() + " - " + cpf;
-            info =  info.length() >= 35 ? info.substring(0,32) + "..." : info;
+            info = info.length() >= 35 ? info.substring(0, 32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         } else if (log.getTabela().equals("PJ")) {
             PessoaJuridica pj = pjBO.findPessoaJuridica(log.getIdFk());
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             tabela += "<span class='feed-label'>Pessoa Juridica ";
             String info = pj.getNome() + " - " + cnpj;
-            info =  info.length() >= 35 ? info.substring(0,32) + "..." : info;
+            info = info.length() >= 35 ? info.substring(0, 32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         } else if (log.getTabela().equals("PJUD")) {
             ProcessoJudicial pjud = pjudBO.findProcessoJudicial(log.getIdFk());
@@ -413,7 +438,7 @@ public class ReaverResource {
             PessoaJuridicaSucessao pjs = pjsBO.findPessoaJuridicaSucessao(log.getIdFk());
             tabela += "<span class='feed-label'>Sucessão Empresarial ";
             String info = pjs.getPessoaJuridicaSucedidaFk().getNome() + " -> " + pjs.getPessoaJuridicaSucessoraFk().getNome();
-            info =  info.length() >= 35 ? info.substring(0,32) + "..." : info;
+            info = info.length() >= 35 ? info.substring(0, 32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         }
         if (log.getOperacao().equals('C')) {
@@ -438,8 +463,8 @@ public class ReaverResource {
         JSONArray jsonArray = new JSONArray();
         for (PessoaJuridicaSucessao pjs : pessoaJuridicaSucessaoList) {
             JSONObject jsonObject = new JSONObject();
-            String sucedidaCnpj = pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(0,2)+"."+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(2,5)+"."+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(5,8)+"/"+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(8,12)+"-"+pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(12);
-            String sucessoraCnpj = pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(0,2)+"."+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(2,5)+"."+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(5,8)+"/"+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(8,12)+"-"+pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(12);
+            String sucedidaCnpj = pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(0, 2) + "." + pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(2, 5) + "." + pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(5, 8) + "/" + pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(8, 12) + "-" + pjs.getPessoaJuridicaSucedidaFk().getCnpj().substring(12);
+            String sucessoraCnpj = pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(0, 2) + "." + pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(2, 5) + "." + pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(5, 8) + "/" + pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(8, 12) + "-" + pjs.getPessoaJuridicaSucessoraFk().getCnpj().substring(12);
             jsonObject.put("sucessao_id", pjs.getId());
             jsonObject.put("sucedida_id", pjs.getPessoaJuridicaSucedidaFk().getId());
             jsonObject.put("sucedida_nome", pjs.getPessoaJuridicaSucedidaFk().getNome());
