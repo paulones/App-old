@@ -16,7 +16,7 @@ var ModalPJCad = function() {
                     required: true
                 },
                 modal_pj_cnpj: {
-                    cnpj: true,
+                    modal_pj_cnpj: true,
                     required: true
                 },
                 modal_pj_alias: {
@@ -328,7 +328,7 @@ var ModalPJCad = function() {
 
 
 
-            $.validator.addMethod("cnpj", validaCNPJ, "CNPJ inv&aacute;lido ou j&aacute; existente no sistema.");
+            $.validator.addMethod("modal_pj_cnpj", validaCNPJ, "CNPJ inv&aacute;lido ou j&aacute; existente no sistema.");
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
             $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
 

@@ -23,7 +23,7 @@ var ModalPFCad = function() {
                     required: false
                 },
                 modal_pf_cpf: {
-                    cpf: true,
+                    modal_pf_cpf: true,
                     required: false
                 },
                 modal_pf_gender: {
@@ -301,7 +301,7 @@ var ModalPFCad = function() {
             $("#modal_pf_estcivil").select2({allowClear: true});
             $("#modal-new-pf input[type=radio]").uniform();
 
-            $.validator.addMethod("cpf", validaCPF, "CPF inv&aacute;lido ou j&aacute; existente no sistema.");
+            $.validator.addMethod("modal_pf_cpf", validaCPF, "CPF inv&aacute;lido ou j&aacute; existente no sistema.");
             $.validator.addMethod("elector", validaTitulo, "Digite um t&iacute;tulo de eleitor v&aacute;lido.");
             $.validator.addMethod("minlength_optional", validaMinLength, "Por favor, forne&ccedil;a ao menos {0} caracteres");
             $.validator.addClassRules({

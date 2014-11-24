@@ -408,7 +408,7 @@
                                                                     #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.nome}
                                                                 </td>
                                                                 <td style="text-align:center">
-                                                                    #{pessoaFisicaFisica.vinculoSocialFk.vinculo}
+                                                                    #{templateBean.setInversao(pessoaFisicaFisica.vinculoSocialFk.vinculo)}
                                                                 </td>
                                                             </tr>
                                                         </ui:repeat>

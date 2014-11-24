@@ -360,6 +360,57 @@ public class TemplateBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("/procura-geral.xhtml?value=" + searchValue);
     }
 
+    public String setInversao(String vinculo) {
+        switch (vinculo) {
+            case "Irmão/Irmã":
+                return "Irmão/Irmã";
+            case "Pai/Mãe":
+                return "Filho/Filha";
+            case "Tio/Tia":
+                return "Sobrinho/Sobrinha";
+            case "Avô/Avó":
+                return "Neto/Neta";
+            case "Bisavô/Bisavó":
+                return "Bisneto/Bisneta";
+            case "Trisavô/Trisavó":
+                return "Trineto/Trineta";
+            case "Sogro/Sogra":
+                return "Genro/Nora";
+            case "Cônjuge":
+                return "Cônjuge";
+            case "Filho/Filha":
+                return "Pai/Mãe";
+            case "Primo/Prima":
+                return "Primo/Prima";
+            case "Cunhado/Cunhada":
+                return "Cunhado/Cunhada";
+            case "Genro/Nora":
+                return "Sogro/Sogra";
+            case "Neto/Neta":
+                return "Avô/Avó";
+            case "Bisneto/Bisneta":
+                return "Bisavô/Bisavó";
+            case "Trineto/Trineta":
+                return "Trisavô/Trisavó";
+            case "Sobrinho/Sobrinha":
+                return "Tio/Tia";
+            case "Empregado":
+                return "Empregador";
+            case "Empregador":
+                return "Empregado";
+            case "Empregado doméstico":
+                return "Empregador";
+            case "Estagiário":
+                return "Empregador";
+            case "Enteado/Enteada":
+                return "Padrasto/Madrasta";
+            case "Padrasto/Madrasta":
+                return "Enteado/Enteada";
+            default:
+                return vinculo;
+        }
+    }
+
     public Usuario getUsuario() {
         return usuario;
     }

@@ -240,6 +240,8 @@ public class VinculoSocialDAO implements Serializable {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VinculoSocial.class));
+            Root<VinculoSocial> from = cq.from(VinculoSocial.class);
+            cq.orderBy(em.getCriteriaBuilder().asc(from.get("vinculo")));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);

@@ -641,7 +641,7 @@
                                                                 <td>
                                                                     <h:selectOneMenu styleClass="select2_category select2me form-control vinculosocial" p:placeholder="Selecione..." value="#{pessoaFisicaFisica.vinculoSocialFk}" tabindex="1" converter="entityConverter">
                                                                         <f:selectItem itemLabel="" itemValue=""/>
-                                                                        <f:selectItems value="#{pessoaFisicaBean.vinculoSocialList}" var="vinculoSocial" itemLabel="#{vinculoSocial.vinculo}" itemValue="#{vinculoSocial}"/>
+                                                                        <f:selectItems value="#{pessoaFisicaBean.vinculoSocialList}" var="vinculoSocial" itemLabel="#{templateBean.setInversao(vinculoSocial.vinculo)}" itemValue="#{vinculoSocial}"/>
                                                                     </h:selectOneMenu>
                                                                 </td>
                                                                 <td>
