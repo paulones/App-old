@@ -569,6 +569,54 @@
                                                                                         </table>
                                                                                     </div>
                                                                                 </div>
+                                                                                <h3 class="form-section">Vínculos Sociais</h3>
+                                                                                <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-12">
+                                                                                        <table class="table table-striped table-hover table-bordered vinculations">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th style="width:20%;text-align:center">
+                                                                                                        CPF
+                                                                                                    </th>
+                                                                                                    <th style="width:20%;text-align:center">
+                                                                                                        Vínculo
+                                                                                                    </th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody class="rows-pff">
+                                                                                                <ui:repeat value="#{executadoHistorico.enderecoPessoaFisica.pessoa.pessoaFisicaFisicaCollection1}" var="pessoaFisicaFisica">
+                                                                                                    <ui:param value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(9)}" name="cpf"/>
+                                                                                                    <tr>
+                                                                                                        <td style="text-align:center">
+                                                                                                            <a href="javascript:;" class="pf-info">
+                                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.id}"/>
+                                                                                                                <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.nome}</span>
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaFisicaFisica.vinculoSocialFk.vinculo}
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </ui:repeat>
+                                                                                                <ui:repeat value="#{executadoHistorico.enderecoPessoaFisica.pessoa.pessoaFisicaFisicaCollection}" var="pessoaFisicaFisica">
+                                                                                                    <ui:param value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(9)}" name="cpf"/>
+                                                                                                    <tr>
+                                                                                                        <td style="text-align:center">
+                                                                                                            <a href="javascript:;" class="pf-info">
+                                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.id}"/>
+                                                                                                                <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}</span>
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                        <td style="text-align:center">
+                                                                                                            #{pessoaFisicaFisica.vinculoSocialFk.vinculo}
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </ui:repeat>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <h3 class="form-section"></h3>
                                                                                 <div class="row">
                                                                                     <div class="col-md-10">
@@ -1994,6 +2042,54 @@
                                                                             </td>
                                                                             <td style="text-align:center">
                                                                                 #{pessoaFisicaJuridica.dataDeTermino  eq null ? '-' : pessoaFisicaJuridica.dataDeTermino}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ui:repeat>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <h3 class="form-section">Vínculos Sociais</h3>
+                                                    <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table class="table table-striped table-hover table-bordered vinculations">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="width:20%;text-align:center">
+                                                                            CPF
+                                                                        </th>
+                                                                        <th style="width:20%;text-align:center">
+                                                                            Vínculo
+                                                                        </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="rows">
+                                                                    <ui:repeat value="#{processoJudicialBean.executado.enderecoPessoa.pessoa.pessoaFisicaFisicaCollection1}" var="pessoaFisicaFisica">
+                                                                        <ui:param value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(9)}" name="cpf"/>
+                                                                        <tr>
+                                                                            <td style="text-align:center">
+                                                                                <a href="javascript:;" class="pf-info">
+                                                                                    <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.id}"/>
+                                                                                    #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.nome}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td style="text-align:center">
+                                                                                #{pessoaFisicaFisica.vinculoSocialFk.vinculo}
+                                                                            </td>
+                                                                        </tr>
+                                                                    </ui:repeat>
+                                                                    <ui:repeat value="#{processoJudicialBean.executado.enderecoPessoa.pessoa.pessoaFisicaFisicaCollection}" var="pessoaFisicaFisica">
+                                                                        <ui:param value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(9)}" name="cpf"/>
+                                                                        <tr>
+                                                                            <td style="text-align:center">
+                                                                                <a href="javascript:;" class="pf-info">
+                                                                                    <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.id}"/>
+                                                                                    #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}
+                                                                                </a>
+                                                                            </td>
+                                                                            <td style="text-align:center">
+                                                                                #{pessoaFisicaFisica.vinculoSocialFk.vinculo}
                                                                             </td>
                                                                         </tr>
                                                                     </ui:repeat>

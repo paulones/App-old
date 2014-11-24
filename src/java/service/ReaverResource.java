@@ -16,6 +16,7 @@ import entidade.Bem;
 import entidade.Endereco;
 import entidade.Log;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaJuridica;
@@ -145,6 +146,16 @@ public class ReaverResource {
                 String cnpj = pfj.getPessoaJuridicaFk().getCnpj().substring(0, 2) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(2, 5) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(5, 8) + "/" + pfj.getPessoaJuridicaFk().getCnpj().substring(8, 12) + "-" + pfj.getPessoaJuridicaFk().getCnpj().substring(12);
                 detalhes += " " + cnpj + " " + pfj.getPessoaJuridicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
             }
+            for (PessoaFisicaFisica pff : (List<PessoaFisicaFisica>) pf.getPessoaFisicaFisicaCollection()) {
+                detalhes += " " + pff.getVinculoSocialFk().getVinculo() + " " + pff.getPessoaFisicaPrimariaFk().getNome() + " " + pff.getPessoaFisicaSecundariaFk().getNome() + " "
+                        + (pff.getPessoaFisicaPrimariaFk().getCpf() == null ? "" : pff.getPessoaFisicaPrimariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaPrimariaFk().getCpf().substring(9)) + " "
+                        + (pff.getPessoaFisicaSecundariaFk().getCpf() == null ? "" : pff.getPessoaFisicaSecundariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaSecundariaFk().getCpf().substring(9));
+            }
+            for (PessoaFisicaFisica pff : (List<PessoaFisicaFisica>) pf.getPessoaFisicaFisicaCollection1()) {
+                detalhes += " " + pff.getVinculoSocialFk().getVinculo() + " " + pff.getPessoaFisicaPrimariaFk().getNome() + " " + pff.getPessoaFisicaSecundariaFk().getNome() + " "
+                        + (pff.getPessoaFisicaPrimariaFk().getCpf() == null ? "" : pff.getPessoaFisicaPrimariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaPrimariaFk().getCpf().substring(9)) + " "
+                        + (pff.getPessoaFisicaSecundariaFk().getCpf() == null ? "" : pff.getPessoaFisicaSecundariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaSecundariaFk().getCpf().substring(9));
+            }
             detalhes = detalhes.replace("null", "");
 
             JSONObject jsonObject = new JSONObject();
@@ -247,6 +258,16 @@ public class ReaverResource {
                     String cnpj = pfj.getPessoaJuridicaFk().getCnpj().substring(0, 2) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(2, 5) + "." + pfj.getPessoaJuridicaFk().getCnpj().substring(5, 8) + "/" + pfj.getPessoaJuridicaFk().getCnpj().substring(8, 12) + "-" + pfj.getPessoaJuridicaFk().getCnpj().substring(12);
                     detalhes += " " + cnpj + " " + pfj.getPessoaJuridicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
                 }
+                for (PessoaFisicaFisica pff : (List<PessoaFisicaFisica>) pf.getPessoaFisicaFisicaCollection()) {
+                    detalhes += " " + pff.getVinculoSocialFk().getVinculo() + " " + pff.getPessoaFisicaPrimariaFk().getNome() + " " + pff.getPessoaFisicaSecundariaFk().getNome() + " "
+                            + (pff.getPessoaFisicaPrimariaFk().getCpf() == null ? "" : pff.getPessoaFisicaPrimariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaPrimariaFk().getCpf().substring(9)) + " "
+                            + (pff.getPessoaFisicaSecundariaFk().getCpf() == null ? "" : pff.getPessoaFisicaSecundariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaSecundariaFk().getCpf().substring(9));
+                }
+                for (PessoaFisicaFisica pff : (List<PessoaFisicaFisica>) pf.getPessoaFisicaFisicaCollection1()) {
+                    detalhes += " " + pff.getVinculoSocialFk().getVinculo() + " " + pff.getPessoaFisicaPrimariaFk().getNome() + " " + pff.getPessoaFisicaSecundariaFk().getNome() + " "
+                            + (pff.getPessoaFisicaPrimariaFk().getCpf() == null ? "" : pff.getPessoaFisicaPrimariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaPrimariaFk().getCpf().substring(9)) + " "
+                            + (pff.getPessoaFisicaSecundariaFk().getCpf() == null ? "" : pff.getPessoaFisicaSecundariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaSecundariaFk().getCpf().substring(9));
+                }
             } else {
                 pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
                 end = enderecoBO.findPJAddress(pj.getId());
@@ -255,7 +276,7 @@ public class ReaverResource {
                         + (pj.getSituacao() == null ? "" : "A".equals(pj.getSituacao().toString()) ? "Ativo" : "Inativo") + " " + pj.getMotivoDaDesativacao() + " "
                         + pj.getDataDeCriacao() + " " + pj.getGrupoEconomico() + " " + pj.getCnae() + " " + pj.getNire() + " " + pj.getAtividadePrincipal() + " " + pj.getAtividadeSecundaria();
                 for (PessoaFisicaJuridica pfj : (List<PessoaFisicaJuridica>) pj.getPessoaFisicaJuridicaCollection()) {
-                    String cpf = pfj.getPessoaFisicaFk().getCpf().substring(0, 3) + "." + pfj.getPessoaFisicaFk().getCpf().substring(3, 6) + "." + pfj.getPessoaFisicaFk().getCpf().substring(6, 9) + "-" + pfj.getPessoaFisicaFk().getCpf().substring(9);
+                    String cpf = (pfj.getPessoaFisicaFk().getCpf() == null ? "" : pfj.getPessoaFisicaFk().getCpf().substring(0, 3) + "." + pfj.getPessoaFisicaFk().getCpf().substring(3, 6) + "." + pfj.getPessoaFisicaFk().getCpf().substring(6, 9) + "-" + pfj.getPessoaFisicaFk().getCpf().substring(9));
                     detalhes += " " + cpf + " " + pfj.getPessoaFisicaFk().getNome() + " " + (pfj.getFuncaoFk() == null ? "" : pfj.getFuncaoFk().getFuncao()) + " " + pfj.getCapitalDeParticipacao() + " " + pfj.getDataDeInicio() + " " + pfj.getDataDeTermino();
                 }
                 for (PessoaJuridicaJuridica pjj : (List<PessoaJuridicaJuridica>) pj.getPessoaJuridicaJuridicaCollection()) {

@@ -227,6 +227,7 @@ var PjudCon = function() {
 
             var checkSucedidasChanges = checkSucessoes('.sucedidas');
             var checkSucessorasChanges = checkSucessoes('.sucessoras');
+            var checkPffChanges = checkChangesTable('.rows-pff tr')
             var checkPfjChanges = checkChangesTable('.rows-pfj tr');
             var checkPjjChanges = checkChangesTable('.rows-pjj tr');
             var checkPjjPartChanges = checkChangesTable('.rows-pjj-part tr');
@@ -236,6 +237,7 @@ var PjudCon = function() {
             processo = (!processo) ? checkProcessoChanges : true;
             executado = (!executado) ? checkSucedidasChanges : true;
             executado = (!executado) ? checkSucessorasChanges : true;
+            executado = (!executado) ? checkPffChanges : true;
             executado = (!executado) ? checkPfjChanges : true;
             executado = (!executado) ? checkPjjChanges : true;
             executado = (!executado) ? checkPjjPartChanges : true;

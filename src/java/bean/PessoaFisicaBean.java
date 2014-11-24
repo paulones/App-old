@@ -195,6 +195,7 @@ public class PessoaFisicaBean implements Serializable {
                             getCidadesPeloEstado();
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                     }
                 }
@@ -358,9 +359,9 @@ public class PessoaFisicaBean implements Serializable {
                 if (oldPessoaFisicaFisicaList.size() != pessoaFisicaFisicaList.size()) {
                     identicalPff = false;
                 } else {
-                    for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                        for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
-                            if (pfj.changedValues(oldPfj).isEmpty()) {
+                    for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
+                        for (PessoaFisicaFisica oldPff : oldPessoaFisicaFisicaList) {
+                            if (pff.changedValues(oldPff).isEmpty()) {
                                 identicalPff = true;
                                 break;
                             } else {
@@ -490,6 +491,7 @@ public class PessoaFisicaBean implements Serializable {
          */
         pessoaFisicaHistorico = new PessoaFisicaHistorico();
         EnderecoHistorico = new EnderecoHistorico();
+        pessoaFisicaFisicaHistoricoList = new ArrayList<>();
         pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
 
         pessoaFisicaHistorico.setApelido(pessoaFisica.getApelido());
@@ -583,6 +585,7 @@ public class PessoaFisicaBean implements Serializable {
         pessoaFisicaHistorico.setCidadeEleitoralFk(pessoaFisica.getCidadeEleitoralFk());
         pessoaFisicaHistorico.setEstadoEleitoralFk(pessoaFisica.getEstadoEleitoralFk());
         pessoaFisicaHistorico.setEndereco(pessoaFisica.getEndereco());
+        pessoaFisicaHistorico.setPessoaFisicaFk(pessoaFisica);
 
         enderecoHistorico.setBairro(endereco.getBairro());
         enderecoHistorico.setCep(endereco.getCep());

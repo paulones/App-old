@@ -246,7 +246,7 @@ public class PessoaFisicaFisicaDAO implements Serializable {
         try {
             em.getTransaction().begin();
             em.createNativeQuery("delete from pessoa_fisica_fisica "
-                    + "where pessoa_fisica_b_fk = '" + idPf + "' or pessoa_fisica_a_fk = '" + idPf + "'").executeUpdate();
+                    + "where pessoa_fisica_secundaria_fk = '" + idPf + "' or pessoa_fisica_primaria_fk = '" + idPf + "'").executeUpdate();
             em.getTransaction().commit();
         } catch (NoResultException e) {
         } finally {
@@ -257,10 +257,10 @@ public class PessoaFisicaFisicaDAO implements Serializable {
     public List<PessoaFisicaFisica> findAllByPFAOrPFB(Integer id){
         EntityManager em = getEntityManager();
         try {
-            List<PessoaFisicaFisica> pessoaFisicaFisicaList = (List<PessoaFisicaFisica>) em.createNativeQuery("select pff.id, pff.pessoa_fisica_a_fk, pff.pessoa_fisica_b_fk, pff.vinculo_social_fk "
+            List<PessoaFisicaFisica> pessoaFisicaFisicaList = (List<PessoaFisicaFisica>) em.createNativeQuery("select pff.id, pff.pessoa_fisica_primaria_fk, pff.pessoa_fisica_secundaria_fk, pff.vinculo_social_fk "
                         + "from pessoa_fisica_fisica pff, pessoa_fisica pf where pf.id = '"+id+"' and "
-                        + "(pff.pessoa_fisica_a_fk = pf.id or pff.pessoa_fisica_b_fk = pf.id) "
-                        + "group by pff.id, pff.pessoa_fisica_a_fk, pff.pessoa_fisica_b_fk, pff.vinculo_social_fk", PessoaFisicaFisica.class).getResultList();
+                        + "(pff.pessoa_fisica_primaria_fk = pf.id or pff.pessoa_fisica_secundaria_fk = pf.id) "
+                        + "group by pff.id, pff.pessoa_fisica_primaria_fk, pff.pessoa_fisica_secundaria_fk, pff.vinculo_social_fk", PessoaFisicaFisica.class).getResultList();
             return pessoaFisicaFisicaList;
         } catch (NoResultException e) {
             return null;
