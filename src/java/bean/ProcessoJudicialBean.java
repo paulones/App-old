@@ -252,7 +252,6 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void adicionarBens() {
-        System.out.println(bemList.size());
         if (bens > bemList.size()) {
             bens = bemList.isEmpty() ? bens : bens - bemList.size();
             for (int i = 0; i < bens; i++) {
