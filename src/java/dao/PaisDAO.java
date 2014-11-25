@@ -52,7 +52,8 @@ public class PaisDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : pais.getPessoaFisicaHistoricoCollection()) {
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
@@ -99,10 +100,10 @@ public class PaisDAO implements Serializable {
                     oldPaisFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldPaisFkOfPessoaFisicaCollectionPessoaFisica);
                 }
             }
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -117,7 +118,8 @@ public class PaisDAO implements Serializable {
     public void edit(Pais pais) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Pais persistentPais = em.find(Pais.class, pais.getId());
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentPais.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = pais.getPessoaFisicaHistoricoCollection();
@@ -204,10 +206,10 @@ public class PaisDAO implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -229,7 +231,8 @@ public class PaisDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Pais pais;
             try {
                 pais = em.getReference(Pais.class, id);
@@ -259,10 +262,10 @@ public class PaisDAO implements Serializable {
                 pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
             em.remove(pais);
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

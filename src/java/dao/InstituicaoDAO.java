@@ -10,6 +10,8 @@ import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Autorizacao;
+import entidade.Cidade;
+import entidade.Estado;
 import entidade.Instituicao;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -46,6 +48,16 @@ public class InstituicaoDAO implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
+            Estado estadoFk = instituicao.getEstadoFk();
+            if (estadoFk != null) {
+                estadoFk = em.getReference(estadoFk.getClass(), estadoFk.getId());
+                instituicao.setEstadoFk(estadoFk);
+            }
+            Cidade cidadeFk = instituicao.getCidadeFk();
+            if (cidadeFk != null) {
+                cidadeFk = em.getReference(cidadeFk.getClass(), cidadeFk.getId());
+                instituicao.setCidadeFk(cidadeFk);
+            }
             Collection<Autorizacao> attachedAutorizacaoCollection = new ArrayList<Autorizacao>();
             for (Autorizacao autorizacaoCollectionAutorizacaoToAttach : instituicao.getAutorizacaoCollection()) {
                 autorizacaoCollectionAutorizacaoToAttach = em.getReference(autorizacaoCollectionAutorizacaoToAttach.getClass(), autorizacaoCollectionAutorizacaoToAttach.getId());
@@ -53,6 +65,14 @@ public class InstituicaoDAO implements Serializable {
             }
             instituicao.setAutorizacaoCollection(attachedAutorizacaoCollection);
             em.persist(instituicao);
+            if (estadoFk != null) {
+                estadoFk.getInstituicaoCollection().add(instituicao);
+                estadoFk = em.merge(estadoFk);
+            }
+            if (cidadeFk != null) {
+                cidadeFk.getInstituicaoCollection().add(instituicao);
+                cidadeFk = em.merge(cidadeFk);
+            }
             for (Autorizacao autorizacaoCollectionAutorizacao : instituicao.getAutorizacaoCollection()) {
                 Instituicao oldInstituicaoFkOfAutorizacaoCollectionAutorizacao = autorizacaoCollectionAutorizacao.getInstituicaoFk();
                 autorizacaoCollectionAutorizacao.setInstituicaoFk(instituicao);
@@ -62,10 +82,10 @@ public class InstituicaoDAO implements Serializable {
                     oldInstituicaoFkOfAutorizacaoCollectionAutorizacao = em.merge(oldInstituicaoFkOfAutorizacaoCollectionAutorizacao);
                 }
             }
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -83,6 +103,10 @@ public class InstituicaoDAO implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Instituicao persistentInstituicao = em.find(Instituicao.class, instituicao.getId());
+            Estado estadoFkOld = persistentInstituicao.getEstadoFk();
+            Estado estadoFkNew = instituicao.getEstadoFk();
+            Cidade cidadeFkOld = persistentInstituicao.getCidadeFk();
+            Cidade cidadeFkNew = instituicao.getCidadeFk();
             Collection<Autorizacao> autorizacaoCollectionOld = persistentInstituicao.getAutorizacaoCollection();
             Collection<Autorizacao> autorizacaoCollectionNew = instituicao.getAutorizacaoCollection();
             List<String> illegalOrphanMessages = null;
@@ -97,6 +121,14 @@ public class InstituicaoDAO implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            if (estadoFkNew != null) {
+                estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
+                instituicao.setEstadoFk(estadoFkNew);
+            }
+            if (cidadeFkNew != null) {
+                cidadeFkNew = em.getReference(cidadeFkNew.getClass(), cidadeFkNew.getId());
+                instituicao.setCidadeFk(cidadeFkNew);
+            }
             Collection<Autorizacao> attachedAutorizacaoCollectionNew = new ArrayList<Autorizacao>();
             for (Autorizacao autorizacaoCollectionNewAutorizacaoToAttach : autorizacaoCollectionNew) {
                 autorizacaoCollectionNewAutorizacaoToAttach = em.getReference(autorizacaoCollectionNewAutorizacaoToAttach.getClass(), autorizacaoCollectionNewAutorizacaoToAttach.getId());
@@ -105,6 +137,22 @@ public class InstituicaoDAO implements Serializable {
             autorizacaoCollectionNew = attachedAutorizacaoCollectionNew;
             instituicao.setAutorizacaoCollection(autorizacaoCollectionNew);
             instituicao = em.merge(instituicao);
+            if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
+                estadoFkOld.getInstituicaoCollection().remove(instituicao);
+                estadoFkOld = em.merge(estadoFkOld);
+            }
+            if (estadoFkNew != null && !estadoFkNew.equals(estadoFkOld)) {
+                estadoFkNew.getInstituicaoCollection().add(instituicao);
+                estadoFkNew = em.merge(estadoFkNew);
+            }
+            if (cidadeFkOld != null && !cidadeFkOld.equals(cidadeFkNew)) {
+                cidadeFkOld.getInstituicaoCollection().remove(instituicao);
+                cidadeFkOld = em.merge(cidadeFkOld);
+            }
+            if (cidadeFkNew != null && !cidadeFkNew.equals(cidadeFkOld)) {
+                cidadeFkNew.getInstituicaoCollection().add(instituicao);
+                cidadeFkNew = em.merge(cidadeFkNew);
+            }
             for (Autorizacao autorizacaoCollectionNewAutorizacao : autorizacaoCollectionNew) {
                 if (!autorizacaoCollectionOld.contains(autorizacaoCollectionNewAutorizacao)) {
                     Instituicao oldInstituicaoFkOfAutorizacaoCollectionNewAutorizacao = autorizacaoCollectionNewAutorizacao.getInstituicaoFk();
@@ -116,10 +164,10 @@ public class InstituicaoDAO implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -161,11 +209,21 @@ public class InstituicaoDAO implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
+            Estado estadoFk = instituicao.getEstadoFk();
+            if (estadoFk != null) {
+                estadoFk.getInstituicaoCollection().remove(instituicao);
+                estadoFk = em.merge(estadoFk);
+            }
+            Cidade cidadeFk = instituicao.getCidadeFk();
+            if (cidadeFk != null) {
+                cidadeFk.getInstituicaoCollection().remove(instituicao);
+                cidadeFk = em.merge(cidadeFk);
+            }
             em.remove(instituicao);
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

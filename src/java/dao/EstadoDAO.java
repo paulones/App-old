@@ -22,6 +22,7 @@ import entidade.PessoaFisica;
 import entidade.Endereco;
 import entidade.EnderecoHistorico;
 import entidade.Estado;
+import entidade.Instituicao;
 import entidade.PessoaFisicaHistorico;
 import entidade.Procurador;
 import java.util.List;
@@ -68,9 +69,13 @@ public class EstadoDAO implements Serializable {
         if (estado.getProcuradorCollection() == null) {
             estado.setProcuradorCollection(new ArrayList<Procurador>());
         }
+        if (estado.getInstituicaoCollection() == null) {
+            estado.setInstituicaoCollection(new ArrayList<Instituicao>());
+        }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Pais paisFk = estado.getPaisFk();
             if (paisFk != null) {
                 paisFk = em.getReference(paisFk.getClass(), paisFk.getId());
@@ -124,6 +129,12 @@ public class EstadoDAO implements Serializable {
                 attachedProcuradorCollection.add(procuradorCollectionProcuradorToAttach);
             }
             estado.setProcuradorCollection(attachedProcuradorCollection);
+            Collection<Instituicao> attachedInstituicaoCollection = new ArrayList<Instituicao>();
+            for (Instituicao instituicaoCollectionInstituicaoToAttach : estado.getInstituicaoCollection()) {
+                instituicaoCollectionInstituicaoToAttach = em.getReference(instituicaoCollectionInstituicaoToAttach.getClass(), instituicaoCollectionInstituicaoToAttach.getId());
+                attachedInstituicaoCollection.add(instituicaoCollectionInstituicaoToAttach);
+            }
+            estado.setInstituicaoCollection(attachedInstituicaoCollection);
             em.persist(estado);
             if (paisFk != null) {
                 paisFk.getEstadoCollection().add(estado);
@@ -201,10 +212,19 @@ public class EstadoDAO implements Serializable {
                     oldEstadoFkOfProcuradorCollectionProcurador = em.merge(oldEstadoFkOfProcuradorCollectionProcurador);
                 }
             }
-            em.getTransaction().commit();
+            for (Instituicao instituicaoCollectionInstituicao : estado.getInstituicaoCollection()) {
+                Estado oldEstadoFkOfInstituicaoCollectionInstituicao = instituicaoCollectionInstituicao.getEstadoFk();
+                instituicaoCollectionInstituicao.setEstadoFk(estado);
+                instituicaoCollectionInstituicao = em.merge(instituicaoCollectionInstituicao);
+                if (oldEstadoFkOfInstituicaoCollectionInstituicao != null) {
+                    oldEstadoFkOfInstituicaoCollectionInstituicao.getInstituicaoCollection().remove(instituicaoCollectionInstituicao);
+                    oldEstadoFkOfInstituicaoCollectionInstituicao = em.merge(oldEstadoFkOfInstituicaoCollectionInstituicao);
+                }
+            }
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -219,7 +239,8 @@ public class EstadoDAO implements Serializable {
     public void edit(Estado estado) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Estado persistentEstado = em.find(Estado.class, estado.getId());
             Pais paisFkOld = persistentEstado.getPaisFk();
             Pais paisFkNew = estado.getPaisFk();
@@ -239,6 +260,8 @@ public class EstadoDAO implements Serializable {
             Collection<EnderecoHistorico> enderecoHistoricoCollectionNew = estado.getEnderecoHistoricoCollection();
             Collection<Procurador> procuradorCollectionOld = persistentEstado.getProcuradorCollection();
             Collection<Procurador> procuradorCollectionNew = estado.getProcuradorCollection();
+            Collection<Instituicao> instituicaoCollectionOld = persistentEstado.getInstituicaoCollection();
+            Collection<Instituicao> instituicaoCollectionNew = estado.getInstituicaoCollection();
             List<String> illegalOrphanMessages = null;
             for (Cidade cidadeCollectionOldCidade : cidadeCollectionOld) {
                 if (!cidadeCollectionNew.contains(cidadeCollectionOldCidade)) {
@@ -319,6 +342,13 @@ public class EstadoDAO implements Serializable {
             }
             procuradorCollectionNew = attachedProcuradorCollectionNew;
             estado.setProcuradorCollection(procuradorCollectionNew);
+            Collection<Instituicao> attachedInstituicaoCollectionNew = new ArrayList<Instituicao>();
+            for (Instituicao instituicaoCollectionNewInstituicaoToAttach : instituicaoCollectionNew) {
+                instituicaoCollectionNewInstituicaoToAttach = em.getReference(instituicaoCollectionNewInstituicaoToAttach.getClass(), instituicaoCollectionNewInstituicaoToAttach.getId());
+                attachedInstituicaoCollectionNew.add(instituicaoCollectionNewInstituicaoToAttach);
+            }
+            instituicaoCollectionNew = attachedInstituicaoCollectionNew;
+            estado.setInstituicaoCollection(instituicaoCollectionNew);
             estado = em.merge(estado);
             if (paisFkOld != null && !paisFkOld.equals(paisFkNew)) {
                 paisFkOld.getEstadoCollection().remove(estado);
@@ -452,10 +482,27 @@ public class EstadoDAO implements Serializable {
                     }
                 }
             }
-            em.getTransaction().commit();
+            for (Instituicao instituicaoCollectionOldInstituicao : instituicaoCollectionOld) {
+                if (!instituicaoCollectionNew.contains(instituicaoCollectionOldInstituicao)) {
+                    instituicaoCollectionOldInstituicao.setEstadoFk(null);
+                    instituicaoCollectionOldInstituicao = em.merge(instituicaoCollectionOldInstituicao);
+                }
+            }
+            for (Instituicao instituicaoCollectionNewInstituicao : instituicaoCollectionNew) {
+                if (!instituicaoCollectionOld.contains(instituicaoCollectionNewInstituicao)) {
+                    Estado oldEstadoFkOfInstituicaoCollectionNewInstituicao = instituicaoCollectionNewInstituicao.getEstadoFk();
+                    instituicaoCollectionNewInstituicao.setEstadoFk(estado);
+                    instituicaoCollectionNewInstituicao = em.merge(instituicaoCollectionNewInstituicao);
+                    if (oldEstadoFkOfInstituicaoCollectionNewInstituicao != null && !oldEstadoFkOfInstituicaoCollectionNewInstituicao.equals(estado)) {
+                        oldEstadoFkOfInstituicaoCollectionNewInstituicao.getInstituicaoCollection().remove(instituicaoCollectionNewInstituicao);
+                        oldEstadoFkOfInstituicaoCollectionNewInstituicao = em.merge(oldEstadoFkOfInstituicaoCollectionNewInstituicao);
+                    }
+                }
+            }
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -477,7 +524,8 @@ public class EstadoDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Estado estado;
             try {
                 estado = em.getReference(Estado.class, id);
@@ -538,11 +586,16 @@ public class EstadoDAO implements Serializable {
                 enderecoHistoricoCollectionEnderecoHistorico.setEstadoFk(null);
                 enderecoHistoricoCollectionEnderecoHistorico = em.merge(enderecoHistoricoCollectionEnderecoHistorico);
             }
+            Collection<Instituicao> instituicaoCollection = estado.getInstituicaoCollection();
+            for (Instituicao instituicaoCollectionInstituicao : instituicaoCollection) {
+                instituicaoCollectionInstituicao.setEstadoFk(null);
+                instituicaoCollectionInstituicao = em.merge(instituicaoCollectionInstituicao);
+            }
             em.remove(estado);
-            em.getTransaction().commit();
+             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+                 em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
