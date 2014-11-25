@@ -1826,15 +1826,168 @@
                                         <div class="tab-pane" id="tab4">
                                             <span class="help-block">Campos com * são obrigatórios.</span>
                                             <h3 class="form-section">Identificação dos Atos Processuais</h3>
+                                            <h3 class="form-section">Pedido de Citação</h3>
+                                            <br/>
+                                            <h4 class="help-block">AR</h4>
+                                            <br/>
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="control-label col-md-2">Descrição dos Atos Processuais 
+                                                        <label class="control-label col-md-3">Citado</label>
+                                                        <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="optionsRadios" id="optionsRadios1"  value="option1"></input> Sim </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="optionsRadios" id="optionsRadios2"  value="option2"></input> Não </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Motivo
+                                                        </label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="armotivo" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Data
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="ardata" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Endereço
                                                         </label>
                                                         <div class="col-md-10">
                                                             <div class="input-icon right">
                                                                 <i class="fa"></i>
-                                                                <h:inputTextarea class="form-control" rows="20" id="atoprocessual" value="#{processoJudicialBean.processoJudicial.atoProcessual}"/>
+                                                                <input class="form-control" id="arendereco" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <h4 class="help-block">Oficial de Justiça</h4>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Citado</label>
+                                                        <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="optionsRadios" id="optionsRadiosa1"  value="option1"></input> Sim </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="optionsRadios" id="optionsRadiosa2"  value="option2"></input> Não </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Motivo
+                                                        </label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="oficialmotivo" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Data
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="oficialdata" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-9">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Endereço
+                                                        </label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="oficialendereco" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <h4 class="help-block">Edital</h4>
+                                            <br/>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Citado</label>
+                                                        <div class="col-md-9">
+                                                            <div class="radio-list">
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="optionsRadios" id="optionsRadiosb1"  value="option1"></input> Sim </label>
+                                                                <label class="radio-inline">
+                                                                    <input type="radio" name="optionsRadios" id="optionsRadiosb2"  value="option2"></input> Não </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Motivo
+                                                        </label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="editalmotivo" autocomplete="off" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Data
+                                                        </label>
+                                                        <div class="col-md-4">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <input class="form-control" id="editaldata" autocomplete="off" />
                                                             </div>
                                                         </div>
                                                     </div>
