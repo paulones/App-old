@@ -11,6 +11,7 @@ import entidade.Cidade;
 import entidade.Endereco;
 import entidade.EnderecoHistorico;
 import entidade.Estado;
+import entidade.Instituicao;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaHistorico;
 import java.io.Serializable;
@@ -40,7 +41,7 @@ public class CidadeDAO implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Cidade cidade) throws RollbackFailureException, Exception {
+        public void create(Cidade cidade) throws RollbackFailureException, Exception {
         if (cidade.getPessoaFisicaHistoricoCollection() == null) {
             cidade.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
         }
@@ -52,6 +53,9 @@ public class CidadeDAO implements Serializable {
         }
         if (cidade.getEnderecoHistoricoCollection() == null) {
             cidade.setEnderecoHistoricoCollection(new ArrayList<EnderecoHistorico>());
+        }
+        if (cidade.getInstituicaoCollection() == null) {
+            cidade.setInstituicaoCollection(new ArrayList<Instituicao>());
         }
         EntityManager em = null;
         try {
@@ -86,6 +90,12 @@ public class CidadeDAO implements Serializable {
                 attachedEnderecoHistoricoCollection.add(enderecoHistoricoCollectionEnderecoHistoricoToAttach);
             }
             cidade.setEnderecoHistoricoCollection(attachedEnderecoHistoricoCollection);
+            Collection<Instituicao> attachedInstituicaoCollection = new ArrayList<Instituicao>();
+            for (Instituicao instituicaoCollectionInstituicaoToAttach : cidade.getInstituicaoCollection()) {
+                instituicaoCollectionInstituicaoToAttach = em.getReference(instituicaoCollectionInstituicaoToAttach.getClass(), instituicaoCollectionInstituicaoToAttach.getId());
+                attachedInstituicaoCollection.add(instituicaoCollectionInstituicaoToAttach);
+            }
+            cidade.setInstituicaoCollection(attachedInstituicaoCollection);
             em.persist(cidade);
             if (estadoFk != null) {
                 estadoFk.getCidadeCollection().add(cidade);
@@ -127,10 +137,19 @@ public class CidadeDAO implements Serializable {
                     oldCidadeFkOfEnderecoHistoricoCollectionEnderecoHistorico = em.merge(oldCidadeFkOfEnderecoHistoricoCollectionEnderecoHistorico);
                 }
             }
+            for (Instituicao instituicaoCollectionInstituicao : cidade.getInstituicaoCollection()) {
+                Cidade oldCidadeFkOfInstituicaoCollectionInstituicao = instituicaoCollectionInstituicao.getCidadeFk();
+                instituicaoCollectionInstituicao.setCidadeFk(cidade);
+                instituicaoCollectionInstituicao = em.merge(instituicaoCollectionInstituicao);
+                if (oldCidadeFkOfInstituicaoCollectionInstituicao != null) {
+                    oldCidadeFkOfInstituicaoCollectionInstituicao.getInstituicaoCollection().remove(instituicaoCollectionInstituicao);
+                    oldCidadeFkOfInstituicaoCollectionInstituicao = em.merge(oldCidadeFkOfInstituicaoCollectionInstituicao);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                em.getTransaction().rollback();
+            em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -158,6 +177,8 @@ public class CidadeDAO implements Serializable {
             Collection<PessoaFisica> pessoaFisicaCollectionNew = cidade.getPessoaFisicaCollection();
             Collection<EnderecoHistorico> enderecoHistoricoCollectionOld = persistentCidade.getEnderecoHistoricoCollection();
             Collection<EnderecoHistorico> enderecoHistoricoCollectionNew = cidade.getEnderecoHistoricoCollection();
+            Collection<Instituicao> instituicaoCollectionOld = persistentCidade.getInstituicaoCollection();
+            Collection<Instituicao> instituicaoCollectionNew = cidade.getInstituicaoCollection();
             if (estadoFkNew != null) {
                 estadoFkNew = em.getReference(estadoFkNew.getClass(), estadoFkNew.getId());
                 cidade.setEstadoFk(estadoFkNew);
@@ -190,6 +211,13 @@ public class CidadeDAO implements Serializable {
             }
             enderecoHistoricoCollectionNew = attachedEnderecoHistoricoCollectionNew;
             cidade.setEnderecoHistoricoCollection(enderecoHistoricoCollectionNew);
+            Collection<Instituicao> attachedInstituicaoCollectionNew = new ArrayList<Instituicao>();
+            for (Instituicao instituicaoCollectionNewInstituicaoToAttach : instituicaoCollectionNew) {
+                instituicaoCollectionNewInstituicaoToAttach = em.getReference(instituicaoCollectionNewInstituicaoToAttach.getClass(), instituicaoCollectionNewInstituicaoToAttach.getId());
+                attachedInstituicaoCollectionNew.add(instituicaoCollectionNewInstituicaoToAttach);
+            }
+            instituicaoCollectionNew = attachedInstituicaoCollectionNew;
+            cidade.setInstituicaoCollection(instituicaoCollectionNew);
             cidade = em.merge(cidade);
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getCidadeCollection().remove(cidade);
@@ -267,6 +295,23 @@ public class CidadeDAO implements Serializable {
                     }
                 }
             }
+            for (Instituicao instituicaoCollectionOldInstituicao : instituicaoCollectionOld) {
+                if (!instituicaoCollectionNew.contains(instituicaoCollectionOldInstituicao)) {
+                    instituicaoCollectionOldInstituicao.setCidadeFk(null);
+                    instituicaoCollectionOldInstituicao = em.merge(instituicaoCollectionOldInstituicao);
+                }
+            }
+            for (Instituicao instituicaoCollectionNewInstituicao : instituicaoCollectionNew) {
+                if (!instituicaoCollectionOld.contains(instituicaoCollectionNewInstituicao)) {
+                    Cidade oldCidadeFkOfInstituicaoCollectionNewInstituicao = instituicaoCollectionNewInstituicao.getCidadeFk();
+                    instituicaoCollectionNewInstituicao.setCidadeFk(cidade);
+                    instituicaoCollectionNewInstituicao = em.merge(instituicaoCollectionNewInstituicao);
+                    if (oldCidadeFkOfInstituicaoCollectionNewInstituicao != null && !oldCidadeFkOfInstituicaoCollectionNewInstituicao.equals(cidade)) {
+                        oldCidadeFkOfInstituicaoCollectionNewInstituicao.getInstituicaoCollection().remove(instituicaoCollectionNewInstituicao);
+                        oldCidadeFkOfInstituicaoCollectionNewInstituicao = em.merge(oldCidadeFkOfInstituicaoCollectionNewInstituicao);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -325,6 +370,11 @@ public class CidadeDAO implements Serializable {
             for (EnderecoHistorico enderecoHistoricoCollectionEnderecoHistorico : enderecoHistoricoCollection) {
                 enderecoHistoricoCollectionEnderecoHistorico.setCidadeFk(null);
                 enderecoHistoricoCollectionEnderecoHistorico = em.merge(enderecoHistoricoCollectionEnderecoHistorico);
+            }
+            Collection<Instituicao> instituicaoCollection = cidade.getInstituicaoCollection();
+            for (Instituicao instituicaoCollectionInstituicao : instituicaoCollection) {
+                instituicaoCollectionInstituicao.setCidadeFk(null);
+                instituicaoCollectionInstituicao = em.merge(instituicaoCollectionInstituicao);
             }
             em.remove(cidade);
             em.getTransaction().commit();

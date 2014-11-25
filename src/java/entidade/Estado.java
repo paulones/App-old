@@ -39,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estado.findByNome", query = "SELECT e FROM Estado e WHERE e.nome = :nome"),
     @NamedQuery(name = "Estado.findByUf", query = "SELECT e FROM Estado e WHERE e.uf = :uf")})
 public class Estado implements Serializable {
+    @OneToMany(mappedBy = "estadoFk")
+    private Collection<Instituicao> instituicaoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estadoFk")
     private Collection<Procurador> procuradorCollection;
     private static final long serialVersionUID = 1L;
@@ -215,6 +217,15 @@ public class Estado implements Serializable {
 
     public void setProcuradorCollection(Collection<Procurador> procuradorCollection) {
         this.procuradorCollection = procuradorCollection;
+    }
+
+    @XmlTransient
+    public Collection<Instituicao> getInstituicaoCollection() {
+        return instituicaoCollection;
+    }
+
+    public void setInstituicaoCollection(Collection<Instituicao> instituicaoCollection) {
+        this.instituicaoCollection = instituicaoCollection;
     }
     
 }

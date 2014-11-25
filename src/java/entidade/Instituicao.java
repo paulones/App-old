@@ -16,6 +16,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -42,6 +44,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Instituicao.findByUltimoLogin", query = "SELECT i FROM Instituicao i WHERE i.ultimoLogin = :ultimoLogin"),
     @NamedQuery(name = "Instituicao.findByRazaoSocial", query = "SELECT i FROM Instituicao i WHERE i.razaoSocial = :razaoSocial")})
 public class Instituicao implements Serializable {
+    @JoinColumn(name = "estado_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Estado estadoFk;
+    @JoinColumn(name = "cidade_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Cidade cidadeFk;
     @Size(max = 50)
     @Column(name = "ultimo_login")
     private String ultimoLogin;
@@ -152,6 +160,22 @@ public class Instituicao implements Serializable {
 
     public void setUltimoLogin(String ultimoLogin) {
         this.ultimoLogin = ultimoLogin;
+    }
+
+    public Estado getEstadoFk() {
+        return estadoFk;
+    }
+
+    public void setEstadoFk(Estado estadoFk) {
+        this.estadoFk = estadoFk;
+    }
+
+    public Cidade getCidadeFk() {
+        return cidadeFk;
+    }
+
+    public void setCidadeFk(Cidade cidadeFk) {
+        this.cidadeFk = cidadeFk;
     }
     
 }
