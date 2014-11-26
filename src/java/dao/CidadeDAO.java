@@ -41,7 +41,7 @@ public class CidadeDAO implements Serializable {
         return emf.createEntityManager();
     }
 
-        public void create(Cidade cidade) throws RollbackFailureException, Exception {
+    public void create(Cidade cidade) throws RollbackFailureException, Exception {
         if (cidade.getPessoaFisicaHistoricoCollection() == null) {
             cidade.setPessoaFisicaHistoricoCollection(new ArrayList<PessoaFisicaHistorico>());
         }
@@ -149,7 +149,7 @@ public class CidadeDAO implements Serializable {
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-            em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -337,8 +337,8 @@ public class CidadeDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
             em.getTransaction().begin();
+            em = getEntityManager();
             Cidade cidade;
             try {
                 cidade = em.getReference(Cidade.class, id);
@@ -391,7 +391,7 @@ public class CidadeDAO implements Serializable {
             }
         }
     }
-    
+
     public List<Cidade> findCidadeEntities() {
         return findCidadeEntities(true, -1, -1);
     }

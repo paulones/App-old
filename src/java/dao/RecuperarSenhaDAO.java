@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import dao.exceptions.IllegalOrphanException;
@@ -219,7 +218,7 @@ public class RecuperarSenhaDAO implements Serializable {
             em.close();
         }
     }
-    
+
     public RecuperarSenha findRecuperarSenhaByCod(String cod) {
         EntityManager em = getEntityManager();
         try {
@@ -232,5 +231,5 @@ public class RecuperarSenhaDAO implements Serializable {
             em.close();
         }
     }
-    
+
 }

@@ -305,6 +305,7 @@ public class PessoaFisicaBean implements Serializable {
                 }
                 pessoaFisica.setStatus('A');
                 pessoaFisica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                pessoaFisica.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
                 pessoaFisicaBO.create(pessoaFisica);
                 endereco.setTipo("PF");
                 endereco.setIdFk(pessoaFisica.getId());

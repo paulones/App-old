@@ -329,6 +329,7 @@ public class ProcessoJudicialBean implements Serializable {
              */
             if (pjudDBCDA == null && pjudDBProcess == null) { // Processo novo
                 processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                processoJudicial.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
                 processoJudicial.setStatus('A');
                 if (processoJudicial.getValorAtualizado() == null && processoJudicial.getValorDaCausa() != null) {
                     processoJudicial.setValorAtualizado(processoJudicial.getValorDaCausa());
