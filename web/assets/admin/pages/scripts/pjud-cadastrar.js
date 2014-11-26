@@ -275,7 +275,8 @@ var PjudCad = function() {
     }
 
     var initTable = function() {
-        $('.vinculations').dataTable({
+        var table = $('.vinculations');
+        table.dataTable({
             destroy: true,
             paginate: false,
             lengthMenu: false,
@@ -288,6 +289,35 @@ var PjudCad = function() {
             },
             "ordering": false
         });
+        table.find('.group-checkable').change(function() {
+            var set = jQuery(this).attr("data-set");
+            var checked = jQuery(this).is(":checked");
+            jQuery(set).each(function() {
+                if (checked) {
+                    $(this).attr("checked", true);
+                    $(this).parents('tr').addClass("active");
+                    $(this).parents('tr').find('.socio-name').css("color", "white");
+                } else {
+                    $(this).attr("checked", false);
+                    $(this).parents('tr').removeClass("active");
+                    $(this).parents('tr').find('.socio-name').css("color", "black");
+                }
+            });
+            jQuery.uniform.update(set);
+        });
+        table.on('change', 'tbody tr .checkboxes', function() {
+            var checked = jQuery(this).is(":checked");
+            if (checked) {
+                $(this).attr("checked", true);
+                $(this).parents('tr').addClass("active");
+                $(this).parents('tr').find('.socio-name').css("color", "white");
+            } else {
+                $(this).attr("checked", false);
+                $(this).parents('tr').removeClass("active");
+                $(this).parents('tr').find('.socio-name').css("color", "black");
+            }
+            jQuery.uniform.update(set);
+        });
     }
 
     return {
@@ -297,6 +327,7 @@ var PjudCad = function() {
                 return;
             }
 
+            initTable();
             if ($('.p-error').length > 0) {
                 $('.alert-danger').show();
             }
