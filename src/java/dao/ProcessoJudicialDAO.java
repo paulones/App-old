@@ -9,6 +9,7 @@ import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Bem;
+import entidade.Instituicao;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
 import entidade.Procurador;
@@ -56,7 +57,8 @@ public class ProcessoJudicialDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             TipoRecurso tipoDeRecursoFk = processoJudicial.getTipoDeRecursoFk();
             if (tipoDeRecursoFk != null) {
                 tipoDeRecursoFk = em.getReference(tipoDeRecursoFk.getClass(), tipoDeRecursoFk.getId());
@@ -76,6 +78,11 @@ public class ProcessoJudicialDAO implements Serializable {
             if (procuradorFk != null) {
                 procuradorFk = em.getReference(procuradorFk.getClass(), procuradorFk.getId());
                 processoJudicial.setProcuradorFk(procuradorFk);
+            }
+            Instituicao instituicaoFk = processoJudicial.getInstituicaoFk();
+            if (instituicaoFk != null) {
+                instituicaoFk = em.getReference(instituicaoFk.getClass(), instituicaoFk.getId());
+                processoJudicial.setInstituicaoFk(instituicaoFk);
             }
             Collection<Bem> attachedBemCollection = new ArrayList<Bem>();
             for (Bem bemCollectionBemToAttach : processoJudicial.getBemCollection()) {
@@ -111,6 +118,10 @@ public class ProcessoJudicialDAO implements Serializable {
             if (procuradorFk != null) {
                 procuradorFk.getProcessoJudicialCollection().add(processoJudicial);
                 procuradorFk = em.merge(procuradorFk);
+            }
+            if (instituicaoFk != null) {
+                instituicaoFk.getProcessoJudicialCollection().add(processoJudicial);
+                instituicaoFk = em.merge(instituicaoFk);
             }
             for (Bem bemCollectionBem : processoJudicial.getBemCollection()) {
                 ProcessoJudicial oldProcessoJudicialFkOfBemCollectionBem = bemCollectionBem.getProcessoJudicialFk();
@@ -157,7 +168,8 @@ public class ProcessoJudicialDAO implements Serializable {
     public void edit(ProcessoJudicial processoJudicial) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             ProcessoJudicial persistentProcessoJudicial = em.find(ProcessoJudicial.class, processoJudicial.getId());
             TipoRecurso tipoDeRecursoFkOld = persistentProcessoJudicial.getTipoDeRecursoFk();
             TipoRecurso tipoDeRecursoFkNew = processoJudicial.getTipoDeRecursoFk();
@@ -167,6 +179,8 @@ public class ProcessoJudicialDAO implements Serializable {
             Situacao situacaoFkNew = processoJudicial.getSituacaoFk();
             Procurador procuradorFkOld = persistentProcessoJudicial.getProcuradorFk();
             Procurador procuradorFkNew = processoJudicial.getProcuradorFk();
+            Instituicao instituicaoFkOld = persistentProcessoJudicial.getInstituicaoFk();
+            Instituicao instituicaoFkNew = processoJudicial.getInstituicaoFk();
             Collection<Bem> bemCollectionOld = persistentProcessoJudicial.getBemCollection();
             Collection<Bem> bemCollectionNew = processoJudicial.getBemCollection();
             Collection<VinculoProcessual> vinculoProcessualCollectionOld = persistentProcessoJudicial.getVinculoProcessualCollection();
@@ -216,6 +230,10 @@ public class ProcessoJudicialDAO implements Serializable {
             if (procuradorFkNew != null) {
                 procuradorFkNew = em.getReference(procuradorFkNew.getClass(), procuradorFkNew.getId());
                 processoJudicial.setProcuradorFk(procuradorFkNew);
+            }
+            if (instituicaoFkNew != null) {
+                instituicaoFkNew = em.getReference(instituicaoFkNew.getClass(), instituicaoFkNew.getId());
+                processoJudicial.setInstituicaoFk(instituicaoFkNew);
             }
             Collection<Bem> attachedBemCollectionNew = new ArrayList<Bem>();
             for (Bem bemCollectionNewBemToAttach : bemCollectionNew) {
@@ -270,6 +288,14 @@ public class ProcessoJudicialDAO implements Serializable {
             if (procuradorFkNew != null && !procuradorFkNew.equals(procuradorFkOld)) {
                 procuradorFkNew.getProcessoJudicialCollection().add(processoJudicial);
                 procuradorFkNew = em.merge(procuradorFkNew);
+            }
+            if (instituicaoFkOld != null && !instituicaoFkOld.equals(instituicaoFkNew)) {
+                instituicaoFkOld.getProcessoJudicialCollection().remove(processoJudicial);
+                instituicaoFkOld = em.merge(instituicaoFkOld);
+            }
+            if (instituicaoFkNew != null && !instituicaoFkNew.equals(instituicaoFkOld)) {
+                instituicaoFkNew.getProcessoJudicialCollection().add(processoJudicial);
+                instituicaoFkNew = em.merge(instituicaoFkNew);
             }
             for (Bem bemCollectionNewBem : bemCollectionNew) {
                 if (!bemCollectionOld.contains(bemCollectionNewBem)) {
@@ -329,7 +355,8 @@ public class ProcessoJudicialDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             ProcessoJudicial processoJudicial;
             try {
                 processoJudicial = em.getReference(ProcessoJudicial.class, id);
@@ -381,6 +408,11 @@ public class ProcessoJudicialDAO implements Serializable {
             if (procuradorFk != null) {
                 procuradorFk.getProcessoJudicialCollection().remove(processoJudicial);
                 procuradorFk = em.merge(procuradorFk);
+            }
+            Instituicao instituicaoFk = processoJudicial.getInstituicaoFk();
+            if (instituicaoFk != null) {
+                instituicaoFk.getProcessoJudicialCollection().remove(processoJudicial);
+                instituicaoFk = em.merge(instituicaoFk);
             }
             em.remove(processoJudicial);
             em.getTransaction().commit();

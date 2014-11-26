@@ -273,6 +273,7 @@ public class PessoaJuridicaBean implements Serializable {
             if (pjDB == null || pessoaJuridica.getCnpj().isEmpty()) { //CNPJ novo
                 pessoaJuridica.setStatus('A');
                 pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                pessoaJuridica.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
                 pessoaJuridicaBO.create(pessoaJuridica);
                 endereco.setTipo("PJ");
                 endereco.setIdFk(pessoaJuridica.getId());

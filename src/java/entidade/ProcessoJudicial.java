@@ -78,6 +78,9 @@ public class ProcessoJudicial implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @JoinColumn(name = "instituicao_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Instituicao instituicaoFk;
     @JoinColumn(name = "procurador_fk", referencedColumnName = "id")
     @ManyToOne
     private Procurador procuradorFk;
@@ -661,6 +664,14 @@ public class ProcessoJudicial implements Serializable {
 
     public void setProcuradorFk(Procurador procuradorFk) {
         this.procuradorFk = procuradorFk;
+    }
+
+    public Instituicao getInstituicaoFk() {
+        return instituicaoFk;
+    }
+
+    public void setInstituicaoFk(Instituicao instituicaoFk) {
+        this.instituicaoFk = instituicaoFk;
     }
 
 }

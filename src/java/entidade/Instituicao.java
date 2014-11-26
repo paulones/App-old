@@ -45,6 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Instituicao.findByRazaoSocial", query = "SELECT i FROM Instituicao i WHERE i.razaoSocial = :razaoSocial")})
 public class Instituicao implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituicaoFk")
+    private Collection<PessoaFisica> pessoaFisicaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituicaoFk")
+    private Collection<ProcessoJudicial> processoJudicialCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituicaoFk")
     private Collection<PessoaJuridica> pessoaJuridicaCollection;
     @JoinColumn(name = "estado_fk", referencedColumnName = "id")
     @ManyToOne
@@ -187,6 +191,24 @@ public class Instituicao implements Serializable {
 
     public void setPessoaJuridicaCollection(Collection<PessoaJuridica> pessoaJuridicaCollection) {
         this.pessoaJuridicaCollection = pessoaJuridicaCollection;
+    }
+
+    @XmlTransient
+    public Collection<PessoaFisica> getPessoaFisicaCollection() {
+        return pessoaFisicaCollection;
+    }
+
+    public void setPessoaFisicaCollection(Collection<PessoaFisica> pessoaFisicaCollection) {
+        this.pessoaFisicaCollection = pessoaFisicaCollection;
+    }
+
+    @XmlTransient
+    public Collection<ProcessoJudicial> getProcessoJudicialCollection() {
+        return processoJudicialCollection;
+    }
+
+    public void setProcessoJudicialCollection(Collection<ProcessoJudicial> processoJudicialCollection) {
+        this.processoJudicialCollection = processoJudicialCollection;
     }
     
 }
