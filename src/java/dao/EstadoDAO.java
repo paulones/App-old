@@ -221,10 +221,10 @@ public class EstadoDAO implements Serializable {
                     oldEstadoFkOfInstituicaoCollectionInstituicao = em.merge(oldEstadoFkOfInstituicaoCollectionInstituicao);
                 }
             }
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -499,10 +499,10 @@ public class EstadoDAO implements Serializable {
                     }
                 }
             }
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -592,10 +592,10 @@ public class EstadoDAO implements Serializable {
                 instituicaoCollectionInstituicao = em.merge(instituicaoCollectionInstituicao);
             }
             em.remove(estado);
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

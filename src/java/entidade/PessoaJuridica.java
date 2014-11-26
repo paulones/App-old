@@ -54,6 +54,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "PessoaJuridica.findByAtividadeSecundaria", query = "SELECT p FROM PessoaJuridica p WHERE p.atividadeSecundaria = :atividadeSecundaria"),
     @NamedQuery(name = "PessoaJuridica.findByStatus", query = "SELECT p FROM PessoaJuridica p WHERE p.status = :status")})
 public class PessoaJuridica implements Serializable {
+    @JoinColumn(name = "instituicao_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private Instituicao instituicaoFk;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucedidaFk")
     private Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pessoaJuridicaSucessoraFk")
@@ -466,6 +469,14 @@ public class PessoaJuridica implements Serializable {
 
     public void setPessoaJuridicaSucessaoHistoricoCollection1(Collection<PessoaJuridicaSucessaoHistorico> pessoaJuridicaSucessaoHistoricoCollection1) {
         this.pessoaJuridicaSucessaoHistoricoCollection1 = pessoaJuridicaSucessaoHistoricoCollection1;
+    }
+
+    public Instituicao getInstituicaoFk() {
+        return instituicaoFk;
+    }
+
+    public void setInstituicaoFk(Instituicao instituicaoFk) {
+        this.instituicaoFk = instituicaoFk;
     }
     
 }

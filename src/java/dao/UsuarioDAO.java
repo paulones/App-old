@@ -75,7 +75,8 @@ public class UsuarioDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             RecuperarSenha recuperarSenha = usuario.getRecuperarSenha();
             if (recuperarSenha != null) {
                 recuperarSenha = em.getReference(recuperarSenha.getClass(), recuperarSenha.getId());
@@ -229,7 +230,8 @@ public class UsuarioDAO implements Serializable {
     public void edit(Usuario usuario) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Usuario persistentUsuario = em.find(Usuario.class, usuario.getId());
             RecuperarSenha recuperarSenhaOld = persistentUsuario.getRecuperarSenha();
             RecuperarSenha recuperarSenhaNew = usuario.getRecuperarSenha();
@@ -506,7 +508,8 @@ public class UsuarioDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Usuario usuario;
             try {
                 usuario = em.getReference(Usuario.class, id);

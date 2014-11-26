@@ -13,6 +13,7 @@ import entidade.Autorizacao;
 import entidade.Cidade;
 import entidade.Estado;
 import entidade.Instituicao;
+import entidade.PessoaJuridica;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,6 +45,9 @@ public class InstituicaoDAO implements Serializable {
         if (instituicao.getAutorizacaoCollection() == null) {
             instituicao.setAutorizacaoCollection(new ArrayList<Autorizacao>());
         }
+        if (instituicao.getPessoaJuridicaCollection() == null) {
+            instituicao.setPessoaJuridicaCollection(new ArrayList<PessoaJuridica>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -64,6 +68,12 @@ public class InstituicaoDAO implements Serializable {
                 attachedAutorizacaoCollection.add(autorizacaoCollectionAutorizacaoToAttach);
             }
             instituicao.setAutorizacaoCollection(attachedAutorizacaoCollection);
+            Collection<PessoaJuridica> attachedPessoaJuridicaCollection = new ArrayList<PessoaJuridica>();
+            for (PessoaJuridica pessoaJuridicaCollectionPessoaJuridicaToAttach : instituicao.getPessoaJuridicaCollection()) {
+                pessoaJuridicaCollectionPessoaJuridicaToAttach = em.getReference(pessoaJuridicaCollectionPessoaJuridicaToAttach.getClass(), pessoaJuridicaCollectionPessoaJuridicaToAttach.getId());
+                attachedPessoaJuridicaCollection.add(pessoaJuridicaCollectionPessoaJuridicaToAttach);
+            }
+            instituicao.setPessoaJuridicaCollection(attachedPessoaJuridicaCollection);
             em.persist(instituicao);
             if (estadoFk != null) {
                 estadoFk.getInstituicaoCollection().add(instituicao);
@@ -82,10 +92,19 @@ public class InstituicaoDAO implements Serializable {
                     oldInstituicaoFkOfAutorizacaoCollectionAutorizacao = em.merge(oldInstituicaoFkOfAutorizacaoCollectionAutorizacao);
                 }
             }
-             em.getTransaction().commit();
+            for (PessoaJuridica pessoaJuridicaCollectionPessoaJuridica : instituicao.getPessoaJuridicaCollection()) {
+                Instituicao oldInstituicaoFkOfPessoaJuridicaCollectionPessoaJuridica = pessoaJuridicaCollectionPessoaJuridica.getInstituicaoFk();
+                pessoaJuridicaCollectionPessoaJuridica.setInstituicaoFk(instituicao);
+                pessoaJuridicaCollectionPessoaJuridica = em.merge(pessoaJuridicaCollectionPessoaJuridica);
+                if (oldInstituicaoFkOfPessoaJuridicaCollectionPessoaJuridica != null) {
+                    oldInstituicaoFkOfPessoaJuridicaCollectionPessoaJuridica.getPessoaJuridicaCollection().remove(pessoaJuridicaCollectionPessoaJuridica);
+                    oldInstituicaoFkOfPessoaJuridicaCollectionPessoaJuridica = em.merge(oldInstituicaoFkOfPessoaJuridicaCollectionPessoaJuridica);
+                }
+            }
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -109,6 +128,8 @@ public class InstituicaoDAO implements Serializable {
             Cidade cidadeFkNew = instituicao.getCidadeFk();
             Collection<Autorizacao> autorizacaoCollectionOld = persistentInstituicao.getAutorizacaoCollection();
             Collection<Autorizacao> autorizacaoCollectionNew = instituicao.getAutorizacaoCollection();
+            Collection<PessoaJuridica> pessoaJuridicaCollectionOld = persistentInstituicao.getPessoaJuridicaCollection();
+            Collection<PessoaJuridica> pessoaJuridicaCollectionNew = instituicao.getPessoaJuridicaCollection();
             List<String> illegalOrphanMessages = null;
             for (Autorizacao autorizacaoCollectionOldAutorizacao : autorizacaoCollectionOld) {
                 if (!autorizacaoCollectionNew.contains(autorizacaoCollectionOldAutorizacao)) {
@@ -116,6 +137,14 @@ public class InstituicaoDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Autorizacao " + autorizacaoCollectionOldAutorizacao + " since its instituicaoFk field is not nullable.");
+                }
+            }
+            for (PessoaJuridica pessoaJuridicaCollectionOldPessoaJuridica : pessoaJuridicaCollectionOld) {
+                if (!pessoaJuridicaCollectionNew.contains(pessoaJuridicaCollectionOldPessoaJuridica)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain PessoaJuridica " + pessoaJuridicaCollectionOldPessoaJuridica + " since its instituicaoFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -136,6 +165,13 @@ public class InstituicaoDAO implements Serializable {
             }
             autorizacaoCollectionNew = attachedAutorizacaoCollectionNew;
             instituicao.setAutorizacaoCollection(autorizacaoCollectionNew);
+            Collection<PessoaJuridica> attachedPessoaJuridicaCollectionNew = new ArrayList<PessoaJuridica>();
+            for (PessoaJuridica pessoaJuridicaCollectionNewPessoaJuridicaToAttach : pessoaJuridicaCollectionNew) {
+                pessoaJuridicaCollectionNewPessoaJuridicaToAttach = em.getReference(pessoaJuridicaCollectionNewPessoaJuridicaToAttach.getClass(), pessoaJuridicaCollectionNewPessoaJuridicaToAttach.getId());
+                attachedPessoaJuridicaCollectionNew.add(pessoaJuridicaCollectionNewPessoaJuridicaToAttach);
+            }
+            pessoaJuridicaCollectionNew = attachedPessoaJuridicaCollectionNew;
+            instituicao.setPessoaJuridicaCollection(pessoaJuridicaCollectionNew);
             instituicao = em.merge(instituicao);
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getInstituicaoCollection().remove(instituicao);
@@ -164,10 +200,21 @@ public class InstituicaoDAO implements Serializable {
                     }
                 }
             }
-             em.getTransaction().commit();
+            for (PessoaJuridica pessoaJuridicaCollectionNewPessoaJuridica : pessoaJuridicaCollectionNew) {
+                if (!pessoaJuridicaCollectionOld.contains(pessoaJuridicaCollectionNewPessoaJuridica)) {
+                    Instituicao oldInstituicaoFkOfPessoaJuridicaCollectionNewPessoaJuridica = pessoaJuridicaCollectionNewPessoaJuridica.getInstituicaoFk();
+                    pessoaJuridicaCollectionNewPessoaJuridica.setInstituicaoFk(instituicao);
+                    pessoaJuridicaCollectionNewPessoaJuridica = em.merge(pessoaJuridicaCollectionNewPessoaJuridica);
+                    if (oldInstituicaoFkOfPessoaJuridicaCollectionNewPessoaJuridica != null && !oldInstituicaoFkOfPessoaJuridicaCollectionNewPessoaJuridica.equals(instituicao)) {
+                        oldInstituicaoFkOfPessoaJuridicaCollectionNewPessoaJuridica.getPessoaJuridicaCollection().remove(pessoaJuridicaCollectionNewPessoaJuridica);
+                        oldInstituicaoFkOfPessoaJuridicaCollectionNewPessoaJuridica = em.merge(oldInstituicaoFkOfPessoaJuridicaCollectionNewPessoaJuridica);
+                    }
+                }
+            }
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -206,6 +253,13 @@ public class InstituicaoDAO implements Serializable {
                 }
                 illegalOrphanMessages.add("This Instituicao (" + instituicao + ") cannot be destroyed since the Autorizacao " + autorizacaoCollectionOrphanCheckAutorizacao + " in its autorizacaoCollection field has a non-nullable instituicaoFk field.");
             }
+            Collection<PessoaJuridica> pessoaJuridicaCollectionOrphanCheck = instituicao.getPessoaJuridicaCollection();
+            for (PessoaJuridica pessoaJuridicaCollectionOrphanCheckPessoaJuridica : pessoaJuridicaCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Instituicao (" + instituicao + ") cannot be destroyed since the PessoaJuridica " + pessoaJuridicaCollectionOrphanCheckPessoaJuridica + " in its pessoaJuridicaCollection field has a non-nullable instituicaoFk field.");
+            }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
@@ -220,10 +274,10 @@ public class InstituicaoDAO implements Serializable {
                 cidadeFk = em.merge(cidadeFk);
             }
             em.remove(instituicao);
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

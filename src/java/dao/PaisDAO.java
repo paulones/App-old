@@ -100,10 +100,10 @@ public class PaisDAO implements Serializable {
                     oldPaisFkOfPessoaFisicaCollectionPessoaFisica = em.merge(oldPaisFkOfPessoaFisicaCollectionPessoaFisica);
                 }
             }
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -206,10 +206,10 @@ public class PaisDAO implements Serializable {
                     }
                 }
             }
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -262,10 +262,10 @@ public class PaisDAO implements Serializable {
                 pessoaFisicaCollectionPessoaFisica = em.merge(pessoaFisicaCollectionPessoaFisica);
             }
             em.remove(pais);
-             em.getTransaction().commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                 em.getTransaction().rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

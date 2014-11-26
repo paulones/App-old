@@ -46,7 +46,8 @@ public class TipoEmpresarialDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Collection<PessoaJuridica> attachedPessoaJuridicaCollection = new ArrayList<PessoaJuridica>();
             for (PessoaJuridica pessoaJuridicaCollectionPessoaJuridicaToAttach : tipoEmpresarial.getPessoaJuridicaCollection()) {
                 pessoaJuridicaCollectionPessoaJuridicaToAttach = em.getReference(pessoaJuridicaCollectionPessoaJuridicaToAttach.getClass(), pessoaJuridicaCollectionPessoaJuridicaToAttach.getId());
@@ -96,7 +97,8 @@ public class TipoEmpresarialDAO implements Serializable {
     public void edit(TipoEmpresarial tipoEmpresarial) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             TipoEmpresarial persistentTipoEmpresarial = em.find(TipoEmpresarial.class, tipoEmpresarial.getId());
             Collection<PessoaJuridica> pessoaJuridicaCollectionOld = persistentTipoEmpresarial.getPessoaJuridicaCollection();
             Collection<PessoaJuridica> pessoaJuridicaCollectionNew = tipoEmpresarial.getPessoaJuridicaCollection();
@@ -176,7 +178,8 @@ public class TipoEmpresarialDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             TipoEmpresarial tipoEmpresarial;
             try {
                 tipoEmpresarial = em.getReference(TipoEmpresarial.class, id);
