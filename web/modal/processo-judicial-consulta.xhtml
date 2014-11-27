@@ -457,16 +457,16 @@
                                                                 <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{templateBean.executado.enderecoPessoa.bemList.isEmpty()}">
                                                                     Nenhum bem registrado.
                                                                 </h:panelGroup>
-                                                                <h:panelGroup layout="block" class="panel-group accordion accordion-modal-pjud-pfcon accordion-modal-pjud-pfcon-#{templateBean.executado.enderecoPessoa.pessoa.id}">
+                                                                <h:panelGroup layout="block" class="panel-group accordion accordion-modal-pjud-pfcon accordion-modal-pjud-pfcon-#{templateBean.executado.processoJudicial.id}">
                                                                     <ui:repeat value="#{templateBean.executado.enderecoPessoa.bemList}" var="bem" varStatus="status">
                                                                         <div class="panel panel-default">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
-                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-modal-pjud-pfcon-#{templateBean.executado.enderecoPessoa.pessoa.id}"  href="#collapse_#{status.index}_#{templateBean.executado.enderecoPessoa.pessoa.id}">
+                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-modal-pjud-pfcon-#{templateBean.executado.processoJudicial.id}"  href="#collapse_#{status.index}_#{templateBean.executado.processoJudicial.id}">
                                                                                         #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
                                                                                 </h4>
                                                                             </div>
-                                                                            <div id="collapse_#{status.index}_#{templateBean.executado.enderecoPessoa.pessoa.id}" class="panel-collapse collapse">
+                                                                            <div id="collapse_#{status.index}_#{templateBean.executado.processoJudicial.id}" class="panel-collapse collapse">
                                                                                 <div class="panel-body">
                                                                                     <div class="row">
                                                                                         <div class="col-md-8">
@@ -994,16 +994,16 @@
                                                                                     <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{templateBean.executado.enderecoPessoa.bemList.isEmpty()}">
                                                                                         Nenhum bem registrado.
                                                                                     </h:panelGroup>
-                                                                                    <h:panelGroup layout="block" class="panel-group accordion accordion-modal-pjud-pjcon accordion-modal-pjud-pjcon-#{templateBean.executado.enderecoPessoa.pessoa.id}">
+                                                                                    <h:panelGroup layout="block" class="panel-group accordion accordion-modal-pjud-pjcon accordion-modal-pjud-pjcon-#{templateBean.executado.processoJudicial.id}">
                                                                                         <ui:repeat value="#{templateBean.executado.enderecoPessoa.bemList}" var="bem" varStatus="status">
                                                                                             <div class="panel panel-default">
                                                                                                 <div class="panel-heading">
                                                                                                     <h4 class="panel-title">
-                                                                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-modal-pjud-pjcon-#{templateBean.executado.enderecoPessoa.pessoa.id}"  href="#collapse_#{status.index}_#{templateBean.executado.enderecoPessoa.pessoa.id}">
+                                                                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-modal-pjud-pjcon-#{templateBean.executado.processoJudicial.id}"  href="#collapse_#{status.index}_#{templateBean.executado.processoJudicial.id}">
                                                                                                             #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
                                                                                                     </h4>
                                                                                                 </div>
-                                                                                                <div id="collapse_#{status.index}_#{templateBean.executado.enderecoPessoa.pessoa.id}" class="panel-collapse collapse">
+                                                                                                <div id="collapse_#{status.index}_#{templateBean.executado.processoJudicial.id}" class="panel-collapse collapse">
                                                                                                     <div class="panel-body">
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-8">
