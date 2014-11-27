@@ -66,7 +66,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicialHistorico.findByExecutado", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.executado = :executado"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesProcesso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesProcesso = :outrasInformacoesProcesso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesBem = :outrasInformacoesBem"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByRecurso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.recurso = :recurso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.atoProcessual = :atoProcessual"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesAtoProcessual = :outrasInformacoesAtoProcessual"),
@@ -170,9 +169,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 300)
     @Column(name = "outras_informacoes_executado")
     private String outrasInformacoesExecutado;
-    @Size(max = 300)
-    @Column(name = "outras_informacoes_bem")
-    private String outrasInformacoesBem;
     @Size(max = 50)
     @Column(name = "recurso")
     private String recurso;
@@ -187,8 +183,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Column(name = "data_de_modificacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataDeModificacao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
-    private Collection<BemHistorico> bemHistoricoCollection;
     @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicial processoJudicialFk;
@@ -386,14 +380,6 @@ public class ProcessoJudicialHistorico implements Serializable {
         this.outrasInformacoesExecutado = outrasInformacoesExecutado;
     }
 
-    public String getOutrasInformacoesBem() {
-        return outrasInformacoesBem;
-    }
-
-    public void setOutrasInformacoesBem(String outrasInformacoesBem) {
-        this.outrasInformacoesBem = outrasInformacoesBem;
-    }
-
     public String getRecurso() {
         return recurso;
     }
@@ -424,15 +410,6 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setDataDeModificacao(Date dataDeModificacao) {
         this.dataDeModificacao = dataDeModificacao;
-    }
-
-    @XmlTransient
-    public Collection<BemHistorico> getBemHistoricoCollection() {
-        return bemHistoricoCollection;
-    }
-
-    public void setBemHistoricoCollection(Collection<BemHistorico> bemHistoricoCollection) {
-        this.bemHistoricoCollection = bemHistoricoCollection;
     }
 
     public ProcessoJudicial getProcessoJudicialFk() {

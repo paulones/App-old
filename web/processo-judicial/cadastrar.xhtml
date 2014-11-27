@@ -100,14 +100,6 @@
                                                 <span class="number">
                                                     3 </span>
                                                 <span class="desc">
-                                                    <i class="fa fa-check"></i> Bens </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#tab4" data-toggle="tab" class="step">
-                                                <span class="number">
-                                                    4 </span>
-                                                <span class="desc">
                                                     <i class="fa fa-check"></i> Ato Processual </span>
                                             </a>
                                         </li>
@@ -643,6 +635,92 @@
                                                                                                 </table>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <h3 class="form-section">Bens</h3>
+                                                                                        <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{processoJudicialBean.enderecoPessoaFisica.bemList.isEmpty()}">
+                                                                                            Nenhum bem registrado.
+                                                                                        </h:panelGroup>
+                                                                                        <h:panelGroup layout="block" class="panel-group accordion accordion-pjud-pfcon accordion-pjud-pfcon-#{processoJudicialBean.enderecoPessoaFisica.pessoa.id}" >
+                                                                                            <ui:repeat value="#{processoJudicialBean.enderecoPessoaFisica.bemList}" var="bem" varStatus="status">
+                                                                                                <div class="panel panel-default">
+                                                                                                    <div class="panel-heading">
+                                                                                                        <h4 class="panel-title">
+                                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-pjud-pfcon-#{processoJudicialBean.enderecoPessoaFisica.pessoa.id}"  href="#collapse_#{status.index}_#{processoJudicialBean.enderecoPessoaFisica.pessoa.id}">
+                                                                                                                #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
+                                                                                                        </h4>
+                                                                                                    </div>
+                                                                                                    <div id="collapse_#{status.index}_#{processoJudicialBean.enderecoPessoaFisica.pessoa.id}" class="panel-collapse collapse">
+                                                                                                        <div class="panel-body">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-8">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Descrição:</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.descricao eq null ? '-' : bem.descricao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3">Tipo:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.tipoBemFk eq null ? '-' : bem.tipoBemFk.tipo}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-8">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Endereço:</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.endereco eq null ? '-' : bem.endereco}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3">Valor:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-bem-static money">
+                                                                                                                                #{bem.valor eq null ? '-' : bem.valor}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-8">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Aquisição:</label>
+                                                                                                                        <div class="col-md-8">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.dataDeAquisicao eq null ? '-' : bem.dataDeAquisicao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3 col-md-pull-1">Extinção:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.dataDeTransferenciaOuExtincao eq null ? '-' : bem.dataDeTransferenciaOuExtincao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </ui:repeat>
+                                                                                        </h:panelGroup>
                                                                                     </div>
                                                                                     <!-- END LISTA CONTENT-->
                                                                                 </div>
@@ -1171,6 +1249,92 @@
                                                                                                 </table>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <h3 class="form-section">Bens</h3>
+                                                                                        <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{processoJudicialBean.enderecoPessoaJuridica.bemList.isEmpty()}">
+                                                                                            Nenhum bem registrado.
+                                                                                        </h:panelGroup>
+                                                                                        <h:panelGroup layout="block" class="panel-group accordion accordion-pjud-pjcon accordion-pjud-pjcon-#{processoJudicialBean.enderecoPessoaJuridica.pessoa.id}">
+                                                                                            <ui:repeat value="#{processoJudicialBean.enderecoPessoaJuridica.bemList}" var="bem" varStatus="status">
+                                                                                                <div class="panel panel-default">
+                                                                                                    <div class="panel-heading">
+                                                                                                        <h4 class="panel-title">
+                                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-pjud-pjcon-#{processoJudicialBean.enderecoPessoaJuridica.pessoa.id}"  href="#collapse_#{status.index}_#{processoJudicialBean.enderecoPessoaJuridica.pessoa.id}">
+                                                                                                                #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
+                                                                                                        </h4>
+                                                                                                    </div>
+                                                                                                    <div id="collapse_#{status.index}_#{processoJudicialBean.enderecoPessoaJuridica.pessoa.id}" class="panel-collapse collapse">
+                                                                                                        <div class="panel-body">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-8">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Descrição:</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.descricao eq null ? '-' : bem.descricao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3">Tipo:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.tipoBemFk eq null ? '-' : bem.tipoBemFk.tipo}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-8">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Endereço:</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.endereco eq null ? '-' : bem.endereco}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3">Valor:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-bem-static money">
+                                                                                                                                #{bem.valor eq null ? '-' : bem.valor}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-8">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Aquisição:</label>
+                                                                                                                        <div class="col-md-8">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.dataDeAquisicao eq null ? '-' : bem.dataDeAquisicao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3 col-md-pull-1">Extinção:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-bem-static">
+                                                                                                                                #{bem.dataDeTransferenciaOuExtincao eq null ? '-' : bem.dataDeTransferenciaOuExtincao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </ui:repeat>
+                                                                                        </h:panelGroup>
                                                                                         <!-- /row -->
                                                                                     </div>
                                                                                     <!-- END LISTA CONTENT-->
@@ -1755,75 +1919,6 @@
                                         </div>
                                         <!--/tab-->
                                         <div class="tab-pane" id="tab3">
-                                            <span class="help-block">Campos com * são obrigatórios.</span>
-                                            <h3 class="form-section">Identificação dos Bens</h3>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">Quantidade de Bens 
-                                                        </label>
-                                                        <div class="col-md-2">
-                                                            <h:inputText p:type="number" p:min="0" class="form-control" id="bens" value="#{processoJudicialBean.bens}" />
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <h:commandLink class="bens btn blue-chambray">
-                                                                <f:ajax execute="bens bem" listener="#{processoJudicialBean.adicionarBens}" render="bem"/>
-                                                                <i class="fa fa-plus-circle"> Adicionar Campos</i>
-                                                            </h:commandLink>
-                                                            <h:messages/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <h:panelGroup id="bem">
-                                                <ui:repeat value="#{processoJudicialBean.bemList}" var="bem">
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-2">Descrição do Bem / Valor / Data do Ato 
-                                                                </label>
-                                                                <div class="col-md-6">
-                                                                    <div class="input-icon right">
-                                                                        <i class="fa"></i>
-                                                                        <h:inputTextarea class="form-control bem" id="descricao" value="#{bem.descricao}" />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <div class="input-icon right">
-                                                                        <i class="fa"></i>
-                                                                        <h:inputText class="form-control bemvalor money" value="#{bem.valor}" converter="maskMoneyConverter"/>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-2">
-                                                                    <div class="input-icon right">
-                                                                        <i class="fa"></i>
-                                                                        <h:inputText class="form-control bemdata date" p:placeholder="dd/mm/aaaa" value="#{bem.dataDoAto}" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </ui:repeat>
-                                            </h:panelGroup>
-                                            <h3 class="form-section"></h3>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">Outras Informações 
-                                                        </label>
-                                                        <div class="col-md-10">
-                                                            <div class="input-icon right">
-                                                                <i class="fa"></i>
-                                                                <h:inputTextarea p:maxlength="300" class="form-control" rows="3" id="outrasinfos3" value="#{processoJudicialBean.processoJudicial.outrasInformacoesBem}"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!--/span-->
-                                            </div>
-                                        </div> 
-                                        <!--/tab-->
-                                        <div class="tab-pane" id="tab4">
                                             <span class="help-block">Campos com * são obrigatórios.</span>
                                             <h3 class="form-section">Identificação dos Atos Processuais</h3>
                                             <div class="row">

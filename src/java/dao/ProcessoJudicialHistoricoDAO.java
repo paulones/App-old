@@ -45,9 +45,6 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
     }
 
     public void create(ProcessoJudicialHistorico processoJudicialHistorico) throws RollbackFailureException, Exception {
-        if (processoJudicialHistorico.getBemHistoricoCollection() == null) {
-            processoJudicialHistorico.setBemHistoricoCollection(new ArrayList<BemHistorico>());
-        }
         if (processoJudicialHistorico.getVinculoProcessualHistoricoCollection() == null) {
             processoJudicialHistorico.setVinculoProcessualHistoricoCollection(new ArrayList<VinculoProcessualHistorico>());
         }
@@ -79,12 +76,6 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                 procuradorFk = em.getReference(procuradorFk.getClass(), procuradorFk.getId());
                 processoJudicialHistorico.setProcuradorFk(procuradorFk);
             }
-            Collection<BemHistorico> attachedBemHistoricoCollection = new ArrayList<BemHistorico>();
-            for (BemHistorico bemHistoricoCollectionBemHistoricoToAttach : processoJudicialHistorico.getBemHistoricoCollection()) {
-                bemHistoricoCollectionBemHistoricoToAttach = em.getReference(bemHistoricoCollectionBemHistoricoToAttach.getClass(), bemHistoricoCollectionBemHistoricoToAttach.getId());
-                attachedBemHistoricoCollection.add(bemHistoricoCollectionBemHistoricoToAttach);
-            }
-            processoJudicialHistorico.setBemHistoricoCollection(attachedBemHistoricoCollection);
             Collection<VinculoProcessualHistorico> attachedVinculoProcessualHistoricoCollection = new ArrayList<VinculoProcessualHistorico>();
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach : processoJudicialHistorico.getVinculoProcessualHistoricoCollection()) {
                 vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach = em.getReference(vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach.getClass(), vinculoProcessualHistoricoCollectionVinculoProcessualHistoricoToAttach.getId());
@@ -111,15 +102,6 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             if (procuradorFk != null) {
                 procuradorFk.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
                 procuradorFk = em.merge(procuradorFk);
-            }
-            for (BemHistorico bemHistoricoCollectionBemHistorico : processoJudicialHistorico.getBemHistoricoCollection()) {
-                ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionBemHistorico = bemHistoricoCollectionBemHistorico.getProcessoJudicialHistoricoFk();
-                bemHistoricoCollectionBemHistorico.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
-                bemHistoricoCollectionBemHistorico = em.merge(bemHistoricoCollectionBemHistorico);
-                if (oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionBemHistorico != null) {
-                    oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionBemHistorico.getBemHistoricoCollection().remove(bemHistoricoCollectionBemHistorico);
-                    oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionBemHistorico = em.merge(oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionBemHistorico);
-                }
             }
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionVinculoProcessualHistorico : processoJudicialHistorico.getVinculoProcessualHistoricoCollection()) {
                 ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfVinculoProcessualHistoricoCollectionVinculoProcessualHistorico = vinculoProcessualHistoricoCollectionVinculoProcessualHistorico.getProcessoJudicialHistoricoFk();
@@ -160,19 +142,9 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             Situacao situacaoFkNew = processoJudicialHistorico.getSituacaoFk();
             Procurador procuradorFkOld = persistentProcessoJudicialHistorico.getProcuradorFk();
             Procurador procuradorFkNew = processoJudicialHistorico.getProcuradorFk();
-            Collection<BemHistorico> bemHistoricoCollectionOld = persistentProcessoJudicialHistorico.getBemHistoricoCollection();
-            Collection<BemHistorico> bemHistoricoCollectionNew = processoJudicialHistorico.getBemHistoricoCollection();
             Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionOld = persistentProcessoJudicialHistorico.getVinculoProcessualHistoricoCollection();
             Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionNew = processoJudicialHistorico.getVinculoProcessualHistoricoCollection();
             List<String> illegalOrphanMessages = null;
-            for (BemHistorico bemHistoricoCollectionOldBemHistorico : bemHistoricoCollectionOld) {
-                if (!bemHistoricoCollectionNew.contains(bemHistoricoCollectionOldBemHistorico)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain BemHistorico " + bemHistoricoCollectionOldBemHistorico + " since its processoJudicialHistoricoFk field is not nullable.");
-                }
-            }
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionOld) {
                 if (!vinculoProcessualHistoricoCollectionNew.contains(vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico)) {
                     if (illegalOrphanMessages == null) {
@@ -204,13 +176,6 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                 procuradorFkNew = em.getReference(procuradorFkNew.getClass(), procuradorFkNew.getId());
                 processoJudicialHistorico.setProcuradorFk(procuradorFkNew);
             }
-            Collection<BemHistorico> attachedBemHistoricoCollectionNew = new ArrayList<BemHistorico>();
-            for (BemHistorico bemHistoricoCollectionNewBemHistoricoToAttach : bemHistoricoCollectionNew) {
-                bemHistoricoCollectionNewBemHistoricoToAttach = em.getReference(bemHistoricoCollectionNewBemHistoricoToAttach.getClass(), bemHistoricoCollectionNewBemHistoricoToAttach.getId());
-                attachedBemHistoricoCollectionNew.add(bemHistoricoCollectionNewBemHistoricoToAttach);
-            }
-            bemHistoricoCollectionNew = attachedBemHistoricoCollectionNew;
-            processoJudicialHistorico.setBemHistoricoCollection(bemHistoricoCollectionNew);
             Collection<VinculoProcessualHistorico> attachedVinculoProcessualHistoricoCollectionNew = new ArrayList<VinculoProcessualHistorico>();
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach : vinculoProcessualHistoricoCollectionNew) {
                 vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach = em.getReference(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach.getClass(), vinculoProcessualHistoricoCollectionNewVinculoProcessualHistoricoToAttach.getId());
@@ -259,17 +224,6 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                 procuradorFkNew.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
                 procuradorFkNew = em.merge(procuradorFkNew);
             }
-            for (BemHistorico bemHistoricoCollectionNewBemHistorico : bemHistoricoCollectionNew) {
-                if (!bemHistoricoCollectionOld.contains(bemHistoricoCollectionNewBemHistorico)) {
-                    ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionNewBemHistorico = bemHistoricoCollectionNewBemHistorico.getProcessoJudicialHistoricoFk();
-                    bemHistoricoCollectionNewBemHistorico.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
-                    bemHistoricoCollectionNewBemHistorico = em.merge(bemHistoricoCollectionNewBemHistorico);
-                    if (oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionNewBemHistorico != null && !oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionNewBemHistorico.equals(processoJudicialHistorico)) {
-                        oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionNewBemHistorico.getBemHistoricoCollection().remove(bemHistoricoCollectionNewBemHistorico);
-                        oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionNewBemHistorico = em.merge(oldProcessoJudicialHistoricoFkOfBemHistoricoCollectionNewBemHistorico);
-                    }
-                }
-            }
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionNew) {
                 if (!vinculoProcessualHistoricoCollectionOld.contains(vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico)) {
                     ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfVinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico = vinculoProcessualHistoricoCollectionNewVinculoProcessualHistorico.getProcessoJudicialHistoricoFk();
@@ -315,13 +269,6 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                 throw new NonexistentEntityException("The processoJudicialHistorico with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<BemHistorico> bemHistoricoCollectionOrphanCheck = processoJudicialHistorico.getBemHistoricoCollection();
-            for (BemHistorico bemHistoricoCollectionOrphanCheckBemHistorico : bemHistoricoCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This ProcessoJudicialHistorico (" + processoJudicialHistorico + ") cannot be destroyed since the BemHistorico " + bemHistoricoCollectionOrphanCheckBemHistorico + " in its bemHistoricoCollection field has a non-nullable processoJudicialHistoricoFk field.");
-            }
             Collection<VinculoProcessualHistorico> vinculoProcessualHistoricoCollectionOrphanCheck = processoJudicialHistorico.getVinculoProcessualHistoricoCollection();
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionOrphanCheckVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionOrphanCheck) {
                 if (illegalOrphanMessages == null) {

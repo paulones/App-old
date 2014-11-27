@@ -341,16 +341,6 @@ var PjudCad = function() {
             }
             $.validator.addMethod("cpfOrCnpj", validaExecutado, "Escolha um executado.");
             $.validator.addClassRules({
-                bem: {
-                    required: false,
-                },
-                bemdata: {
-                    date: true,
-                    required: false
-                },
-                bemvalor: {
-                    required: false
-                },
                 vinculo: {
                     required: true
                 },
@@ -361,7 +351,6 @@ var PjudCad = function() {
 
             handleValidation();
 
-            $('#bens').mask("99");
             $('#vinculos').mask("99");
             $('.date').mask("99/99/9999");
 
@@ -557,10 +546,7 @@ var PjudCad = function() {
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === "success") {
-                    if ($(data.source).hasClass("bens")) {
-                        $('.bemdata').mask("99/99/9999");
-                        maskMoney();
-                    } else if ($(data.source).hasClass("vinculos")) {
+                    if ($(data.source).hasClass("vinculos")) {
                         $('.vinculotipo').select2({
                             allowClear: true,
                         });
@@ -568,10 +554,12 @@ var PjudCad = function() {
                         $('.vinculo').keypress(numeroDoProcesso);
                     } else if ($(data.source).hasClass("button-pessoa-fisica")) {
                         $('#pessoa-fisica').show();
+                        getMoneyMask('.accordion');
                         initTable();
                     } else if ($(data.source).hasClass("button-pessoa-juridica")) {
                         $('#pessoa-juridica').show();
                         getSucessoes('#cnpj', '#pessoa-juridica');
+                        getMoneyMask('.accordion');
                         initTable();
                     }
                 }

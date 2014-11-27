@@ -540,28 +540,226 @@
                                                         </thead>
                                                         <tbody class="modal_pf_rows-pff">
                                                             <ui:repeat value="#{templateBean.pessoaFisicaFisicaList}" var="pessoaFisicaFisica" varStatus="status">
-                                                                    <ui:param value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(9)}" name="cpf"/>
-                                                                    <tr>
-                                                                        <td>
-                                                                            #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}
-                                                                        </td>
-                                                                        <td>
-                                                                            <h:selectOneMenu styleClass="select2_category select2me form-control modal_pf_vinculosocial" p:placeholder="Selecione..." value="#{pessoaFisicaFisica.vinculoSocialFk}" tabindex="1" converter="entityConverter">
-                                                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                                                <f:selectItems value="#{templateBean.vinculoSocialList}" var="vinculoSocial" itemLabel="#{vinculoSocial.vinculo}" itemValue="#{vinculoSocial}"/>
-                                                                            </h:selectOneMenu>
-                                                                        </td>
-                                                                        <td>
-                                                                            <h:commandLink class="modal_pf_delete-pff">
-                                                                                <f:ajax execute="@this" listener="#{templateBean.removerVinculoFisicoSocial(index)}"/>
-                                                                                <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
-                                                                        </td>
-                                                                    </tr>
+                                                                <ui:param value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(9)}" name="cpf"/>
+                                                                <tr>
+                                                                    <td>
+                                                                        #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}
+                                                                    </td>
+                                                                    <td>
+                                                                        <h:selectOneMenu styleClass="select2_category select2me form-control modal_pf_vinculosocial" p:placeholder="Selecione..." value="#{pessoaFisicaFisica.vinculoSocialFk}" tabindex="1" converter="entityConverter">
+                                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                                            <f:selectItems value="#{templateBean.vinculoSocialList}" var="vinculoSocial" itemLabel="#{vinculoSocial.vinculo}" itemValue="#{vinculoSocial}"/>
+                                                                        </h:selectOneMenu>
+                                                                    </td>
+                                                                    <td>
+                                                                        <h:commandLink class="modal_pf_delete-pff">
+                                                                            <f:ajax execute="@this" listener="#{templateBean.removerVinculoFisicoSocial(index)}"/>
+                                                                            <i class="glyphicon glyphicon-remove" style="color:red"/> </h:commandLink>
+                                                                    </td>
+                                                                </tr>
                                                             </ui:repeat>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
+                                        </h:panelGroup>
+                                        <h3 class="form-section">Bens</h3>
+                                        <div class="alert alert-danger modal_pf_date-bem-error display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                        </div>
+                                        <h:panelGroup id="modal_pf_bem">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Descrição</label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="modal_pf_descricaobem" autocomplete="off" value="#{templateBean.bem.descricao}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Tipo </label>
+                                                        <div class="col-md-9">
+                                                            <h:selectOneMenu class="select2_category select2me form-control modal_pf_tipobem" p:placeholder="Selecione..." id="modal_pf_tipobem" tabindex="1" value="#{templateBean.bem.tipoBemFk}" converter="entityConverter">
+                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                <f:selectItems value="#{templateBean.tipoBemList}" var="tipo" itemLabel="#{tipo.tipo}" itemValue="#{tipo}"/>
+                                                            </h:selectOneMenu>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-2">Endereço</label>
+                                                        <div class="col-md-10">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control" id="modal_pf_enderecobem" autocomplete="off" value="#{templateBean.bem.endereco}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-3">Valor</label>
+                                                        <div class="col-md-9">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control money" id="modal_pf_valorbem" value="#{templateBean.bem.valor}" converter="maskMoneyConverter"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-4">Data de Aquisição</label>
+                                                        <div class="col-md-8">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control modal_pf_date modal_pf_aquisicao-date" id="modal_pf_aquisicaobem" p:placeholder="dd/mm/aaaa" value="#{templateBean.bem.dataDeAquisicao}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label col-md-6">Data de Transferência / Extinção</label>
+                                                        <div class="col-md-6">
+                                                            <div class="input-icon right">
+                                                                <i class="fa"></i>
+                                                                <h:inputText class="form-control modal_pf_date modal_pf_extincao-date" id="modal_pf_extincaobem" p:placeholder="dd/mm/aaaa" value="#{templateBean.bem.dataDeTransferenciaOuExtincao}"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                        <div class="row">
+                                            <div class="col-md-8">
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="col-md-8 col-md-offset-3">
+                                                    <button type="submit" class="btn blue-chambray" id="modal_pf_add-bem">
+                                                        <i class="fa fa-car"></i> Adicionar Bem
+                                                    </button>
+                                                    <h:commandLink class="modal_pf_add-bem">
+                                                        <f:ajax execute="modal_pf_bem" listener="#{templateBean.adicionarBem()}" render="modal_pf_accordion modal_pf_bem"></f:ajax>
+                                                    </h:commandLink>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        <h:commandLink class="modal_pf_bem-refresher">
+                                            <f:ajax render="modal_pf_accordion"/>
+                                        </h:commandLink>
+                                        <h:panelGroup layout="block" class="panel-group accordion" id="modal_pf_accordion">
+                                            <ui:repeat value="#{templateBean.bemList}" var="bem" varStatus="status">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#modal_pf_accordion"  href="#modal_pf_collapse_#{status.index}">
+                                                                #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="modal_pf_collapse_#{status.index}" class="panel-collapse collapse">
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Descrição</label>
+                                                                        <div class="col-md-10">
+                                                                            <div class="input-icon right">
+                                                                                <i class="fa"></i>
+                                                                                <h:inputText class="form-control modal_pf_bemdescricao" autocomplete="off" value="#{bem.descricao}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Tipo </label>
+                                                                        <div class="col-md-9">
+                                                                            <h:selectOneMenu class="select2_category select2me form-control modal_pf_tipobem" p:placeholder="Selecione..." tabindex="1" value="#{bem.tipoBemFk}" converter="entityConverter">
+                                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                                <f:selectItems value="#{templateBean.tipoBemList}" var="tipo" itemLabel="#{tipo.tipo}" itemValue="#{tipo}"/>
+                                                                            </h:selectOneMenu>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-8">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-2">Endereço</label>
+                                                                        <div class="col-md-10">
+                                                                            <div class="input-icon right">
+                                                                                <i class="fa"></i>
+                                                                                <h:inputText class="form-control modal_pf_enderecobem" autocomplete="off" value="#{bem.endereco}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-3">Valor</label>
+                                                                        <div class="col-md-9">
+                                                                            <div class="input-icon right">
+                                                                                <i class="fa"></i>
+                                                                                <h:inputText class="form-control modal_pf_valorbem money" value="#{bem.valor}" converter="maskMoneyConverter"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4">Data de Aquisição</label>
+                                                                        <div class="col-md-8">
+                                                                            <div class="input-icon right">
+                                                                                <i class="fa"></i>
+                                                                                <h:inputText class="form-control modal_pf_aquisicaobem modal_pf_date modal_pf_aquisicao-date" p:placeholder="dd/mm/aaaa" value="#{bem.dataDeAquisicao}"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2"></div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-6">Data de Transferência / Extinção</label>
+                                                                        <div class="col-md-6">
+                                                                            <div class="input-icon right">
+                                                                                <i class="fa"></i>
+                                                                                <h:inputText class="form-control modal_pf_extincaobem modal_pf_date modal_pf_extincao-date" value="#{bem.dataDeTransferenciaOuExtincao}" p:placeholder="dd/mm/aaaa"/>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-8"></div>
+                                                                <div class="col-md-4">
+                                                                    <div class="col-md-8 col-md-offset-3">
+                                                                        <h:commandLink class="btn blue-chambray modal_pf_delete-bem">
+                                                                            <f:ajax execute="@this" listener="#{templateBean.removerBem(status.index)}"/>
+                                                                            <i class="glyphicon glyphicon-remove"/> Remover Bem
+                                                                        </h:commandLink>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ui:repeat>
                                         </h:panelGroup>
                                     </div>
                                     <h3 class="form-section"></h3> 

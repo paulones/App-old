@@ -5,6 +5,7 @@
  */
 package bean;
 
+import bo.BemBO;
 import bo.CidadeBO;
 import bo.EnderecoBO;
 import bo.EstadoBO;
@@ -19,9 +20,11 @@ import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaJuridicaBO;
 import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
+import bo.TipoBemBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
 import bo.VinculoSocialBO;
+import entidade.Bem;
 import entidade.Cidade;
 import entidade.Endereco;
 import entidade.EnderecoPessoa;
@@ -38,6 +41,7 @@ import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
+import entidade.TipoBem;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import entidade.VinculoSocial;
@@ -79,12 +83,15 @@ public class TemplateBean implements Serializable {
     private CidadeBO cidadeBO;
     private FuncaoBO funcaoBO;
     private VinculoSocialBO vinculoSocialBO;
+    private TipoBemBO tipoBemBO;
+    private BemBO bemBO;
 
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaFisica;
     private EnderecoPessoa enderecoPessoaJuridica;
     private Executado executado;
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
+    private Bem bem;
 
     private List<TipoEmpresarial> tipoEmpresarialList;
     private List<Pais> paisList;
@@ -99,6 +106,8 @@ public class TemplateBean implements Serializable {
     private List<PessoaFisicaJuridica> pessoaFisicaJuridicaList;
     private List<PessoaFisicaFisica> pessoaFisicaFisicaList;
     private List<PessoaJuridicaJuridica> pessoaJuridicaJuridicaList;
+    private List<Bem> bemList;
+    private List<TipoBem> tipoBemList;
 
     private String pfVId;
     private String pjVId;
@@ -127,13 +136,16 @@ public class TemplateBean implements Serializable {
             nacionalidadeBO = new NacionalidadeBO();
             estadoCivilBO = new EstadoCivilBO();
             vinculoSocialBO = new VinculoSocialBO();
+            tipoBemBO = new TipoBemBO();
+            bemBO = new BemBO();
             usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
 
             enderecoPessoa = new EnderecoPessoa();
-            enderecoPessoaFisica = new EnderecoPessoa(new PessoaFisica(), new Endereco());
-            enderecoPessoaJuridica = new EnderecoPessoa(new PessoaJuridica(), new Endereco());
+            enderecoPessoaFisica = new EnderecoPessoa(new PessoaFisica(), new Endereco(), new ArrayList<Bem>());
+            enderecoPessoaJuridica = new EnderecoPessoa(new PessoaJuridica(), new Endereco(), new ArrayList<Bem>());
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
+            bem = new Bem();
 
             cidadeEndList = new ArrayList<>();
             cidadeEleList = new ArrayList<>();
@@ -147,18 +159,18 @@ public class TemplateBean implements Serializable {
     }
 
     public void exibirModalNew() {
+        bemList = new ArrayList<>();
         pessoaFisicaFisicaList = new ArrayList<>();
         pessoaFisicaJuridicaList = new ArrayList<>();
         pessoaJuridicaJuridicaList = new ArrayList<>();
+        pfVId = "";
+        pjVId = "";
+        bem = new Bem();
         if (tabela.equals("PF")) {
-            enderecoPessoaFisica = new EnderecoPessoa(new PessoaFisica(), new Endereco());
-            pfVId = "";
-            pjVId = "";
+            enderecoPessoaFisica = new EnderecoPessoa(new PessoaFisica(), new Endereco(), new ArrayList<Bem>());
             carregarFormularioModalPF();
         } else if (tabela.equals("PJ")) {
-            enderecoPessoaJuridica = new EnderecoPessoa(new PessoaJuridica(), new Endereco());
-            pfVId = "";
-            pjVId = "";
+            enderecoPessoaJuridica = new EnderecoPessoa(new PessoaJuridica(), new Endereco(), new ArrayList<Bem>());
             carregarFormularioModalPJ();
         }
     }
@@ -171,12 +183,14 @@ public class TemplateBean implements Serializable {
         estadoCivilList = estadoCivilBO.findAll();
         funcaoList = funcaoBO.findAll();
         vinculoSocialList = vinculoSocialBO.findAll();
+        tipoBemList = tipoBemBO.findAll();
     }
 
     public void carregarFormularioModalPJ() {
         estadoList = estadoBO.findAll();
         tipoEmpresarialList = tipoEmpresarialBO.findAll();
         funcaoList = funcaoBO.findAll();
+        tipoBemList = tipoBemBO.findAll();
     }
 
     public void getCidadesPeloEstado() {
@@ -204,6 +218,27 @@ public class TemplateBean implements Serializable {
                 cidadeEndList.clear();
             }
         }
+    }
+
+    public void adicionarBem() {
+        Boolean add = false;
+        if (!bemList.isEmpty()) {
+            for (Bem b : bemList) {
+                if (!bem.equalsValues(b)) {
+                    add = true;
+                }
+            }
+        } else {
+            add = true;
+        }
+        if (add) {
+            bemList.add(bem);
+            bem = new Bem();
+        }
+    }
+
+    public void removerBem(int index) {
+        bemList.remove(index);
     }
 
     public void vincularPessoaFisica() {
@@ -287,6 +322,7 @@ public class TemplateBean implements Serializable {
         }
         pessoaFisica.setStatus('A');
         pessoaFisica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+        pessoaFisica.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
         pessoaFisicaBO.create(pessoaFisica);
         Endereco endereco = enderecoPessoaFisica.getEndereco();
         endereco.setTipo("PF");
@@ -300,6 +336,11 @@ public class TemplateBean implements Serializable {
             pff.setPessoaFisicaPrimariaFk(pessoaFisica);
             pessoaFisicaFisicaBO.create(pff);
         }
+        for (Bem b : bemList) {
+            b.setTipo("PF");
+            b.setIdFk(pessoaFisica.getId());
+            bemBO.create(b);
+        }
         GeradorLog.criar(pessoaFisica.getId(), "PF", 'C');
     }
 
@@ -307,6 +348,7 @@ public class TemplateBean implements Serializable {
         PessoaJuridica pessoaJuridica = (PessoaJuridica) enderecoPessoaJuridica.getPessoa();
         pessoaJuridica.setStatus('A');
         pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+        pessoaJuridica.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
         pessoaJuridicaBO.create(pessoaJuridica);
         Endereco endereco = enderecoPessoaJuridica.getEndereco();
         endereco.setTipo("PJ");
@@ -320,28 +362,33 @@ public class TemplateBean implements Serializable {
             pjj.setPessoaJuridicaPrimariaFk(pessoaJuridica);
             pessoaJuridicaJuridicaBO.create(pjj);
         }
+        for (Bem b : bemList) {
+            b.setTipo("PJ");
+            b.setIdFk(pessoaJuridica.getId());
+            bemBO.create(b);
+        }
         GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'C');
     }
 
     public void exibirModalInfo() {
         if (tabela.equals("PF")) {
             PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(idfk));
-            enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()));
+            enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()), bemBO.findPFBens(pessoaFisica.getId()));
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJ")) {
             PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(idfk));
-            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()));
+            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJUD")) {
             ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")) {
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId())));
+                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()), bemBO.findPFBens(pf.getId())));
             } else {
                 PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId())));
+                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId()), bemBO.findPJBens(pj.getId())));
             }
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
             enderecoPessoa = new EnderecoPessoa();
@@ -618,4 +665,29 @@ public class TemplateBean implements Serializable {
     public void setPessoaFisicaFisicaList(List<PessoaFisicaFisica> pessoaFisicaFisicaList) {
         this.pessoaFisicaFisicaList = pessoaFisicaFisicaList;
     }
+
+    public Bem getBem() {
+        return bem;
+    }
+
+    public void setBem(Bem bem) {
+        this.bem = bem;
+    }
+
+    public List<Bem> getBemList() {
+        return bemList;
+    }
+
+    public void setBemList(List<Bem> bemList) {
+        this.bemList = bemList;
+    }
+
+    public List<TipoBem> getTipoBemList() {
+        return tipoBemList;
+    }
+
+    public void setTipoBemList(List<TipoBem> tipoBemList) {
+        this.tipoBemList = tipoBemList;
+    }
+
 }

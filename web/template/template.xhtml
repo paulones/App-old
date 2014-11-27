@@ -43,6 +43,7 @@
         <!-- BEGIN PAULO'S STYLES -->
         <style>
             .modal-lg{width:980px !important}
+            .form-control-bem-static{margin-top:7px}
         </style>
         <!-- END PAULO'S STYLES -->
     </h:head>
@@ -696,8 +697,10 @@
                     setCursors(data.status);
                     if ($(data.source).attr("class") === "show-info-modal") {
                         if ($('#tabela-modal').val() === "PF") {
+                            getMoneyMask(".accordion-modal-pfcon");
                             $('.modal-info-pf').click();
                         } else if ($('#tabela-modal').val() === "PJ") {
+                            getMoneyMask(".accordion-modal-pjcon");
                             $('.modal-info-pj').click();
                             getSucessoes('#id-modal', '#modal-info-pj');
                         } else if ($('#tabela-modal').val() === "PJUD") {
@@ -949,6 +952,7 @@
                         },
                         "ordering": false
                     });
+                    getMoneyMask($(portlet).parent().parent().next().find(".accordion-pjcon"));
                 }
             }
 

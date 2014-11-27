@@ -9,15 +9,17 @@ package dao;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.BemHistorico;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.ProcessoJudicialHistorico;
+import entidade.TipoBem;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -38,15 +40,15 @@ public class BemHistoricoDAO implements Serializable {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
-            ProcessoJudicialHistorico processoJudicialHistoricoFk = bemHistorico.getProcessoJudicialHistoricoFk();
-            if (processoJudicialHistoricoFk != null) {
-                processoJudicialHistoricoFk = em.getReference(processoJudicialHistoricoFk.getClass(), processoJudicialHistoricoFk.getId());
-                bemHistorico.setProcessoJudicialHistoricoFk(processoJudicialHistoricoFk);
+            TipoBem tipoBemFk = bemHistorico.getTipoBemFk();
+            if (tipoBemFk != null) {
+                tipoBemFk = em.getReference(tipoBemFk.getClass(), tipoBemFk.getId());
+                bemHistorico.setTipoBemFk(tipoBemFk);
             }
             em.persist(bemHistorico);
-            if (processoJudicialHistoricoFk != null) {
-                processoJudicialHistoricoFk.getBemHistoricoCollection().add(bemHistorico);
-                processoJudicialHistoricoFk = em.merge(processoJudicialHistoricoFk);
+            if (tipoBemFk != null) {
+                tipoBemFk.getBemHistoricoCollection().add(bemHistorico);
+                tipoBemFk = em.merge(tipoBemFk);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -68,20 +70,20 @@ public class BemHistoricoDAO implements Serializable {
         try {
             em = getEntityManager();em.getTransaction().begin();
             BemHistorico persistentBemHistorico = em.find(BemHistorico.class, bemHistorico.getId());
-            ProcessoJudicialHistorico processoJudicialHistoricoFkOld = persistentBemHistorico.getProcessoJudicialHistoricoFk();
-            ProcessoJudicialHistorico processoJudicialHistoricoFkNew = bemHistorico.getProcessoJudicialHistoricoFk();
-            if (processoJudicialHistoricoFkNew != null) {
-                processoJudicialHistoricoFkNew = em.getReference(processoJudicialHistoricoFkNew.getClass(), processoJudicialHistoricoFkNew.getId());
-                bemHistorico.setProcessoJudicialHistoricoFk(processoJudicialHistoricoFkNew);
+            TipoBem tipoBemFkOld = persistentBemHistorico.getTipoBemFk();
+            TipoBem tipoBemFkNew = bemHistorico.getTipoBemFk();
+            if (tipoBemFkNew != null) {
+                tipoBemFkNew = em.getReference(tipoBemFkNew.getClass(), tipoBemFkNew.getId());
+                bemHistorico.setTipoBemFk(tipoBemFkNew);
             }
             bemHistorico = em.merge(bemHistorico);
-            if (processoJudicialHistoricoFkOld != null && !processoJudicialHistoricoFkOld.equals(processoJudicialHistoricoFkNew)) {
-                processoJudicialHistoricoFkOld.getBemHistoricoCollection().remove(bemHistorico);
-                processoJudicialHistoricoFkOld = em.merge(processoJudicialHistoricoFkOld);
+            if (tipoBemFkOld != null && !tipoBemFkOld.equals(tipoBemFkNew)) {
+                tipoBemFkOld.getBemHistoricoCollection().remove(bemHistorico);
+                tipoBemFkOld = em.merge(tipoBemFkOld);
             }
-            if (processoJudicialHistoricoFkNew != null && !processoJudicialHistoricoFkNew.equals(processoJudicialHistoricoFkOld)) {
-                processoJudicialHistoricoFkNew.getBemHistoricoCollection().add(bemHistorico);
-                processoJudicialHistoricoFkNew = em.merge(processoJudicialHistoricoFkNew);
+            if (tipoBemFkNew != null && !tipoBemFkNew.equals(tipoBemFkOld)) {
+                tipoBemFkNew.getBemHistoricoCollection().add(bemHistorico);
+                tipoBemFkNew = em.merge(tipoBemFkNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -116,10 +118,10 @@ public class BemHistoricoDAO implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The bemHistorico with id " + id + " no longer exists.", enfe);
             }
-            ProcessoJudicialHistorico processoJudicialHistoricoFk = bemHistorico.getProcessoJudicialHistoricoFk();
-            if (processoJudicialHistoricoFk != null) {
-                processoJudicialHistoricoFk.getBemHistoricoCollection().remove(bemHistorico);
-                processoJudicialHistoricoFk = em.merge(processoJudicialHistoricoFk);
+            TipoBem tipoBemFk = bemHistorico.getTipoBemFk();
+            if (tipoBemFk != null) {
+                tipoBemFk.getBemHistoricoCollection().remove(bemHistorico);
+                tipoBemFk = em.merge(tipoBemFk);
             }
             em.remove(bemHistorico);
             em.getTransaction().commit();
@@ -183,4 +185,29 @@ public class BemHistoricoDAO implements Serializable {
         }
     }
     
+    public List<BemHistorico> findAllByPF(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<BemHistorico> enderecoHistoricoList = (List<BemHistorico>) em.createNativeQuery("select bh.* from bem_historico bh "
+                        + "join pessoa_fisica_historico pfh on pfh.id = bh.id_fk where pfh.pessoa_fisica_fk = '"+id+"' order by data_de_modificacao desc", BemHistorico.class).getResultList();
+            return enderecoHistoricoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<BemHistorico> findAllByPJ(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<BemHistorico> enderecoHistoricoList = (List<BemHistorico>) em.createNativeQuery("select bh.* from bem_historico bh "
+                        + "join pessoa_juridica_historico pjh on pjh.id = bh.id_fk where pjh.pessoa_juridica_fk = '"+id+"' order by data_de_modificacao desc", BemHistorico.class).getResultList();
+            return enderecoHistoricoList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }

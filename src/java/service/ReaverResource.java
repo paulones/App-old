@@ -5,6 +5,7 @@
  */
 package service;
 
+import bo.BemBO;
 import bo.ChartsBO;
 import bo.EnderecoBO;
 import bo.LogBO;
@@ -122,10 +123,12 @@ public class ReaverResource {
     public String getPessoasFisicasTable() {
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
+        BemBO bemBO = new BemBO();
         JSONArray jsonArray = new JSONArray();
         List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive();
         for (PessoaFisica pf : pessoaFisicaList) {
             Endereco end = enderecoBO.findPFAddress(pf.getId());
+            List<Bem> bemList = bemBO.findPFBens(pf.getId());
             String sexo = pf.getSexo() == null ? "-" : "M".equals(pf.getSexo().toString()) ? "Masculino" : "Feminino";
             String cpf = pf.getCpf() == null ? "-" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             String rg = pf.getRg() == null ? "-" : pf.getRg();
@@ -156,6 +159,9 @@ public class ReaverResource {
                         + (pff.getPessoaFisicaPrimariaFk().getCpf() == null ? "" : pff.getPessoaFisicaPrimariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaPrimariaFk().getCpf().substring(9)) + " "
                         + (pff.getPessoaFisicaSecundariaFk().getCpf() == null ? "" : pff.getPessoaFisicaSecundariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaSecundariaFk().getCpf().substring(9));
             }
+            for (Bem bem : bemList) {
+                detalhes += " " + bem.getDataDeAquisicao() + " " + bem.getDataDeTransferenciaOuExtincao() + " " + bem.getDescricao() + " " + bem.getEndereco() + " " + bem.getValor() + " " + (bem.getTipoBemFk() == null ? "" : bem.getTipoBemFk().getTipo());
+            }
             detalhes = detalhes.replace("null", "");
 
             JSONObject jsonObject = new JSONObject();
@@ -180,10 +186,12 @@ public class ReaverResource {
     public String getPessoasJuridicasTable() {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
+        BemBO bemBO = new BemBO();
         JSONArray jsonArray = new JSONArray();
         List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
         for (PessoaJuridica pj : pessoaJuridicaList) {
             Endereco end = enderecoBO.findPJAddress(pj.getId());
+            List<Bem> bemList = bemBO.findPJBens(pj.getId());
             String cnpj = pj.getCnpj() == null ? "-" : pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             String nomeFantasia = pj.getNomeFantasia() == null ? "-" : pj.getNomeFantasia();
             String tipoEmpresarial = pj.getTipoEmpresarialFk() == null ? "-" : pj.getTipoEmpresarialFk().getTipo();
@@ -208,6 +216,9 @@ public class ReaverResource {
                         + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(0, 2) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(2, 5) + "." + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(5, 8) + "/" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(8, 12) + "-" + pjj.getPessoaJuridicaSecundariaFk().getCnpj().substring(12) + " "
                         + pjj.getPessoaJuridicaPrimariaFk().getNome() + " " + pjj.getPessoaJuridicaSecundariaFk().getNome() + " "
                         + pjj.getCapitalDeParticipacao() + " " + pjj.getDataDeInicio() + " " + pjj.getDataDeTermino();
+            }
+            for (Bem bem : bemList) {
+                detalhes += " " + bem.getDataDeAquisicao() + " " + bem.getDataDeTransferenciaOuExtincao() + " " + bem.getDescricao() + " " + bem.getEndereco() + " " + bem.getValor() + " " + (bem.getTipoBemFk() == null ? "" : bem.getTipoBemFk().getTipo());
             }
             detalhes = detalhes.replace("null", "");
 
@@ -234,11 +245,13 @@ public class ReaverResource {
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
+        BemBO bemBO = new BemBO();
         ProcessoJudicialBO processoJudicialBO = new ProcessoJudicialBO();
         JSONArray jsonArray = new JSONArray();
         List<ProcessoJudicial> processoJudicialList = processoJudicialBO.findAllActive();
         for (ProcessoJudicial pjud : processoJudicialList) {
             Endereco end = new Endereco();
+            List<Bem> bemList = new ArrayList<>();
             PessoaFisica pf = new PessoaFisica();
             PessoaJuridica pj = new PessoaJuridica();
             String detalhes = "";
@@ -246,6 +259,7 @@ public class ReaverResource {
             if (pjud.getExecutado().equals("PF")) {
                 pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
                 end = enderecoBO.findPFAddress(pf.getId());
+                bemList = bemBO.findPFBens(pf.getId());
                 executado = pf.getNome() + " - " + (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
                 detalhes += (pf.getSexo() == null ? "" : "M".equals(pf.getSexo().toString()) ? "Masculino" : "Feminino") + " " + pf.getApelido() + " " + pf.getTituloDeEleitor() + " " + pf.getInss() + " "
                         + pf.getNomeDoPai() + " " + pf.getNomeDaMae() + " " + pf.getNomeDoConjuge() + " " + pf.getRg() + " " + pf.getRgOrgaoEmissor() + " " + (pf.getRgUfFk() == null ? "" : pf.getRgUfFk().getUf()) + " "
@@ -268,9 +282,13 @@ public class ReaverResource {
                             + (pff.getPessoaFisicaPrimariaFk().getCpf() == null ? "" : pff.getPessoaFisicaPrimariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaPrimariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaPrimariaFk().getCpf().substring(9)) + " "
                             + (pff.getPessoaFisicaSecundariaFk().getCpf() == null ? "" : pff.getPessoaFisicaSecundariaFk().getCpf().substring(0, 3) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(3, 6) + "." + pff.getPessoaFisicaSecundariaFk().getCpf().substring(6, 9) + "-" + pff.getPessoaFisicaSecundariaFk().getCpf().substring(9));
                 }
+                for (Bem bem : bemList) {
+                    detalhes += " " + bem.getDataDeAquisicao() + " " + bem.getDataDeTransferenciaOuExtincao() + " " + bem.getDescricao() + " " + bem.getEndereco() + " " + bem.getValor() + " " + (bem.getTipoBemFk() == null ? "" : bem.getTipoBemFk().getTipo());
+                }
             } else {
                 pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
                 end = enderecoBO.findPJAddress(pj.getId());
+                bemList = bemBO.findPJBens(pj.getId());
                 executado = pj.getNome() + " - " + pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
                 detalhes += pj.getNomeFantasia() + " " + (pj.getTipoEmpresarialFk() == null ? "" : pj.getTipoEmpresarialFk().getTipo()) + " " + pj.getInscricaoEstadual() + " " + pj.getInscricaoMunicipal() + " "
                         + (pj.getSituacao() == null ? "" : "A".equals(pj.getSituacao().toString()) ? "Ativo" : "Inativo") + " " + pj.getMotivoDaDesativacao() + " "
@@ -291,17 +309,17 @@ public class ReaverResource {
                             + pjj.getPessoaJuridicaPrimariaFk().getNome() + " " + pjj.getPessoaJuridicaSecundariaFk().getNome() + " "
                             + pjj.getCapitalDeParticipacao() + " " + pjj.getDataDeInicio() + " " + pjj.getDataDeTermino();
                 }
+                for (Bem bem : bemList) {
+                    detalhes += " " + bem.getDataDeAquisicao() + " " + bem.getDataDeTransferenciaOuExtincao() + " " + bem.getDescricao() + " " + bem.getEndereco() + " " + bem.getValor() + " " + (bem.getTipoBemFk() == null ? "" : bem.getTipoBemFk().getTipo());
+                }
             }
             detalhes += " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk() == null ? "" : end.getEstadoFk().getUf()) + " "
                     + end.getNumero() + " " + end.getComplemento() + " " + end.getEndereco();
             detalhes += " " + pjud.getAtoProcessual() + " " + pjud.getDataDeInscricao() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
                     + pjud.getDiscriminacaoDoCreditoImposto() + " " + pjud.getDiscriminacaoDoCreditoMulta() + " " + pjud.getDistribuicao() + " " + pjud.getDistribuicaoDataDoAto() + " " + (pjud.getFatosGeradores() == null ? "" : pjud.getFatosGeradores().replace(",", "; ")) + " "
                     + pjud.getFundamentacao() + " " + pjud.getGrupoDeEspecializacao() + " " + pjud.getNotificacaoAdministrativa() + " " + pjud.getNotificacaoAdministrativaDataDoAto() + " " + pjud.getNumeroDoProcessoAnterior() + " "
-                    + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesBem() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + (pjud.getProcuradorFk() == null ? "" : pjud.getProcuradorFk().getNome()) + " "
+                    + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + (pjud.getProcuradorFk() == null ? "" : pjud.getProcuradorFk().getNome()) + " "
                     + pjud.getRecurso() + " " + pjud.getValorAtualizado() + " " + pjud.getValorDaCausa() + " " + pjud.getVara() + " " + pjud.getVaraAnterior() + " " + (pjud.getTipoDeRecursoFk() == null ? "" : pjud.getTipoDeRecursoFk().getTipo());
-            for (Bem bem : pjud.getBemCollection()) {
-                detalhes += " " + bem.getDescricao() + " " + bem.getDataDoAto() + " " + bem.getValor();
-            }
             for (VinculoProcessual vp : pjud.getVinculoProcessualCollection()) {
                 detalhes += " " + vp.getProcesso() + " " + vp.getTipoDeProcessoFk().getTipo();
             }

@@ -9,6 +9,8 @@ package bo;
 import dao.BemHistoricoDAO;
 import entidade.BemHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,5 +46,23 @@ public class BemHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<BemHistorico> findAllByPF(Integer id){
+        try { 
+            return bemHistoricoDAO.findAllByPF(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+    
+    public List<BemHistorico> findAllByPJ(Integer id){
+        try { 
+            return bemHistoricoDAO.findAllByPJ(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 }

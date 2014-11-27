@@ -8,6 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -34,9 +35,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Bem.findAll", query = "SELECT b FROM Bem b"),
     @NamedQuery(name = "Bem.findById", query = "SELECT b FROM Bem b WHERE b.id = :id"),
-    @NamedQuery(name = "Bem.findByValor", query = "SELECT b FROM Bem b WHERE b.valor = :valor"),
+    @NamedQuery(name = "Bem.findByIdFk", query = "SELECT b FROM Bem b WHERE b.idFk = :idFk"),
+    @NamedQuery(name = "Bem.findByTipo", query = "SELECT b FROM Bem b WHERE b.tipo = :tipo"),
     @NamedQuery(name = "Bem.findByDescricao", query = "SELECT b FROM Bem b WHERE b.descricao = :descricao"),
-    @NamedQuery(name = "Bem.findByDataDoAto", query = "SELECT b FROM Bem b WHERE b.dataDoAto = :dataDoAto")})
+    @NamedQuery(name = "Bem.findByDataDeAquisicao", query = "SELECT b FROM Bem b WHERE b.dataDeAquisicao = :dataDeAquisicao"),
+    @NamedQuery(name = "Bem.findByDataDeTransferenciaOuExtincao", query = "SELECT b FROM Bem b WHERE b.dataDeTransferenciaOuExtincao = :dataDeTransferenciaOuExtincao"),
+    @NamedQuery(name = "Bem.findByValor", query = "SELECT b FROM Bem b WHERE b.valor = :valor"),
+    @NamedQuery(name = "Bem.findByEndereco", query = "SELECT b FROM Bem b WHERE b.endereco = :endereco")})
 public class Bem implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -45,17 +50,31 @@ public class Bem implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Size(min = 1, max = 300)
+    @NotNull
+    @Column(name = "id_fk")
+    private int idFk;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "tipo")
+    private String tipo;
+    @Size(max = 300)
     @Column(name = "descricao")
     private String descricao;
     @Size(max = 10)
-    @Column(name = "data_do_ato")
-    private String dataDoAto;
+    @Column(name = "data_de_aquisicao")
+    private String dataDeAquisicao;
+    @Size(max = 10)
+    @Column(name = "data_de_transferencia_ou_extincao")
+    private String dataDeTransferenciaOuExtincao;
     @Column(name = "valor")
-    private BigDecimal valor; 
-    @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
+    private BigDecimal valor;
+    @Size(max = 200)
+    @Column(name = "endereco")
+    private String endereco;
+    @JoinColumn(name = "tipo_bem_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private ProcessoJudicial processoJudicialFk;
+    private TipoBem tipoBemFk;
 
     public Bem() {
     }
@@ -64,9 +83,10 @@ public class Bem implements Serializable {
         this.id = id;
     }
 
-    public Bem(Integer id, String descricao) {
+    public Bem(Integer id, int idFk, String tipo) {
         this.id = id;
-        this.descricao = descricao;
+        this.idFk = idFk;
+        this.tipo = tipo;
     }
 
     public Integer getId() {
@@ -77,6 +97,22 @@ public class Bem implements Serializable {
         this.id = id;
     }
 
+    public int getIdFk() {
+        return idFk;
+    }
+
+    public void setIdFk(int idFk) {
+        this.idFk = idFk;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     public String getDescricao() {
         return descricao;
     }
@@ -85,20 +121,20 @@ public class Bem implements Serializable {
         this.descricao = descricao;
     }
 
-    public String getDataDoAto() {
-        return dataDoAto;
+    public String getDataDeAquisicao() {
+        return dataDeAquisicao;
     }
 
-    public void setDataDoAto(String dataDoAto) {
-        this.dataDoAto = dataDoAto;
+    public void setDataDeAquisicao(String dataDeAquisicao) {
+        this.dataDeAquisicao = dataDeAquisicao;
     }
 
-    public ProcessoJudicial getProcessoJudicialFk() {
-        return processoJudicialFk;
+    public String getDataDeTransferenciaOuExtincao() {
+        return dataDeTransferenciaOuExtincao;
     }
 
-    public void setProcessoJudicialFk(ProcessoJudicial processoJudicialFk) {
-        this.processoJudicialFk = processoJudicialFk;
+    public void setDataDeTransferenciaOuExtincao(String dataDeTransferenciaOuExtincao) {
+        this.dataDeTransferenciaOuExtincao = dataDeTransferenciaOuExtincao;
     }
 
     public BigDecimal getValor() {
@@ -107,6 +143,22 @@ public class Bem implements Serializable {
 
     public void setValor(BigDecimal valor) {
         this.valor = valor;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public TipoBem getTipoBemFk() {
+        return tipoBemFk;
+    }
+
+    public void setTipoBemFk(TipoBem tipoBemFk) {
+        this.tipoBemFk = tipoBemFk;
     }
 
     @Override
@@ -130,11 +182,26 @@ public class Bem implements Serializable {
     }
 
     public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         final Bem other = (Bem) obj;
+        if (!Objects.equals(this.dataDeAquisicao, other.dataDeAquisicao)) {
+            return false;
+        }
+        if (!Objects.equals(this.dataDeTransferenciaOuExtincao, other.dataDeTransferenciaOuExtincao)) {
+            return false;
+        }
         if (!Objects.equals(this.descricao, other.descricao)) {
             return false;
         }
-        if (!Objects.equals(this.dataDoAto, other.dataDoAto)) {
+        if (!Objects.equals(this.endereco, other.endereco)) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoBemFk, other.tipoBemFk)) {
             return false;
         }
         if (!Objects.equals(this.valor, other.valor)) {
@@ -142,7 +209,7 @@ public class Bem implements Serializable {
         }
         return true;
     }
-
+    
     @Override
     public String toString() {
         return "entidade.Bem[ id=" + id + " ]";

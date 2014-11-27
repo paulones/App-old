@@ -170,9 +170,6 @@ var PjudCon = function() {
         $.each($('.tab2'), function() {
             getMoneyMask($(this));
         });
-        $.each($('.tab3'), function() {
-            getMoneyMask($(this));
-        });
         var atual;
         $.each($('.data-de-modificacao'), function() {
             if ($(this).html().indexOf('Atual') !== -1) {
@@ -188,7 +185,6 @@ var PjudCon = function() {
             var description = "";
             var processo = false;
             var executado = false;
-            var bens = false;
             var atoProcessual = false;
 
             $.each($(this).find('.form-control-static'), function(index) {
@@ -200,8 +196,6 @@ var PjudCon = function() {
                     } else if ($(this).parents('.tab2').length > 0) {
                         processo = true;
                     } else if ($(this).parents('.tab3').length > 0) {
-                        bens = true;
-                    } else if ($(this).parents('.tab4').length > 0) {
                         atoProcessual = true;
                     }
                 }
@@ -231,10 +225,10 @@ var PjudCon = function() {
             var checkPfjChanges = checkChangesTable('.rows-pfj tr');
             var checkPjjChanges = checkChangesTable('.rows-pjj tr');
             var checkPjjPartChanges = checkChangesTable('.rows-pjj-part tr');
-            var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab3');
+            var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab1');
             var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
-            bens = (!bens) ? checkBensChanges : true;
             processo = (!processo) ? checkProcessoChanges : true;
+            executado = (!executado) ? checkBensChanges : true;
             executado = (!executado) ? checkSucedidasChanges : true;
             executado = (!executado) ? checkSucessorasChanges : true;
             executado = (!executado) ? checkPffChanges : true;
@@ -308,6 +302,11 @@ var PjudCon = function() {
                         changed = true;
                     }
                 });
+                $.each($(history).find(label), function() {
+                    if ($(this).css("color") !== "rgb(0, 0, 0)") {
+                        $(this).closest(".panel-default").removeClass("panel-default").addClass("panel-danger")
+                    }
+                });
                 if (changed) {
                     return true;
                 } else {
@@ -373,10 +372,6 @@ var PjudCon = function() {
                 $(this).find('.executado-tab').css("color", "#a94442");
                 description += "Executado, ";
             }
-            if (bens) {
-                $(this).find('.bens-tab').css("color", "#a94442");
-                description += "Bens, ";
-            }
             if (atoProcessual) {
                 $(this).find('.atoprocessual-tab').css("color", "#a94442");
                 description += "Ato Processual, "
@@ -396,6 +391,7 @@ var PjudCon = function() {
 
             if (window.location.search != "") {
                 initHistoryTable();
+                getMoneyMask(".accordion")
                 if ($('.pj-id').length !== 0) {
                     var lastIndex = $('.pj-id').length - 1;
                     var index = 0;

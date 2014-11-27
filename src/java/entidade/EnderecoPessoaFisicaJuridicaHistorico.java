@@ -18,6 +18,7 @@ public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
     
     private Object pessoaHistorico;
     private EnderecoHistorico enderecoHistorico;
+    private List<BemHistorico> bemHistoricoList;
     private List<PessoaFisicaJuridicaHistorico> pessoaFisicaJuridicaHistoricoList;
 
     public EnderecoPessoaFisicaJuridicaHistorico() {
@@ -53,12 +54,21 @@ public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
         this.pessoaFisicaJuridicaHistoricoList = pessoaFisicaJuridicaHistoricoList;
     }
 
+    public List<BemHistorico> getBemHistoricoList() {
+        return bemHistoricoList;
+    }
+
+    public void setBemHistoricoList(List<BemHistorico> bemHistoricoList) {
+        this.bemHistoricoList = bemHistoricoList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 13 * hash + Objects.hashCode(this.pessoaHistorico);
         hash = 13 * hash + Objects.hashCode(this.enderecoHistorico);
         hash = 13 * hash + Objects.hashCode(this.pessoaFisicaJuridicaHistoricoList);
+        hash = 13 * hash + Objects.hashCode(this.bemHistoricoList);
         return hash;
     }
 
@@ -78,6 +88,9 @@ public class EnderecoPessoaFisicaJuridicaHistorico implements Serializable{
             return false;
         }
         if (!Objects.equals(this.pessoaFisicaJuridicaHistoricoList, other.pessoaFisicaJuridicaHistoricoList)) {
+            return false;
+        }
+        if (!Objects.equals(this.bemHistoricoList, other.bemHistoricoList)) {
             return false;
         }
         return true;

@@ -134,6 +134,7 @@ var ModalPJCad = function() {
             },
             invalidHandler: function(event, validator) { //display error alert on form submit
                 $(".modal_pj_date-error").hide();
+                $(".modal_pj_date-bem-error").hide();
                 success.hide();
                 error.show();
                 $(".modal").animate({scrollTop: 0}, 'fast');
@@ -183,6 +184,7 @@ var ModalPJCad = function() {
     $(document).on("click", ".modal_pj_submit-pj", function(e) {
         if ($('#modal_pj_form').validate().form()) {
             $(".modal_pj_date-error").hide();
+            $(".modal_pj_date-bem-error").hide();
             $(".modal_pj_register").click();
         }
         return false;
@@ -265,6 +267,49 @@ var ModalPJCad = function() {
         }
     };
 
+    var checkBemDates = function() {
+        var date_error = ".modal_pj_date-bem-error";
+        if ($(this).val().length == 10) {
+            var result;
+            var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
+            $.each($('.modal_pj_aquisicao-date'), function() {
+                var initialdate = $(this).val();
+                var finaldate = $(this).closest('.row').find('.modal_pj_extincao-date').val();
+                if (initialdate.match(reg) && finaldate.match(reg)) {
+                    if (finaldate != "" && initialdate != "") {
+                        var final = finaldate.split("/")[2] + "-" + finaldate.split("/")[1] + "-" + finaldate.split("/")[0];
+                        var initial = initialdate.split("/")[2] + "-" + initialdate.split("/")[1] + "-" + initialdate.split("/")[0];
+                        if (final < initial) {
+                            $(this).closest('.row').find('.modal_pj_extincao-date').val("");
+                            $(date_error).html("Digite uma data de aquisi&ccedil;&atilde;o inferior &agrave; data de transfer&ecirc;ncia / extin&ccedil;&atilde;o.");
+                            $(date_error).show();
+                            return result = false;
+                        } else {
+                            $(date_error).hide();
+                            return result = true;
+                        }
+                    } else if (initialdate != "") {
+                        $(date_error).hide();
+                        return result = true;
+                    }
+                } else if (initialdate != "" && !initialdate.match(reg)) {
+                    $(this).val("");
+                    $(date_error).html("Digite uma data de aquisi&ccedil;&atilde;o v&aacute;lida.");
+                    $(date_error).show();
+                    return result = false;
+                } else if (finaldate != "" && !finaldate.match(reg)) {
+                    $(this).closest('.row').find('.modal_pj_extincao-date').val("");
+                    $(date_error).html("Digite uma data de transfer&ecirc;ncia / extin&ccedil;&atilde;o v&aacute;lida.");
+                    $(date_error).show();
+                    return result = false;
+                } else {
+                    $(date_error).hide();
+                    return result = true;
+                }
+            });
+            return result;
+        }
+    };
 
     var checkCapital = function() {
         var dateError = ".modal_pj_date-error";
@@ -324,9 +369,8 @@ var ModalPJCad = function() {
             $("#modal_pj_tipicidade").select2({allowClear:true});
             $("#modal_pj_enduf").select2({allowClear: true});
             $("#modal_pj_endcity").select2();
+            $("#modal_pj_tipobem").select2({allowClear: true});
             $("#modal-new-pj input[type=radio]").uniform();
-
-
 
             $.validator.addMethod("modal_pj_cnpj", validaCNPJ, "CNPJ inv&aacute;lido ou j&aacute; existente no sistema.");
             $.validator.addMethod("iniDate", validaData, "Digite uma data v&aacute;lida.");
@@ -342,6 +386,7 @@ var ModalPJCad = function() {
             $('#modal_pj_cep').mask("99999-999");
             $('#modal_pj_cnae').mask("9999-9/99");
             $('.modal_pj_date').mask("99/99/9999");
+            maskMoney();
 
             var masks = [$('#modal_pj_cep'), $('#modal_pj_iniDate'), $('#modal_pj_nire'), $('#modal_pj_cnae')];
             $('#modal_pj_form').submit(function() {
@@ -351,6 +396,12 @@ var ModalPJCad = function() {
                         $(this).parent('.input-icon').children('i').removeClass("fa-warning").removeClass("fa-check");
                     }
                 });
+            });
+            $('#modal_pj_add-bem').click(function(e) {
+                e.preventDefault();
+                if ($('#modal_pj_extincaobem').val() !== "" || $('#modal_pj_aquisicaobem').val() !== "" || $('#modal_pj_valorbem').val() !== "" || $('#modal_pj_enderecobem').val() !== "" || $('#modal_pj_tipobem').val() !== "" || $('#modal_pj_descricaobem').val() !== "") {
+                    $('.modal_pj_add-bem').click();
+                }
             });
 
             jsf.ajax.addOnEvent(function(data) {
@@ -377,11 +428,36 @@ var ModalPJCad = function() {
                             }
                             $('.modal_pj_capital-pjj').keyup(checkCapital);
                         }
+                        
 
                         $('.modal_pj_initial-date,.modal_pj_final-date').keyup(checkDates);
+                    } else if ($(data.source).attr("class") === "modal_pj_add-bem" || $(data.source).attr("class") === "modal_pj_bem-refresher") {
+                        $('select.modal_pj_tipobem').select2({allowClear: true});
+                        $('.modal_pj_date').mask("99/99/9999");
+                        maskMoney();
+                        $('.modal_pj_aquisicao-date,.modal_pj_extincao-date').keyup(checkBemDates);
+                    } else if ($(data.source).hasClass("modal_pj_delete-bem")) {
+                        $('.modal_pj_bem-refresher').click();
                     }
                 }
             });
+            
+            function maskMoney() {
+                $('.money').maskMoney({
+                    prefix: 'R$ ',
+                    symbol: 'R$', // Simbolo
+                    decimal: ',', // Separador do decimal
+                    precision: 2, // Precisão
+                    thousands: '.', // Separador para os milhares
+                    allowZero: false, // Permite que o digito 0 seja o primeiro caractere
+                    showSymbol: true // Exibe/Oculta o símbolo
+                });
+                $.each($('.money'), function() {
+                    if ($(this).val() !== "") {
+                        $(this).maskMoney('mask');
+                    }
+                });
+            }
 
             $.ajax({
                 url: "/webresources/reaver/getPessoasFisicas",
@@ -468,6 +544,7 @@ var ModalPJCad = function() {
                     });
 
             $('.modal_pj_initial-date,.modal_pj_final-date').keyup(checkDates);
+            $('.modal_pj_aquisicao-date,.modal_pj_extincao-date').keyup(checkBemDates);
 
             $('#modal_pj_vinculatePF').click(function(e) {
                 e.preventDefault();

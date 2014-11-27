@@ -46,9 +46,6 @@ public class ProcessoJudicialDAO implements Serializable {
     }
 
     public void create(ProcessoJudicial processoJudicial) throws RollbackFailureException, Exception {
-        if (processoJudicial.getBemCollection() == null) {
-            processoJudicial.setBemCollection(new ArrayList<Bem>());
-        }
         if (processoJudicial.getVinculoProcessualCollection() == null) {
             processoJudicial.setVinculoProcessualCollection(new ArrayList<VinculoProcessual>());
         }
@@ -57,8 +54,7 @@ public class ProcessoJudicialDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             TipoRecurso tipoDeRecursoFk = processoJudicial.getTipoDeRecursoFk();
             if (tipoDeRecursoFk != null) {
                 tipoDeRecursoFk = em.getReference(tipoDeRecursoFk.getClass(), tipoDeRecursoFk.getId());
@@ -84,12 +80,6 @@ public class ProcessoJudicialDAO implements Serializable {
                 instituicaoFk = em.getReference(instituicaoFk.getClass(), instituicaoFk.getId());
                 processoJudicial.setInstituicaoFk(instituicaoFk);
             }
-            Collection<Bem> attachedBemCollection = new ArrayList<Bem>();
-            for (Bem bemCollectionBemToAttach : processoJudicial.getBemCollection()) {
-                bemCollectionBemToAttach = em.getReference(bemCollectionBemToAttach.getClass(), bemCollectionBemToAttach.getId());
-                attachedBemCollection.add(bemCollectionBemToAttach);
-            }
-            processoJudicial.setBemCollection(attachedBemCollection);
             Collection<VinculoProcessual> attachedVinculoProcessualCollection = new ArrayList<VinculoProcessual>();
             for (VinculoProcessual vinculoProcessualCollectionVinculoProcessualToAttach : processoJudicial.getVinculoProcessualCollection()) {
                 vinculoProcessualCollectionVinculoProcessualToAttach = em.getReference(vinculoProcessualCollectionVinculoProcessualToAttach.getClass(), vinculoProcessualCollectionVinculoProcessualToAttach.getId());
@@ -122,15 +112,6 @@ public class ProcessoJudicialDAO implements Serializable {
             if (instituicaoFk != null) {
                 instituicaoFk.getProcessoJudicialCollection().add(processoJudicial);
                 instituicaoFk = em.merge(instituicaoFk);
-            }
-            for (Bem bemCollectionBem : processoJudicial.getBemCollection()) {
-                ProcessoJudicial oldProcessoJudicialFkOfBemCollectionBem = bemCollectionBem.getProcessoJudicialFk();
-                bemCollectionBem.setProcessoJudicialFk(processoJudicial);
-                bemCollectionBem = em.merge(bemCollectionBem);
-                if (oldProcessoJudicialFkOfBemCollectionBem != null) {
-                    oldProcessoJudicialFkOfBemCollectionBem.getBemCollection().remove(bemCollectionBem);
-                    oldProcessoJudicialFkOfBemCollectionBem = em.merge(oldProcessoJudicialFkOfBemCollectionBem);
-                }
             }
             for (VinculoProcessual vinculoProcessualCollectionVinculoProcessual : processoJudicial.getVinculoProcessualCollection()) {
                 ProcessoJudicial oldProcessoJudicialFkOfVinculoProcessualCollectionVinculoProcessual = vinculoProcessualCollectionVinculoProcessual.getProcessoJudicialFk();
@@ -168,8 +149,7 @@ public class ProcessoJudicialDAO implements Serializable {
     public void edit(ProcessoJudicial processoJudicial) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             ProcessoJudicial persistentProcessoJudicial = em.find(ProcessoJudicial.class, processoJudicial.getId());
             TipoRecurso tipoDeRecursoFkOld = persistentProcessoJudicial.getTipoDeRecursoFk();
             TipoRecurso tipoDeRecursoFkNew = processoJudicial.getTipoDeRecursoFk();
@@ -181,21 +161,11 @@ public class ProcessoJudicialDAO implements Serializable {
             Procurador procuradorFkNew = processoJudicial.getProcuradorFk();
             Instituicao instituicaoFkOld = persistentProcessoJudicial.getInstituicaoFk();
             Instituicao instituicaoFkNew = processoJudicial.getInstituicaoFk();
-            Collection<Bem> bemCollectionOld = persistentProcessoJudicial.getBemCollection();
-            Collection<Bem> bemCollectionNew = processoJudicial.getBemCollection();
             Collection<VinculoProcessual> vinculoProcessualCollectionOld = persistentProcessoJudicial.getVinculoProcessualCollection();
             Collection<VinculoProcessual> vinculoProcessualCollectionNew = processoJudicial.getVinculoProcessualCollection();
             Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionOld = persistentProcessoJudicial.getProcessoJudicialHistoricoCollection();
             Collection<ProcessoJudicialHistorico> processoJudicialHistoricoCollectionNew = processoJudicial.getProcessoJudicialHistoricoCollection();
             List<String> illegalOrphanMessages = null;
-            for (Bem bemCollectionOldBem : bemCollectionOld) {
-                if (!bemCollectionNew.contains(bemCollectionOldBem)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Bem " + bemCollectionOldBem + " since its processoJudicialFk field is not nullable.");
-                }
-            }
             for (VinculoProcessual vinculoProcessualCollectionOldVinculoProcessual : vinculoProcessualCollectionOld) {
                 if (!vinculoProcessualCollectionNew.contains(vinculoProcessualCollectionOldVinculoProcessual)) {
                     if (illegalOrphanMessages == null) {
@@ -235,13 +205,6 @@ public class ProcessoJudicialDAO implements Serializable {
                 instituicaoFkNew = em.getReference(instituicaoFkNew.getClass(), instituicaoFkNew.getId());
                 processoJudicial.setInstituicaoFk(instituicaoFkNew);
             }
-            Collection<Bem> attachedBemCollectionNew = new ArrayList<Bem>();
-            for (Bem bemCollectionNewBemToAttach : bemCollectionNew) {
-                bemCollectionNewBemToAttach = em.getReference(bemCollectionNewBemToAttach.getClass(), bemCollectionNewBemToAttach.getId());
-                attachedBemCollectionNew.add(bemCollectionNewBemToAttach);
-            }
-            bemCollectionNew = attachedBemCollectionNew;
-            processoJudicial.setBemCollection(bemCollectionNew);
             Collection<VinculoProcessual> attachedVinculoProcessualCollectionNew = new ArrayList<VinculoProcessual>();
             for (VinculoProcessual vinculoProcessualCollectionNewVinculoProcessualToAttach : vinculoProcessualCollectionNew) {
                 vinculoProcessualCollectionNewVinculoProcessualToAttach = em.getReference(vinculoProcessualCollectionNewVinculoProcessualToAttach.getClass(), vinculoProcessualCollectionNewVinculoProcessualToAttach.getId());
@@ -297,17 +260,6 @@ public class ProcessoJudicialDAO implements Serializable {
                 instituicaoFkNew.getProcessoJudicialCollection().add(processoJudicial);
                 instituicaoFkNew = em.merge(instituicaoFkNew);
             }
-            for (Bem bemCollectionNewBem : bemCollectionNew) {
-                if (!bemCollectionOld.contains(bemCollectionNewBem)) {
-                    ProcessoJudicial oldProcessoJudicialFkOfBemCollectionNewBem = bemCollectionNewBem.getProcessoJudicialFk();
-                    bemCollectionNewBem.setProcessoJudicialFk(processoJudicial);
-                    bemCollectionNewBem = em.merge(bemCollectionNewBem);
-                    if (oldProcessoJudicialFkOfBemCollectionNewBem != null && !oldProcessoJudicialFkOfBemCollectionNewBem.equals(processoJudicial)) {
-                        oldProcessoJudicialFkOfBemCollectionNewBem.getBemCollection().remove(bemCollectionNewBem);
-                        oldProcessoJudicialFkOfBemCollectionNewBem = em.merge(oldProcessoJudicialFkOfBemCollectionNewBem);
-                    }
-                }
-            }
             for (VinculoProcessual vinculoProcessualCollectionNewVinculoProcessual : vinculoProcessualCollectionNew) {
                 if (!vinculoProcessualCollectionOld.contains(vinculoProcessualCollectionNewVinculoProcessual)) {
                     ProcessoJudicial oldProcessoJudicialFkOfVinculoProcessualCollectionNewVinculoProcessual = vinculoProcessualCollectionNewVinculoProcessual.getProcessoJudicialFk();
@@ -355,8 +307,7 @@ public class ProcessoJudicialDAO implements Serializable {
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             ProcessoJudicial processoJudicial;
             try {
                 processoJudicial = em.getReference(ProcessoJudicial.class, id);
@@ -365,13 +316,6 @@ public class ProcessoJudicialDAO implements Serializable {
                 throw new NonexistentEntityException("The processoJudicial with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            Collection<Bem> bemCollectionOrphanCheck = processoJudicial.getBemCollection();
-            for (Bem bemCollectionOrphanCheckBem : bemCollectionOrphanCheck) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This ProcessoJudicial (" + processoJudicial + ") cannot be destroyed since the Bem " + bemCollectionOrphanCheckBem + " in its bemCollection field has a non-nullable processoJudicialFk field.");
-            }
             Collection<VinculoProcessual> vinculoProcessualCollectionOrphanCheck = processoJudicial.getVinculoProcessualCollection();
             for (VinculoProcessual vinculoProcessualCollectionOrphanCheckVinculoProcessual : vinculoProcessualCollectionOrphanCheck) {
                 if (illegalOrphanMessages == null) {
