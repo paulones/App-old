@@ -17,6 +17,7 @@
         <style>
             .pessoa .control-label{margin-top:6px !important;padding-top:0;text-align:left}
             .pessoa .form-group{margin: 0}
+            .fixed-menu{position:fixed;top:50px;width:17.5%}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -72,7 +73,7 @@
                         <div class="portlet-title">
                             <div class="caption">
                                 <i class="fa fa-files-o"></i> Formulário de #{processoJudicialBean.edit ? 'Alteração do Processo ' :'Cadastro '}#{processoJudicialBean.edit ? processoJudicialBean.processoJudicial.numeroDoProcesso : ''} - <span class="step-title">
-                                    Passo 1 de 4 </span>
+                                    Passo 1 de 3 </span>
                             </div>
                         </div>
                         <div class="portlet-body form">
@@ -151,7 +152,7 @@
                                                                 * </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <h:inputText class="select2_category form-control cpfVinculate" id="cpf" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPF}"/>
+                                                            <h:inputText class="select2_category form-control cpfVinculate" id="cpf" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPF}" />
                                                         </div>
                                                         <div class="col-md-6">
                                                             <h:commandLink class="button-pessoa-fisica btn blue-chambray display-hide">
@@ -169,6 +170,9 @@
                                                         </label>
                                                         <div class="col-md-4">
                                                             <h:inputText class="select2_category form-control cnpjVinculate" id="cnpj" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPJ}" />
+                                                            <h:commandLink styleClass="carregar_socios_pj">
+                                                                <f:ajax execute="cnpj" listener="#{processoJudicialBean.listarSocios('PJ')}" />
+                                                            </h:commandLink>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <h:commandLink class="button-pessoa-juridica btn blue-chambray display-hide">
@@ -1920,7 +1924,7 @@
                                         <!--/tab-->
                                         <div class="tab-pane" id="tab3">
                                             <span class="help-block">Campos com * são obrigatórios.</span>
-                                            <h3 class="form-section">Identificação dos Atos Processuais</h3>
+                                            <h3 class="form-section limiter">Identificação dos Atos Processuais</h3>
                                             <div class="row">
                                                 <div class="col-md-3">
                                                     <ul class="ver-inline-menu tabbable margin-bottom-10">
@@ -1954,226 +1958,395 @@
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Citado</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadios1"  value="option1"></input> Sim </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadios2"  value="option2"></input> Não </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Motivo
-                                                                                    </label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="armotivo" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Data
-                                                                                    </label>
+                                                                                    <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="ardata" autocomplete="off" />
-                                                                                        </div>
+                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="artentativas" autocomplete="off" value="#{processoJudicialBean.ars}" />
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <h:commandLink class="tentativas btn blue-chambray">
+                                                                                            <f:ajax execute="artentativas accordion-ar" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('AR')}" render="accordion-ar"/>
+                                                                                            <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
+                                                                                        </h:commandLink>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-9">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-2">Endereço
-                                                                                    </label>
-                                                                                    <div class="col-md-10">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="arendereco" autocomplete="off" />
+                                                                        <br/>
+                                                                        <h:panelGroup layout="block" class="panel-group accordion" id="accordion-ar">
+                                                                            <ui:repeat value="#{processoJudicialBean.arList}" var="ar" varStatus="status">
+                                                                                <div class="panel panel-danger">
+                                                                                    <div class="panel-heading">
+                                                                                        <h4 class="panel-title">
+                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-ar"  href="#collapse_ar_#{status.index}">
+                                                                                                Tentativa #{status.index + 1} </a>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div id="collapse_ar_#{status.index}" class="panel-collapse collapse">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Citado</label>
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="radio-list">
+                                                                                                                <h:selectOneRadio styleClass="citado" value="#{ar.citado}">
+                                                                                                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                                                                                                    <f:selectItem itemLabel="Não" itemValue="N"/>
+                                                                                                                </h:selectOneRadio>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group motivo">
+                                                                                                        <label class="control-label col-md-2">Motivo
+                                                                                                        </label>
+                                                                                                        <div class="col-md-8">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{ar.motivo}" class="form-control armotivo" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Data
+                                                                                                        </label>
+                                                                                                        <div class="col-md-7">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{ar.dataDaCitacao}" class="form-control date ardata" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-2">Endereço
+                                                                                                        </label>
+                                                                                                        <div class="col-md-10">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{ar.endereco}" class="form-control arendereco" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
+                                                                            </ui:repeat>
+                                                                        </h:panelGroup>
                                                                         <br/>
                                                                         <h4 class="help-block">Oficial de Justiça</h4>
                                                                         <br/>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Citado</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosa1"  value="option1"></input> Sim </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosa2"  value="option2"></input> Não </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Motivo
-                                                                                    </label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="oficialmotivo" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Data
-                                                                                    </label>
+                                                                                    <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="oficialdata" autocomplete="off" />
-                                                                                        </div>
+                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="oficialtentativas" autocomplete="off" value="#{processoJudicialBean.oficiais}" />
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <h:commandLink class="btn blue-chambray tentativas">
+                                                                                            <f:ajax execute="oficialtentativas accordion-oficial" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('OJ')}" render="accordion-oficial"/>
+                                                                                            <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
+                                                                                        </h:commandLink>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-9">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-2">Endereço
-                                                                                    </label>
-                                                                                    <div class="col-md-10">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="oficialendereco" autocomplete="off" />
+                                                                        <br/>
+                                                                        <h:panelGroup layout="block" class="panel-group accordion" id="accordion-oficial">
+                                                                            <ui:repeat value="#{processoJudicialBean.oficialList}" var="oficial" varStatus="status">
+                                                                                <div class="panel panel-danger">
+                                                                                    <div class="panel-heading">
+                                                                                        <h4 class="panel-title">
+                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-oficial"  href="#collapse_oficial_#{status.index}">
+                                                                                                Tentativa #{status.index + 1} </a>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div id="collapse_oficial_#{status.index}" class="panel-collapse collapse">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Citado</label>
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="radio-list">
+                                                                                                                <h:selectOneRadio styleClass="citado" value="#{oficial.citado}">
+                                                                                                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                                                                                                    <f:selectItem itemLabel="Não" itemValue="N"/>
+                                                                                                                </h:selectOneRadio>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group motivo">
+                                                                                                        <label class="control-label col-md-2">Motivo
+                                                                                                        </label>
+                                                                                                        <div class="col-md-8">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{oficial.motivo}" class="form-control oficialmotivo" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Data
+                                                                                                        </label>
+                                                                                                        <div class="col-md-7">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText class="form-control date oficialdata" p:placeholder="dd/mm/aaaa" autocomplete="off" value="#{oficial.dataDaCitacao}" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-2">Endereço
+                                                                                                        </label>
+                                                                                                        <div class="col-md-10">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText class="form-control oficialendereco" autocomplete="off" value="#{oficial.endereco}"/>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
+                                                                            </ui:repeat>
+                                                                        </h:panelGroup>
                                                                         <br/>
                                                                         <h4 class="help-block">Edital</h4>
                                                                         <br/>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Citado</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosb1"  value="option1"></input> Sim </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosb2"  value="option2"></input> Não </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Motivo
-                                                                                    </label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="editalmotivo" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Data
-                                                                                    </label>
+                                                                                    <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="editaldata" autocomplete="off" />
-                                                                                        </div>
+                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="editaltentativas" autocomplete="off" value="#{processoJudicialBean.editais}"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <h:commandLink class="btn blue-chambray tentativas">
+                                                                                            <f:ajax execute="editaltentativas accordion-edital" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('ED')}" render="accordion-edital"/>
+                                                                                            <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
+                                                                                        </h:commandLink>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                        <br/>
+                                                                        <h:panelGroup layout="block" class="panel-group accordion" id="accordion-edital">
+                                                                            <ui:repeat value="#{processoJudicialBean.editalList}" var="edital" varStatus="status">
+                                                                                <div class="panel panel-danger">
+                                                                                    <div class="panel-heading">
+                                                                                        <h4 class="panel-title">
+                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-edital"  href="#collapse_edital_#{status.index}">
+                                                                                                Tentativa #{status.index + 1} </a>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div id="collapse_edital_#{status.index}" class="panel-collapse collapse">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Citado</label>
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="radio-list">
+                                                                                                                <h:selectOneRadio styleClass="citado" value="#{edital.citado}">
+                                                                                                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                                                                                                    <f:selectItem itemLabel="Não" itemValue="N"/>
+                                                                                                                </h:selectOneRadio>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group motivo">
+                                                                                                        <label class="control-label col-md-2">Motivo
+                                                                                                        </label>
+                                                                                                        <div class="col-md-8">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{edital.motivo}" class="form-control editalmotivo" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Data
+                                                                                                        </label>
+                                                                                                        <div class="col-md-7">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{edital.dataDaCitacao}" class="form-control editaldata date" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </ui:repeat>
+                                                                        </h:panelGroup>
                                                                         <br/>
                                                                         <h4 class="help-block">Endereço do Sócio</h4>
                                                                         <br/>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Citado</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosc1"  value="option1"></input> Sim </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosc2"  value="option2"></input> Não </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Motivo
-                                                                                    </label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="enderecosociomotivo" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Data
-                                                                                    </label>
+                                                                                    <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="enderecosociodata" autocomplete="off" />
-                                                                                        </div>
+                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="enderecosociotentativas" autocomplete="off" value="#{processoJudicialBean.enderecosSocios}"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <h:commandLink class="tentativas btn blue-chambray">
+                                                                                            <f:ajax execute="enderecosociotentativas accordion-enderecosocio" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('ES')}" render="accordion-enderecosocio"/>
+                                                                                            <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
+                                                                                        </h:commandLink>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-9">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-2">Endereço
-                                                                                    </label>
-                                                                                    <div class="col-md-10">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="enderecosocioendereco" autocomplete="off" />
+                                                                        <br/>
+                                                                        <h:panelGroup layout="block" class="panel-group accordion" id="accordion-enderecosocio">
+                                                                            <ui:repeat value="#{processoJudicialBean.enderecoSocioList}" var="enderecosocio" varStatus="status">
+                                                                                <div class="panel panel-danger">
+                                                                                    <div class="panel-heading">
+                                                                                        <h4 class="panel-title">
+                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-enderecosocio"  href="#collapse_enderecosocio_#{status.index}">
+                                                                                                Tentativa #{status.index + 1} </a>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div id="collapse_enderecosocio_#{status.index}" class="panel-collapse collapse">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Citado</label>
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="radio-list">
+                                                                                                                <h:selectOneRadio styleClass="citado" value="#{enderecosocio.citado}">
+                                                                                                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                                                                                                    <f:selectItem itemLabel="Não" itemValue="N"/>
+                                                                                                                </h:selectOneRadio>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group motivo">
+                                                                                                        <label class="control-label col-md-2">Motivo
+                                                                                                        </label>
+                                                                                                        <div class="col-md-8">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{enderecosocio.motivo}" class="form-control enderecosociomotivo" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Data
+                                                                                                        </label>
+                                                                                                        <div class="col-md-7">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{enderecosocio.dataDaCitacao}" class="form-control enderecosociodata date" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-2">Endereço
+                                                                                                        </label>
+                                                                                                        <div class="col-md-10">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{enderecosocio.endereco}" class="form-control enderecosocioendereco" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Sócio</label>
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="radio-list">
+                                                                                                                <h:selectOneRadio styleClass="sociotipo" value="#{enderecosocio.socio}">
+                                                                                                                    <f:selectItem itemLabel="P. Física" itemValue="PF"/>
+                                                                                                                    <f:selectItem itemLabel="P. Jurídica" itemValue="PJ"/>
+                                                                                                                </h:selectOneRadio>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-md-6 socios-pf display-hide">
+                                                                                                    <div class="form-group">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <ui:param value="#{socioPF.cpf.substring(0,3)}.#{socioPF.cpf.substring(3,6)}.#{socioPF.cpf.substring(6,9)}-#{socioPF.cpf.substring(9)}" name="cpf"/>
+                                                                                                            <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{enderecosocio.socioFk}" >
+                                                                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                <f:selectItems value="#{processoJudicialBean.socioPFList}" var="socioPF" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{socioPF.nome}" itemValue="#{socioPF.id}"/>
+                                                                                                            </h:selectOneMenu>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-md-6 socios-pj display-hide">
+                                                                                                    <div class="form-group">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <ui:param value="#{socioPJ.cnpj.substring(0,2)}.#{socioPJ.cnpj.substring(2,5)}.#{socioPJ.cnpj.substring(5,8)}/#{socioPJ.cnpj.substring(8,12)}-#{socioPJ.cnpj.substring(12)}" name="cnpj"/>
+                                                                                                            <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{enderecosocio.socioFk}" >
+                                                                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                <f:selectItems value="#{processoJudicialBean.socioPJList}" var="socioPJ" itemLabel="#{cnpj} - #{socioPJ.nome}" itemValue="#{socioPJ.id}"/>
+                                                                                                            </h:selectOneMenu>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
+                                                                            </ui:repeat>
+                                                                        </h:panelGroup>
                                                                         <h3 class="form-section">Redirecionamento</h3>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
@@ -2191,18 +2364,21 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="row">
-                                                                            <div class="col-md-6">
+                                                                            <div class="col-md-12">
                                                                                 <!-- BEGIN EXAMPLE TABLE PORTLET-->
                                                                                 <table class="table table-bordered table-hover vinculations">
                                                                                     <thead>
                                                                                         <tr>
-                                                                                            <th class="table-checkbox" style="max-width:3%;">
+                                                                                            <th class="table-checkbox" style="min-width:5%;">
                                                                                                 <input type="checkbox" class="group-checkable" data-set=".checkboxes"/>
                                                                                             </th>
-                                                                                            <th style="min-width:87%">
+                                                                                            <th style="min-width:70%">
                                                                                                 Sócios
                                                                                             </th>
-                                                                                            <th style="min-width:10%">
+                                                                                            <th style="min-width:20%">
+                                                                                                Data
+                                                                                            </th>
+                                                                                            <th style="min-width:5%">
                                                                                             </th>
                                                                                         </tr>
                                                                                     </thead>
@@ -2214,8 +2390,14 @@
                                                                                             <td class="socio-name">
                                                                                                 shuxer
                                                                                             </td>
+                                                                                            <td class="socio-data">
+                                                                                                <div class="input-icon right display-hide">
+                                                                                                    <i class="fa"></i>
+                                                                                                    <input class="form-control input-sm date" autocomplete="off" />
+                                                                                                </div>
+                                                                                            </td>
                                                                                             <td class="view-pf">
-
+                                                                                                <div class='label label-default'><i class='fa fa-search'></i></div>
                                                                                             </td>
                                                                                         </tr>
                                                                                         <tr class="gradeX">
@@ -2225,16 +2407,11 @@
                                                                                             <td class="socio-name">
                                                                                                 looper
                                                                                             </td>
-                                                                                            <td class="view-pf">
-
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr class="gradeX">
-                                                                                            <td>
-                                                                                                <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                            </td>
-                                                                                            <td class="socio-name">
-                                                                                                userwow
+                                                                                            <td class="socio-data">
+                                                                                                <div class="input-icon right display-hide">
+                                                                                                    <i class="fa"></i>
+                                                                                                    <input class="form-control date" autocomplete="off" />
+                                                                                                </div>
                                                                                             </td>
                                                                                             <td class="view-pf">
 

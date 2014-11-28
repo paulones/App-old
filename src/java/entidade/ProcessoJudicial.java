@@ -8,7 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Basic;
@@ -77,6 +77,10 @@ public class ProcessoJudicial implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<Citacao> citacaoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<Redirecionamento> redirecionamentoCollection;
     @JoinColumn(name = "instituicao_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Instituicao instituicaoFk;
@@ -646,6 +650,24 @@ public class ProcessoJudicial implements Serializable {
 
     public void setInstituicaoFk(Instituicao instituicaoFk) {
         this.instituicaoFk = instituicaoFk;
+    }
+
+    @XmlTransient
+    public Collection<Citacao> getCitacaoCollection() {
+        return citacaoCollection;
+    }
+
+    public void setCitacaoCollection(Collection<Citacao> citacaoCollection) {
+        this.citacaoCollection = citacaoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Redirecionamento> getRedirecionamentoCollection() {
+        return redirecionamentoCollection;
+    }
+
+    public void setRedirecionamentoCollection(Collection<Redirecionamento> redirecionamentoCollection) {
+        this.redirecionamentoCollection = redirecionamentoCollection;
     }
 
 }

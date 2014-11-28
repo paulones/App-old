@@ -7,9 +7,12 @@ package bean;
 
 import bo.BemBO;
 import bo.BemHistoricoBO;
+import bo.CitacaoBO;
 import bo.EnderecoBO;
 import bo.PessoaFisicaBO;
+import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaJuridicaBO;
+import bo.PessoaJuridicaJuridicaBO;
 import bo.ProcessoJudicialBO;
 import bo.ProcessoJudicialHistoricoBO;
 import bo.ProcuradorBO;
@@ -22,12 +25,15 @@ import bo.VinculoProcessualBO;
 import bo.VinculoProcessualHistoricoBO;
 import entidade.Bem;
 import entidade.BemHistorico;
+import entidade.Citacao;
 import entidade.Endereco;
 import entidade.EnderecoPessoa;
 import entidade.Executado;
 import entidade.ExecutadoHistorico;
 import entidade.PessoaFisica;
+import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
+import entidade.PessoaJuridicaJuridica;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
 import entidade.Procurador;
@@ -82,6 +88,12 @@ public class ProcessoJudicialBean implements Serializable {
     private List<Situacao> situacaoList;
     private List<Procurador> procuradorList;
     private List<ProcessoJudicial> executadoProcessoJudicialList;
+    private List<Citacao> arList;
+    private List<Citacao> oficialList;
+    private List<Citacao> editalList;
+    private List<Citacao> enderecoSocioList;
+    private List<PessoaFisica> socioPFList;
+    private List<PessoaJuridica> socioPJList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -96,6 +108,7 @@ public class ProcessoJudicialBean implements Serializable {
     private VinculoProcessualHistoricoBO vinculoProcessualHistoricoBO;
     private SituacaoBO situacaoBO;
     private ProcuradorBO procuradorBO;
+    private CitacaoBO citacaoBO;
 
     private Integer vinculos;
     private String executadoPF;
@@ -105,6 +118,10 @@ public class ProcessoJudicialBean implements Serializable {
     private String pjudId;
     private boolean edit;
     private boolean history;
+    private Integer ars;
+    private Integer oficiais;
+    private Integer editais;
+    private Integer enderecosSocios;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -131,8 +148,13 @@ public class ProcessoJudicialBean implements Serializable {
             vinculoProcessualHistoricoBO = new VinculoProcessualHistoricoBO();
             situacaoBO = new SituacaoBO();
             procuradorBO = new ProcuradorBO();
+            citacaoBO = new CitacaoBO();
 
             vinculos = 0;
+            ars = 0;
+            oficiais = 0;
+            editais = 0;
+            enderecosSocios = 0;
             executadoPF = "";
             executadoPJ = "";
             register = "";
@@ -140,7 +162,13 @@ public class ProcessoJudicialBean implements Serializable {
             Cookie.apagarCookie("FacesMessage");
 
             vinculoProcessualList = new ArrayList<>();
-
+            arList = new ArrayList<>();
+            oficialList = new ArrayList<>();
+            editalList = new ArrayList<>();
+            enderecoSocioList = new ArrayList<>();
+            socioPFList = new ArrayList<>();
+            socioPJList = new ArrayList<>();
+            
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
                 /*
@@ -251,6 +279,54 @@ public class ProcessoJudicialBean implements Serializable {
                 vinculoProcessualList.remove(vinculoProcessualList.size() - 1);
             }
         }
+    }
+    
+    public void adicionarQuantidadeDeCitacoes(String tipo){
+        if (tipo.equals("AR")){
+            arList = adicionarCitacoes(arList, ars, tipo);
+        } else if (tipo.equals("OJ")){
+            oficialList = adicionarCitacoes(oficialList, oficiais, tipo);
+        } else if (tipo.equals("ED")){
+            editalList = adicionarCitacoes(editalList, editais, tipo);
+        } else if (tipo.equals("ES")){
+            enderecoSocioList = adicionarCitacoes(enderecoSocioList, enderecosSocios, tipo);
+        }
+    }
+    
+    public List<Citacao> adicionarCitacoes(List<Citacao> citacaoList, Integer quantidade, String tipo){
+        if (quantidade > citacaoList.size()) {
+            quantidade = citacaoList.isEmpty() ? quantidade : quantidade - citacaoList.size();
+            for (int i = 0; i < quantidade; i++) {
+                Citacao citacao = new Citacao();
+                citacao.setTipoCitacao(tipo);
+                citacao.setCitado('N');
+                citacaoList.add(citacao);
+            }
+        } else if (quantidade < citacaoList.size()) {
+            while (citacaoList.size() > quantidade) {
+                citacaoList.remove(citacaoList.size() - 1);
+            }
+        }
+        return citacaoList;
+    }
+    
+    public void listarSocios(String tipo){
+        PessoaFisicaJuridicaBO pfjBO = new PessoaFisicaJuridicaBO();
+        PessoaJuridicaJuridicaBO pjjBO = new PessoaJuridicaJuridicaBO();
+        if (tipo.equals("PJ") && !executadoPJ.equals("")){
+            List<PessoaFisicaJuridica> pfjList = pfjBO.findAllByPJ(Integer.valueOf(executadoPJ));
+            for (PessoaFisicaJuridica pfj : pfjList){
+                socioPFList.add(pfj.getPessoaFisicaFk());
+            }
+            List<PessoaJuridicaJuridica> pjjList = pjjBO.findAllByPJAOrPJB(Integer.valueOf(executadoPJ));
+            for (PessoaJuridicaJuridica pjj : pjjList){
+                if(pjj.getPessoaJuridicaPrimariaFk().getId().equals(Integer.valueOf(executadoPJ))){
+                    System.out.println("aeae");
+                    socioPJList.add(pjj.getPessoaJuridicaSecundariaFk());
+                }
+            }
+        }
+        
     }
 
     public void exibirExecutado() {
@@ -704,6 +780,86 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setExecutadoProcessoJudicialList(List<ProcessoJudicial> executadoProcessoJudicialList) {
         this.executadoProcessoJudicialList = executadoProcessoJudicialList;
+    }
+
+    public List<Citacao> getArList() {
+        return arList;
+    }
+
+    public void setArList(List<Citacao> arList) {
+        this.arList = arList;
+    }
+
+    public List<Citacao> getOficialList() {
+        return oficialList;
+    }
+
+    public void setOficialList(List<Citacao> oficialList) {
+        this.oficialList = oficialList;
+    }
+
+    public List<Citacao> getEditalList() {
+        return editalList;
+    }
+
+    public void setEditalList(List<Citacao> editalList) {
+        this.editalList = editalList;
+    }
+
+    public List<Citacao> getEnderecoSocioList() {
+        return enderecoSocioList;
+    }
+
+    public void setEnderecoSocioList(List<Citacao> enderecoSocioList) {
+        this.enderecoSocioList = enderecoSocioList;
+    }
+
+    public Integer getArs() {
+        return ars;
+    }
+
+    public void setArs(Integer ars) {
+        this.ars = ars;
+    }
+
+    public Integer getOficiais() {
+        return oficiais;
+    }
+
+    public void setOficiais(Integer oficiais) {
+        this.oficiais = oficiais;
+    }
+
+    public Integer getEditais() {
+        return editais;
+    }
+
+    public void setEditais(Integer editais) {
+        this.editais = editais;
+    }
+
+    public Integer getEnderecosSocios() {
+        return enderecosSocios;
+    }
+
+    public void setEnderecosSocios(Integer enderecosSocios) {
+        this.enderecosSocios = enderecosSocios;
+    }
+
+    public List<PessoaFisica> getSocioPFList() {
+        return socioPFList;
+    }
+
+    public void setSocioPFList(List<PessoaFisica> socioPFList) {
+        this.socioPFList = socioPFList;
+    }
+
+    public List<PessoaJuridica> getSocioPJList() {
+        return socioPJList;
+    }
+
+    public void setSocioPJList(List<PessoaJuridica> socioPJList) {
+        this.socioPJList = socioPJList;
     }
     
 }

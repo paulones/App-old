@@ -8,7 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -83,6 +83,10 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
+    private Collection<CitacaoHistorico> citacaoHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
+    private Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollection;
     @JoinColumn(name = "procurador_fk", referencedColumnName = "id")
     @ManyToOne
     private Procurador procuradorFk;
@@ -470,6 +474,38 @@ public class ProcessoJudicialHistorico implements Serializable {
         return "entidade.ProcessoJudicialHistorico[ id=" + id + " ]";
     }
 
+    public Situacao getSituacaoFk() {
+        return situacaoFk;
+    }
+
+    public void setSituacaoFk(Situacao situacaoFk) {
+        this.situacaoFk = situacaoFk;
+    }
+
+    public BigDecimal getValorArrecadado() {
+        return valorArrecadado;
+    }
+
+    public void setValorArrecadado(BigDecimal valorArrecadado) {
+        this.valorArrecadado = valorArrecadado;
+    }
+
+    public String getFonteDaArrecadacao() {
+        return fonteDaArrecadacao;
+    }
+
+    public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
+        this.fonteDaArrecadacao = fonteDaArrecadacao;
+    }
+
+    public Procurador getProcuradorFk() {
+        return procuradorFk;
+    }
+
+    public void setProcuradorFk(Procurador procuradorFk) {
+        this.procuradorFk = procuradorFk;
+    }
+
     public BigDecimal getDiscriminacaoDoCreditoImposto() {
         return discriminacaoDoCreditoImposto;
     }
@@ -502,36 +538,22 @@ public class ProcessoJudicialHistorico implements Serializable {
         this.valorAtualizado = valorAtualizado;
     }
 
-    public Situacao getSituacaoFk() {
-        return situacaoFk;
+    @XmlTransient
+    public Collection<CitacaoHistorico> getCitacaoHistoricoCollection() {
+        return citacaoHistoricoCollection;
     }
 
-    public void setSituacaoFk(Situacao situacaoFk) {
-        this.situacaoFk = situacaoFk;
+    public void setCitacaoHistoricoCollection(Collection<CitacaoHistorico> citacaoHistoricoCollection) {
+        this.citacaoHistoricoCollection = citacaoHistoricoCollection;
     }
 
-    public BigDecimal getValorArrecadado() {
-        return valorArrecadado;
+    @XmlTransient
+    public Collection<RedirecionamentoHistorico> getRedirecionamentoHistoricoCollection() {
+        return redirecionamentoHistoricoCollection;
     }
 
-    public void setValorArrecadado(BigDecimal valorArrecadado) {
-        this.valorArrecadado = valorArrecadado;
-    }
-
-    public String getFonteDaArrecadacao() {
-        return fonteDaArrecadacao;
-    }
-
-    public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
-        this.fonteDaArrecadacao = fonteDaArrecadacao;
-    }
-
-    public Procurador getProcuradorFk() {
-        return procuradorFk;
-    }
-
-    public void setProcuradorFk(Procurador procuradorFk) {
-        this.procuradorFk = procuradorFk;
+    public void setRedirecionamentoHistoricoCollection(Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollection) {
+        this.redirecionamentoHistoricoCollection = redirecionamentoHistoricoCollection;
     }
 
 }

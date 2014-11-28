@@ -332,6 +332,16 @@ var PjudCad = function() {
                 $('.alert-danger').show();
             }
 
+            $(window).scroll(function() {
+                if ($(".ver-inline-menu").is(":visible")) {
+                    if ($(this).scrollTop() > 400) {
+                        $(".ver-inline-menu").addClass("fixed-menu");
+                    } else {
+                        $(".ver-inline-menu").removeClass("fixed-menu");
+                    }
+                }
+            });
+
             $.validator.methods["date"] = function validaData(value, element) {
                 var reg = /^(((0[1-9]|[12]\d|3[01])\/(0[13578]|1[02])\/((19|[2-9]\d)\d{2}))|((0[1-9]|[12]\d|30)\/(0[13456789]|1[012])\/((19|[2-9]\d)\d{2}))|((0[1-9]|1\d|2[0-8])\/02\/((19|[2-9]\d)\d{2}))|(29\/02\/((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))))$/g;
                 if (value === "" || value === null) {
@@ -346,6 +356,9 @@ var PjudCad = function() {
                 },
                 vinculotipo: {
                     required: true
+                },
+                ardata: {
+                    date: true
                 }
             });
 
@@ -371,7 +384,7 @@ var PjudCad = function() {
                     }
                 });
             }
-
+            
             $('.masked-numbers').keypress(numeroDoProcesso);
             function numeroDoProcesso(e) {
                 var regex = new RegExp("[0-9.\/\-]");
@@ -464,7 +477,30 @@ var PjudCad = function() {
                     return false;
                 }
             }
-            ;
+            
+            citado();
+            $(document).on('change', '.citado', citado);
+            function citado(event) {
+                if ($(this).find("input[type=radio]:checked").val() === 'N') {
+                    $(this).parents('.panel-body').find('.motivo').show();
+                    $(this).parents('.panel').addClass('panel-danger').removeClass('panel-success');
+                } else {
+                    $(this).parents('.panel-body').find('.motivo').hide();
+                    $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
+                }
+            }
+            
+            socioTipo();
+            $(document).on('change', '.sociotipo', socioTipo);
+            function socioTipo(event) {
+                if ($(this).find("input[type=radio]:checked").val() === 'PF') {
+                    $(this).parents('.panel-body').find('.socios-pf').show();
+                    $(this).parents('.panel-body').find('.socios-pj').hide();
+                } else if ($(this).find("input[type=radio]:checked").val() === 'PJ'){
+                    $(this).parents('.panel-body').find('.socios-pf').hide();
+                    $(this).parents('.panel-body').find('.socios-pj').show();
+                }
+            }
 
             $.ajax({
                 url: "/webresources/reaver/getPessoasJuridicas",
@@ -504,6 +540,9 @@ var PjudCad = function() {
                             allowClear: true,
                         });
                     });
+            $('#cnpj').change(function(){
+                $('.carregar_socios_pj').click();
+            })
 
             $.ajax({
                 url: "/webresources/reaver/getPessoasFisicas",
@@ -561,6 +600,13 @@ var PjudCad = function() {
                         getSucessoes('#cnpj', '#pessoa-juridica');
                         getMoneyMask('.accordion');
                         initTable();
+                    } else if ($(data.source).hasClass("tentativas")){
+                        $.each($('.citado'), citado);
+                        $.each($('.sociotipo'), socioTipo);
+                        $('.socios').select2({allowClear:true});
+                        $('.citado input[type=radio]').uniform();
+                        $('.sociotipo input[type=radio]').uniform();
+                        $('.date').mask("99/99/9999");
                     }
                 }
             });
