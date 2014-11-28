@@ -37,14 +37,10 @@ textarea{resize:none}
 #executado .radio{margin-right:4px}
 #executado label{margin-right:33px}
 #executado input{margin-left:-9px}
-.citado{margin-top:7px}
-.citado .radio{margin-right:4px}
-.citado label{margin-right:33px}
-.citado input{margin-left:-9px !important}
-.sociotipo{margin-top:7px}
-.sociotipo .radio{margin-right:4px}
-.sociotipo label{margin-right:33px}
-.sociotipo input{margin-left:-9px !important}
+.uniformization{margin-top:7px}
+.uniformization .radio{margin-right:4px}
+.uniformization label{margin-right:33px}
+.uniformization input{margin-left:-9px !important}
 /*cadastroPJMODAL*/
 #modal_pj_situacao{margin-top:3px}
 #modal_pj_situacao .radio{margin-right:4px}

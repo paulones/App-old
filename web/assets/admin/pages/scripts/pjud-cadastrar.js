@@ -295,12 +295,12 @@ var PjudCad = function() {
             jQuery(set).each(function() {
                 if (checked) {
                     $(this).attr("checked", true);
-                    $(this).parents('tr').addClass("active");
-                    $(this).parents('tr').find('.socio-name').css("color", "white");
+                    $(this).parents('tr').find('.socio-data').children().children().children().show();
                 } else {
                     $(this).attr("checked", false);
-                    $(this).parents('tr').removeClass("active");
-                    $(this).parents('tr').find('.socio-name').css("color", "black");
+                    $(this).parents('tr').find('.socio-data').children().children().children().hide();
+                    $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").val("");
+                    $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").valid();
                 }
             });
             jQuery.uniform.update(set);
@@ -309,12 +309,12 @@ var PjudCad = function() {
             var checked = jQuery(this).is(":checked");
             if (checked) {
                 $(this).attr("checked", true);
-                $(this).parents('tr').addClass("active");
-                $(this).parents('tr').find('.socio-name').css("color", "white");
+                $(this).parents('tr').find('.socio-data').children().children().children().show();
             } else {
                 $(this).attr("checked", false);
-                $(this).parents('tr').removeClass("active");
-                $(this).parents('tr').find('.socio-name').css("color", "black");
+                $(this).parents('tr').find('.socio-data').children().children().children().hide();
+                $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").val("");
+                $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").valid();
             }
             jQuery.uniform.update(set);
         });
@@ -359,6 +359,9 @@ var PjudCad = function() {
                 },
                 ardata: {
                     date: true
+                },
+                data_redirecionamento: {
+                    date: true
                 }
             });
 
@@ -384,7 +387,7 @@ var PjudCad = function() {
                     }
                 });
             }
-            
+
             $('.masked-numbers').keypress(numeroDoProcesso);
             function numeroDoProcesso(e) {
                 var regex = new RegExp("[0-9.\/\-]");
@@ -477,7 +480,7 @@ var PjudCad = function() {
                     return false;
                 }
             }
-            
+
             citado();
             $(document).on('change', '.citado', citado);
             function citado(event) {
@@ -489,14 +492,14 @@ var PjudCad = function() {
                     $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
                 }
             }
-            
+
             socioTipo();
             $(document).on('change', '.sociotipo', socioTipo);
             function socioTipo(event) {
                 if ($(this).find("input[type=radio]:checked").val() === 'PF') {
                     $(this).parents('.panel-body').find('.socios-pf').show();
                     $(this).parents('.panel-body').find('.socios-pj').hide();
-                } else if ($(this).find("input[type=radio]:checked").val() === 'PJ'){
+                } else if ($(this).find("input[type=radio]:checked").val() === 'PJ') {
                     $(this).parents('.panel-body').find('.socios-pf').hide();
                     $(this).parents('.panel-body').find('.socios-pj').show();
                 }
@@ -540,7 +543,10 @@ var PjudCad = function() {
                             allowClear: true,
                         });
                     });
-            $('#cnpj').change(function(){
+            if ($('#cnpj').val() !== "") {
+                $('.carregar_socios_pj').click();
+            }
+            $('#cnpj').change(function() {
                 $('.carregar_socios_pj').click();
             })
 
@@ -600,13 +606,19 @@ var PjudCad = function() {
                         getSucessoes('#cnpj', '#pessoa-juridica');
                         getMoneyMask('.accordion');
                         initTable();
-                    } else if ($(data.source).hasClass("tentativas")){
+                    } else if ($(data.source).hasClass("tentativas")) {
                         $.each($('.citado'), citado);
                         $.each($('.sociotipo'), socioTipo);
-                        $('.socios').select2({allowClear:true});
-                        $('.citado input[type=radio]').uniform();
-                        $('.sociotipo input[type=radio]').uniform();
+                        $('.socios').select2({allowClear: true});
+                        $('.uniformization input[type=radio]').uniform();
                         $('.date').mask("99/99/9999");
+                    } else if ($(data.source).hasClass("carregar_socios_pj")) {
+                        initTable();
+                        $('.uniformization input[type=radio]').uniform();
+                        $('.date').mask("99/99/9999");
+                        $(".checkbox-table").find("input[type=checkbox]").uniform();;
+                        
+
                     }
                 }
             });

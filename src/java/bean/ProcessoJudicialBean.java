@@ -122,6 +122,7 @@ public class ProcessoJudicialBean implements Serializable {
     private Integer oficiais;
     private Integer editais;
     private Integer enderecosSocios;
+    private Character redirecionamento;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -313,7 +314,7 @@ public class ProcessoJudicialBean implements Serializable {
     public void listarSocios(String tipo){
         PessoaFisicaJuridicaBO pfjBO = new PessoaFisicaJuridicaBO();
         PessoaJuridicaJuridicaBO pjjBO = new PessoaJuridicaJuridicaBO();
-        if (tipo.equals("PJ") && !executadoPJ.equals("")){
+        if (tipo.equals("PJ") && executadoPJ != null){
             List<PessoaFisicaJuridica> pfjList = pfjBO.findAllByPJ(Integer.valueOf(executadoPJ));
             for (PessoaFisicaJuridica pfj : pfjList){
                 socioPFList.add(pfj.getPessoaFisicaFk());
@@ -859,6 +860,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setSocioPJList(List<PessoaJuridica> socioPJList) {
         this.socioPJList = socioPJList;
+    }
+
+    public Character getRedirecionamento() {
+        return redirecionamento;
+    }
+
+    public void setRedirecionamento(Character redirecionamento) {
+        this.redirecionamento = redirecionamento;
     }
     
 }
