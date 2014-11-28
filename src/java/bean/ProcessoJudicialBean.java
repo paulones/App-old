@@ -321,7 +321,6 @@ public class ProcessoJudicialBean implements Serializable {
             List<PessoaJuridicaJuridica> pjjList = pjjBO.findAllByPJAOrPJB(Integer.valueOf(executadoPJ));
             for (PessoaJuridicaJuridica pjj : pjjList){
                 if(pjj.getPessoaJuridicaPrimariaFk().getId().equals(Integer.valueOf(executadoPJ))){
-                    System.out.println("aeae");
                     socioPJList.add(pjj.getPessoaJuridicaSecundariaFk());
                 }
             }
