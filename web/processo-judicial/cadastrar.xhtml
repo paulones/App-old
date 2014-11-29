@@ -135,7 +135,7 @@
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="radio-list" data-error-container="#form_executado_error">
-                                                                <h:selectOneRadio id="executado" value="#{processoJudicialBean.processoJudicial.executado}">
+                                                                <h:selectOneRadio id="executado" styleClass="uniformization" value="#{processoJudicialBean.processoJudicial.executado}">
                                                                     <f:selectItem itemLabel="Pessoa Física" itemValue="PF"/>
                                                                     <f:selectItem itemLabel="Pessoa Jurídica" itemValue="PJ"/>
                                                                 </h:selectOneRadio>
@@ -2384,9 +2384,12 @@
                                                                                         <thead>
                                                                                             <tr>
                                                                                                 <th class="table-checkbox" style="min-width:5%;">
-                                                                                                    <input type="checkbox" class="group-checkable" data-set=".checkboxes"/>
+                                                                                                    <input type="checkbox" class="group-checkable" data-set=".checkboxes-socios"/>
                                                                                                 </th>
-                                                                                                <th style="min-width:70%">
+                                                                                                <th style="min-width:20%">
+                                                                                                    CPF/CNPJ
+                                                                                                </th>
+                                                                                                <th style="min-width:50%">
                                                                                                     Sócios
                                                                                                 </th>
                                                                                                 <th style="min-width:20%">
@@ -2397,48 +2400,39 @@
                                                                                             </tr>
                                                                                         </thead>
                                                                                         <tbody>
-                                                                                            <tr class="gradeX">
-                                                                                                <td>
-                                                                                                    <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                                </td>
-                                                                                                <td class="socio-name">
-                                                                                                    shuxer
-                                                                                                </td>
-                                                                                                <td class="socio-data">
-                                                                                                    <div class="form-group margin-bottom-0">
-                                                                                                        <div class="col-md-12">
-                                                                                                            <div class="input-icon right display-hide">
-                                                                                                                <i class="fa"></i>
-                                                                                                                <input class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                            <ui:repeat value="#{processoJudicialBean.socioRedirecionamentoList}" var="socio" varStatus="status">
+                                                                                                <tr class="gradeX">
+                                                                                                    <td>
+                                                                                                        <input type="checkbox" class="checkboxes-socios" value="#{status.index}"/>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                            #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                              ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
+                                                                                                              : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
+                                                                                                    </td>
+                                                                                                    <td class="socio-name">
+                                                                                                        #{socio.pessoa.nome}
+                                                                                                    </td>
+                                                                                                    <td class="socio-data">
+                                                                                                        <div class="form-group margin-bottom-0">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="input-icon right display-hide">
+                                                                                                                    <i class="fa"></i>
+                                                                                                                    <h:inputText value="#{socio.redirecionamento.dataDeRedirecionamento}" class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td class="view-pf">
-                                                                                                    <div class='label label-default'><i class='fa fa-search'></i></div>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                            <tr class="gradeX">
-                                                                                                <td>
-                                                                                                    <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                                </td>
-                                                                                                <td class="socio-name">
-                                                                                                    looper
-                                                                                                </td>
-                                                                                                <td class="socio-data">
-                                                                                                    <div class="form-group margin-bottom-0">
-                                                                                                        <div class="col-md-12">
-                                                                                                            <div class="input-icon right display-hide">
-                                                                                                                <i class="fa"></i>
-                                                                                                                <input class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <a href="javascript:;" class="#{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' ? 'pf-info' : 'pj-info'}" >
+                                                                                                            <div class='label label-default'>
+                                                                                                                <i class='fa fa-search'></i>
+                                                                                                                <input type='hidden' class='object-id' value="#{socio.pessoa.id}"></input>
                                                                                                             </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td class="view-pf">
-
-                                                                                                </td>
-                                                                                            </tr>
+                                                                                                        </a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </ui:repeat>
                                                                                         </tbody>
                                                                                     </table>
                                                                                     <!-- END EXAMPLE TABLE PORTLET-->

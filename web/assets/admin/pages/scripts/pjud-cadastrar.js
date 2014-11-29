@@ -305,7 +305,7 @@ var PjudCad = function() {
             });
             jQuery.uniform.update(set);
         });
-        table.on('change', 'tbody tr .checkboxes', function() {
+        table.on('change', 'tbody tr .checkboxes-socios', function() {
             var checked = jQuery(this).is(":checked");
             if (checked) {
                 $(this).attr("checked", true);
@@ -316,7 +316,6 @@ var PjudCad = function() {
                 $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").val("");
                 $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").valid();
             }
-            jQuery.uniform.update(set);
         });
     }
 
