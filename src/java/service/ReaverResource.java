@@ -12,8 +12,10 @@ import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
+import bo.UsuarioBO;
 import entidade.Bem;
 import entidade.Endereco;
+import entidade.Instituicao;
 import entidade.Log;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaFisica;
@@ -40,6 +42,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import util.Cookie;
 import util.TimestampUtils;
 
 /**
@@ -104,8 +107,10 @@ public class ReaverResource {
     @Produces("application/json")
     public String getPessoasJuridicas() {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
+        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao  );
         for (PessoaJuridica pj : pessoaJuridicaList) {
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             JSONObject jsonObject = new JSONObject();
@@ -181,7 +186,9 @@ public class ReaverResource {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
+        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
         for (PessoaJuridica pj : pessoaJuridicaList) {
             Endereco end = enderecoBO.findPJAddress(pj.getId());
             String cnpj = pj.getCnpj() == null ? "-" : pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);

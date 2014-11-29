@@ -26,6 +26,7 @@ import entidade.Endereco;
 import entidade.EnderecoPessoa;
 import entidade.Executado;
 import entidade.ExecutadoHistorico;
+import entidade.Instituicao;
 import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
@@ -244,7 +245,9 @@ public class ProcessoJudicialBean implements Serializable {
 
     private void carregarFormulario() { // Carregar listas do formulário
         pessoaFisicaList = pessoaFisicaBO.findAllActive();
-        pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
+        pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
         tipoDeRecursoList = tipoRecursoBO.findAll();
         tipoDoProcessoList = tipoProcessoBO.findAll();
         situacaoList = situacaoBO.findAll();
