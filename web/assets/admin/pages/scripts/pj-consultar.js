@@ -176,6 +176,7 @@ var PJCon = function() {
                     var informacoes = false;
                     var endereco = false;
                     var vinculoAdministrativo = false;
+                    var bens = false;
                     var participacao = false;
                     $.each($(this).find('.form-control-static'), function(index) {
                         if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
@@ -190,7 +191,7 @@ var PJCon = function() {
 
                     vinculoAdministrativo = checkChanges('.rows-pfj tr');
                     vinculoAdministrativo = checkChanges('.rows-pjj tr');
-                    
+                    bens = checkChangesBens('.form-control-bem-static', '.accordion');
                     participacao = checkChanges('.rows-pjj-part tr');
 
                     function checkChanges(tr) {
@@ -233,7 +234,43 @@ var PJCon = function() {
                             return false;
                         }
                     }
-                    ;
+                    
+                    function checkChangesBens(label, tab) {
+                        var changed = false;
+                        if ($(atual).find(label).length !== $(history).find(label).length) {
+                            changed = true;
+                            if ($(history).find(label).length === 0) {
+                                $(history).find('.alert').css("color", "#a94442");
+                            } else if ($(atual).find(label).length === 0) {
+                                $(label).parent().parent().css("color", "#a94442");
+                            }
+                        }
+                        $(history).find(label).parent().parent().css("color", "#a94442");
+                        $.each($(atual).find(label), function() {
+                            var atual = this;
+                            var exists = false;
+                            $.each($(history).find(label), function() {
+                                if ($(atual).text().trim() === $(this).text().trim()) {
+                                    $(this).parent().parent().css("color", "black");
+                                    exists = true;
+                                } else {
+                                }
+                            });
+                            if (!exists) {
+                                changed = true;
+                            }
+                        });
+                        $.each($(history).find(label), function() {
+                            if ($(this).css("color") !== "rgb(0, 0, 0)") {
+                                $(this).closest(".panel-default").removeClass("panel-default").addClass("panel-danger")
+                            }
+                        });
+                        if (changed) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
 
                     if (informacoes) {
                         description += "Informa&ccedil;&otilde;es Empresariais, ";
@@ -247,6 +284,9 @@ var PJCon = function() {
                     if (participacao) {
                         description += "Participa&ccedil;&atilde;o em outras Empresas, "
                     }
+                    if (bens) {
+                        description += "Bens, ";
+                    }
                     description = description.substring(0, description.length - 2) + ".";
                     if (description.indexOf(",") !== -1) {
                         description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
@@ -255,6 +295,7 @@ var PJCon = function() {
                     }
                     $(this).closest('.detail').parent().children('.description').append(description);
                 });
+                getMoneyMask(".accordion");
             } else {
                 initTable();
 

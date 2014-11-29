@@ -657,6 +657,204 @@
                                         </div>
                                     </div>
                                 </h:panelGroup>
+                                <h3 class="form-section">Bens</h3>
+                                <div class="alert alert-danger date-bem-error display-hide">
+                                    <button class="close" data-close="alert"></button>
+                                </div>
+                                <h:panelGroup id="bem">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">Descrição</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <h:inputText class="form-control" id="descricaobem" autocomplete="off" value="#{pessoaFisicaBean.bem.descricao}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">Tipo </label>
+                                                <div class="col-md-9">
+                                                    <h:selectOneMenu class="select2_category select2me form-control tipobem" p:placeholder="Selecione..." id="tipobem" tabindex="1" value="#{pessoaFisicaBean.bem.tipoBemFk}" converter="entityConverter">
+                                                        <f:selectItem itemLabel="" itemValue=""/>
+                                                        <f:selectItems value="#{pessoaFisicaBean.tipoBemList}" var="tipo" itemLabel="#{tipo.tipo}" itemValue="#{tipo}"/>
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-2">Endereço</label>
+                                                <div class="col-md-10">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <h:inputText class="form-control" id="enderecobem" autocomplete="off" value="#{pessoaFisicaBean.bem.endereco}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3">Valor</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <h:inputText class="form-control money" id="valorbem" value="#{pessoaFisicaBean.bem.valor}" converter="maskMoneyConverter"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-4">Data de Aquisição</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <h:inputText class="form-control date aquisicao-date" id="aquisicaobem" p:placeholder="dd/mm/aaaa" value="#{pessoaFisicaBean.bem.dataDeAquisicao}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-6">Data de Transferência / Extinção</label>
+                                                <div class="col-md-6">
+                                                    <div class="input-icon right">
+                                                        <i class="fa"></i>
+                                                        <h:inputText class="form-control date extincao-date" id="extincaobem" p:placeholder="dd/mm/aaaa" value="#{pessoaFisicaBean.bem.dataDeTransferenciaOuExtincao}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+                                <div class="row">
+                                    <div class="col-md-8">
+
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="col-md-8 col-md-offset-3">
+                                            <button type="submit" class="btn blue-chambray" id="add-bem">
+                                                <i class="fa fa-car"></i> Adicionar Bem
+                                            </button>
+                                            <h:commandLink class="add-bem">
+                                                <f:ajax execute="bem" listener="#{pessoaFisicaBean.adicionarBem()}" render="accordion bem"></f:ajax>
+                                            </h:commandLink>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <h:commandLink class="bem-refresher">
+                                    <f:ajax render="accordion"/>
+                                </h:commandLink>
+                                <h:panelGroup layout="block" class="panel-group accordion" id="accordion">
+                                    <ui:repeat value="#{pessoaFisicaBean.bemList}" var="bem" varStatus="status">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion"  href="#collapse_#{status.index}">
+                                                        #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse_#{status.index}" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-2">Descrição</label>
+                                                                <div class="col-md-10">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control bemdescricao" autocomplete="off" value="#{bem.descricao}"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3">Tipo </label>
+                                                                <div class="col-md-9">
+                                                                    <h:selectOneMenu class="select2_category select2me form-control tipobem" p:placeholder="Selecione..." tabindex="1" value="#{bem.tipoBemFk}" converter="entityConverter">
+                                                                        <f:selectItem itemLabel="" itemValue=""/>
+                                                                        <f:selectItems value="#{pessoaFisicaBean.tipoBemList}" var="tipo" itemLabel="#{tipo.tipo}" itemValue="#{tipo}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-2">Endereço</label>
+                                                                <div class="col-md-10">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control enderecobem" autocomplete="off" value="#{bem.endereco}"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3">Valor</label>
+                                                                <div class="col-md-9">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control valorbem money" value="#{bem.valor}" converter="maskMoneyConverter"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-4">Data de Aquisição</label>
+                                                                <div class="col-md-8">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control aquisicaobem date aquisicao-date" p:placeholder="dd/mm/aaaa" value="#{bem.dataDeAquisicao}"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2"></div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-6">Data de Transferência / Extinção</label>
+                                                                <div class="col-md-6">
+                                                                    <div class="input-icon right">
+                                                                        <i class="fa"></i>
+                                                                        <h:inputText class="form-control extincaobem date extincao-date" value="#{bem.dataDeTransferenciaOuExtincao}" p:placeholder="dd/mm/aaaa"/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-8"></div>
+                                                        <div class="col-md-4">
+                                                            <div class="col-md-8 col-md-offset-3">
+                                                            <h:commandLink class="btn blue-chambray delete-bem">
+                                                                <f:ajax execute="@this" listener="#{pessoaFisicaBean.removerBem(status.index)}"/>
+                                                                <i class="glyphicon glyphicon-remove"/> Remover Bem
+                                                            </h:commandLink>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ui:repeat>
+                                </h:panelGroup>
                             </div>
                             <div class="form-actions right">
                                 <div class="row">
@@ -698,6 +896,7 @@
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.mask/0.9.0/jquery.mask.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/jquery.validate.js"></script>
         <script type="text/javascript" src="../assets/global/plugins/jquery-validation/js/localization/messages_pt_BR.js"></script>
         <script src="../assets/admin/pages/scripts/pf-cadastrar.js"  type="text/javascript"></script>

@@ -37,6 +37,10 @@ textarea{resize:none}
 #executado .radio{margin-right:4px}
 #executado label{margin-right:33px}
 #executado input{margin-left:-9px}
+.uniformization{margin-top:7px}
+.uniformization .radio{margin-right:4px}
+.uniformization label{margin-right:33px}
+.uniformization input{margin-left:-9px !important}
 /*cadastroPJMODAL*/
 #modal_pj_situacao{margin-top:3px}
 #modal_pj_situacao .radio{margin-right:4px}

@@ -8,7 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -66,7 +66,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicialHistorico.findByExecutado", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.executado = :executado"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesProcesso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesProcesso = :outrasInformacoesProcesso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesBem = :outrasInformacoesBem"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByRecurso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.recurso = :recurso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.atoProcessual = :atoProcessual"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesAtoProcessual = :outrasInformacoesAtoProcessual"),
@@ -84,6 +83,10 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
+    private Collection<CitacaoHistorico> citacaoHistoricoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
+    private Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollection;
     @JoinColumn(name = "procurador_fk", referencedColumnName = "id")
     @ManyToOne
     private Procurador procuradorFk;
@@ -170,9 +173,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 300)
     @Column(name = "outras_informacoes_executado")
     private String outrasInformacoesExecutado;
-    @Size(max = 300)
-    @Column(name = "outras_informacoes_bem")
-    private String outrasInformacoesBem;
     @Size(max = 50)
     @Column(name = "recurso")
     private String recurso;
@@ -187,8 +187,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Column(name = "data_de_modificacao")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dataDeModificacao;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
-    private Collection<BemHistorico> bemHistoricoCollection;
     @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicial processoJudicialFk;
@@ -386,14 +384,6 @@ public class ProcessoJudicialHistorico implements Serializable {
         this.outrasInformacoesExecutado = outrasInformacoesExecutado;
     }
 
-    public String getOutrasInformacoesBem() {
-        return outrasInformacoesBem;
-    }
-
-    public void setOutrasInformacoesBem(String outrasInformacoesBem) {
-        this.outrasInformacoesBem = outrasInformacoesBem;
-    }
-
     public String getRecurso() {
         return recurso;
     }
@@ -424,15 +414,6 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setDataDeModificacao(Date dataDeModificacao) {
         this.dataDeModificacao = dataDeModificacao;
-    }
-
-    @XmlTransient
-    public Collection<BemHistorico> getBemHistoricoCollection() {
-        return bemHistoricoCollection;
-    }
-
-    public void setBemHistoricoCollection(Collection<BemHistorico> bemHistoricoCollection) {
-        this.bemHistoricoCollection = bemHistoricoCollection;
     }
 
     public ProcessoJudicial getProcessoJudicialFk() {
@@ -493,6 +474,38 @@ public class ProcessoJudicialHistorico implements Serializable {
         return "entidade.ProcessoJudicialHistorico[ id=" + id + " ]";
     }
 
+    public Situacao getSituacaoFk() {
+        return situacaoFk;
+    }
+
+    public void setSituacaoFk(Situacao situacaoFk) {
+        this.situacaoFk = situacaoFk;
+    }
+
+    public BigDecimal getValorArrecadado() {
+        return valorArrecadado;
+    }
+
+    public void setValorArrecadado(BigDecimal valorArrecadado) {
+        this.valorArrecadado = valorArrecadado;
+    }
+
+    public String getFonteDaArrecadacao() {
+        return fonteDaArrecadacao;
+    }
+
+    public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
+        this.fonteDaArrecadacao = fonteDaArrecadacao;
+    }
+
+    public Procurador getProcuradorFk() {
+        return procuradorFk;
+    }
+
+    public void setProcuradorFk(Procurador procuradorFk) {
+        this.procuradorFk = procuradorFk;
+    }
+
     public BigDecimal getDiscriminacaoDoCreditoImposto() {
         return discriminacaoDoCreditoImposto;
     }
@@ -525,36 +538,22 @@ public class ProcessoJudicialHistorico implements Serializable {
         this.valorAtualizado = valorAtualizado;
     }
 
-    public Situacao getSituacaoFk() {
-        return situacaoFk;
+    @XmlTransient
+    public Collection<CitacaoHistorico> getCitacaoHistoricoCollection() {
+        return citacaoHistoricoCollection;
     }
 
-    public void setSituacaoFk(Situacao situacaoFk) {
-        this.situacaoFk = situacaoFk;
+    public void setCitacaoHistoricoCollection(Collection<CitacaoHistorico> citacaoHistoricoCollection) {
+        this.citacaoHistoricoCollection = citacaoHistoricoCollection;
     }
 
-    public BigDecimal getValorArrecadado() {
-        return valorArrecadado;
+    @XmlTransient
+    public Collection<RedirecionamentoHistorico> getRedirecionamentoHistoricoCollection() {
+        return redirecionamentoHistoricoCollection;
     }
 
-    public void setValorArrecadado(BigDecimal valorArrecadado) {
-        this.valorArrecadado = valorArrecadado;
-    }
-
-    public String getFonteDaArrecadacao() {
-        return fonteDaArrecadacao;
-    }
-
-    public void setFonteDaArrecadacao(String fonteDaArrecadacao) {
-        this.fonteDaArrecadacao = fonteDaArrecadacao;
-    }
-
-    public Procurador getProcuradorFk() {
-        return procuradorFk;
-    }
-
-    public void setProcuradorFk(Procurador procuradorFk) {
-        this.procuradorFk = procuradorFk;
+    public void setRedirecionamentoHistoricoCollection(Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollection) {
+        this.redirecionamentoHistoricoCollection = redirecionamentoHistoricoCollection;
     }
 
 }

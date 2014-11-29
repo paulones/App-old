@@ -49,21 +49,37 @@ public class BemBO implements Serializable{
         }
     }
     
-    public void destroyByPJUD(Integer idPjud){
-        try {
-            bemDAO.destroyByPJUD(idPjud);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public List<Bem> findAllByPJUD(ProcessoJudicial processoJudicial){
+    public List<Bem> findPFBens(Integer id){
         try { 
-            return bemDAO.findAllByPJUD(processoJudicial);
+            return bemDAO.findPFBens(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ArrayList<Bem>();
     }
     
+    public List<Bem> findPJBens(Integer id){
+        try { 
+            return bemDAO.findPJBens(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Bem>();
+    }
+    
+    public void destroyByPF(Integer id){
+        try {
+            bemDAO.destroyByPF(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void destroyByPJ(Integer id){
+        try {
+            bemDAO.destroyByPJ(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -8,7 +8,7 @@ package entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Basic;
@@ -63,8 +63,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicial.findByExecutadoFk", query = "SELECT p FROM ProcessoJudicial p WHERE p.executadoFk = :executadoFk"),
     @NamedQuery(name = "ProcessoJudicial.findByExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.executado = :executado"),
     @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesProcesso", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesProcesso = :outrasInformacoesProcesso"),
-    @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
-    @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesBem", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesBem = :outrasInformacoesBem")})
+    @NamedQuery(name = "ProcessoJudicial.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicial p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado")})
 public class ProcessoJudicial implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -78,6 +77,10 @@ public class ProcessoJudicial implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<Citacao> citacaoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<Redirecionamento> redirecionamentoCollection;
     @JoinColumn(name = "instituicao_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Instituicao instituicaoFk;
@@ -190,11 +193,6 @@ public class ProcessoJudicial implements Serializable {
     @Size(max = 300)
     @Column(name = "outras_informacoes_executado")
     private String outrasInformacoesExecutado;
-    @Size(max = 300)
-    @Column(name = "outras_informacoes_bem")
-    private String outrasInformacoesBem;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
-    private Collection<Bem> bemCollection;
 
     public ProcessoJudicial() {
     }
@@ -380,23 +378,6 @@ public class ProcessoJudicial implements Serializable {
         this.outrasInformacoesExecutado = outrasInformacoesExecutado;
     }
 
-    public String getOutrasInformacoesBem() {
-        return outrasInformacoesBem;
-    }
-
-    public void setOutrasInformacoesBem(String outrasInformacoesBem) {
-        this.outrasInformacoesBem = outrasInformacoesBem;
-    }
-
-    @XmlTransient
-    public Collection<Bem> getBemCollection() {
-        return bemCollection;
-    }
-
-    public void setBemCollection(Collection<Bem> bemCollection) {
-        this.bemCollection = bemCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -512,9 +493,6 @@ public class ProcessoJudicial implements Serializable {
             return false;
         }
         if (!Objects.equals(this.outrasInformacoesExecutado, other.outrasInformacoesExecutado)) {
-            return false;
-        }
-        if (!Objects.equals(this.outrasInformacoesBem, other.outrasInformacoesBem)) {
             return false;
         }
         if (!Objects.equals(this.situacaoFk, other.situacaoFk)) {
@@ -672,6 +650,24 @@ public class ProcessoJudicial implements Serializable {
 
     public void setInstituicaoFk(Instituicao instituicaoFk) {
         this.instituicaoFk = instituicaoFk;
+    }
+
+    @XmlTransient
+    public Collection<Citacao> getCitacaoCollection() {
+        return citacaoCollection;
+    }
+
+    public void setCitacaoCollection(Collection<Citacao> citacaoCollection) {
+        this.citacaoCollection = citacaoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Redirecionamento> getRedirecionamentoCollection() {
+        return redirecionamentoCollection;
+    }
+
+    public void setRedirecionamentoCollection(Collection<Redirecionamento> redirecionamentoCollection) {
+        this.redirecionamentoCollection = redirecionamentoCollection;
     }
 
 }
