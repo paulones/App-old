@@ -9,6 +9,7 @@ package entidade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,10 +21,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -44,6 +47,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Bem.findByEndereco", query = "SELECT b FROM Bem b WHERE b.endereco = :endereco"),
     @NamedQuery(name = "Bem.findByStatus", query = "SELECT b FROM Bem b WHERE b.status = :status")})
 public class Bem implements Serializable {
+    @Column(name = "valor")
+    private BigDecimal valor;
+    @OneToMany(mappedBy = "bemFk")
+    private Collection<PenhoraHistorico> penhoraHistoricoCollection;
+    @OneToMany(mappedBy = "bemFk")
+    private Collection<Penhora> penhoraCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,8 +77,6 @@ public class Bem implements Serializable {
     @Size(max = 10)
     @Column(name = "data_de_transferencia_ou_extincao")
     private String dataDeTransferenciaOuExtincao;
-    @Column(name = "valor")
-    private BigDecimal valor;
     @Size(max = 200)
     @Column(name = "endereco")
     private String endereco;
@@ -141,13 +148,6 @@ public class Bem implements Serializable {
         this.dataDeTransferenciaOuExtincao = dataDeTransferenciaOuExtincao;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 
     public String getEndereco() {
         return endereco;
@@ -228,6 +228,32 @@ public class Bem implements Serializable {
     @Override
     public String toString() {
         return "entidade.Bem[ id=" + id + " ]";
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    @XmlTransient
+    public Collection<PenhoraHistorico> getPenhoraHistoricoCollection() {
+        return penhoraHistoricoCollection;
+    }
+
+    public void setPenhoraHistoricoCollection(Collection<PenhoraHistorico> penhoraHistoricoCollection) {
+        this.penhoraHistoricoCollection = penhoraHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Penhora> getPenhoraCollection() {
+        return penhoraCollection;
+    }
+
+    public void setPenhoraCollection(Collection<Penhora> penhoraCollection) {
+        this.penhoraCollection = penhoraCollection;
     }
     
 }
