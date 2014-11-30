@@ -12,7 +12,14 @@ var PJCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
-            "ajax": "/webresources/reaver/getPessoasJuridicasTable",
+            "ajax": {
+                url: "/webresources/reaver/getPessoasJuridicasTable",
+                dataType: "json",
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
+            },
             "columns": [
                 {"data": "row-details"},
                 {"data": "nome"},
@@ -25,8 +32,7 @@ var PJCon = function() {
             ],
             "orderClasses": false,
             "deferRender": true,
-            "order": [
-            ],
+            "order": [],
             "language": {
                 "emptyTable": "Nenhuma Pessoa Jur&iacute;dica cadastrada.",
                 "zeroRecords": "Nenhuma Pessoa Jur&iacute;dica encontrada.",
@@ -234,7 +240,7 @@ var PJCon = function() {
                             return false;
                         }
                     }
-                    
+
                     function checkChangesBens(label, tab) {
                         var changed = false;
                         if ($(atual).find(label).length !== $(history).find(label).length) {

@@ -7,6 +7,7 @@
 package bo;
 
 import dao.PessoaFisicaDAO;
+import entidade.Instituicao;
 import entidade.PessoaFisica;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -75,9 +76,9 @@ public class PessoaFisicaBO implements Serializable {
         return new ArrayList<PessoaFisica>();
     }
     
-    public List<PessoaFisica> findAllActive(){
+    public List<PessoaFisica> findAllActive(Instituicao instituicao){
         try { 
-            return pessoaFisicaDAO.findAllActive();
+            return pessoaFisicaDAO.findAllActive(instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }

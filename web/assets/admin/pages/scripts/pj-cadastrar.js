@@ -461,7 +461,10 @@ var PJCad = function() {
             $.ajax({
                 url: "/webresources/reaver/getPessoasFisicas",
                 dataType: "json",
-                cache: false
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
             })
                     .done(function(data) {
                         $('.cpfVinculate').select2({
@@ -500,7 +503,10 @@ var PJCad = function() {
             $.ajax({
                 url: "/webresources/reaver/getPessoasJuridicas",
                 dataType: "json",
-                cache: false
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
             })
                     .done(function(data) {
                         if (getParameterByName("id") !== "" && window.location.href.indexOf("pessoa-juridica") >= 0) {

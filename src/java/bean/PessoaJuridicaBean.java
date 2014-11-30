@@ -35,6 +35,7 @@ import entidade.EnderecoPessoa;
 import entidade.EnderecoPessoaFisicaJuridicaHistorico;
 import entidade.Estado;
 import entidade.Funcao;
+import entidade.Instituicao;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaFisicaJuridicaHistorico;
@@ -289,7 +290,9 @@ public class PessoaJuridicaBean implements Serializable {
     public void carregarFormulario() {
         estadoList = estadoBO.findAll();
         tipoEmpresarialList = tipoEmpresarialBO.findAll();
-        pessoaFisicaList = pessoaFisicaBO.findAllActive();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
+        pessoaFisicaList = pessoaFisicaBO.findAllActive(instituicao);
         funcaoList = funcaoBO.findAll();
         tipoBemList = tipoBemBO.findAll();
     }
