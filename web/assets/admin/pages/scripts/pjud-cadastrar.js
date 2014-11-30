@@ -305,7 +305,7 @@ var PjudCad = function() {
             });
             jQuery.uniform.update(set);
         });
-        table.on('change', 'tbody tr .checkboxes', function() {
+        table.on('change', 'tbody tr .checkboxes-socios', function() {
             var checked = jQuery(this).is(":checked");
             if (checked) {
                 $(this).attr("checked", true);
@@ -316,7 +316,6 @@ var PjudCad = function() {
                 $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").val("");
                 $(this).parents('tr').find('.socio-data').find(".data_redirecionamento").valid();
             }
-            jQuery.uniform.update(set);
         });
     }
 
@@ -368,6 +367,7 @@ var PjudCad = function() {
             handleValidation();
 
             $('#vinculos').mask("99");
+            $('.number-tentativas').mask("99");
             $('.date').mask("99/99/9999");
 
             maskMoney();
@@ -615,6 +615,7 @@ var PjudCad = function() {
                     } else if ($(data.source).hasClass("carregar_socios_pj")) {
                         initTable();
                         $('.uniformization input[type=radio]').uniform();
+                        $('.number-tentativas').mask("99");
                         $('.date').mask("99/99/9999");
                         $(".checkbox-table").find("input[type=checkbox]").uniform();;
                         

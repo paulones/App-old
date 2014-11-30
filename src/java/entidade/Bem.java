@@ -41,7 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Bem.findByDataDeAquisicao", query = "SELECT b FROM Bem b WHERE b.dataDeAquisicao = :dataDeAquisicao"),
     @NamedQuery(name = "Bem.findByDataDeTransferenciaOuExtincao", query = "SELECT b FROM Bem b WHERE b.dataDeTransferenciaOuExtincao = :dataDeTransferenciaOuExtincao"),
     @NamedQuery(name = "Bem.findByValor", query = "SELECT b FROM Bem b WHERE b.valor = :valor"),
-    @NamedQuery(name = "Bem.findByEndereco", query = "SELECT b FROM Bem b WHERE b.endereco = :endereco")})
+    @NamedQuery(name = "Bem.findByEndereco", query = "SELECT b FROM Bem b WHERE b.endereco = :endereco"),
+    @NamedQuery(name = "Bem.findByStatus", query = "SELECT b FROM Bem b WHERE b.status = :status")})
 public class Bem implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -75,6 +76,9 @@ public class Bem implements Serializable {
     @JoinColumn(name = "tipo_bem_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoBem tipoBemFk;
+    @Column(name = "status")
+    @NotNull
+    private Character status;
 
     public Bem() {
     }
@@ -161,6 +165,14 @@ public class Bem implements Serializable {
         this.tipoBemFk = tipoBemFk;
     }
 
+    public Character getStatus() {
+        return status;
+    }
+
+    public void setStatus(Character status) {
+        this.status = status;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -205,6 +217,9 @@ public class Bem implements Serializable {
             return false;
         }
         if (!Objects.equals(this.valor, other.valor)) {
+            return false;
+        }
+        if (!Objects.equals(this.status, other.status)) {
             return false;
         }
         return true;

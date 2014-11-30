@@ -38,7 +38,9 @@ import entidade.PessoaJuridicaJuridica;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
 import entidade.Procurador;
+import entidade.Redirecionamento;
 import entidade.Situacao;
+import entidade.SocioRedirecionamento;
 import entidade.TipoProcesso;
 import entidade.TipoRecurso;
 import entidade.VinculoProcessual;
@@ -95,6 +97,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<Citacao> enderecoSocioList;
     private List<PessoaFisica> socioPFList;
     private List<PessoaJuridica> socioPJList;
+    private List<SocioRedirecionamento> socioRedirecionamentoList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -170,6 +173,7 @@ public class ProcessoJudicialBean implements Serializable {
             enderecoSocioList = new ArrayList<>();
             socioPFList = new ArrayList<>();
             socioPJList = new ArrayList<>();
+            socioRedirecionamentoList = new ArrayList<>();
             
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
@@ -321,15 +325,18 @@ public class ProcessoJudicialBean implements Serializable {
             List<PessoaFisicaJuridica> pfjList = pfjBO.findAllByPJ(Integer.valueOf(executadoPJ));
             for (PessoaFisicaJuridica pfj : pfjList){
                 socioPFList.add(pfj.getPessoaFisicaFk());
+                SocioRedirecionamento socioRedirecionamento = new SocioRedirecionamento((PessoaFisica) pfj.getPessoaFisicaFk(), new Redirecionamento()); 
+                socioRedirecionamentoList.add(socioRedirecionamento);
             }
             List<PessoaJuridicaJuridica> pjjList = pjjBO.findAllByPJAOrPJB(Integer.valueOf(executadoPJ));
             for (PessoaJuridicaJuridica pjj : pjjList){
                 if(pjj.getPessoaJuridicaPrimariaFk().getId().equals(Integer.valueOf(executadoPJ))){
                     socioPJList.add(pjj.getPessoaJuridicaSecundariaFk());
+                    SocioRedirecionamento socioRedirecionamento = new SocioRedirecionamento((PessoaJuridica) pjj.getPessoaJuridicaSecundariaFk(), new Redirecionamento()); 
+                    socioRedirecionamentoList.add(socioRedirecionamento);
                 }
             }
         }
-        
     }
 
     public void exibirExecutado() {
@@ -871,6 +878,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setRedirecionamento(Character redirecionamento) {
         this.redirecionamento = redirecionamento;
+    }
+
+    public List<SocioRedirecionamento> getSocioRedirecionamentoList() {
+        return socioRedirecionamentoList;
+    }
+
+    public void setSocioRedirecionamentoList(List<SocioRedirecionamento> socioRedirecionamentoList) {
+        this.socioRedirecionamentoList = socioRedirecionamentoList;
     }
     
 }

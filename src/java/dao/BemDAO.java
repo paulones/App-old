@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import dao.exceptions.NonexistentEntityException;
@@ -39,7 +38,8 @@ public class BemDAO implements Serializable {
     public void create(Bem bem) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             TipoBem tipoBemFk = bem.getTipoBemFk();
             if (tipoBemFk != null) {
                 tipoBemFk = em.getReference(tipoBemFk.getClass(), tipoBemFk.getId());
@@ -68,24 +68,25 @@ public class BemDAO implements Serializable {
     public void edit(Bem bem) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
-            Bem persistentBem = em.find(Bem.class, bem.getId());
-            TipoBem tipoBemFkOld = persistentBem.getTipoBemFk();
-            TipoBem tipoBemFkNew = bem.getTipoBemFk();
-            if (tipoBemFkNew != null) {
-                tipoBemFkNew = em.getReference(tipoBemFkNew.getClass(), tipoBemFkNew.getId());
-                bem.setTipoBemFk(tipoBemFkNew);
-            }
-            bem = em.merge(bem);
-            if (tipoBemFkOld != null && !tipoBemFkOld.equals(tipoBemFkNew)) {
-                tipoBemFkOld.getBemCollection().remove(bem);
-                tipoBemFkOld = em.merge(tipoBemFkOld);
-            }
-            if (tipoBemFkNew != null && !tipoBemFkNew.equals(tipoBemFkOld)) {
-                tipoBemFkNew.getBemCollection().add(bem);
-                tipoBemFkNew = em.merge(tipoBemFkNew);
-            }
-            em.getTransaction().commit();
+                em = getEntityManager();
+                em.getTransaction().begin();
+                Bem persistentBem = em.find(Bem.class, bem.getId());
+                TipoBem tipoBemFkOld = persistentBem.getTipoBemFk();
+                TipoBem tipoBemFkNew = bem.getTipoBemFk();
+                if (tipoBemFkNew != null) {
+                    tipoBemFkNew = em.getReference(tipoBemFkNew.getClass(), tipoBemFkNew.getId());
+                    bem.setTipoBemFk(tipoBemFkNew);
+                }
+                bem = em.merge(bem);
+                if (tipoBemFkOld != null && !tipoBemFkOld.equals(tipoBemFkNew)) {
+                    tipoBemFkOld.getBemCollection().remove(bem);
+                    tipoBemFkOld = em.merge(tipoBemFkOld);
+                }
+                if (tipoBemFkNew != null && !tipoBemFkNew.equals(tipoBemFkOld)) {
+                    tipoBemFkNew.getBemCollection().add(bem);
+                    tipoBemFkNew = em.merge(tipoBemFkNew);
+                }
+                em.getTransaction().commit();
         } catch (Exception ex) {
             try {
                 em.getTransaction().rollback();
@@ -110,7 +111,8 @@ public class BemDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Bem bem;
             try {
                 bem = em.getReference(Bem.class, id);
@@ -184,12 +186,12 @@ public class BemDAO implements Serializable {
             em.close();
         }
     }
-    
-    public List<Bem> findPFBens(Integer id){
+
+    public List<Bem> findPFBens(Integer id) {
         EntityManager em = getEntityManager();
         try {
             List<Bem> processoJudicialList = (List<Bem>) em.createNativeQuery("select * from bem "
-                        + "where tipo = 'PF' and id_fk = '"+id+"' ", Bem.class).getResultList();
+                    + "where tipo = 'PF' and id_fk = '" + id + "' and status = 'A'", Bem.class).getResultList();
             return processoJudicialList;
         } catch (NoResultException e) {
             return null;
@@ -197,12 +199,12 @@ public class BemDAO implements Serializable {
             em.close();
         }
     }
-    
-    public List<Bem> findPJBens(Integer id){
+
+    public List<Bem> findPJBens(Integer id) {
         EntityManager em = getEntityManager();
         try {
             List<Bem> processoJudicialList = (List<Bem>) em.createNativeQuery("select * from bem "
-                        + "where tipo = 'PJ' and id_fk = '"+id+"' ", Bem.class).getResultList();
+                    + "where tipo = 'PJ' and id_fk = '" + id + "' and status = 'A'", Bem.class).getResultList();
             return processoJudicialList;
         } catch (NoResultException e) {
             return null;
@@ -210,8 +212,8 @@ public class BemDAO implements Serializable {
             em.close();
         }
     }
-    
-    public void destroyByPF(Integer idPf){
+
+    public void destroyByPF(Integer idPf) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -223,8 +225,8 @@ public class BemDAO implements Serializable {
             em.close();
         }
     }
-    
-    public void destroyByPJ(Integer idPj){
+
+    public void destroyByPJ(Integer idPj) {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
@@ -236,5 +238,5 @@ public class BemDAO implements Serializable {
             em.close();
         }
     }
-    
+
 }
