@@ -2406,9 +2406,9 @@
                                                                                                         <input type="checkbox" class="checkboxes-socios" value="#{status.index}"/>
                                                                                                     </td>
                                                                                                     <td>
-                                                                                                            #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
-                                                                                                              ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
-                                                                                                              : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
+                                                                                                        #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                          ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
+                                                                                                          : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
                                                                                                     </td>
                                                                                                     <td class="socio-name">
                                                                                                         #{socio.pessoa.nome}
@@ -2458,12 +2458,10 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Tipo</label>
                                                                                     <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosd1"  value="option1"></input> Efetivo </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosd2"  value="option2"></input> Não Efetivo </label>
-                                                                                        </div>
+                                                                                        <h:selectOneMenu class="select2_category select2me form-control tipoPenhora" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.tipoPenhora}" >
+                                                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                                                            <f:selectItems value="#{processoJudicialBean.tipoPenhoraList}" var="tipoPenhora" itemLabel="#{tipoPenhora.tipo}" itemValue="#{tipoPenhora}"/>
+                                                                                        </h:selectOneMenu>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

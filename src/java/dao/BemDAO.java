@@ -8,6 +8,8 @@ package dao;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Bem;
+import entidade.Penhora;
+import entidade.PenhoraHistorico;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -15,6 +17,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidade.ProcessoJudicial;
 import entidade.TipoBem;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,19 +40,54 @@ public class BemDAO implements Serializable {
     }
 
     public void create(Bem bem) throws RollbackFailureException, Exception {
+        if (bem.getPenhoraHistoricoCollection() == null) {
+            bem.setPenhoraHistoricoCollection(new ArrayList<PenhoraHistorico>());
+        }
+        if (bem.getPenhoraCollection() == null) {
+            bem.setPenhoraCollection(new ArrayList<Penhora>());
+        }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             TipoBem tipoBemFk = bem.getTipoBemFk();
             if (tipoBemFk != null) {
                 tipoBemFk = em.getReference(tipoBemFk.getClass(), tipoBemFk.getId());
                 bem.setTipoBemFk(tipoBemFk);
             }
+            Collection<PenhoraHistorico> attachedPenhoraHistoricoCollection = new ArrayList<PenhoraHistorico>();
+            for (PenhoraHistorico penhoraHistoricoCollectionPenhoraHistoricoToAttach : bem.getPenhoraHistoricoCollection()) {
+                penhoraHistoricoCollectionPenhoraHistoricoToAttach = em.getReference(penhoraHistoricoCollectionPenhoraHistoricoToAttach.getClass(), penhoraHistoricoCollectionPenhoraHistoricoToAttach.getId());
+                attachedPenhoraHistoricoCollection.add(penhoraHistoricoCollectionPenhoraHistoricoToAttach);
+            }
+            bem.setPenhoraHistoricoCollection(attachedPenhoraHistoricoCollection);
+            Collection<Penhora> attachedPenhoraCollection = new ArrayList<Penhora>();
+            for (Penhora penhoraCollectionPenhoraToAttach : bem.getPenhoraCollection()) {
+                penhoraCollectionPenhoraToAttach = em.getReference(penhoraCollectionPenhoraToAttach.getClass(), penhoraCollectionPenhoraToAttach.getId());
+                attachedPenhoraCollection.add(penhoraCollectionPenhoraToAttach);
+            }
+            bem.setPenhoraCollection(attachedPenhoraCollection);
             em.persist(bem);
             if (tipoBemFk != null) {
                 tipoBemFk.getBemCollection().add(bem);
                 tipoBemFk = em.merge(tipoBemFk);
+            }
+            for (PenhoraHistorico penhoraHistoricoCollectionPenhoraHistorico : bem.getPenhoraHistoricoCollection()) {
+                Bem oldBemFkOfPenhoraHistoricoCollectionPenhoraHistorico = penhoraHistoricoCollectionPenhoraHistorico.getBemFk();
+                penhoraHistoricoCollectionPenhoraHistorico.setBemFk(bem);
+                penhoraHistoricoCollectionPenhoraHistorico = em.merge(penhoraHistoricoCollectionPenhoraHistorico);
+                if (oldBemFkOfPenhoraHistoricoCollectionPenhoraHistorico != null) {
+                    oldBemFkOfPenhoraHistoricoCollectionPenhoraHistorico.getPenhoraHistoricoCollection().remove(penhoraHistoricoCollectionPenhoraHistorico);
+                    oldBemFkOfPenhoraHistoricoCollectionPenhoraHistorico = em.merge(oldBemFkOfPenhoraHistoricoCollectionPenhoraHistorico);
+                }
+            }
+            for (Penhora penhoraCollectionPenhora : bem.getPenhoraCollection()) {
+                Bem oldBemFkOfPenhoraCollectionPenhora = penhoraCollectionPenhora.getBemFk();
+                penhoraCollectionPenhora.setBemFk(bem);
+                penhoraCollectionPenhora = em.merge(penhoraCollectionPenhora);
+                if (oldBemFkOfPenhoraCollectionPenhora != null) {
+                    oldBemFkOfPenhoraCollectionPenhora.getPenhoraCollection().remove(penhoraCollectionPenhora);
+                    oldBemFkOfPenhoraCollectionPenhora = em.merge(oldBemFkOfPenhoraCollectionPenhora);
+                }
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -68,25 +107,76 @@ public class BemDAO implements Serializable {
     public void edit(Bem bem) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-                em = getEntityManager();
-                em.getTransaction().begin();
-                Bem persistentBem = em.find(Bem.class, bem.getId());
-                TipoBem tipoBemFkOld = persistentBem.getTipoBemFk();
-                TipoBem tipoBemFkNew = bem.getTipoBemFk();
-                if (tipoBemFkNew != null) {
-                    tipoBemFkNew = em.getReference(tipoBemFkNew.getClass(), tipoBemFkNew.getId());
-                    bem.setTipoBemFk(tipoBemFkNew);
+            em = getEntityManager();em.getTransaction().begin();
+            Bem persistentBem = em.find(Bem.class, bem.getId());
+            TipoBem tipoBemFkOld = persistentBem.getTipoBemFk();
+            TipoBem tipoBemFkNew = bem.getTipoBemFk();
+            Collection<PenhoraHistorico> penhoraHistoricoCollectionOld = persistentBem.getPenhoraHistoricoCollection();
+            Collection<PenhoraHistorico> penhoraHistoricoCollectionNew = bem.getPenhoraHistoricoCollection();
+            Collection<Penhora> penhoraCollectionOld = persistentBem.getPenhoraCollection();
+            Collection<Penhora> penhoraCollectionNew = bem.getPenhoraCollection();
+            if (tipoBemFkNew != null) {
+                tipoBemFkNew = em.getReference(tipoBemFkNew.getClass(), tipoBemFkNew.getId());
+                bem.setTipoBemFk(tipoBemFkNew);
+            }
+            Collection<PenhoraHistorico> attachedPenhoraHistoricoCollectionNew = new ArrayList<PenhoraHistorico>();
+            for (PenhoraHistorico penhoraHistoricoCollectionNewPenhoraHistoricoToAttach : penhoraHistoricoCollectionNew) {
+                penhoraHistoricoCollectionNewPenhoraHistoricoToAttach = em.getReference(penhoraHistoricoCollectionNewPenhoraHistoricoToAttach.getClass(), penhoraHistoricoCollectionNewPenhoraHistoricoToAttach.getId());
+                attachedPenhoraHistoricoCollectionNew.add(penhoraHistoricoCollectionNewPenhoraHistoricoToAttach);
+            }
+            penhoraHistoricoCollectionNew = attachedPenhoraHistoricoCollectionNew;
+            bem.setPenhoraHistoricoCollection(penhoraHistoricoCollectionNew);
+            Collection<Penhora> attachedPenhoraCollectionNew = new ArrayList<Penhora>();
+            for (Penhora penhoraCollectionNewPenhoraToAttach : penhoraCollectionNew) {
+                penhoraCollectionNewPenhoraToAttach = em.getReference(penhoraCollectionNewPenhoraToAttach.getClass(), penhoraCollectionNewPenhoraToAttach.getId());
+                attachedPenhoraCollectionNew.add(penhoraCollectionNewPenhoraToAttach);
+            }
+            penhoraCollectionNew = attachedPenhoraCollectionNew;
+            bem.setPenhoraCollection(penhoraCollectionNew);
+            bem = em.merge(bem);
+            if (tipoBemFkOld != null && !tipoBemFkOld.equals(tipoBemFkNew)) {
+                tipoBemFkOld.getBemCollection().remove(bem);
+                tipoBemFkOld = em.merge(tipoBemFkOld);
+            }
+            if (tipoBemFkNew != null && !tipoBemFkNew.equals(tipoBemFkOld)) {
+                tipoBemFkNew.getBemCollection().add(bem);
+                tipoBemFkNew = em.merge(tipoBemFkNew);
+            }
+            for (PenhoraHistorico penhoraHistoricoCollectionOldPenhoraHistorico : penhoraHistoricoCollectionOld) {
+                if (!penhoraHistoricoCollectionNew.contains(penhoraHistoricoCollectionOldPenhoraHistorico)) {
+                    penhoraHistoricoCollectionOldPenhoraHistorico.setBemFk(null);
+                    penhoraHistoricoCollectionOldPenhoraHistorico = em.merge(penhoraHistoricoCollectionOldPenhoraHistorico);
                 }
-                bem = em.merge(bem);
-                if (tipoBemFkOld != null && !tipoBemFkOld.equals(tipoBemFkNew)) {
-                    tipoBemFkOld.getBemCollection().remove(bem);
-                    tipoBemFkOld = em.merge(tipoBemFkOld);
+            }
+            for (PenhoraHistorico penhoraHistoricoCollectionNewPenhoraHistorico : penhoraHistoricoCollectionNew) {
+                if (!penhoraHistoricoCollectionOld.contains(penhoraHistoricoCollectionNewPenhoraHistorico)) {
+                    Bem oldBemFkOfPenhoraHistoricoCollectionNewPenhoraHistorico = penhoraHistoricoCollectionNewPenhoraHistorico.getBemFk();
+                    penhoraHistoricoCollectionNewPenhoraHistorico.setBemFk(bem);
+                    penhoraHistoricoCollectionNewPenhoraHistorico = em.merge(penhoraHistoricoCollectionNewPenhoraHistorico);
+                    if (oldBemFkOfPenhoraHistoricoCollectionNewPenhoraHistorico != null && !oldBemFkOfPenhoraHistoricoCollectionNewPenhoraHistorico.equals(bem)) {
+                        oldBemFkOfPenhoraHistoricoCollectionNewPenhoraHistorico.getPenhoraHistoricoCollection().remove(penhoraHistoricoCollectionNewPenhoraHistorico);
+                        oldBemFkOfPenhoraHistoricoCollectionNewPenhoraHistorico = em.merge(oldBemFkOfPenhoraHistoricoCollectionNewPenhoraHistorico);
+                    }
                 }
-                if (tipoBemFkNew != null && !tipoBemFkNew.equals(tipoBemFkOld)) {
-                    tipoBemFkNew.getBemCollection().add(bem);
-                    tipoBemFkNew = em.merge(tipoBemFkNew);
+            }
+            for (Penhora penhoraCollectionOldPenhora : penhoraCollectionOld) {
+                if (!penhoraCollectionNew.contains(penhoraCollectionOldPenhora)) {
+                    penhoraCollectionOldPenhora.setBemFk(null);
+                    penhoraCollectionOldPenhora = em.merge(penhoraCollectionOldPenhora);
                 }
-                em.getTransaction().commit();
+            }
+            for (Penhora penhoraCollectionNewPenhora : penhoraCollectionNew) {
+                if (!penhoraCollectionOld.contains(penhoraCollectionNewPenhora)) {
+                    Bem oldBemFkOfPenhoraCollectionNewPenhora = penhoraCollectionNewPenhora.getBemFk();
+                    penhoraCollectionNewPenhora.setBemFk(bem);
+                    penhoraCollectionNewPenhora = em.merge(penhoraCollectionNewPenhora);
+                    if (oldBemFkOfPenhoraCollectionNewPenhora != null && !oldBemFkOfPenhoraCollectionNewPenhora.equals(bem)) {
+                        oldBemFkOfPenhoraCollectionNewPenhora.getPenhoraCollection().remove(penhoraCollectionNewPenhora);
+                        oldBemFkOfPenhoraCollectionNewPenhora = em.merge(oldBemFkOfPenhoraCollectionNewPenhora);
+                    }
+                }
+            }
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
                 em.getTransaction().rollback();
@@ -111,8 +201,7 @@ public class BemDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             Bem bem;
             try {
                 bem = em.getReference(Bem.class, id);
@@ -124,6 +213,16 @@ public class BemDAO implements Serializable {
             if (tipoBemFk != null) {
                 tipoBemFk.getBemCollection().remove(bem);
                 tipoBemFk = em.merge(tipoBemFk);
+            }
+            Collection<PenhoraHistorico> penhoraHistoricoCollection = bem.getPenhoraHistoricoCollection();
+            for (PenhoraHistorico penhoraHistoricoCollectionPenhoraHistorico : penhoraHistoricoCollection) {
+                penhoraHistoricoCollectionPenhoraHistorico.setBemFk(null);
+                penhoraHistoricoCollectionPenhoraHistorico = em.merge(penhoraHistoricoCollectionPenhoraHistorico);
+            }
+            Collection<Penhora> penhoraCollection = bem.getPenhoraCollection();
+            for (Penhora penhoraCollectionPenhora : penhoraCollection) {
+                penhoraCollectionPenhora.setBemFk(null);
+                penhoraCollectionPenhora = em.merge(penhoraCollectionPenhora);
             }
             em.remove(bem);
             em.getTransaction().commit();

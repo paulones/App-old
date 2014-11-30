@@ -609,7 +609,8 @@ var PjudCad = function() {
                     } else if ($(data.source).hasClass("tentativas")) {
                         $.each($('.citado'), citado);
                         $.each($('.sociotipo'), socioTipo);
-                        $('.socios').select2({allowClear: true});
+                        $('select.socios').select2({allowClear: true});
+                        $('select.tipoPenhora').select2({allowClear: true});
                         $('.uniformization input[type=radio]').uniform();
                         $('.date').mask("99/99/9999");
                     } else if ($(data.source).hasClass("carregar_socios_pj")) {

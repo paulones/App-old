@@ -9,6 +9,7 @@ package entidade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -83,6 +84,8 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
+    private Collection<PenhoraHistorico> penhoraHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
     private Collection<CitacaoHistorico> citacaoHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
@@ -554,6 +557,15 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setRedirecionamentoHistoricoCollection(Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollection) {
         this.redirecionamentoHistoricoCollection = redirecionamentoHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PenhoraHistorico> getPenhoraHistoricoCollection() {
+        return penhoraHistoricoCollection;
+    }
+
+    public void setPenhoraHistoricoCollection(Collection<PenhoraHistorico> penhoraHistoricoCollection) {
+        this.penhoraHistoricoCollection = penhoraHistoricoCollection;
     }
 
 }

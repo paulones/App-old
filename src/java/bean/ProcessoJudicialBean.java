@@ -6,7 +6,6 @@
 package bean;
 
 import bo.BemBO;
-import bo.BemHistoricoBO;
 import bo.CitacaoBO;
 import bo.EnderecoBO;
 import bo.PessoaFisicaBO;
@@ -17,16 +16,14 @@ import bo.ProcessoJudicialBO;
 import bo.ProcessoJudicialHistoricoBO;
 import bo.ProcuradorBO;
 import bo.SituacaoBO;
+import bo.TipoPenhoraBO;
 import bo.TipoProcessoBO;
 import bo.TipoRecursoBO;
 import bo.UsuarioBO;
 import bo.UtilBO;
 import bo.VinculoProcessualBO;
 import bo.VinculoProcessualHistoricoBO;
-import entidade.Bem;
-import entidade.BemHistorico;
 import entidade.Citacao;
-import entidade.Endereco;
 import entidade.EnderecoPessoa;
 import entidade.Executado;
 import entidade.ExecutadoHistorico;
@@ -40,6 +37,7 @@ import entidade.Procurador;
 import entidade.Redirecionamento;
 import entidade.Situacao;
 import entidade.SocioRedirecionamento;
+import entidade.TipoPenhora;
 import entidade.TipoProcesso;
 import entidade.TipoRecurso;
 import entidade.VinculoProcessual;
@@ -47,14 +45,10 @@ import entidade.VinculoProcessualHistorico;
 import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -79,6 +73,7 @@ public class ProcessoJudicialBean implements Serializable {
     private ProcessoJudicial oldProcessoJudicial;
     private ProcessoJudicialHistorico processoJudicialHistorico;
     private ExecutadoHistorico executadoHistorico;
+    private TipoPenhora tipoPenhora;
 
     private List<PessoaFisica> pessoaFisicaList;
     private List<PessoaJuridica> pessoaJuridicaList;
@@ -97,6 +92,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<PessoaFisica> socioPFList;
     private List<PessoaJuridica> socioPJList;
     private List<SocioRedirecionamento> socioRedirecionamentoList;
+    private List<TipoPenhora> tipoPenhoraList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -112,6 +108,7 @@ public class ProcessoJudicialBean implements Serializable {
     private SituacaoBO situacaoBO;
     private ProcuradorBO procuradorBO;
     private CitacaoBO citacaoBO;
+    private TipoPenhoraBO tipoPenhoraBO;
 
     private Integer vinculos;
     private String executadoPF;
@@ -138,6 +135,7 @@ public class ProcessoJudicialBean implements Serializable {
             enderecoPessoaJuridica = new EnderecoPessoa();
             enderecoPessoaModalFisica = new EnderecoPessoa();
             oldProcessoJudicial = new ProcessoJudicial();
+            tipoPenhora = new TipoPenhora();
 
             pessoaFisicaBO = new PessoaFisicaBO();
             pessoaJuridicaBO = new PessoaJuridicaBO();
@@ -153,6 +151,7 @@ public class ProcessoJudicialBean implements Serializable {
             situacaoBO = new SituacaoBO();
             procuradorBO = new ProcuradorBO();
             citacaoBO = new CitacaoBO();
+            tipoPenhoraBO = new TipoPenhoraBO();
 
             vinculos = 0;
             ars = 0;
@@ -270,6 +269,7 @@ public class ProcessoJudicialBean implements Serializable {
         tipoDoProcessoList = tipoProcessoBO.findAll();
         situacaoList = situacaoBO.findAll();
         procuradorList = procuradorBO.findAll();
+        tipoPenhoraList = tipoPenhoraBO.findAll();
     }
 
     public void adicionarVinculosProcessuais() {
@@ -395,6 +395,15 @@ public class ProcessoJudicialBean implements Serializable {
                 for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
                     vinculoProcessual.setProcessoJudicialFk(processoJudicial);
                     vinculoProcessualBO.create(vinculoProcessual);
+                }
+                List<Citacao> citacaoList = new ArrayList<>();
+                citacaoList.addAll(arList);
+                citacaoList.addAll(oficialList);
+                citacaoList.addAll(editalList);
+                citacaoList.addAll(enderecoSocioList);
+                for(Citacao c : citacaoList){
+                    c.setProcessoJudicialFk(processoJudicial);
+                    citacaoBO.create(c);
                 }
                 register = "success";
                 GeradorLog.criar(processoJudicial.getId(), "PJUD", 'C');
@@ -883,6 +892,22 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setSocioRedirecionamentoList(List<SocioRedirecionamento> socioRedirecionamentoList) {
         this.socioRedirecionamentoList = socioRedirecionamentoList;
+    }
+
+    public List<TipoPenhora> getTipoPenhoraList() {
+        return tipoPenhoraList;
+    }
+
+    public void setTipoPenhoraList(List<TipoPenhora> tipoPenhoraList) {
+        this.tipoPenhoraList = tipoPenhoraList;
+    }
+
+    public TipoPenhora getTipoPenhora() {
+        return tipoPenhora;
+    }
+
+    public void setTipoPenhora(TipoPenhora tipoPenhora) {
+        this.tipoPenhora = tipoPenhora;
     }
     
 }
