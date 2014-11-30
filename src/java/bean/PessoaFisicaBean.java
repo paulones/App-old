@@ -136,7 +136,7 @@ public class PessoaFisicaBean implements Serializable {
     private TipoBemBO tipoBemBO;
     private BemBO bemBO;
     private BemHistoricoBO bemHistoricoBO;
-    
+
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             boolean isRegisterPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("cadastrar") > -1;
@@ -268,7 +268,7 @@ public class PessoaFisicaBean implements Serializable {
                                             }
                                         }
                                         List<BemHistorico> bhList = new ArrayList<>();
-                                        for (BemHistorico bh : bemHistoricoList){
+                                        for (BemHistorico bh : bemHistoricoList) {
                                             if (pfh.getId() == bh.getIdFk()) {
                                                 bhList.add(bh);
                                             }
@@ -454,11 +454,14 @@ public class PessoaFisicaBean implements Serializable {
                     for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
                         pessoaFisicaFisicaBO.create(pff);
                     }
-                    bemBO.destroyByPF(pessoaFisica.getId());
                     for (Bem b : bemList) {
-                        b.setTipo("PF");
-                        b.setIdFk(pessoaFisica.getId());
-                        bemBO.create(b);
+                        if (b.getId() == null) {
+                            b.setTipo("PF");
+                            b.setIdFk(pessoaFisica.getId());
+                            bemBO.create(b);
+                        } else {
+                            bemBO.edit(b);
+                        }
                     }
                     for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
                         pfjh.setTipo("PF");
@@ -502,14 +505,19 @@ public class PessoaFisicaBean implements Serializable {
         } else {
             add = true;
         }
-        if (add){
+        if (add) {
             bemList.add(bem);
+            bem.setStatus('A');
             bem = new Bem();
         }
     }
-    
-    public void removerBem(int index){
-        bemList.remove(index);
+
+    public void removerBem(int index) {
+        if (edit) {
+            bemList.get(index).setStatus('I');
+        } else {
+            bemList.remove(index);
+        }
     }
 
     public void exibirInfo() {
@@ -639,7 +647,7 @@ public class PessoaFisicaBean implements Serializable {
             pffh.setVinculoSocialFk(pff.getVinculoSocialFk());
             pessoaFisicaFisicaHistoricoList.add(pffh);
         }
-        
+
         for (Bem bem : bemList) {
             BemHistorico bh = new BemHistorico();
             bh.setDataDeAquisicao(bem.getDataDeAquisicao());
@@ -717,7 +725,7 @@ public class PessoaFisicaBean implements Serializable {
             pffh.setVinculoSocialFk(pff.getVinculoSocialFk());
             pessoaFisicaFisicaHistoricoList.add(pffh);
         }
-        
+
         for (Bem b : bemList) {
             BemHistorico bh = new BemHistorico();
             bh.setDataDeAquisicao(b.getDataDeAquisicao());
@@ -728,7 +736,7 @@ public class PessoaFisicaBean implements Serializable {
             bh.setTipoBemFk(b.getTipoBemFk());
             bemHistoricoList.add(bh);
         }
-        
+
         pessoaFisicaHistorico.setPessoaFisicaFisicaHistoricoCollection(pessoaFisicaFisicaHistoricoList);
         enderecoPessoaFisicaJuridicaHistorico.setPessoaHistorico(pessoaFisicaHistorico);
         enderecoPessoaFisicaJuridicaHistorico.setEnderecoHistorico(enderecoHistorico);

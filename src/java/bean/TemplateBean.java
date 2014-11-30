@@ -233,6 +233,7 @@ public class TemplateBean implements Serializable {
         }
         if (add) {
             bemList.add(bem);
+            bem.setStatus('A');
             bem = new Bem();
         }
     }

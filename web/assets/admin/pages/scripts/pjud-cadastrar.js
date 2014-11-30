@@ -367,6 +367,7 @@ var PjudCad = function() {
             handleValidation();
 
             $('#vinculos').mask("99");
+            $('.number-tentativas').mask("99");
             $('.date').mask("99/99/9999");
 
             maskMoney();
@@ -614,6 +615,7 @@ var PjudCad = function() {
                     } else if ($(data.source).hasClass("carregar_socios_pj")) {
                         initTable();
                         $('.uniformization input[type=radio]').uniform();
+                        $('.number-tentativas').mask("99");
                         $('.date').mask("99/99/9999");
                         $(".checkbox-table").find("input[type=checkbox]").uniform();;
                         
