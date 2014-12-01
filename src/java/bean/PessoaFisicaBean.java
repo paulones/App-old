@@ -37,6 +37,7 @@ import entidade.EnderecoPessoaFisicaJuridicaHistorico;
 import entidade.Estado;
 import entidade.EstadoCivil;
 import entidade.Funcao;
+import entidade.Instituicao;
 import entidade.Nacionalidade;
 import entidade.Pais;
 import entidade.PessoaFisica;
@@ -296,7 +297,9 @@ public class PessoaFisicaBean implements Serializable {
         estadoList = estadoBO.findAll();
         nacionalidadeList = nacionalidadeBO.findAll();
         estadoCivilList = estadoCivilBO.findAll();
-        pessoaJuridicaList = pessoaJuridicaBO.findAllActive();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
+        pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
         funcaoList = funcaoBO.findAll();
         vinculoSocialList = vinculoSocialBO.findAll();
         tipoBemList = tipoBemBO.findAll();

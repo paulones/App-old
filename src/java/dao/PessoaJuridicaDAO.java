@@ -6,6 +6,7 @@
 
 package dao;
 
+import bo.UsuarioBO;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
@@ -922,14 +923,12 @@ public void create(PessoaJuridica pessoaJuridica) throws RollbackFailureExceptio
         }
     }
     
-    public List<PessoaJuridica> findAllActive(){
+    public List<PessoaJuridica> findAllActive(Instituicao instituicao){
         EntityManager em = getEntityManager();
-        //String cpf = Cookie.getCookie("usuario");
         try {
             List<PessoaJuridica> pessoaFisicaList = (List<PessoaJuridica>) 
-                    em.createNativeQuery("select * from pessoa_juridica pj, autorizacao au "
-                    + "where au.instituicao_fk = pj.instituicao_fk and "
-                    + "status = 'A' ", PessoaJuridica.class).getResultList();
+                    em.createNativeQuery("select * from pessoa_juridica "
+                    + "where status = 'A' and instituicao_fk = "+instituicao.getId()+" ", PessoaJuridica.class).getResultList();
             return pessoaFisicaList;
         } catch (NoResultException e) {
             return null;

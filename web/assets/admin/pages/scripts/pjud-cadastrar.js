@@ -504,7 +504,10 @@ var PjudCad = function() {
             $.ajax({
                 url: "/webresources/reaver/getPessoasJuridicas",
                 dataType: "json",
-                cache: false
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
             })
                     .done(function(data) {
                         $('#cnpj').select2({
@@ -549,7 +552,10 @@ var PjudCad = function() {
             $.ajax({
                 url: "/webresources/reaver/getPessoasFisicas",
                 dataType: "json",
-                cache: false
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
             })
                     .done(function(data) {
                         $('#cpf').select2({
