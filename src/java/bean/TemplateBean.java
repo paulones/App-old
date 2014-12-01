@@ -7,6 +7,7 @@ package bean;
 
 import bo.BemBO;
 import bo.CidadeBO;
+import bo.CitacaoBO;
 import bo.EnderecoBO;
 import bo.EstadoBO;
 import bo.EstadoCivilBO;
@@ -20,6 +21,7 @@ import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaJuridicaBO;
 import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
+import bo.RedirecionamentoBO;
 import bo.TipoBemBO;
 import bo.TipoEmpresarialBO;
 import bo.UsuarioBO;
@@ -41,6 +43,8 @@ import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
+import entidade.Redirecionamento;
+import entidade.SocioRedirecionamento;
 import entidade.TipoBem;
 import entidade.TipoEmpresarial;
 import entidade.Usuario;
@@ -233,6 +237,7 @@ public class TemplateBean implements Serializable {
         }
         if (add) {
             bemList.add(bem);
+            bem.setStatus('A');
             bem = new Bem();
         }
     }
@@ -382,13 +387,15 @@ public class TemplateBean implements Serializable {
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJUD")) {
+            CitacaoBO citacaoBO = new CitacaoBO();
+            RedirecionamentoBO redirecionamentoBO = new RedirecionamentoBO();
             ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")) {
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()), bemBO.findPFBens(pf.getId())));
+                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()), bemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())));
             } else {
                 PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId()), bemBO.findPJBens(pj.getId())));
+                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId()), bemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())));
             }
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
             enderecoPessoa = new EnderecoPessoa();
@@ -397,6 +404,18 @@ public class TemplateBean implements Serializable {
             executado = new Executado();
             enderecoPessoa = new EnderecoPessoa();
         }
+    }
+    
+    public List<SocioRedirecionamento> carregarSocioRedirecionamento(List<Redirecionamento> redirecionamentoList) {
+        List<SocioRedirecionamento> socioRedirecionamentoList = new ArrayList<>();
+        for (Redirecionamento redirecionamento : redirecionamentoList) {
+            if (redirecionamento.getSocio().equals("PF")) {
+                socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaFisicaBO.findPessoaFisica(redirecionamento.getSocioFk()), redirecionamento));
+            } else {
+                socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaJuridicaBO.findPessoaJuridica(redirecionamento.getSocioFk()), redirecionamento));
+            }
+        }
+        return socioRedirecionamentoList; 
     }
 
     public void exibirSucessao() {

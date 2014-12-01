@@ -9,6 +9,7 @@ package entidade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -67,7 +68,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesProcesso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesProcesso = :outrasInformacoesProcesso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByRecurso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.recurso = :recurso"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.atoProcessual = :atoProcessual"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesAtoProcessual = :outrasInformacoesAtoProcessual"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByDataDeModificacao", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
 public class ProcessoJudicialHistorico implements Serializable {
@@ -83,6 +83,8 @@ public class ProcessoJudicialHistorico implements Serializable {
     private BigDecimal valorAtualizado;
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
+    private Collection<PenhoraHistorico> penhoraHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
     private Collection<CitacaoHistorico> citacaoHistoricoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialHistoricoFk")
@@ -176,9 +178,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 50)
     @Column(name = "recurso")
     private String recurso;
-    @Size(max = 2147483647)
-    @Column(name = "ato_processual")
-    private String atoProcessual;
     @Size(max = 300)
     @Column(name = "outras_informacoes_ato_processual")
     private String outrasInformacoesAtoProcessual;
@@ -392,14 +391,6 @@ public class ProcessoJudicialHistorico implements Serializable {
         this.recurso = recurso;
     }
 
-    public String getAtoProcessual() {
-        return atoProcessual;
-    }
-
-    public void setAtoProcessual(String atoProcessual) {
-        this.atoProcessual = atoProcessual;
-    }
-
     public String getOutrasInformacoesAtoProcessual() {
         return outrasInformacoesAtoProcessual;
     }
@@ -554,6 +545,15 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setRedirecionamentoHistoricoCollection(Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollection) {
         this.redirecionamentoHistoricoCollection = redirecionamentoHistoricoCollection;
+    }
+
+    @XmlTransient
+    public Collection<PenhoraHistorico> getPenhoraHistoricoCollection() {
+        return penhoraHistoricoCollection;
+    }
+
+    public void setPenhoraHistoricoCollection(Collection<PenhoraHistorico> penhoraHistoricoCollection) {
+        this.penhoraHistoricoCollection = penhoraHistoricoCollection;
     }
 
 }

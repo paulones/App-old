@@ -11,6 +11,7 @@ import dao.exceptions.RollbackFailureException;
 import entidade.Bem;
 import entidade.Citacao;
 import entidade.Instituicao;
+import entidade.Penhora;
 import entidade.ProcessoJudicial;
 import entidade.ProcessoJudicialHistorico;
 import entidade.Procurador;
@@ -59,6 +60,9 @@ public class ProcessoJudicialDAO implements Serializable {
         }
         if (processoJudicial.getRedirecionamentoCollection() == null) {
             processoJudicial.setRedirecionamentoCollection(new ArrayList<Redirecionamento>());
+        }
+        if (processoJudicial.getPenhoraCollection() == null) {
+            processoJudicial.setPenhoraCollection(new ArrayList<Penhora>());
         }
         EntityManager em = null;
         try {
@@ -112,6 +116,12 @@ public class ProcessoJudicialDAO implements Serializable {
                 attachedRedirecionamentoCollection.add(redirecionamentoCollectionRedirecionamentoToAttach);
             }
             processoJudicial.setRedirecionamentoCollection(attachedRedirecionamentoCollection);
+            Collection<Penhora> attachedPenhoraCollection = new ArrayList<Penhora>();
+            for (Penhora penhoraCollectionPenhoraToAttach : processoJudicial.getPenhoraCollection()) {
+                penhoraCollectionPenhoraToAttach = em.getReference(penhoraCollectionPenhoraToAttach.getClass(), penhoraCollectionPenhoraToAttach.getId());
+                attachedPenhoraCollection.add(penhoraCollectionPenhoraToAttach);
+            }
+            processoJudicial.setPenhoraCollection(attachedPenhoraCollection);
             em.persist(processoJudicial);
             if (tipoDeRecursoFk != null) {
                 tipoDeRecursoFk.getProcessoJudicialCollection().add(processoJudicial);
@@ -169,6 +179,15 @@ public class ProcessoJudicialDAO implements Serializable {
                     oldProcessoJudicialFkOfRedirecionamentoCollectionRedirecionamento = em.merge(oldProcessoJudicialFkOfRedirecionamentoCollectionRedirecionamento);
                 }
             }
+            for (Penhora penhoraCollectionPenhora : processoJudicial.getPenhoraCollection()) {
+                ProcessoJudicial oldProcessoJudicialFkOfPenhoraCollectionPenhora = penhoraCollectionPenhora.getProcessoJudicialFk();
+                penhoraCollectionPenhora.setProcessoJudicialFk(processoJudicial);
+                penhoraCollectionPenhora = em.merge(penhoraCollectionPenhora);
+                if (oldProcessoJudicialFkOfPenhoraCollectionPenhora != null) {
+                    oldProcessoJudicialFkOfPenhoraCollectionPenhora.getPenhoraCollection().remove(penhoraCollectionPenhora);
+                    oldProcessoJudicialFkOfPenhoraCollectionPenhora = em.merge(oldProcessoJudicialFkOfPenhoraCollectionPenhora);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -207,6 +226,8 @@ public class ProcessoJudicialDAO implements Serializable {
             Collection<Citacao> citacaoCollectionNew = processoJudicial.getCitacaoCollection();
             Collection<Redirecionamento> redirecionamentoCollectionOld = persistentProcessoJudicial.getRedirecionamentoCollection();
             Collection<Redirecionamento> redirecionamentoCollectionNew = processoJudicial.getRedirecionamentoCollection();
+            Collection<Penhora> penhoraCollectionOld = persistentProcessoJudicial.getPenhoraCollection();
+            Collection<Penhora> penhoraCollectionNew = processoJudicial.getPenhoraCollection();
             List<String> illegalOrphanMessages = null;
             for (VinculoProcessual vinculoProcessualCollectionOldVinculoProcessual : vinculoProcessualCollectionOld) {
                 if (!vinculoProcessualCollectionNew.contains(vinculoProcessualCollectionOldVinculoProcessual)) {
@@ -238,6 +259,14 @@ public class ProcessoJudicialDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain Redirecionamento " + redirecionamentoCollectionOldRedirecionamento + " since its processoJudicialFk field is not nullable.");
+                }
+            }
+            for (Penhora penhoraCollectionOldPenhora : penhoraCollectionOld) {
+                if (!penhoraCollectionNew.contains(penhoraCollectionOldPenhora)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Penhora " + penhoraCollectionOldPenhora + " since its processoJudicialFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -291,6 +320,13 @@ public class ProcessoJudicialDAO implements Serializable {
             }
             redirecionamentoCollectionNew = attachedRedirecionamentoCollectionNew;
             processoJudicial.setRedirecionamentoCollection(redirecionamentoCollectionNew);
+            Collection<Penhora> attachedPenhoraCollectionNew = new ArrayList<Penhora>();
+            for (Penhora penhoraCollectionNewPenhoraToAttach : penhoraCollectionNew) {
+                penhoraCollectionNewPenhoraToAttach = em.getReference(penhoraCollectionNewPenhoraToAttach.getClass(), penhoraCollectionNewPenhoraToAttach.getId());
+                attachedPenhoraCollectionNew.add(penhoraCollectionNewPenhoraToAttach);
+            }
+            penhoraCollectionNew = attachedPenhoraCollectionNew;
+            processoJudicial.setPenhoraCollection(penhoraCollectionNew);
             processoJudicial = em.merge(processoJudicial);
             if (tipoDeRecursoFkOld != null && !tipoDeRecursoFkOld.equals(tipoDeRecursoFkNew)) {
                 tipoDeRecursoFkOld.getProcessoJudicialCollection().remove(processoJudicial);
@@ -376,6 +412,17 @@ public class ProcessoJudicialDAO implements Serializable {
                     }
                 }
             }
+            for (Penhora penhoraCollectionNewPenhora : penhoraCollectionNew) {
+                if (!penhoraCollectionOld.contains(penhoraCollectionNewPenhora)) {
+                    ProcessoJudicial oldProcessoJudicialFkOfPenhoraCollectionNewPenhora = penhoraCollectionNewPenhora.getProcessoJudicialFk();
+                    penhoraCollectionNewPenhora.setProcessoJudicialFk(processoJudicial);
+                    penhoraCollectionNewPenhora = em.merge(penhoraCollectionNewPenhora);
+                    if (oldProcessoJudicialFkOfPenhoraCollectionNewPenhora != null && !oldProcessoJudicialFkOfPenhoraCollectionNewPenhora.equals(processoJudicial)) {
+                        oldProcessoJudicialFkOfPenhoraCollectionNewPenhora.getPenhoraCollection().remove(penhoraCollectionNewPenhora);
+                        oldProcessoJudicialFkOfPenhoraCollectionNewPenhora = em.merge(oldProcessoJudicialFkOfPenhoraCollectionNewPenhora);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -437,6 +484,13 @@ public class ProcessoJudicialDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This ProcessoJudicial (" + processoJudicial + ") cannot be destroyed since the Redirecionamento " + redirecionamentoCollectionOrphanCheckRedirecionamento + " in its redirecionamentoCollection field has a non-nullable processoJudicialFk field.");
+            }
+            Collection<Penhora> penhoraCollectionOrphanCheck = processoJudicial.getPenhoraCollection();
+            for (Penhora penhoraCollectionOrphanCheckPenhora : penhoraCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This ProcessoJudicial (" + processoJudicial + ") cannot be destroyed since the Penhora " + penhoraCollectionOrphanCheckPenhora + " in its penhoraCollection field has a non-nullable processoJudicialFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

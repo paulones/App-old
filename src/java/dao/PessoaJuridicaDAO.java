@@ -927,8 +927,8 @@ public void create(PessoaJuridica pessoaJuridica) throws RollbackFailureExceptio
         EntityManager em = getEntityManager();
         try {
             List<PessoaJuridica> pessoaFisicaList = (List<PessoaJuridica>) 
-                    em.createNativeQuery("select pj.* from pessoa_juridica pj "
-                    + "where pj.instituicao_fk = "+instituicao.getId()+" ", PessoaJuridica.class).getResultList();
+                    em.createNativeQuery("select * from pessoa_juridica "
+                    + "where status = 'A' and instituicao_fk = "+instituicao.getId()+" ", PessoaJuridica.class).getResultList();
             return pessoaFisicaList;
         } catch (NoResultException e) {
             return null;

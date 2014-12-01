@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,41 +27,49 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author paulones
  */
 @Entity
-@Table(name = "redirecionamento_historico")
+@Table(name = "penhora_historico")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "RedirecionamentoHistorico.findAll", query = "SELECT r FROM RedirecionamentoHistorico r"),
-    @NamedQuery(name = "RedirecionamentoHistorico.findById", query = "SELECT r FROM RedirecionamentoHistorico r WHERE r.id = :id"),
-    @NamedQuery(name = "RedirecionamentoHistorico.findByRedirecionado", query = "SELECT r FROM RedirecionamentoHistorico r WHERE r.redirecionado = :redirecionado"),
-    @NamedQuery(name = "RedirecionamentoHistorico.findByDataDeRedirecionamento", query = "SELECT r FROM RedirecionamentoHistorico r WHERE r.dataDeRedirecionamento = :dataDeRedirecionamento"),
-    @NamedQuery(name = "RedirecionamentoHistorico.findBySocioFk", query = "SELECT r FROM RedirecionamentoHistorico r WHERE r.socioFk = :socioFk"),
-    @NamedQuery(name = "RedirecionamentoHistorico.findBySocio", query = "SELECT r FROM RedirecionamentoHistorico r WHERE r.socio = :socio")})
-public class RedirecionamentoHistorico implements Serializable {
+    @NamedQuery(name = "PenhoraHistorico.findAll", query = "SELECT p FROM PenhoraHistorico p"),
+    @NamedQuery(name = "PenhoraHistorico.findById", query = "SELECT p FROM PenhoraHistorico p WHERE p.id = :id"),
+    @NamedQuery(name = "PenhoraHistorico.findBySituacao", query = "SELECT p FROM PenhoraHistorico p WHERE p.situacao = :situacao"),
+    @NamedQuery(name = "PenhoraHistorico.findByValor", query = "SELECT p FROM PenhoraHistorico p WHERE p.valor = :valor"),
+    @NamedQuery(name = "PenhoraHistorico.findByDataDaPenhora", query = "SELECT p FROM PenhoraHistorico p WHERE p.dataDaPenhora = :dataDaPenhora"),
+    @NamedQuery(name = "PenhoraHistorico.findBySocioFk", query = "SELECT p FROM PenhoraHistorico p WHERE p.socioFk = :socioFk"),
+    @NamedQuery(name = "PenhoraHistorico.findBySocio", query = "SELECT p FROM PenhoraHistorico p WHERE p.socio = :socio")})
+public class PenhoraHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "redirecionado")
-    private Character redirecionado;
+    @Column(name = "situacao")
+    private Character situacao;
+    @Column(name = "valor")
+    private BigInteger valor;
     @Size(max = 10)
-    @Column(name = "data_de_redirecionamento")
-    private String dataDeRedirecionamento;
+    @Column(name = "data_da_penhora")
+    private String dataDaPenhora;
     @Column(name = "socio_fk")
     private Integer socioFk;
     @Size(max = 2)
     @Column(name = "socio")
     private String socio;
+    @JoinColumn(name = "bem_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Bem bemFk;
     @JoinColumn(name = "processo_judicial_historico_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicialHistorico processoJudicialHistoricoFk;
+    @JoinColumn(name = "tipo_penhora_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TipoPenhora tipoPenhoraFk;
 
-    public RedirecionamentoHistorico() {
+    public PenhoraHistorico() {
     }
 
-    public RedirecionamentoHistorico(Integer id) {
+    public PenhoraHistorico(Integer id) {
         this.id = id;
     }
 
@@ -73,20 +81,28 @@ public class RedirecionamentoHistorico implements Serializable {
         this.id = id;
     }
 
-    public Character getRedirecionado() {
-        return redirecionado;
+    public Character getSituacao() {
+        return situacao;
     }
 
-    public void setRedirecionado(Character redirecionado) {
-        this.redirecionado = redirecionado;
+    public void setSituacao(Character situacao) {
+        this.situacao = situacao;
     }
 
-    public String getDataDeRedirecionamento() {
-        return dataDeRedirecionamento;
+    public BigInteger getValor() {
+        return valor;
     }
 
-    public void setDataDeRedirecionamento(String dataDeRedirecionamento) {
-        this.dataDeRedirecionamento = dataDeRedirecionamento;
+    public void setValor(BigInteger valor) {
+        this.valor = valor;
+    }
+
+    public String getDataDaPenhora() {
+        return dataDaPenhora;
+    }
+
+    public void setDataDaPenhora(String dataDaPenhora) {
+        this.dataDaPenhora = dataDaPenhora;
     }
 
     public Integer getSocioFk() {
@@ -105,12 +121,28 @@ public class RedirecionamentoHistorico implements Serializable {
         this.socio = socio;
     }
 
+    public Bem getBemFk() {
+        return bemFk;
+    }
+
+    public void setBemFk(Bem bemFk) {
+        this.bemFk = bemFk;
+    }
+
     public ProcessoJudicialHistorico getProcessoJudicialHistoricoFk() {
         return processoJudicialHistoricoFk;
     }
 
     public void setProcessoJudicialHistoricoFk(ProcessoJudicialHistorico processoJudicialHistoricoFk) {
         this.processoJudicialHistoricoFk = processoJudicialHistoricoFk;
+    }
+
+    public TipoPenhora getTipoPenhoraFk() {
+        return tipoPenhoraFk;
+    }
+
+    public void setTipoPenhoraFk(TipoPenhora tipoPenhoraFk) {
+        this.tipoPenhoraFk = tipoPenhoraFk;
     }
 
     @Override
@@ -123,10 +155,10 @@ public class RedirecionamentoHistorico implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof RedirecionamentoHistorico)) {
+        if (!(object instanceof PenhoraHistorico)) {
             return false;
         }
-        RedirecionamentoHistorico other = (RedirecionamentoHistorico) object;
+        PenhoraHistorico other = (PenhoraHistorico) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -135,7 +167,7 @@ public class RedirecionamentoHistorico implements Serializable {
 
     @Override
     public String toString() {
-        return "entidade.RedirecionamentoHistorico[ id=" + id + " ]";
+        return "entidade.PenhoraHistorico[ id=" + id + " ]";
     }
     
 }

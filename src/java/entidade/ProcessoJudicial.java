@@ -9,6 +9,7 @@ package entidade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Basic;
@@ -78,6 +79,8 @@ public class ProcessoJudicial implements Serializable {
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<Penhora> penhoraCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
     private Collection<Citacao> citacaoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
     private Collection<Redirecionamento> redirecionamentoCollection;
@@ -105,9 +108,6 @@ public class ProcessoJudicial implements Serializable {
     @Size(max = 300)
     @Column(name = "outras_informacoes_ato_processual")
     private String outrasInformacoesAtoProcessual;
-    @Size(max = 2147483647)
-    @Column(name = "ato_processual")
-    private String atoProcessual;
     @JoinColumn(name = "tipo_de_recurso_fk", referencedColumnName = "id")
     @ManyToOne
     private TipoRecurso tipoDeRecursoFk;
@@ -411,9 +411,6 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.outrasInformacoesAtoProcessual, other.outrasInformacoesAtoProcessual)) {
             return false;
         }
-        if (!Objects.equals(this.atoProcessual, other.atoProcessual)) {
-            return false;
-        }
         if (!Objects.equals(this.tipoDeRecursoFk, other.tipoDeRecursoFk)) {
             return false;
         }
@@ -539,14 +536,6 @@ public class ProcessoJudicial implements Serializable {
         this.tipoDeRecursoFk = tipoDeRecursoFk;
     }
 
-    public String getAtoProcessual() {
-        return atoProcessual;
-    }
-
-    public void setAtoProcessual(String atoProcessual) {
-        this.atoProcessual = atoProcessual;
-    }
-
     public String getOutrasInformacoesAtoProcessual() {
         return outrasInformacoesAtoProcessual;
     }
@@ -668,6 +657,15 @@ public class ProcessoJudicial implements Serializable {
 
     public void setRedirecionamentoCollection(Collection<Redirecionamento> redirecionamentoCollection) {
         this.redirecionamentoCollection = redirecionamentoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Penhora> getPenhoraCollection() {
+        return penhoraCollection;
+    }
+
+    public void setPenhoraCollection(Collection<Penhora> penhoraCollection) {
+        this.penhoraCollection = penhoraCollection;
     }
 
 }

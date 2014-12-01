@@ -845,11 +845,12 @@ public class PessoaFisicaDAO implements Serializable {
     }
     
     
-    public List<PessoaFisica> findAllActive(){
+    public List<PessoaFisica> findAllActive(Instituicao instituicao){
         EntityManager em = getEntityManager();
         try {
-            List<PessoaFisica> pessoaFisicaList = (List<PessoaFisica>) em.createNativeQuery("select * from pessoa_fisica "
-                        + "where status = 'A' ", PessoaFisica.class).getResultList();
+            List<PessoaFisica> pessoaFisicaList = (List<PessoaFisica>) 
+                    em.createNativeQuery("select * from pessoa_fisica "
+                        + "where status = 'A' and instituicao_fk = "+instituicao.getId()+" ", PessoaFisica.class).getResultList();
             return pessoaFisicaList;
         } catch (NoResultException e) {
             return null;

@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -17,6 +18,8 @@ public class ExecutadoHistorico implements Serializable {
     private ProcessoJudicialHistorico processoJudicialHistorico;
     private EnderecoPessoa enderecoPessoaFisica;
     private EnderecoPessoa enderecoPessoaJuridica;
+    private List<CitacaoHistorico> citacaoHistoricoList;
+    private List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList;
 
     public ExecutadoHistorico() {
     }
@@ -49,6 +52,22 @@ public class ExecutadoHistorico implements Serializable {
 
     public void setEnderecoPessoaJuridica(EnderecoPessoa enderecoPessoaJuridica) {
         this.enderecoPessoaJuridica = enderecoPessoaJuridica;
+    }
+
+    public List<CitacaoHistorico> getCitacaoHistoricoList() {
+        return citacaoHistoricoList;
+    }
+
+    public void setCitacaoHistoricoList(List<CitacaoHistorico> citacaoHistoricoList) {
+        this.citacaoHistoricoList = citacaoHistoricoList;
+    }
+
+    public List<SocioRedirecionamentoHistorico> getSocioRedirecionamentoHistoricoList() {
+        return socioRedirecionamentoHistoricoList;
+    }
+
+    public void setSocioRedirecionamentoHistoricoList(List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList) {
+        this.socioRedirecionamentoHistoricoList = socioRedirecionamentoHistoricoList;
     }
 
     

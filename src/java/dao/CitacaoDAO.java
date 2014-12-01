@@ -9,15 +9,16 @@ package dao;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.Citacao;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.ProcessoJudicial;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -183,4 +184,29 @@ public class CitacaoDAO implements Serializable {
         }
     }
     
+    public List<Citacao> findByPJUD(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<Citacao> processoJudicialList = (List<Citacao>) em.createNativeQuery("select * from citacao "
+                    + "where processo_judicial_fk = '"+id+"'", Citacao.class).getResultList();
+            return processoJudicialList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void destroyByPJUD(Integer idPjud) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from citacao "
+                    + "where processo_judicial_fk = '" + idPjud + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
 }

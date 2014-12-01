@@ -89,10 +89,12 @@ public class ReaverResource {
     @GET
     @Path("/getPessoasFisicas")
     @Produces("application/json")
-    public String getPessoasFisicas() {
+    public String getPessoasFisicas(@QueryParam("usuario") String usuario) {
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive(instituicao);
         for (PessoaFisica pf : pessoaFisicaList) {
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             JSONObject jsonObject = new JSONObject();
@@ -106,12 +108,12 @@ public class ReaverResource {
     @GET
     @Path("/getPessoasJuridicas")
     @Produces("application/json")
-    public String getPessoasJuridicas() {
+    public String getPessoasJuridicas(@QueryParam("usuario") String usuario) {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao  );
+        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
         for (PessoaJuridica pj : pessoaJuridicaList) {
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             JSONObject jsonObject = new JSONObject();
@@ -125,12 +127,14 @@ public class ReaverResource {
     @GET
     @Path("/getPessoasFisicasTable")
     @Produces("application/json")
-    public String getPessoasFisicasTable() {
+    public String getPessoasFisicasTable(@QueryParam("usuario") String usuario) {
         PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         BemBO bemBO = new BemBO();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive();
+        List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive(instituicao);
         for (PessoaFisica pf : pessoaFisicaList) {
             Endereco end = enderecoBO.findPFAddress(pf.getId());
             List<Bem> bemList = bemBO.findPFBens(pf.getId());
@@ -189,7 +193,6 @@ public class ReaverResource {
     @Path("/getPessoasJuridicasTable")
     @Produces("application/json")
     public String getPessoasJuridicasTable(@QueryParam("usuario") String usuario) {
-        System.out.println("Parametro: "+usuario);
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         BemBO bemBO = new BemBO();
@@ -323,7 +326,7 @@ public class ReaverResource {
             }
             detalhes += " " + end.getBairro() + " " + end.getCep() + " " + (end.getCidadeFk() == null ? "" : end.getCidadeFk().getNome()) + " " + (end.getEstadoFk() == null ? "" : end.getEstadoFk().getUf()) + " "
                     + end.getNumero() + " " + end.getComplemento() + " " + end.getEndereco();
-            detalhes += " " + pjud.getAtoProcessual() + " " + pjud.getDataDeInscricao() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
+            detalhes += " " + pjud.getDataDeInscricao() + " " + pjud.getDespachoInicial() + " " + pjud.getDespachoInicialDataDoAto() + " "
                     + pjud.getDiscriminacaoDoCreditoImposto() + " " + pjud.getDiscriminacaoDoCreditoMulta() + " " + pjud.getDistribuicao() + " " + pjud.getDistribuicaoDataDoAto() + " " + (pjud.getFatosGeradores() == null ? "" : pjud.getFatosGeradores().replace(",", "; ")) + " "
                     + pjud.getFundamentacao() + " " + pjud.getGrupoDeEspecializacao() + " " + pjud.getNotificacaoAdministrativa() + " " + pjud.getNotificacaoAdministrativaDataDoAto() + " " + pjud.getNumeroDoProcessoAnterior() + " "
                     + pjud.getOutrasInformacoesAtoProcessual() + " " + pjud.getOutrasInformacoesExecutado() + " " + pjud.getOutrasInformacoesProcesso() + " " + (pjud.getProcuradorFk() == null ? "" : pjud.getProcuradorFk().getNome()) + " "

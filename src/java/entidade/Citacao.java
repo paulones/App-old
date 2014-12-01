@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entidade;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Citacao.findBySocioFk", query = "SELECT c FROM Citacao c WHERE c.socioFk = :socioFk"),
     @NamedQuery(name = "Citacao.findBySocio", query = "SELECT c FROM Citacao c WHERE c.socio = :socio")})
 public class Citacao implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,6 +73,7 @@ public class Citacao implements Serializable {
     @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicial processoJudicialFk;
+    private transient String socioTipo;
 
     public Citacao() {
     }
@@ -158,6 +160,14 @@ public class Citacao implements Serializable {
         this.processoJudicialFk = processoJudicialFk;
     }
 
+    public String getSocioTipo() {
+        return socioTipo;
+    }
+
+    public void setSocioTipo(String socioTipo) {
+        this.socioTipo = socioTipo;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -178,9 +188,47 @@ public class Citacao implements Serializable {
         return true;
     }
 
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Citacao other = (Citacao) obj;
+        if (!Objects.equals(this.citado, other.citado)) {
+            return false;
+        }
+        if (!Objects.equals(this.dataDaCitacao, other.dataDaCitacao)) {
+            return false;
+        }
+        if (!Objects.equals(this.endereco, other.endereco)) {
+            return false;
+        }
+        if (!Objects.equals(this.motivo, other.motivo)) {
+            return false;
+        }
+        if (!Objects.equals(this.processoJudicialFk, other.processoJudicialFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.socio, other.socio)) {
+            return false;
+        }
+        if (!Objects.equals(this.socioFk, other.socioFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.socioTipo, other.socioTipo)) {
+            return false;
+        }
+        if (!Objects.equals(this.tipoCitacao, other.tipoCitacao)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
         return "entidade.Citacao[ id=" + id + " ]";
     }
-    
+
 }

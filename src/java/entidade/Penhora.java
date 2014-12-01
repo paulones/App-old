@@ -7,6 +7,8 @@
 package entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,7 +21,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -28,41 +29,49 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author paulones
  */
 @Entity
-@Table(name = "redirecionamento")
+@Table(name = "penhora")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Redirecionamento.findAll", query = "SELECT r FROM Redirecionamento r"),
-    @NamedQuery(name = "Redirecionamento.findById", query = "SELECT r FROM Redirecionamento r WHERE r.id = :id"),
-    @NamedQuery(name = "Redirecionamento.findByRedirecionado", query = "SELECT r FROM Redirecionamento r WHERE r.redirecionado = :redirecionado"),
-    @NamedQuery(name = "Redirecionamento.findByDataDeRedirecionamento", query = "SELECT r FROM Redirecionamento r WHERE r.dataDeRedirecionamento = :dataDeRedirecionamento"),
-    @NamedQuery(name = "Redirecionamento.findBySocioFk", query = "SELECT r FROM Redirecionamento r WHERE r.socioFk = :socioFk"),
-    @NamedQuery(name = "Redirecionamento.findBySocio", query = "SELECT r FROM Redirecionamento r WHERE r.socio = :socio")})
-public class Redirecionamento implements Serializable {
+    @NamedQuery(name = "Penhora.findAll", query = "SELECT p FROM Penhora p"),
+    @NamedQuery(name = "Penhora.findById", query = "SELECT p FROM Penhora p WHERE p.id = :id"),
+    @NamedQuery(name = "Penhora.findBySituacao", query = "SELECT p FROM Penhora p WHERE p.situacao = :situacao"),
+    @NamedQuery(name = "Penhora.findByValor", query = "SELECT p FROM Penhora p WHERE p.valor = :valor"),
+    @NamedQuery(name = "Penhora.findByDataDaPenhora", query = "SELECT p FROM Penhora p WHERE p.dataDaPenhora = :dataDaPenhora"),
+    @NamedQuery(name = "Penhora.findBySocioFk", query = "SELECT p FROM Penhora p WHERE p.socioFk = :socioFk"),
+    @NamedQuery(name = "Penhora.findBySocio", query = "SELECT p FROM Penhora p WHERE p.socio = :socio")})
+public class Penhora implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "redirecionado")
-    private Character redirecionado;
+    @Column(name = "situacao")
+    private Character situacao;
+    @Column(name = "valor")
+    private BigDecimal valor;
     @Size(max = 10)
-    @Column(name = "data_de_redirecionamento")
-    private String dataDeRedirecionamento;
+    @Column(name = "data_da_penhora")
+    private String dataDaPenhora;
     @Column(name = "socio_fk")
     private Integer socioFk;
     @Size(max = 2)
     @Column(name = "socio")
     private String socio;
+    @JoinColumn(name = "bem_fk", referencedColumnName = "id")
+    @ManyToOne
+    private Bem bemFk;
     @JoinColumn(name = "processo_judicial_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private ProcessoJudicial processoJudicialFk;
+    @JoinColumn(name = "tipo_penhora_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private TipoPenhora tipoPenhoraFk;
 
-    public Redirecionamento() {
+    public Penhora() {
     }
 
-    public Redirecionamento(Integer id) {
+    public Penhora(Integer id) {
         this.id = id;
     }
 
@@ -74,20 +83,28 @@ public class Redirecionamento implements Serializable {
         this.id = id;
     }
 
-    public Character getRedirecionado() {
-        return redirecionado;
+    public Character getSituacao() {
+        return situacao;
     }
 
-    public void setRedirecionado(Character redirecionado) {
-        this.redirecionado = redirecionado;
+    public void setSituacao(Character situacao) {
+        this.situacao = situacao;
     }
 
-    public String getDataDeRedirecionamento() {
-        return dataDeRedirecionamento;
+    public BigDecimal getValor() {
+        return valor;
     }
 
-    public void setDataDeRedirecionamento(String dataDeRedirecionamento) {
-        this.dataDeRedirecionamento = dataDeRedirecionamento;
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public String getDataDaPenhora() {
+        return dataDaPenhora;
+    }
+
+    public void setDataDaPenhora(String dataDaPenhora) {
+        this.dataDaPenhora = dataDaPenhora;
     }
 
     public Integer getSocioFk() {
@@ -106,12 +123,28 @@ public class Redirecionamento implements Serializable {
         this.socio = socio;
     }
 
+    public Bem getBemFk() {
+        return bemFk;
+    }
+
+    public void setBemFk(Bem bemFk) {
+        this.bemFk = bemFk;
+    }
+
     public ProcessoJudicial getProcessoJudicialFk() {
         return processoJudicialFk;
     }
 
     public void setProcessoJudicialFk(ProcessoJudicial processoJudicialFk) {
         this.processoJudicialFk = processoJudicialFk;
+    }
+
+    public TipoPenhora getTipoPenhoraFk() {
+        return tipoPenhoraFk;
+    }
+
+    public void setTipoPenhoraFk(TipoPenhora tipoPenhoraFk) {
+        this.tipoPenhoraFk = tipoPenhoraFk;
     }
 
     @Override
@@ -124,16 +157,16 @@ public class Redirecionamento implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Redirecionamento)) {
+        if (!(object instanceof Penhora)) {
             return false;
         }
-        Redirecionamento other = (Redirecionamento) object;
+        Penhora other = (Penhora) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
     }
-
+    
     public boolean equalsValues(Object obj) {
         if (obj == null) {
             return false;
@@ -141,14 +174,17 @@ public class Redirecionamento implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Redirecionamento other = (Redirecionamento) obj;
-        if (!Objects.equals(this.dataDeRedirecionamento, other.dataDeRedirecionamento)) {
+        final Penhora other = (Penhora) obj;
+        if (!Objects.equals(this.bemFk, other.bemFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.dataDaPenhora, other.dataDaPenhora)) {
             return false;
         }
         if (!Objects.equals(this.processoJudicialFk, other.processoJudicialFk)) {
             return false;
         }
-        if (!Objects.equals(this.redirecionado, other.redirecionado)) {
+        if (!Objects.equals(this.situacao, other.situacao)) {
             return false;
         }
         if (!Objects.equals(this.socio, other.socio)) {
@@ -157,12 +193,18 @@ public class Redirecionamento implements Serializable {
         if (!Objects.equals(this.socioFk, other.socioFk)) {
             return false;
         }
+        if (!Objects.equals(this.tipoPenhoraFk, other.tipoPenhoraFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.valor, other.valor)) {
+            return false;
+        }
         return true;
     }
-    
+
     @Override
     public String toString() {
-        return "entidade.Redirecionamento[ id=" + id + " ]";
+        return "entidade.Penhora[ id=" + id + " ]";
     }
     
 }

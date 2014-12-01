@@ -662,7 +662,7 @@
                         results = regex.exec(location.search);
                 return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
             }
-            
+
             Array.prototype.removeValue = function(name, value) {
                 var array = $.map(this, function(v, i) {
                     return v[name] === value ? null : v;
@@ -759,7 +759,10 @@
                     async: false,
                     url: "/webresources/reaver/getPessoasJuridicas",
                     dataType: "json",
-                    cache: false
+                    cache: false,
+                    data: {
+                        usuario: $.cookie("usuario")
+                    }
                 })
                         .done(function(data) {
                             $(object).select2({
@@ -801,7 +804,10 @@
                     async: false,
                     url: "/webresources/reaver/getPessoasFisicas",
                     dataType: "json",
-                    cache: false
+                    cache: false,
+                    data: {
+                        usuario: $.cookie("usuario")
+                    }
                 })
                         .done(function(data) {
                             $(object).select2({

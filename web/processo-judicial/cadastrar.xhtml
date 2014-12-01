@@ -135,7 +135,7 @@
                                                         </label>
                                                         <div class="col-md-8">
                                                             <div class="radio-list" data-error-container="#form_executado_error">
-                                                                <h:selectOneRadio id="executado" value="#{processoJudicialBean.processoJudicial.executado}">
+                                                                <h:selectOneRadio id="executado" styleClass="uniformization" value="#{processoJudicialBean.processoJudicial.executado}">
                                                                     <f:selectItem itemLabel="Pessoa Física" itemValue="PF"/>
                                                                     <f:selectItem itemLabel="Pessoa Jurídica" itemValue="PJ"/>
                                                                 </h:selectOneRadio>
@@ -1961,7 +1961,7 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="artentativas" autocomplete="off" value="#{processoJudicialBean.ars}" />
+                                                                                        <h:inputText class="form-control number-tentativas" p:type="number" p:min="0" id="artentativas" autocomplete="off" value="#{processoJudicialBean.ars}" />
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <h:commandLink class="tentativas btn blue-chambray">
@@ -2054,7 +2054,7 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="oficialtentativas" autocomplete="off" value="#{processoJudicialBean.oficiais}" />
+                                                                                        <h:inputText class="form-control number-tentativas" p:type="number" p:min="0" id="oficialtentativas" autocomplete="off" value="#{processoJudicialBean.oficiais}" />
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <h:commandLink class="btn blue-chambray tentativas">
@@ -2147,7 +2147,7 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Tentativas</label>
                                                                                     <div class="col-md-4">
-                                                                                        <h:inputText class="form-control" p:type="number" p:min="0" id="editaltentativas" autocomplete="off" value="#{processoJudicialBean.editais}"/>
+                                                                                        <h:inputText class="form-control number-tentativas" p:type="number" p:min="0" id="editaltentativas" autocomplete="off" value="#{processoJudicialBean.editais}"/>
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <h:commandLink class="btn blue-chambray tentativas">
@@ -2221,18 +2221,18 @@
                                                                         <br/>
                                                                         <h4 class="help-block">Endereço do Sócio</h4>
                                                                         <br/>
-                                                                        <ui:fragment rendered="#{processoJudicialBean.socioPFList.isEmpty() and processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{processoJudicialBean.socioList.isEmpty()}">
                                                                             <h:panelGroup layout="block" class="alert alert-warning">
                                                                                 Nenhum sócio registrado no executado.
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
-                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioPFList.isEmpty() or !processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-3">Tentativas</label>
                                                                                         <div class="col-md-4">
-                                                                                            <h:inputText class="form-control" p:type="number" p:min="0" id="enderecosociotentativas" autocomplete="off" value="#{processoJudicialBean.enderecosSocios}"/>
+                                                                                            <h:inputText class="form-control number-tentativas" p:type="number" p:min="0" id="enderecosociotentativas" autocomplete="off" value="#{processoJudicialBean.enderecosSocios}"/>
                                                                                         </div>
                                                                                         <div class="col-md-5">
                                                                                             <h:commandLink class="tentativas btn blue-chambray">
@@ -2317,33 +2317,11 @@
                                                                                                         <div class="form-group">
                                                                                                             <label class="control-label col-md-3">Sócio</label>
                                                                                                             <div class="col-md-9">
-                                                                                                                <div class="radio-list">
-                                                                                                                    <h:selectOneRadio styleClass="sociotipo uniformization" value="#{enderecosocio.socio}">
-                                                                                                                        <f:selectItem itemLabel="P. Física" itemValue="PF"/>
-                                                                                                                        <f:selectItem itemLabel="P. Jurídica" itemValue="PJ"/>
-                                                                                                                    </h:selectOneRadio>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-6 socios-pf display-hide">
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="col-md-12">
-                                                                                                                <ui:param value="#{socioPF.cpf.substring(0,3)}.#{socioPF.cpf.substring(3,6)}.#{socioPF.cpf.substring(6,9)}-#{socioPF.cpf.substring(9)}" name="cpf"/>
-                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{enderecosocio.socioFk}" >
+                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..."  tabindex="1" value="#{enderecosocio.socioTipo}" >
                                                                                                                     <f:selectItem itemLabel="" itemValue=""/>
-                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioPFList}" var="socioPF" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{socioPF.nome}" itemValue="#{socioPF.id}"/>
-                                                                                                                </h:selectOneMenu>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-6 socios-pj display-hide">
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="col-md-12">
-                                                                                                                <ui:param value="#{socioPJ.cnpj.substring(0,2)}.#{socioPJ.cnpj.substring(2,5)}.#{socioPJ.cnpj.substring(5,8)}/#{socioPJ.cnpj.substring(8,12)}-#{socioPJ.cnpj.substring(12)}" name="cnpj"/>
-                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{enderecosocio.socioFk}" >
-                                                                                                                    <f:selectItem itemLabel="" itemValue=""/>
-                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioPJList}" var="socioPJ" itemLabel="#{cnpj} - #{socioPJ.nome}" itemValue="#{socioPJ.id}"/>
+                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioList}" var="socio" itemLabel="#{socio.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                          ? (socio.cpf eq null ? 'Sem CPF' : socio.cpf.substring(0,3).concat('.').concat(socio.cpf.substring(3,6)).concat('.').concat(socio.cpf.substring(6,9)).concat('-').concat(socio.cpf.substring(9)))
+                                                                                                          : socio.cnpj.substring(0,2).concat('.').concat(socio.cnpj.substring(2,5)).concat('.').concat(socio.cnpj.substring(5,8)).concat('/').concat(socio.cnpj.substring(8,12)).concat('-').concat(socio.cnpj.substring(12))} - #{socio.nome}" itemValue="#{socio.getClass().getSimpleName() eq 'PessoaFisica' ? 'PF' : 'PJ'}#{socio.id}"/>
                                                                                                                 </h:selectOneMenu>
                                                                                                             </div>
                                                                                                         </div>
@@ -2356,12 +2334,12 @@
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
                                                                         <h3 class="form-section">Redirecionamento</h3>
-                                                                        <ui:fragment rendered="#{processoJudicialBean.socioPFList.isEmpty() and processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{processoJudicialBean.socioList.isEmpty()}">
                                                                             <h:panelGroup layout="block" class="alert alert-warning">
                                                                                 Nenhum sócio registrado no executado.
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
-                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioPFList.isEmpty() or !processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
                                                                                     <div class="form-group">
@@ -2377,16 +2355,19 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row">
+                                                                            <div class="row socios-table display-hide">
                                                                                 <div class="col-md-12">
                                                                                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                                                                                     <table class="table table-bordered table-striped table-condensed table-hover vinculations checkbox-table">
                                                                                         <thead>
                                                                                             <tr>
                                                                                                 <th class="table-checkbox" style="min-width:5%;">
-                                                                                                    <input type="checkbox" class="group-checkable" data-set=".checkboxes"/>
+                                                                                                    <input type="checkbox" class="group-checkable" data-set=".checkboxes-socios"/>
                                                                                                 </th>
-                                                                                                <th style="min-width:70%">
+                                                                                                <th style="min-width:20%">
+                                                                                                    CPF/CNPJ
+                                                                                                </th>
+                                                                                                <th style="min-width:50%">
                                                                                                     Sócios
                                                                                                 </th>
                                                                                                 <th style="min-width:20%">
@@ -2397,48 +2378,39 @@
                                                                                             </tr>
                                                                                         </thead>
                                                                                         <tbody>
-                                                                                            <tr class="gradeX">
-                                                                                                <td>
-                                                                                                    <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                                </td>
-                                                                                                <td class="socio-name">
-                                                                                                    shuxer
-                                                                                                </td>
-                                                                                                <td class="socio-data">
-                                                                                                    <div class="form-group margin-bottom-0">
-                                                                                                        <div class="col-md-12">
-                                                                                                            <div class="input-icon right display-hide">
-                                                                                                                <i class="fa"></i>
-                                                                                                                <input class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                            <ui:repeat value="#{processoJudicialBean.socioRedirecionamentoList}" var="socio" varStatus="status">
+                                                                                                <tr class="gradeX">
+                                                                                                    <td>
+                                                                                                        <input type="checkbox" class="checkboxes-socios" value="#{status.index}"/>
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                          ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
+                                                                                                          : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
+                                                                                                    </td>
+                                                                                                    <td class="socio-name">
+                                                                                                        #{socio.pessoa.nome}
+                                                                                                    </td>
+                                                                                                    <td class="socio-data">
+                                                                                                        <div class="form-group margin-bottom-0">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="input-icon right display-hide">
+                                                                                                                    <i class="fa"></i>
+                                                                                                                    <h:inputText value="#{socio.redirecionamento.dataDeRedirecionamento}" class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td class="view-pf">
-                                                                                                    <div class='label label-default'><i class='fa fa-search'></i></div>
-                                                                                                </td>
-                                                                                            </tr>
-                                                                                            <tr class="gradeX">
-                                                                                                <td>
-                                                                                                    <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                                </td>
-                                                                                                <td class="socio-name">
-                                                                                                    looper
-                                                                                                </td>
-                                                                                                <td class="socio-data">
-                                                                                                    <div class="form-group margin-bottom-0">
-                                                                                                        <div class="col-md-12">
-                                                                                                            <div class="input-icon right display-hide">
-                                                                                                                <i class="fa"></i>
-                                                                                                                <input class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                                    </td>
+                                                                                                    <td>
+                                                                                                        <a href="javascript:;" class="#{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' ? 'pf-info' : 'pj-info'}" >
+                                                                                                            <div class='label label-default'>
+                                                                                                                <i class='fa fa-search'></i>
+                                                                                                                <input type='hidden' class='object-id' value="#{socio.pessoa.id}"></input>
                                                                                                             </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td class="view-pf">
-
-                                                                                                </td>
-                                                                                            </tr>
+                                                                                                        </a>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </ui:repeat>
                                                                                         </tbody>
                                                                                     </table>
                                                                                     <!-- END EXAMPLE TABLE PORTLET-->
@@ -2458,18 +2430,16 @@
                                                                 </div>
                                                                 <div class="portlet-body form">
                                                                     <div class="form-body">
-                                                                        <h3 class="form-section">Bacenjud</h3>
+                                                                        <h3 class="form-section">Bloqueios/Restrições/Consultas</h3>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Executado</label>
+                                                                                    <label class="control-label col-md-3">Tipo</label>
                                                                                     <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosd1"  value="option1"></input> Efetivo </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiosd2"  value="option2"></input> Não Efetivo </label>
-                                                                                        </div>
+                                                                                        <h:selectOneMenu class="select2_category select2me form-control tipoPenhora" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.tipoPenhora}" >
+                                                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                                                            <f:selectItems value="#{processoJudicialBean.tipoPenhoraList}" var="tipoPenhora" itemLabel="#{tipoPenhora.tipo}" itemValue="#{tipoPenhora}"/>
+                                                                                        </h:selectOneMenu>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>

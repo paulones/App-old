@@ -12,7 +12,14 @@ var PFCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
-            "ajax": "/webresources/reaver/getPessoasFisicasTable",
+            "ajax": {
+                url: "/webresources/reaver/getPessoasFisicasTable",
+                dataType: "json",
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
+            },
             "columns": [
                 {"data": "row-details"},
                 {"data": "nome"},

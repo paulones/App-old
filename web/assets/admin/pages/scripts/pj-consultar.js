@@ -20,6 +20,14 @@ var PJCon = function() {
                     "orderable": false,
                     "targets": [0, 5]
                 }],
+            "ajax": {
+                url: "/webresources/reaver/getPessoasJuridicasTable",
+                dataType: "json",
+                cache: false,
+                data: {
+                    usuario: $.cookie("usuario")
+                }
+            },
             "columns": [
                 {"data": "row-details"},
                 {"data": "nome"},
