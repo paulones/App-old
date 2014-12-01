@@ -68,7 +68,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesProcesso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesProcesso = :outrasInformacoesProcesso"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesExecutado", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesExecutado = :outrasInformacoesExecutado"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByRecurso", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.recurso = :recurso"),
-    @NamedQuery(name = "ProcessoJudicialHistorico.findByAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.atoProcessual = :atoProcessual"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByOutrasInformacoesAtoProcessual", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.outrasInformacoesAtoProcessual = :outrasInformacoesAtoProcessual"),
     @NamedQuery(name = "ProcessoJudicialHistorico.findByDataDeModificacao", query = "SELECT p FROM ProcessoJudicialHistorico p WHERE p.dataDeModificacao = :dataDeModificacao")})
 public class ProcessoJudicialHistorico implements Serializable {
@@ -179,9 +178,6 @@ public class ProcessoJudicialHistorico implements Serializable {
     @Size(max = 50)
     @Column(name = "recurso")
     private String recurso;
-    @Size(max = 2147483647)
-    @Column(name = "ato_processual")
-    private String atoProcessual;
     @Size(max = 300)
     @Column(name = "outras_informacoes_ato_processual")
     private String outrasInformacoesAtoProcessual;
@@ -393,14 +389,6 @@ public class ProcessoJudicialHistorico implements Serializable {
 
     public void setRecurso(String recurso) {
         this.recurso = recurso;
-    }
-
-    public String getAtoProcessual() {
-        return atoProcessual;
-    }
-
-    public void setAtoProcessual(String atoProcessual) {
-        this.atoProcessual = atoProcessual;
     }
 
     public String getOutrasInformacoesAtoProcessual() {

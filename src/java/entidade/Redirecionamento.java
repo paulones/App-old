@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,7 +45,6 @@ public class Redirecionamento implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "redirecionado")
     private Character redirecionado;
     @Size(max = 10)
@@ -64,11 +64,6 @@ public class Redirecionamento implements Serializable {
 
     public Redirecionamento(Integer id) {
         this.id = id;
-    }
-
-    public Redirecionamento(Integer id, Character redirecionado) {
-        this.id = id;
-        this.redirecionado = redirecionado;
     }
 
     public Integer getId() {
@@ -139,6 +134,32 @@ public class Redirecionamento implements Serializable {
         return true;
     }
 
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Redirecionamento other = (Redirecionamento) obj;
+        if (!Objects.equals(this.dataDeRedirecionamento, other.dataDeRedirecionamento)) {
+            return false;
+        }
+        if (!Objects.equals(this.processoJudicialFk, other.processoJudicialFk)) {
+            return false;
+        }
+        if (!Objects.equals(this.redirecionado, other.redirecionado)) {
+            return false;
+        }
+        if (!Objects.equals(this.socio, other.socio)) {
+            return false;
+        }
+        if (!Objects.equals(this.socioFk, other.socioFk)) {
+            return false;
+        }
+        return true;
+    }
+    
     @Override
     public String toString() {
         return "entidade.Redirecionamento[ id=" + id + " ]";

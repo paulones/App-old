@@ -48,6 +48,35 @@ public class SocioRedirecionamento implements Serializable{
         }
         return true;
     }
+    
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SocioRedirecionamento other = (SocioRedirecionamento) obj;
+        if (!Objects.equals(this.pessoa, other.pessoa)) {
+            return false;
+        }
+        if (!Objects.equals(this.redirecionamento.getDataDeRedirecionamento(), other.redirecionamento.getDataDeRedirecionamento())) {
+            return false;
+        }
+        if (!Objects.equals(this.redirecionamento.getProcessoJudicialFk(), other.redirecionamento.getProcessoJudicialFk())) {
+            return false;
+        }
+        if (!Objects.equals(this.redirecionamento.getRedirecionado(), other.redirecionamento.getRedirecionado())) {
+            return false;
+        }
+        if (!Objects.equals(this.redirecionamento.getSocio(), other.redirecionamento.getSocio())) {
+            return false;
+        }
+        if (!Objects.equals(this.redirecionamento.getSocioFk(), other.redirecionamento.getSocioFk())) {
+            return false;
+        }
+        return true;
+    }
 
     public Object getPessoa() {
         return pessoa;

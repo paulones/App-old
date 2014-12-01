@@ -108,9 +108,6 @@ public class ProcessoJudicial implements Serializable {
     @Size(max = 300)
     @Column(name = "outras_informacoes_ato_processual")
     private String outrasInformacoesAtoProcessual;
-    @Size(max = 2147483647)
-    @Column(name = "ato_processual")
-    private String atoProcessual;
     @JoinColumn(name = "tipo_de_recurso_fk", referencedColumnName = "id")
     @ManyToOne
     private TipoRecurso tipoDeRecursoFk;
@@ -414,9 +411,6 @@ public class ProcessoJudicial implements Serializable {
         if (!Objects.equals(this.outrasInformacoesAtoProcessual, other.outrasInformacoesAtoProcessual)) {
             return false;
         }
-        if (!Objects.equals(this.atoProcessual, other.atoProcessual)) {
-            return false;
-        }
         if (!Objects.equals(this.tipoDeRecursoFk, other.tipoDeRecursoFk)) {
             return false;
         }
@@ -540,14 +534,6 @@ public class ProcessoJudicial implements Serializable {
 
     public void setTipoDeRecursoFk(TipoRecurso tipoDeRecursoFk) {
         this.tipoDeRecursoFk = tipoDeRecursoFk;
-    }
-
-    public String getAtoProcessual() {
-        return atoProcessual;
-    }
-
-    public void setAtoProcessual(String atoProcessual) {
-        this.atoProcessual = atoProcessual;
     }
 
     public String getOutrasInformacoesAtoProcessual() {

@@ -481,7 +481,6 @@ var PjudCad = function() {
                 }
             }
 
-            citado();
             $(document).on('change', '.citado', citado);
             function citado(event) {
                 if ($(this).find("input[type=radio]:checked").val() === 'N') {
@@ -492,16 +491,13 @@ var PjudCad = function() {
                     $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
                 }
             }
-
-            socioTipo();
-            $(document).on('change', '.sociotipo', socioTipo);
-            function socioTipo(event) {
-                if ($(this).find("input[type=radio]:checked").val() === 'PF') {
-                    $(this).parents('.panel-body').find('.socios-pf').show();
-                    $(this).parents('.panel-body').find('.socios-pj').hide();
-                } else if ($(this).find("input[type=radio]:checked").val() === 'PJ') {
-                    $(this).parents('.panel-body').find('.socios-pf').hide();
-                    $(this).parents('.panel-body').find('.socios-pj').show();
+            
+            $(document).on('change', '.redirecionado', redirecionado);
+            function redirecionado(event) {
+                if ($(this).find("input[type=radio]:checked").val() === 'D' || $(this).find("input[type=radio]:checked").val() === 'I') {
+                    $('.socios-table').show();
+                } else {
+                    $('.socios-table').hide();
                 }
             }
 
@@ -608,19 +604,27 @@ var PjudCad = function() {
                         initTable();
                     } else if ($(data.source).hasClass("tentativas")) {
                         $.each($('.citado'), citado);
-                        $.each($('.sociotipo'), socioTipo);
                         $('select.socios').select2({allowClear: true});
                         $('select.tipoPenhora').select2({allowClear: true});
                         $('.uniformization input[type=radio]').uniform();
                         $('.date').mask("99/99/9999");
                     } else if ($(data.source).hasClass("carregar_socios_pj")) {
                         initTable();
+                        $.each($('.citado'), citado);
+                        $.each($('.redirecionado'), redirecionado);
+                        $('select.socios').select2({allowClear: true});
+                        $('select.tipoPenhora').select2({allowClear: true});
                         $('.uniformization input[type=radio]').uniform();
                         $('.number-tentativas').mask("99");
                         $('.date').mask("99/99/9999");
-                        $(".checkbox-table").find("input[type=checkbox]").uniform();;
-                        
-
+                        $(".checkbox-table").find("input[type=checkbox]").uniform();
+                        $.each($('.socio-data'), function(){
+                            if ($(this).find(".data_redirecionamento").val() !== ""){
+                                $(this).parent().find('.checkboxes-socios').prop('checked', 'checked');
+                                $(this).parent().find('.checkboxes-socios').parent().addClass('checked');
+                                $(".checkboxes-socios").trigger("change");
+                            }
+                        });
                     }
                 }
             });

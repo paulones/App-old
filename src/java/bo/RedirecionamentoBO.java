@@ -9,6 +9,8 @@ package bo;
 import dao.RedirecionamentoDAO;
 import entidade.Redirecionamento;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,6 +43,23 @@ public class RedirecionamentoBO implements Serializable{
     public void destroy(Redirecionamento redirecionamento){
         try {
             redirecionamentoDAO.destroy(redirecionamento.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<Redirecionamento> findByPJUD(Integer id){
+        try { 
+            return redirecionamentoDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Redirecionamento>();
+    }
+    
+    public void destroyByPJUD(Integer idPjud){
+        try {
+            redirecionamentoDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();
         }

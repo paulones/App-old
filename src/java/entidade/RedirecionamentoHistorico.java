@@ -44,7 +44,6 @@ public class RedirecionamentoHistorico implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "redirecionado")
     private Character redirecionado;
     @Size(max = 10)
@@ -64,11 +63,6 @@ public class RedirecionamentoHistorico implements Serializable {
 
     public RedirecionamentoHistorico(Integer id) {
         this.id = id;
-    }
-
-    public RedirecionamentoHistorico(Integer id, Character redirecionado) {
-        this.id = id;
-        this.redirecionado = redirecionado;
     }
 
     public Integer getId() {

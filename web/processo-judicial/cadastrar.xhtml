@@ -2221,12 +2221,12 @@
                                                                         <br/>
                                                                         <h4 class="help-block">Endereço do Sócio</h4>
                                                                         <br/>
-                                                                        <ui:fragment rendered="#{processoJudicialBean.socioPFList.isEmpty() and processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{processoJudicialBean.socioList.isEmpty()}">
                                                                             <h:panelGroup layout="block" class="alert alert-warning">
                                                                                 Nenhum sócio registrado no executado.
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
-                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioPFList.isEmpty() or !processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
                                                                                     <div class="form-group">
@@ -2317,33 +2317,11 @@
                                                                                                         <div class="form-group">
                                                                                                             <label class="control-label col-md-3">Sócio</label>
                                                                                                             <div class="col-md-9">
-                                                                                                                <div class="radio-list">
-                                                                                                                    <h:selectOneRadio styleClass="sociotipo uniformization" value="#{enderecosocio.socio}">
-                                                                                                                        <f:selectItem itemLabel="P. Física" itemValue="PF"/>
-                                                                                                                        <f:selectItem itemLabel="P. Jurídica" itemValue="PJ"/>
-                                                                                                                    </h:selectOneRadio>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-6 socios-pf display-hide">
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="col-md-12">
-                                                                                                                <ui:param value="#{socioPF.cpf.substring(0,3)}.#{socioPF.cpf.substring(3,6)}.#{socioPF.cpf.substring(6,9)}-#{socioPF.cpf.substring(9)}" name="cpf"/>
-                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{enderecosocio.socioFk}" >
+                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..."  tabindex="1" value="#{enderecosocio.socioTipo}" >
                                                                                                                     <f:selectItem itemLabel="" itemValue=""/>
-                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioPFList}" var="socioPF" itemLabel="#{cpf eq '..-' ? 'Sem CPF' : cpf} - #{socioPF.nome}" itemValue="#{socioPF.id}"/>
-                                                                                                                </h:selectOneMenu>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-6 socios-pj display-hide">
-                                                                                                        <div class="form-group">
-                                                                                                            <div class="col-md-12">
-                                                                                                                <ui:param value="#{socioPJ.cnpj.substring(0,2)}.#{socioPJ.cnpj.substring(2,5)}.#{socioPJ.cnpj.substring(5,8)}/#{socioPJ.cnpj.substring(8,12)}-#{socioPJ.cnpj.substring(12)}" name="cnpj"/>
-                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{enderecosocio.socioFk}" >
-                                                                                                                    <f:selectItem itemLabel="" itemValue=""/>
-                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioPJList}" var="socioPJ" itemLabel="#{cnpj} - #{socioPJ.nome}" itemValue="#{socioPJ.id}"/>
+                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioList}" var="socio" itemLabel="#{socio.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                          ? (socio.cpf eq null ? 'Sem CPF' : socio.cpf.substring(0,3).concat('.').concat(socio.cpf.substring(3,6)).concat('.').concat(socio.cpf.substring(6,9)).concat('-').concat(socio.cpf.substring(9)))
+                                                                                                          : socio.cnpj.substring(0,2).concat('.').concat(socio.cnpj.substring(2,5)).concat('.').concat(socio.cnpj.substring(5,8)).concat('/').concat(socio.cnpj.substring(8,12)).concat('-').concat(socio.cnpj.substring(12))} - #{socio.nome}" itemValue="#{socio.getClass().getSimpleName() eq 'PessoaFisica' ? 'PF' : 'PJ'}#{socio.id}"/>
                                                                                                                 </h:selectOneMenu>
                                                                                                             </div>
                                                                                                         </div>
@@ -2356,12 +2334,12 @@
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
                                                                         <h3 class="form-section">Redirecionamento</h3>
-                                                                        <ui:fragment rendered="#{processoJudicialBean.socioPFList.isEmpty() and processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{processoJudicialBean.socioList.isEmpty()}">
                                                                             <h:panelGroup layout="block" class="alert alert-warning">
                                                                                 Nenhum sócio registrado no executado.
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
-                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioPFList.isEmpty() or !processoJudicialBean.socioPJList.isEmpty()}">
+                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
                                                                                     <div class="form-group">
@@ -2377,7 +2355,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row">
+                                                                            <div class="row socios-table display-hide">
                                                                                 <div class="col-md-12">
                                                                                     <!-- BEGIN EXAMPLE TABLE PORTLET-->
                                                                                     <table class="table table-bordered table-striped table-condensed table-hover vinculations checkbox-table">

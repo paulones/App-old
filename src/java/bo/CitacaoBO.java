@@ -9,6 +9,8 @@ package bo;
 import dao.CitacaoDAO;
 import entidade.Citacao;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,6 +43,23 @@ public class CitacaoBO implements Serializable{
     public void destroy(Citacao citacao){
         try {
             citacaoDAO.destroy(citacao.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<Citacao> findByPJUD(Integer id){
+        try { 
+            return citacaoDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Citacao>();
+    }
+
+    public void destroyByPJUD(Integer idPjud){
+        try {
+            citacaoDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();
         }
