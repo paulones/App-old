@@ -928,7 +928,7 @@ public void create(PessoaJuridica pessoaJuridica) throws RollbackFailureExceptio
         try {
             List<PessoaJuridica> pessoaFisicaList = (List<PessoaJuridica>) 
                     em.createNativeQuery("select pj.* from pessoa_juridica pj "
-                    + "where pj.instituicao_fk = "+instituicao.getChave()+" ", PessoaJuridica.class).getResultList();
+                    + "where pj.instituicao_fk = "+instituicao.getId()+" ", PessoaJuridica.class).getResultList();
             return pessoaFisicaList;
         } catch (NoResultException e) {
             return null;

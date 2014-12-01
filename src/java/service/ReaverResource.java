@@ -188,13 +188,14 @@ public class ReaverResource {
     @GET
     @Path("/getPessoasJuridicasTable")
     @Produces("application/json")
-    public String getPessoasJuridicasTable() {
+    public String getPessoasJuridicasTable(@QueryParam("usuario") String usuario) {
+        System.out.println("Parametro: "+usuario);
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         BemBO bemBO = new BemBO();
         JSONArray jsonArray = new JSONArray();
         UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
         for (PessoaJuridica pj : pessoaJuridicaList) {
             Endereco end = enderecoBO.findPJAddress(pj.getId());
