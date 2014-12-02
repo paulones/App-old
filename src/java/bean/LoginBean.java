@@ -40,7 +40,7 @@ public class LoginBean implements Serializable {
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            usuarioBO = new UsuarioBO();
+            usuarioBO = new UsuarioBO(); 
             rpBO = new RecuperarSenhaBO();
             loginBO = new LoginBO();
             usuario = new Usuario();

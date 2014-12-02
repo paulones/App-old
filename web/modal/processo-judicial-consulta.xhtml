@@ -1548,19 +1548,404 @@
                                                     <div class="portlet-body form">
                                                         <div class="form-body">
                                                             <h3 class="form-section">Identificação dos Atos Processuais</h3>
-
                                                             <div class="row">
-                                                                <div class="col-md-8">
-                                                                    <div class="form-group">
-                                                                        <label class="control-label col-md-2">Descrição:</label>
-                                                                        <div class="col-md-10">
-                                                                            <p class="form-control-static text-justify">
-                                                                                #{templateBean.executado.processoJudicial.atoProcessual eq null ? '-' : templateBean.executado.processoJudicial.atoProcessual}
-                                                                            </p>
+                                                                <div class="col-md-3">
+                                                                    <ul class="ver-inline-menu tabbable margin-bottom-10">
+                                                                        <li class="active">
+                                                                            <a data-toggle="tab" href="#modal_pjud_tab_1">
+                                                                                <i class="fa fa-hand-o-right"></i> Citação </a>
+                                                                            <span class="after">
+                                                                            </span>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a data-toggle="tab" href="#modal_pjud_tab_2">
+                                                                                <i class="fa fa-lock"></i> Penhora </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="tab-content">
+                                                                        <div id="modal_pjud_tab_1" class="tab-pane active">
+                                                                            <div class="portlet box blue-chambray">
+                                                                                <div class="portlet-title">
+                                                                                    <div class="caption">
+                                                                                        <i class="fa fa-hand-o-right"></i> Citação
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="portlet-body form">
+                                                                                    <div class="form-body">
+                                                                                        <h3 class="form-section">Pedido de Citação</h3>
+                                                                                        <br/>
+                                                                                        <h4 class="help-block">AR</h4>
+                                                                                        <br/>
+                                                                                        <ui:fragment rendered="#{templateBean.checkCitacaoVazia(templateBean.executado.citacaoList, 'AR') eq 0}">
+                                                                                            <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                Não houve citação.
+                                                                                            </h:panelGroup>
+                                                                                        </ui:fragment>
+                                                                                        <h:panelGroup layout="block" class="panel-group accordion modal_pjud_accordion-ar-#{templateBean.executado.processoJudicial.id}">
+                                                                                            <ui:repeat value="#{templateBean.executado.citacaoList}" var="ar" varStatus="statusAr">
+                                                                                                <ui:fragment rendered="#{ar.tipoCitacao eq 'AR'}">
+                                                                                                    <div class="panel panel-danger">
+                                                                                                        <div class="panel-heading">
+                                                                                                            <h4 class="panel-title">
+                                                                                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".modal_pjud_accordion-ar-#{templateBean.executado.processoJudicial.id}"  href="#modal_pjud_collapse_ar_#{templateBean.executado.processoJudicial.id}_#{statusAr.index}">
+                                                                                                                    #{ar.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
+                                                                                                            </h4>
+                                                                                                        </div>
+                                                                                                        <div id="modal_pjud_collapse_ar_#{templateBean.executado.processoJudicial.id}_#{statusAr.index}" class="panel-collapse collapse">
+                                                                                                            <div class="panel-body">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Citado:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static citado">
+                                                                                                                                    #{ar.citado eq 'N' ? 'Não' : 'Sim'}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group motivo">
+                                                                                                                            <label class="control-label col-md-2">Motivo:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static ">
+                                                                                                                                    #{ar.motivo eq null ? '-' : ar.motivo}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Data:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static ">
+                                                                                                                                    #{ar.dataDaCitacao eq null ? '-' : ar.dataDaCitacao}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Endereço:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static ">
+                                                                                                                                    #{ar.endereco eq null ? '-' : ar.endereco}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                            </ui:repeat>
+                                                                                        </h:panelGroup>
+                                                                                        <br/>
+                                                                                        <h4 class="help-block">Oficial de Justiça</h4>
+                                                                                        <br/>
+                                                                                        <ui:fragment rendered="#{templateBean.checkCitacaoVazia(templateBean.executado.citacaoList, 'OJ') eq 0}">
+                                                                                            <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                Não houve citação.
+                                                                                            </h:panelGroup>
+                                                                                        </ui:fragment>
+                                                                                        <h:panelGroup layout="block" class="panel-group accordion modal_pjud_accordion-oficial-#{templateBean.executado.processoJudicial.id}">
+                                                                                            <ui:repeat value="#{templateBean.executado.citacaoList}" var="oficial" varStatus="statusOficial">
+                                                                                                <ui:fragment rendered="#{oficial.tipoCitacao eq 'OJ'}">
+                                                                                                    <div class="panel panel-danger">
+                                                                                                        <div class="panel-heading">
+                                                                                                            <h4 class="panel-title">
+                                                                                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".modal_pjud_accordion-oficial-#{templateBean.executado.processoJudicial.id}"  href="#modal_pjud_collapse_oficial_#{templateBean.executado.processoJudicial.id}_#{statusOficial.index}">
+                                                                                                                    #{oficial.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
+                                                                                                            </h4>
+                                                                                                        </div>
+                                                                                                        <div id="modal_pjud_collapse_oficial_#{templateBean.executado.processoJudicial.id}_#{statusOficial.index}" class="panel-collapse collapse">
+                                                                                                            <div class="panel-body">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Citado:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static citado">
+                                                                                                                                    #{oficial.citado eq 'N' ? 'Não' : 'Sim'}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group motivo">
+                                                                                                                            <label class="control-label col-md-2">Motivo:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{oficial.motivo eq null ? '-' : oficial.motivo}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Data:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{oficial.dataDaCitacao eq null ? '-' : oficial.dataDaCitacao}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Endereço:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{oficial.endereco eq null ? '-' : oficial.endereco}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                            </ui:repeat>
+                                                                                        </h:panelGroup>
+                                                                                        <br/>
+                                                                                        <h4 class="help-block">Edital</h4>
+                                                                                        <br/>
+                                                                                        <ui:fragment rendered="#{templateBean.checkCitacaoVazia(templateBean.executado.citacaoList, 'ED') eq 0}">
+                                                                                            <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                Não houve citação.
+                                                                                            </h:panelGroup>
+                                                                                        </ui:fragment>
+                                                                                        <h:panelGroup layout="block" class="panel-group accordion modal_pjud_accordion-edital-#{templateBean.executado.processoJudicial.id}">
+                                                                                            <ui:repeat value="#{templateBean.executado.citacaoList}" var="edital" varStatus="statusEdital">
+                                                                                                <ui:fragment rendered="#{edital.tipoCitacao eq 'ED'}">
+                                                                                                    <div class="panel panel-danger">
+                                                                                                        <div class="panel-heading">
+                                                                                                            <h4 class="panel-title">
+                                                                                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".modal_pjud_accordion-edital-#{templateBean.executado.processoJudicial.id}"  href="#modal_pjud_collapse_edital_#{templateBean.executado.processoJudicial.id}_#{statusEdital.index}">
+                                                                                                                    #{edital.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
+                                                                                                            </h4>
+                                                                                                        </div>
+                                                                                                        <div id="modal_pjud_collapse_edital_#{templateBean.executado.processoJudicial.id}_#{statusEdital.index}" class="panel-collapse collapse">
+                                                                                                            <div class="panel-body">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Citado:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static citado">
+                                                                                                                                    #{edital.citado eq 'N' ? 'Não' : 'Sim'}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group motivo">
+                                                                                                                            <label class="control-label col-md-2">Motivo:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{edital.motivo eq null ? '-' : edital.motivo}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Data:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{edital.dataDaCitacao eq null ? '-' : edital.dataDaCitacao}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                            </ui:repeat>
+                                                                                        </h:panelGroup>
+                                                                                        <br/>
+                                                                                        <h4 class="help-block">Endereço do Sócio</h4>
+                                                                                        <br/>
+                                                                                        <ui:fragment rendered="#{templateBean.checkCitacaoVazia(templateBean.executado.citacaoList, 'ES') eq 0}">
+                                                                                            <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                Não houve citação.
+                                                                                            </h:panelGroup>
+                                                                                        </ui:fragment>
+                                                                                        <h:panelGroup layout="block" class="panel-group accordion modal_pjud_accordion-enderecosocio-#{templateBean.executado.processoJudicial.id}">
+                                                                                            <ui:repeat value="#{templateBean.executado.citacaoList}" var="enderecosocio" varStatus="statusEnderecoSocio" >
+                                                                                                <ui:fragment rendered="#{enderecosocio.tipoCitacao eq 'ES'}" >
+                                                                                                    <div class="panel panel-danger">
+                                                                                                        <div class="panel-heading">
+                                                                                                            <h4 class="panel-title">
+                                                                                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".modal_pjud_accordion-enderecosocio-#{templateBean.executado.processoJudicial.id}"  href="#modal_pjud_collapse_enderecosocio_#{templateBean.executado.processoJudicial.id}_#{statusEnderecoSocio.index}">
+                                                                                                                    #{enderecosocio.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
+                                                                                                            </h4>
+                                                                                                        </div>
+                                                                                                        <div id="modal_pjud_collapse_enderecosocio_#{templateBean.executado.processoJudicial.id}_#{statusEnderecoSocio.index}" class="panel-collapse collapse">
+                                                                                                            <div class="panel-body">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Citado:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static citado">
+                                                                                                                                    #{enderecosocio.citado eq 'N' ? 'Não' : 'Sim'}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group motivo">
+                                                                                                                            <label class="control-label col-md-2">Motivo:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{enderecosocio.motivo eq null ? '-' : enderecosocio.motivo}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Data:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{enderecosocio.dataDaCitacao eq null ? '-' : enderecosocio.dataDaCitacao}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Endereço:
+                                                                                                                            </label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{enderecosocio.endereco eq null ? '-' : enderecosocio.endereco}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Sócio:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                    #{templateBean.loadSocio(enderecosocio.socio,enderecosocio.socioFk)}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                            </ui:repeat>
+                                                                                        </h:panelGroup>
+                                                                                        <h3 class="form-section">Redirecionamento</h3>
+                                                                                        <ui:fragment rendered="#{templateBean.executado.socioRedirecionamentoList.isEmpty()}">
+                                                                                            <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                Nenhum redirecionamento.
+                                                                                            </h:panelGroup>
+                                                                                        </ui:fragment>
+                                                                                        <ui:fragment rendered="#{!templateBean.executado.socioRedirecionamentoList.isEmpty()}">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-12">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-2">Condição:</label>
+                                                                                                        <div class="col-md-10">
+                                                                                                            <p class="form-control-citacao-static">
+                                                                                                                #{templateBean.executado.socioRedirecionamentoList.isEmpty() ? '' : templateBean.executado.socioRedirecionamentoList.get(0).redirecionamento.redirecionado eq 'D' ? 'Deferido' : 'Indeferido'}
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br/>
+                                                                                            <div class="row socios-table">
+                                                                                                <div class="col-md-12">
+                                                                                                    <table class="table table-bordered table-striped table-condensed table-hover vinculations">
+                                                                                                        <thead>
+                                                                                                            <tr>
+                                                                                                                <th style="min-width:20%; text-align:center">
+                                                                                                                    CPF/CNPJ
+                                                                                                                </th>
+                                                                                                                <th style="min-width:65%; text-align:center">
+                                                                                                                    Sócios
+                                                                                                                </th>
+                                                                                                                <th style="min-width:20%; text-align:center">
+                                                                                                                    Data
+                                                                                                                </th>
+                                                                                                            </tr>
+                                                                                                        </thead>
+                                                                                                        <tbody>
+                                                                                                            <ui:repeat value="#{templateBean.executado.socioRedirecionamentoList}" var="socio" varStatus="status">
+                                                                                                                <tr class="gradeX">
+                                                                                                                    <td style="text-align:center; width: 20%">
+                                                                                                                        #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                                          ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
+                                                                                                                          : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
+                                                                                                                    </td>
+                                                                                                                    <td class="socio-name" style="text-align:center; width: 65%">
+                                                                                                                        #{socio.pessoa.nome}
+                                                                                                                    </td>
+                                                                                                                    <td class="socio-data" style="text-align:center; width: 20%">
+                                                                                                                        #{socio.redirecionamento.dataDeRedirecionamento eq null ? '-' : socio.redirecionamento.dataDeRedirecionamento}
+
+                                                                                                                    </td>
+                                                                                                                </tr>
+                                                                                                            </ui:repeat>
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </ui:fragment>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!--/span-->
                                                             </div>
                                                             <!--/row-->
                                                             <h3 class="form-section"></h3>

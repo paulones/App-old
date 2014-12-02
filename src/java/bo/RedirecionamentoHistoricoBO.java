@@ -9,6 +9,8 @@ package bo;
 import dao.RedirecionamentoHistoricoDAO;
 import entidade.RedirecionamentoHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,5 +46,14 @@ public class RedirecionamentoHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<RedirecionamentoHistorico> findByPJUD(Integer id){
+        try { 
+            return redirecionamentoHistoricoDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<RedirecionamentoHistorico>();
     }
 }

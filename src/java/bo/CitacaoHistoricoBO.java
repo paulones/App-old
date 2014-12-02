@@ -9,6 +9,8 @@ package bo;
 import dao.CitacaoHistoricoDAO;
 import entidade.CitacaoHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,6 +46,15 @@ public class CitacaoHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<CitacaoHistorico> findByPJUD(Integer id){
+        try { 
+            return citacaoHistoricoDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<CitacaoHistorico>();
     }
     
 }
