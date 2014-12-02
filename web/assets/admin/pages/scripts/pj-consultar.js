@@ -7,6 +7,14 @@ var PJCon = function() {
         /*
          * Initialize DataTables, with no sorting on the 'details' column
          */
+        $.ajax({
+            url: "/webresources/reaver/getPessoasJuridicasTable",
+            dataType: "json",
+            cache: false,
+            data: {
+                usuario: $.cookie("usuario")
+            }
+        });
         var oTable = table.dataTable({
             "columnDefs": [{
                     "orderable": false,
