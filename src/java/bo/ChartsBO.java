@@ -9,6 +9,7 @@ package bo;
 import dao.PessoaFisicaDAO;
 import dao.PessoaJuridicaDAO;
 import dao.ProcessoJudicialDAO;
+import entidade.Instituicao;
 import java.io.Serializable;
 
 /**
@@ -27,63 +28,63 @@ public class ChartsBO implements Serializable{
         processoJudicialDAO = new ProcessoJudicialDAO();
     }
      
-    public Integer countPFByMonth(Integer ano, Integer mes){
+    public Integer countPFByMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
-            return pessoaFisicaDAO.countPFByMonth(ano, mes);
+            return pessoaFisicaDAO.countPFByMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
     
-    public Integer countPJByMonth(Integer ano, Integer mes){
+    public Integer countPJByMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
-            return pessoaJuridicaDAO.countPJByMonth(ano, mes);
+            return pessoaJuridicaDAO.countPJByMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
     
-    public Integer countPJUDByMonth(Integer ano, Integer mes){
+    public Integer countPJUDByMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
-            return processoJudicialDAO.countPJUDByMonth(ano, mes);
+            return processoJudicialDAO.countPJUDByMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
     
-    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes){
+    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
-            return processoJudicialDAO.sumPJUDValueBeforeMonth(ano, mes);
+            return processoJudicialDAO.sumPJUDValueBeforeMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
     
-    public Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes){
+    public Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
-            return processoJudicialDAO.sumPJUDArrecadacaoBeforeMonth(ano, mes);
+            return processoJudicialDAO.sumPJUDArrecadacaoBeforeMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
     
-    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes){
+    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
-            return processoJudicialDAO.countPJUDValueBeforeMonth(ano, mes);
+            return processoJudicialDAO.countPJUDValueBeforeMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
     
-    public Integer getPJUDSituations(String situacao){
+    public Integer getPJUDSituations(String situacao, Instituicao instituicao){
         try {
-            return processoJudicialDAO.getPJUDSituations(situacao);
+            return processoJudicialDAO.getPJUDSituations(situacao, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -370,18 +370,20 @@ public class ReaverResource {
     @GET
     @Path("/getMovimentacao")
     @Produces("application/json")
-    public String getMovimentacao(@QueryParam("ano") Integer ano) {
+    public String getMovimentacao(@QueryParam("ano") Integer ano, @QueryParam("usuario") String usuario) {
         ChartsBO chartsBO = new ChartsBO();
         JSONArray jsonArray = new JSONArray();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pf" + i, chartsBO.countPFByMonth(ano, i));
+            jsonObject.put("pf" + i, chartsBO.countPFByMonth(ano, i, instituicao));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pj" + i, chartsBO.countPJByMonth(ano, i));
+            jsonObject.put("pj" + i, chartsBO.countPJByMonth(ano, i, instituicao));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pjud" + i, chartsBO.countPJUDByMonth(ano, i));
+            jsonObject.put("pjud" + i, chartsBO.countPJUDByMonth(ano, i, instituicao));
         }
         jsonArray.put(jsonObject);
 
@@ -417,17 +419,19 @@ public class ReaverResource {
     @GET
     @Path("/getArrecadacao")
     @Produces("application/json")
-    public String getArrecadacao(@QueryParam("ano") Integer ano) {
+    public String getArrecadacao(@QueryParam("ano") Integer ano, @QueryParam("usuario") String usuario) {
         ChartsBO chartsBO = new ChartsBO();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("value" + i, chartsBO.sumPJUDValueBeforeMonth(ano, i));
+            jsonObject.put("value" + i, chartsBO.sumPJUDValueBeforeMonth(ano, i, instituicao));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("arrecadacao" + i, chartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i));
+            jsonObject.put("arrecadacao" + i, chartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i, instituicao));
         }
-        jsonObject.put("count", chartsBO.countPJUDValueBeforeMonth(ano, 12));
+        jsonObject.put("count", chartsBO.countPJUDValueBeforeMonth(ano, 12, instituicao));
         jsonArray.put(jsonObject);
 
         return jsonArray.toString();
@@ -436,15 +440,17 @@ public class ReaverResource {
     @GET
     @Path("/getPizza")
     @Produces("application/json")
-    public String getPizza() {
+    public String getPizza(@QueryParam("usuario") String usuario) {
         ChartsBO chartsBO = new ChartsBO();
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Andamento", chartsBO.getPJUDSituations("Andamento"));
-        jsonObject.put("Arquivado", chartsBO.getPJUDSituations("Arquivado"));
-        jsonObject.put("Extinto", chartsBO.getPJUDSituations("Extinto"));
-        jsonObject.put("Julgado", chartsBO.getPJUDSituations("Julgado"));
-        jsonObject.put("Suspenso", chartsBO.getPJUDSituations("Suspenso"));
+        jsonObject.put("Andamento", chartsBO.getPJUDSituations("Andamento", instituicao));
+        jsonObject.put("Arquivado", chartsBO.getPJUDSituations("Arquivado", instituicao));
+        jsonObject.put("Extinto", chartsBO.getPJUDSituations("Extinto", instituicao));
+        jsonObject.put("Julgado", chartsBO.getPJUDSituations("Julgado", instituicao));
+        jsonObject.put("Suspenso", chartsBO.getPJUDSituations("Suspenso", instituicao));
         jsonArray.put(jsonObject);
 
         return jsonArray.toString();
