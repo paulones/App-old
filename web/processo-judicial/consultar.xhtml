@@ -3680,7 +3680,7 @@
                                                                             <br/>
                                                                             <h4 class="help-block">AR</h4>
                                                                             <br/>
-                                                                            <ui:fragment rendered="#{processoJudicialBean.ars eq 0}">
+                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(processoJudicialBean.executado.citacaoList, 'AR') eq 0}">
                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                     Não houve citação.
                                                                                 </h:panelGroup>
@@ -3757,7 +3757,7 @@
                                                                             <br/>
                                                                             <h4 class="help-block">Oficial de Justiça</h4>
                                                                             <br/>
-                                                                            <ui:fragment rendered="#{processoJudicialBean.oficiais eq 0}">
+                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(processoJudicialBean.executado.citacaoList, 'OJ') eq 0}">
                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                     Não houve citação.
                                                                                 </h:panelGroup>
@@ -3834,7 +3834,7 @@
                                                                             <br/>
                                                                             <h4 class="help-block">Edital</h4>
                                                                             <br/>
-                                                                            <ui:fragment rendered="#{processoJudicialBean.editais eq 0}">
+                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(processoJudicialBean.executado.citacaoList, 'ED') eq 0}">
                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                     Não houve citação.
                                                                                 </h:panelGroup>
@@ -3898,7 +3898,7 @@
                                                                             <br/>
                                                                             <h4 class="help-block">Endereço do Sócio</h4>
                                                                             <br/>
-                                                                            <ui:fragment rendered="#{processoJudicialBean.enderecosSocios eq 0}">
+                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(processoJudicialBean.executado.citacaoList, 'ES') eq 0}">
                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                     Não houve citação.
                                                                                 </h:panelGroup>
