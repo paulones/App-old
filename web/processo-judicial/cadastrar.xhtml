@@ -1965,7 +1965,7 @@
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <h:commandLink class="tentativas btn blue-chambray">
-                                                                                            <f:ajax execute="artentativas accordion-ar" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('AR')}" render="accordion-ar"/>
+                                                                                            <f:ajax execute="artentativas accordion-ar" listener="#{processoJudicialBean.distribuirCitacoesPorListas('AR')}" render="accordion-ar"/>
                                                                                             <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
                                                                                         </h:commandLink>
                                                                                     </div>
@@ -2058,7 +2058,7 @@
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <h:commandLink class="btn blue-chambray tentativas">
-                                                                                            <f:ajax execute="oficialtentativas accordion-oficial" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('OJ')}" render="accordion-oficial"/>
+                                                                                            <f:ajax execute="oficialtentativas accordion-oficial" listener="#{processoJudicialBean.distribuirCitacoesPorListas('OJ')}" render="accordion-oficial"/>
                                                                                             <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
                                                                                         </h:commandLink>
                                                                                     </div>
@@ -2151,7 +2151,7 @@
                                                                                     </div>
                                                                                     <div class="col-md-5">
                                                                                         <h:commandLink class="btn blue-chambray tentativas">
-                                                                                            <f:ajax execute="editaltentativas accordion-edital" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('ED')}" render="accordion-edital"/>
+                                                                                            <f:ajax execute="editaltentativas accordion-edital" listener="#{processoJudicialBean.distribuirCitacoesPorListas('ED')}" render="accordion-edital"/>
                                                                                             <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
                                                                                         </h:commandLink>
                                                                                     </div>
@@ -2236,7 +2236,7 @@
                                                                                         </div>
                                                                                         <div class="col-md-5">
                                                                                             <h:commandLink class="tentativas btn blue-chambray">
-                                                                                                <f:ajax execute="enderecosociotentativas accordion-enderecosocio" listener="#{processoJudicialBean.adicionarQuantidadeDeCitacoes('ES')}" render="accordion-enderecosocio"/>
+                                                                                                <f:ajax execute="enderecosociotentativas accordion-enderecosocio" listener="#{processoJudicialBean.distribuirCitacoesPorListas('ES')}" render="accordion-enderecosocio"/>
                                                                                                 <i class="fa fa-plus-circle"> Adicionar Tentativas</i>
                                                                                             </h:commandLink>
                                                                                         </div>
@@ -2432,173 +2432,54 @@
                                                                     <div class="form-body">
                                                                         <h3 class="form-section">Bloqueios/Restrições/Consultas</h3>
                                                                         <div class="row">
-                                                                            <div class="col-md-6">
+                                                                            <div class="col-md-9">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Tipo</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <h:selectOneMenu class="select2_category select2me form-control tipoPenhora" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.tipoPenhora}" >
+                                                                                    <label class="control-label col-md-2">Tipo</label>
+                                                                                    <div class="col-md-7">
+                                                                                        <h:selectOneMenu class="select2_category select2me form-control tipoPenhora" id="tipoPenhora" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.tipoPenhora}" converter="entityConverter" >
                                                                                             <f:selectItem itemLabel="" itemValue=""/>
                                                                                             <f:selectItems value="#{processoJudicialBean.tipoPenhoraList}" var="tipoPenhora" itemLabel="#{tipoPenhora.tipo}" itemValue="#{tipoPenhora}"/>
                                                                                         </h:selectOneMenu>
                                                                                     </div>
+                                                                                    <div class="col-md-3">
+                                                                                            <h:commandLink class="btn blue-chambray">
+                                                                                                <f:ajax execute="tipoPenhora accordion-penhora" listener="#{processoJudicialBean.adicionarPenhora}" render="accordion-penhora"/>
+                                                                                                <i class="fa fa-plus-circle"> Adicionar </i>
+                                                                                            </h:commandLink>
+                                                                                        </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Data
-                                                                                    </label>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="bacenjuddata" autocomplete="off" />
+                                                                        <h:panelGroup layout="block" class="panel-group accordion" id="accordion-penhora">
+                                                                            <ui:repeat value="#{processoJudicialBean.penhoraList}" var="penhora" varStatus="status">
+                                                                                <div class="panel panel-danger">
+                                                                                    <div class="panel-heading">
+                                                                                        <h4 class="panel-title">
+                                                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-penhora"  href="#collapse_penhora_#{status.index}">
+                                                                                                Indicação de Bem </a>
+                                                                                        </h4>
+                                                                                    </div>
+                                                                                    <div id="collapse_penhora_#{status.index}" class="panel-collapse collapse">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-6">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-3">Data</label>
+                                                                                                        <div class="col-md-7">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{penhora.dataDaPenhora}" class="form-control date penhoradata" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Valor
-                                                                                    </label>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="bacenjudvalor" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                                                                                <table class="table table-bordered table-hover vinculations">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th class="table-checkbox" style="max-width:3%;">
-                                                                                                <input type="checkbox" class="group-checkable" data-set=".checkboxes"/>
-                                                                                            </th>
-                                                                                            <th style="min-width:87%">
-                                                                                                Sócios
-                                                                                            </th>
-                                                                                            <th style="min-width:10%">
-                                                                                            </th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="gradeX">
-                                                                                            <td>
-                                                                                                <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                            </td>
-                                                                                            <td class="socio-name">
-                                                                                                shuxer
-                                                                                            </td>
-                                                                                            <td class="view-pf">
-
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr class="gradeX">
-                                                                                            <td>
-                                                                                                <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                            </td>
-                                                                                            <td class="socio-name">
-                                                                                                looper
-                                                                                            </td>
-                                                                                            <td class="view-pf">
-
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                        <tr class="gradeX">
-                                                                                            <td>
-                                                                                                <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                            </td>
-                                                                                            <td class="socio-name">
-                                                                                                userwow
-                                                                                            </td>
-                                                                                            <td class="view-pf">
-
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                                <!-- END EXAMPLE TABLE PORTLET-->
-                                                                            </div>
-                                                                        </div>
-                                                                        <h3 class="form-section">Renajud</h3>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Executado</label>
-                                                                                    <div class="col-md-9">
-                                                                                        <div class="radio-list">
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiose1"  value="option1"></input> Efetivo </label>
-                                                                                            <label class="radio-inline">
-                                                                                                <input type="radio" name="optionsRadios" id="optionsRadiose2"  value="option2"></input> Não Efetivo </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                                                                                <table class="table table-bordered table-hover vinculations">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th class="table-checkbox uniformization" style="max-width:3%;">
-                                                                                                <input type="checkbox" class="group-checkable" data-set=".checkboxes"/>
-                                                                                            </th>
-                                                                                            <th style="min-width:87%">
-                                                                                                Sócios
-                                                                                            </th>
-                                                                                            <th style="min-width:10%">
-                                                                                            </th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <tr class="gradeX">
-                                                                                            <td>
-                                                                                                <input type="checkbox" class="checkboxes" value="1"/>
-                                                                                            </td>
-                                                                                            <td class="socio-name">
-                                                                                                shuxer
-                                                                                            </td>
-                                                                                            <td class="view-pf">
-
-                                                                                            </td>
-                                                                                        </tr>
-
-                                                                                    </tbody>
-                                                                                </table>
-                                                                                <!-- END EXAMPLE TABLE PORTLET-->
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Data
-                                                                                    </label>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="renajuddata" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Valor
-                                                                                    </label>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="input-icon right">
-                                                                                            <i class="fa"></i>
-                                                                                            <input class="form-control" id="renajudvalor" autocomplete="off" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                            </ui:repeat>
+                                                                        </h:panelGroup>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>

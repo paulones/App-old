@@ -32,6 +32,7 @@ import entidade.EnderecoPessoa;
 import entidade.Executado;
 import entidade.ExecutadoHistorico;
 import entidade.Instituicao;
+import entidade.Penhora;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaJuridica;
 import entidade.PessoaJuridica;
@@ -103,6 +104,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<SocioRedirecionamento> oldSocioRedirecionamentoList;
     private List<CitacaoHistorico> citacaoHistoricoList;
     private List<RedirecionamentoHistorico> redirecionamentoHistoricoList;
+    private List<Penhora> penhoraList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -188,6 +190,7 @@ public class ProcessoJudicialBean implements Serializable {
             enderecoSocioList = new ArrayList<>();
             socioList = new ArrayList<>();
             socioRedirecionamentoList = new ArrayList<>();
+            penhoraList = new ArrayList<>();
 
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
@@ -333,7 +336,7 @@ public class ProcessoJudicialBean implements Serializable {
         }
     }
 
-    public void adicionarQuantidadeDeCitacoes(String tipo) {
+    public void distribuirCitacoesPorListas(String tipo) {
         if (tipo.equals("AR")) {
             arList = adicionarCitacoes(arList, ars, tipo);
         } else if (tipo.equals("OJ")) {
@@ -343,6 +346,12 @@ public class ProcessoJudicialBean implements Serializable {
         } else if (tipo.equals("ES")) {
             enderecoSocioList = adicionarCitacoes(enderecoSocioList, enderecosSocios, tipo);
         }
+    }
+    
+    public void adicionarPenhora(){
+        Penhora penhora = new Penhora();
+        penhora.setTipoPenhoraFk(tipoPenhora);
+        penhoraList.add(penhora);
     }
 
     public List<Citacao> adicionarCitacoes(List<Citacao> citacaoList, Integer quantidade, String tipo) {
@@ -1183,6 +1192,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setSocioList(List<Object> socioList) {
         this.socioList = socioList;
+    }
+
+    public List<Penhora> getPenhoraList() {
+        return penhoraList;
+    }
+
+    public void setPenhoraList(List<Penhora> penhoraList) {
+        this.penhoraList = penhoraList;
     }
 
 }
