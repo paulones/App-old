@@ -1907,10 +1907,10 @@
                                                                                                     <table class="table table-bordered table-striped table-condensed table-hover vinculations">
                                                                                                         <thead>
                                                                                                             <tr>
-                                                                                                                <th style="min-width:15%; text-align:center">
+                                                                                                                <th style="min-width:20%; text-align:center">
                                                                                                                     CPF/CNPJ
                                                                                                                 </th>
-                                                                                                                <th style="min-width:70%; text-align:center">
+                                                                                                                <th style="min-width:65%; text-align:center">
                                                                                                                     Sócios
                                                                                                                 </th>
                                                                                                                 <th style="min-width:20%; text-align:center">
@@ -1921,15 +1921,15 @@
                                                                                                         <tbody>
                                                                                                             <ui:repeat value="#{templateBean.executado.socioRedirecionamentoList}" var="socio" varStatus="status">
                                                                                                                 <tr class="gradeX">
-                                                                                                                    <td style="text-align:center">
+                                                                                                                    <td style="text-align:center; width: 20%">
                                                                                                                         #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
                                                                                                                           ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
                                                                                                                           : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
                                                                                                                     </td>
-                                                                                                                    <td class="socio-name" style="text-align:center">
+                                                                                                                    <td class="socio-name" style="text-align:center; width: 65%">
                                                                                                                         #{socio.pessoa.nome}
                                                                                                                     </td>
-                                                                                                                    <td class="socio-data" style="text-align:center">
+                                                                                                                    <td class="socio-data" style="text-align:center; width: 20%">
                                                                                                                         #{socio.redirecionamento.dataDeRedirecionamento eq null ? '-' : socio.redirecionamento.dataDeRedirecionamento}
 
                                                                                                                     </td>
