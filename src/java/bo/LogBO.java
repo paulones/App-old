@@ -7,6 +7,7 @@
 package bo;
 
 import dao.LogDAO;
+import entidade.Instituicao;
 import entidade.Log;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +36,15 @@ public class LogBO implements Serializable{
     public List<Log> findLogEntities(Integer quantidade, Integer indice){
         try { 
             return logDAO.findLogEntities(quantidade, indice);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Log>();
+    }
+    
+    public List<Log> findLogByInstituicao(Integer quantidade, Instituicao instituicao){
+        try { 
+            return logDAO.findLogByInstituicao(quantidade, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
         }

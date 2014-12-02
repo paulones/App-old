@@ -8,13 +8,15 @@ package dao;
 
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
+import entidade.Instituicao;
 import entidade.Log;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -36,8 +38,18 @@ public class LogDAO implements Serializable {
     public void create(Log log) throws RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Instituicao instituicaoFk = log.getInstituicaoFk();
+            if (instituicaoFk != null) {
+                instituicaoFk = em.getReference(instituicaoFk.getClass(), instituicaoFk.getId());
+                log.setInstituicaoFk(instituicaoFk);
+            }
             em.persist(log);
+            if (instituicaoFk != null) {
+                instituicaoFk.getLogCollection().add(log);
+                instituicaoFk = em.merge(instituicaoFk);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -56,8 +68,24 @@ public class LogDAO implements Serializable {
     public void edit(Log log) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Log persistentLog = em.find(Log.class, log.getId());
+            Instituicao instituicaoFkOld = persistentLog.getInstituicaoFk();
+            Instituicao instituicaoFkNew = log.getInstituicaoFk();
+            if (instituicaoFkNew != null) {
+                instituicaoFkNew = em.getReference(instituicaoFkNew.getClass(), instituicaoFkNew.getId());
+                log.setInstituicaoFk(instituicaoFkNew);
+            }
             log = em.merge(log);
+            if (instituicaoFkOld != null && !instituicaoFkOld.equals(instituicaoFkNew)) {
+                instituicaoFkOld.getLogCollection().remove(log);
+                instituicaoFkOld = em.merge(instituicaoFkOld);
+            }
+            if (instituicaoFkNew != null && !instituicaoFkNew.equals(instituicaoFkOld)) {
+                instituicaoFkNew.getLogCollection().add(log);
+                instituicaoFkNew = em.merge(instituicaoFkNew);
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -83,13 +111,19 @@ public class LogDAO implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             Log log;
             try {
                 log = em.getReference(Log.class, id);
                 log.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The log with id " + id + " no longer exists.", enfe);
+            }
+            Instituicao instituicaoFk = log.getInstituicaoFk();
+            if (instituicaoFk != null) {
+                instituicaoFk.getLogCollection().remove(log);
+                instituicaoFk = em.merge(instituicaoFk);
             }
             em.remove(log);
             em.getTransaction().commit();
@@ -128,6 +162,21 @@ public class LogDAO implements Serializable {
                 q.setFirstResult(firstResult);
             }
             return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
+    public List<Log> findLogByInstituicao(int maxResults, Instituicao instituicao){
+        EntityManager em = getEntityManager();
+        try {
+            List<Log> pessoaFisicaList = (List<Log>) 
+                    em.createNativeQuery("select * from log "
+                        +"where instituicao_fk = "+instituicao.getId()+" order by data_de_criacao desc "
+                        +"limit "+maxResults, Log.class).getResultList();
+            return pessoaFisicaList;
+        } catch (NoResultException e) {
+            return null;
         } finally {
             em.close();
         }

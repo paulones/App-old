@@ -453,9 +453,13 @@ public class ReaverResource {
     @GET
     @Path("/getLogs")
     @Produces("application/json")
-    public String getLogs(@QueryParam("quantidade") Integer quantidade, @QueryParam("indice") Integer indice) {
+    public String getLogs(@QueryParam("quantidade") Integer quantidade, 
+            @QueryParam("indice") Integer indice, @QueryParam("usuario") String usuario) {
         LogBO logBO = new LogBO();
-        List<Log> logList = logBO.findLogEntities(quantidade, indice);
+        UsuarioBO usuarioBO = new UsuarioBO();
+        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        //List<Log> logList = logBO.findLogEntities(quantidade, indice);
+        List<Log> logList = logBO.findLogByInstituicao(quantidade, instituicao);
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < logList.size(); i++) {
