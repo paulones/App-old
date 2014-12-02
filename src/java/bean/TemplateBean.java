@@ -418,15 +418,18 @@ public class TemplateBean implements Serializable {
     }
 
     public String loadSocio(String tipo, String id) {
-        if (tipo.equals("PF")) {
-            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
-            String cpf = (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
-            return cpf + " - " + pf.getNome();
-        } else {
-            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
-            String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
-            return cnpj + " - " + pj.getNome();
+        if (tipo != null) {
+            if (tipo.equals("PF")) {
+                PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
+                String cpf = (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
+                return cpf + " - " + pf.getNome();
+            } else {
+                PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
+                String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
+                return cnpj + " - " + pj.getNome();
+            }
         }
+        return "-";
     }
 
     public List<SocioRedirecionamento> carregarSocioRedirecionamento(List<Redirecionamento> redirecionamentoList) {
