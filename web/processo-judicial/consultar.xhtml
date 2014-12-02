@@ -17,6 +17,7 @@
             .control-label{margin-top:6px !important}
             .form-control-vinculo-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
             .form-control-executado-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
+            .form-control-redirecionamento-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
@@ -1669,20 +1670,20 @@
                                                                                 <i class="fa fa-pencil"></i>Ato Processual
                                                                             </div>
                                                                         </div>
-                                                                        <div class="portlet-body form">
+                                                                        <div class="portlet-body form portlet_ato_processual">
                                                                             <div class="form-body">
                                                                                 <h3 class="form-section">Identificação dos Atos Processuais</h3>
                                                                                 <div class="row">
                                                                                     <div class="col-md-3">
                                                                                         <ul class="ver-inline-menu tabbable margin-bottom-10">
                                                                                             <li class="active">
-                                                                                                <a data-toggle="tab" href="#tab_1">
+                                                                                                <a data-toggle="tab" class="tab_1" href="#tab_1">
                                                                                                     <i class="fa fa-hand-o-right"></i> Citação </a>
                                                                                                 <span class="after">
                                                                                                 </span>
                                                                                             </li>
                                                                                             <li>
-                                                                                                <a data-toggle="tab" href="#tab_2">
+                                                                                                <a data-toggle="tab" class="tab_2" href="#tab_2">
                                                                                                     <i class="fa fa-lock"></i> Penhora </a>
                                                                                             </li>
                                                                                         </ul>
@@ -1703,11 +1704,11 @@
                                                                                                             <h4 class="help-block">AR</h4>
                                                                                                             <br/>
                                                                                                             <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'AR') eq 0}">
-                                                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                                <h:panelGroup layout="block" class="alert alert-warning alert-ar">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-ar-#{parentstatus.index}">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-citacao accordion-ar accordion-ar-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="ar" varStatus="statusAr">
                                                                                                                     <ui:fragment rendered="#{ar.tipoCitacao eq 'AR'}">
                                                                                                                         <div class="panel panel-default">
@@ -1780,11 +1781,11 @@
                                                                                                             <h4 class="help-block">Oficial de Justiça</h4>
                                                                                                             <br/>
                                                                                                             <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'OJ') eq 0}">
-                                                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                                <h:panelGroup layout="block" class="alert alert-warning alert-oficial">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-oficial-#{parentstatus.index}">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-citacao accordion-oficial accordion-oficial-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="oficial" varStatus="statusOficial">
                                                                                                                     <ui:fragment rendered="#{oficial.tipoCitacao eq 'OJ'}">
                                                                                                                         <div class="panel panel-default">
@@ -1856,12 +1857,12 @@
                                                                                                             <br/>
                                                                                                             <h4 class="help-block">Edital</h4>
                                                                                                             <br/>
-                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'OJ') eq 0}">
-                                                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'ED') eq 0}">
+                                                                                                                <h:panelGroup layout="block" class="alert alert-warning alert-edital">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-edital-#{parentstatus.index}">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-citacao accordion-edital accordion-edital-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="edital" varStatus="statusEdital">
                                                                                                                     <ui:fragment rendered="#{edital.tipoCitacao eq 'ED'}">
                                                                                                                         <div class="panel panel-default">
@@ -1920,12 +1921,12 @@
                                                                                                             <br/>
                                                                                                             <h4 class="help-block">Endereço do Sócio</h4>
                                                                                                             <br/>
-                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'OJ') eq 0}">
-                                                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'ES') eq 0}">
+                                                                                                                <h:panelGroup layout="block" class="alert alert-warning alert-enderecosocio">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-enderecosocio-#{parentstatus.index}">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-citacao accordion-enderecosocio accordion-enderecosocio-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="enderecosocio" varStatus="statusEnderecoSocio" >
                                                                                                                     <ui:fragment rendered="#{enderecosocio.tipoCitacao eq 'ES'}" >
                                                                                                                         <div class="panel panel-default">
@@ -2008,7 +2009,7 @@
                                                                                                             </h:panelGroup>
                                                                                                             <h3 class="form-section">Redirecionamento</h3>
                                                                                                             <ui:fragment rendered="#{executadoHistorico.socioRedirecionamentoHistoricoList.isEmpty()}">
-                                                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                                <h:panelGroup layout="block" class="alert alert-warning alert-redirecionamento">
                                                                                                                     Nenhum redirecionamento.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
@@ -2018,7 +2019,7 @@
                                                                                                                         <div class="form-group">
                                                                                                                             <label class="control-label col-md-2">Condição:</label>
                                                                                                                             <div class="col-md-10">
-                                                                                                                                <p class="form-control-citacao-static">
+                                                                                                                                <p class="form-control-redirecionamento-static">
                                                                                                                                     #{executadoHistorico.socioRedirecionamentoHistoricoList.isEmpty() ? '' : executadoHistorico.socioRedirecionamentoHistoricoList.get(0).redirecionamentoHistorico.redirecionado eq 'D' ? 'Deferido' : 'Indeferido'}
                                                                                                                                 </p>
                                                                                                                             </div>
@@ -2028,7 +2029,7 @@
                                                                                                                 <br/>
                                                                                                                 <div class="row socios-table">
                                                                                                                     <div class="col-md-12">
-                                                                                                                        <table class="table table-bordered table-striped table-condensed table-hover vinculations">
+                                                                                                                        <table class="table table-bordered table-striped table-condensed table-hover vinculations table-redirecionamento">
                                                                                                                             <thead>
                                                                                                                                 <tr>
                                                                                                                                     <th style="min-width:15%; text-align:center">

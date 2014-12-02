@@ -227,7 +227,8 @@ var PjudCon = function() {
             var checkPjjPartChanges = checkChangesTableVinculos('.rows-pjj-part tr');
             var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab1');
             var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
-            var checkCitacoesChanges = checkChangesLabel('.form-control-citacao-static', '.tab3');
+            var checkCitacoesChanges = checkChangesCitacoes('.accordion-citacao');
+            var checkRedirecionamentoLabelChange = checkChangesLabel('.form-control-redirecionamento-static', '.tab3');
             var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr')
             processo = (!processo) ? checkProcessoChanges : true;
             executado = (!executado) ? checkBensChanges : true;
@@ -238,6 +239,7 @@ var PjudCon = function() {
             executado = (!executado) ? checkPjjChanges : true;
             executado = (!executado) ? checkPjjPartChanges : true;
             atoProcessual = (!atoProcessual) ? checkCitacoesChanges : true;
+            atoProcessual = (!atoProcessual) ? checkRedirecionamentoLabelChange : true;
             atoProcessual = (!atoProcessual) ? checkRedirecionamentoChanges : true;
 
             function checkChangesTableVinculos(tr) {
@@ -285,6 +287,15 @@ var PjudCon = function() {
             function checkChangesTableRedirecionamento(tr) {
                 var changed = false;
                 $(history).find('.socio-data').css("color", "#a94442");
+                if ($(atual).find('.table-redirecionamento').length === 0 && $(history).find('.table-redirecionamento').length > 0) {
+                    $(history).find('.table-redirecionamento').find('td').css('color','#a94442');
+                    $(history).find('.table-redirecionamento').find('th').css('color','#a94442');
+                    $(history).find('.portlet_ato_processual').find('.tab_1').css("color", "red");
+                    changed = true;
+                } else if ($(atual).find('.table-redirecionamento').length > 0 && $(history).find('.table-redirecionamento').length === 0){
+                    $(history).find('.alert-redirecionamento').css('color', '#a94442');
+                    $(history).find('.portlet_ato_processual').find('.tab_1').css("color", "red");
+                }
                 $.each($(atual).find(tr), function() {
                     var atual = this;
                     var exists = false;
@@ -304,7 +315,58 @@ var PjudCon = function() {
                 });
                 $.each($(history).find(tr), function() {
                     if ($(this).find(".socio-data").css("color") !== "rgb(0, 0, 0)") {
+                        changed = true;
                         $(history).find('.socio-data-title').css("color", "#a94442");
+                        $(history).find('.portlet_ato_processual').find('.tab_1').css("color", "red");
+                    }
+                });
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkChangesCitacoes(accordion) {
+                var changed = false;
+                var tipoCitacoes = ['ar', 'oficial', 'edital', 'enderecosocio'];
+                $.each($(atual).find(accordion), function() {
+                    var accordion_atual = this;
+                    $.each($(history).find(accordion), function(index) {
+                        if ($(accordion_atual).hasClass('accordion-' + tipoCitacoes[index])) {
+                            if ($(this).hasClass('accordion-' + tipoCitacoes[index])) {
+                                if ($(accordion_atual).find('.panel').length > 0 && $(this).find('.panel').length === 0) {
+                                    $(this).parent().find('.alert-' + tipoCitacoes[index]).css('color', '#a94442');
+                                    changed = true;
+                                    $(this).closest('.portlet_ato_processual').find('.tab_1').css("color", "red");
+                                }
+                                var accordion_history = this;
+                                $(this).find('.panel').addClass('panel-danger').removeClass('panel-default');
+                                $(this).find('.form-control-citacao-static').closest('.form-group').css('color', '#a94442');
+                                $.each($(accordion_atual).find('.panel'), function() {
+                                    var panel_atual = this;
+                                    $.each($(accordion_history).find('.panel'), function() {
+                                        var panel_history = this;
+                                        $.each($(panel_atual).find('.form-control-citacao-static'), function() {
+                                            var atual = this;
+                                            $.each($(panel_history).find('.form-control-citacao-static'), function() {
+                                                if ($(atual).text().trim() === $(this).text().trim()) {
+                                                    $(this).parent().parent().css("color", "black");
+                                                    $(this).closest('.panel').addClass('panel-default').removeClass('panel-danger');
+                                                }
+                                            });
+                                        });
+                                    });
+                                });
+                            }
+                        }
+                    });
+                });
+                $.each($(history).find('.form-control-citacao-static'), function() {
+                    if ($(this).css("color") === "rgb(169, 68, 66)") {
+                        changed = true;
+                        $(this).closest('.portlet_ato_processual').find('.tab_1').css("color", "red");
+                        $(this).closest('.panel').removeClass('panel-default').addClass('panel-danger');
                     }
                 });
                 if (changed) {
@@ -340,7 +402,10 @@ var PjudCon = function() {
                 });
                 $.each($(history).find(label), function() {
                     if ($(this).css("color") !== "rgb(0, 0, 0)") {
-                        $(this).closest(".panel-default").removeClass("panel-default").addClass("panel-danger")
+                        $(this).closest(".panel-default").removeClass("panel-default").addClass("panel-danger");
+                        if (label === ".form-control-citacao-static") {
+                            $(history).closest('.portlet-body').find('.tab_1').css("color", "red");
+                        }
                     }
                 });
                 if (changed) {
