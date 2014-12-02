@@ -347,8 +347,8 @@ public class ProcessoJudicialBean implements Serializable {
             enderecoSocioList = adicionarCitacoes(enderecoSocioList, enderecosSocios, tipo);
         }
     }
-    
-    public void adicionarPenhora(){
+
+    public void adicionarPenhora() {
         Penhora penhora = new Penhora();
         penhora.setTipoPenhoraFk(tipoPenhora);
         penhoraList.add(penhora);
@@ -402,6 +402,9 @@ public class ProcessoJudicialBean implements Serializable {
                     }
                 }
             }
+        } else if (tipo.equals("PF") && executadoPF != null){
+            enderecosSocios = 0;
+            enderecoSocioList = new ArrayList<>();
         }
         initialLoad = false;
     }
@@ -427,7 +430,7 @@ public class ProcessoJudicialBean implements Serializable {
         } else {
             PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
-            executado = new Executado(processoJudicial, enderecoPessoaJuridica, carregarCitacoes(citacaoBO.findByPJUD(processoJudicial.getId())), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(processoJudicial.getId())));
+            executado = new Executado(processoJudicial, enderecoPessoaJuridica, citacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(processoJudicial.getId())));
         }
     }
 
@@ -446,26 +449,18 @@ public class ProcessoJudicialBean implements Serializable {
         return "-";
     }
 
-    public int checkCitacaoVazia(List<CitacaoHistorico> citacaoHistoricoList, String tipo) {
+    public int checkCitacaoVazia(List<Object> citacaoList, String tipo) {
         int quantidade = 0;
-        for (CitacaoHistorico citacaoHistorico : citacaoHistoricoList) {
-            quantidade = citacaoHistorico.getTipoCitacao().equals(tipo) ? quantidade + 1 : quantidade;
+        for (Object citacao : citacaoList) {
+            if (citacao instanceof Citacao) {
+                Citacao c = (Citacao) citacao;
+                quantidade = c.getTipoCitacao().equals(tipo) ? quantidade + 1 : quantidade;
+            } else {
+                CitacaoHistorico c = (CitacaoHistorico) citacao;
+                quantidade = c.getTipoCitacao().equals(tipo) ? quantidade + 1 : quantidade;
+            }
         }
         return quantidade;
-    }
-
-    public List<Citacao> carregarCitacoes(List<Citacao> citacaoList) {
-        ars = 0;
-        oficiais = 0;
-        editais = 0;
-        enderecosSocios = 0;
-        for (Citacao citacao : citacaoList) {
-            ars = citacao.getTipoCitacao().equals("AR") ? ars + 1 : ars;
-            oficiais = citacao.getTipoCitacao().equals("OJ") ? oficiais + 1 : oficiais;
-            editais = citacao.getTipoCitacao().equals("ED") ? editais + 1 : editais;
-            enderecosSocios = citacao.getTipoCitacao().equals("ES") ? enderecosSocios + 1 : enderecosSocios;
-        }
-        return citacaoList;
     }
 
     public List<SocioRedirecionamento> carregarSocioRedirecionamento(List<Redirecionamento> redirecionamentoList) {

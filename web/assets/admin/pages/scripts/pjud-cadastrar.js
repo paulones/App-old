@@ -491,7 +491,7 @@ var PjudCad = function() {
                     $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
                 }
             }
-            
+
             $(document).on('change', '.redirecionado', redirecionado);
             function redirecionado(event) {
                 if ($(this).find("input[type=radio]:checked").val() === 'D' || $(this).find("input[type=radio]:checked").val() === 'I') {
@@ -590,7 +590,13 @@ var PjudCad = function() {
                             allowClear: true,
                         });
                     });
-
+            if ($('#cpf').val() !== "") {
+                $('.carregar_socios_pf').click();
+            }
+            $('#cpf').change(function() {
+                $('.carregar_socios_pf').click();
+            });
+            
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === "success") {
                     if ($(data.source).hasClass("vinculos")) {
@@ -624,13 +630,19 @@ var PjudCad = function() {
                         $('.number-tentativas').mask("99");
                         $('.date').mask("99/99/9999");
                         $(".checkbox-table").find("input[type=checkbox]").uniform();
-                        $.each($('.socio-data'), function(){
-                            if ($(this).find(".data_redirecionamento").val() !== ""){
+                        $.each($('.socio-data'), function() {
+                            if ($(this).find(".data_redirecionamento").val() !== "") {
                                 $(this).parent().find('.checkboxes-socios').prop('checked', 'checked');
                                 $(this).parent().find('.checkboxes-socios').parent().addClass('checked');
                                 $(".checkboxes-socios").trigger("change");
                             }
                         });
+                    } else if ($(data.source).hasClass("carregar_socios_pf")) {
+                        $.each($('.citado'), citado);
+                        $('select.tipoPenhora').select2({allowClear: true});
+                        $('.uniformization input[type=radio]').uniform();
+                        $('.number-tentativas').mask("99");
+                        $('.date').mask("99/99/9999");
                     }
                 }
             });
