@@ -24,10 +24,12 @@ public class ExecutadoHistorico implements Serializable {
     public ExecutadoHistorico() {
     }
 
-    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica) {
+    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica, List<CitacaoHistorico> citacaoHistoricoList, List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList) {
         this.processoJudicialHistorico = processoJudicialHistorico;
         this.enderecoPessoaFisica = enderecoPessoaFisica;
         this.enderecoPessoaJuridica = enderecoPessoaJuridica;
+        this.citacaoHistoricoList = citacaoHistoricoList;
+        this.socioRedirecionamentoHistoricoList = socioRedirecionamentoHistoricoList;
     }   
     
     public ProcessoJudicialHistorico getProcessoJudicialHistorico() {

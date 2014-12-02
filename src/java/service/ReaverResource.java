@@ -7,14 +7,17 @@ package service;
 
 import bo.BemBO;
 import bo.ChartsBO;
+import bo.CitacaoBO;
 import bo.EnderecoBO;
 import bo.LogBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaJuridicaBO;
 import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
+import bo.RedirecionamentoBO;
 import bo.UsuarioBO;
 import entidade.Bem;
+import entidade.Citacao;
 import entidade.Endereco;
 import entidade.Instituicao;
 import entidade.Log;
@@ -25,6 +28,7 @@ import entidade.PessoaJuridica;
 import entidade.PessoaJuridicaJuridica;
 import entidade.PessoaJuridicaSucessao;
 import entidade.ProcessoJudicial;
+import entidade.Redirecionamento;
 import entidade.VinculoProcessual;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -257,12 +261,16 @@ public class ReaverResource {
         PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
         EnderecoBO enderecoBO = new EnderecoBO();
         BemBO bemBO = new BemBO();
+        CitacaoBO citacaoBO = new CitacaoBO();
+        RedirecionamentoBO redirecionamentoBO = new RedirecionamentoBO();
         ProcessoJudicialBO processoJudicialBO = new ProcessoJudicialBO();
         JSONArray jsonArray = new JSONArray();
         List<ProcessoJudicial> processoJudicialList = processoJudicialBO.findAllActive();
         for (ProcessoJudicial pjud : processoJudicialList) {
             Endereco end = new Endereco();
             List<Bem> bemList = new ArrayList<>();
+            List<Citacao> citacaoList = citacaoBO.findByPJUD(pjud.getId());
+            List<Redirecionamento> redirecionamentoList = redirecionamentoBO.findByPJUD(pjud.getId());
             PessoaFisica pf = new PessoaFisica();
             PessoaJuridica pj = new PessoaJuridica();
             String detalhes = "";
@@ -334,7 +342,13 @@ public class ReaverResource {
             for (VinculoProcessual vp : pjud.getVinculoProcessualCollection()) {
                 detalhes += " " + vp.getProcesso() + " " + vp.getTipoDeProcessoFk().getTipo();
             }
-
+            for (Citacao c : citacaoList){
+                detalhes += " " + c.getDataDaCitacao() + " " + c.getEndereco() + " " + c.getMotivo();
+            }
+            for (Redirecionamento r : redirecionamentoList){
+                detalhes += " " + r.getDataDeRedirecionamento();
+            }
+           
             detalhes = detalhes.replace("null", "");
 
             JSONObject jsonObject = new JSONObject();

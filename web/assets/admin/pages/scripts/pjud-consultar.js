@@ -501,6 +501,12 @@ var PjudCon = function() {
                             $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
                             initVinculationsTable();
                         }
+                        $.each($('.citado'),function(){
+                            if ($(this).html().trim() === "Sim") {
+                                $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
+                                $(this).parents('.panel-body').find('.motivo').hide();
+                            }
+                        })
                     }
                 }
             });

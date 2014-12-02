@@ -9,15 +9,16 @@ package dao;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.CitacaoHistorico;
-import java.io.Serializable;
-import javax.persistence.Query;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import entidade.ProcessoJudicialHistorico;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
 
 /**
@@ -183,4 +184,16 @@ public class CitacaoHistoricoDAO implements Serializable {
         }
     }
     
+    public List<CitacaoHistorico> findByPJUD(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<CitacaoHistorico> processoJudicialList = (List<CitacaoHistorico>) em.createNativeQuery("select * from citacao_historico "
+                    + "where processo_judicial_historico_fk = '"+id+"'", CitacaoHistorico.class).getResultList();
+            return processoJudicialList;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
 }
