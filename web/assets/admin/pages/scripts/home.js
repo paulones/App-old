@@ -187,7 +187,7 @@ var Home = function() {
             url: "/webresources/reaver/getPizza",
             dataType: "json",
             cache: false,
-            dado: {
+            data: {
                 usuario: $.cookie("usuario")
             }
         })
