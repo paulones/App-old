@@ -48,7 +48,8 @@ public class BemDAO implements Serializable {
         }
         EntityManager em = null;
         try {
-            em = getEntityManager();em.getTransaction().begin();
+            em = getEntityManager();
+            em.getTransaction().begin();
             TipoBem tipoBemFk = bem.getTipoBemFk();
             if (tipoBemFk != null) {
                 tipoBemFk = em.getReference(tipoBemFk.getClass(), tipoBemFk.getId());

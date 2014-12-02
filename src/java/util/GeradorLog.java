@@ -7,6 +7,7 @@
 package util;
 
 import bo.LogBO;
+import bo.UsuarioBO;
 import bo.UtilBO;
 import entidade.Log;
 
@@ -22,11 +23,13 @@ public class GeradorLog {
     public static void criar(Integer idFk, String tabela, char operacao){
         logBO = new LogBO();
         utilBO = new UtilBO();
+        UsuarioBO usuarioBO = new UsuarioBO();
         Log log = new Log();
         log.setDataDeCriacao(utilBO.findServerTime());
         log.setIdFk(idFk);
         log.setOperacao(operacao);
         log.setTabela(tabela);
+        log.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
         logBO.create(log);
     }
 }

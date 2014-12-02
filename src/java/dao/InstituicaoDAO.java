@@ -13,6 +13,7 @@ import entidade.Autorizacao;
 import entidade.Cidade;
 import entidade.Estado;
 import entidade.Instituicao;
+import entidade.Log;
 import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
@@ -56,6 +57,9 @@ public class InstituicaoDAO implements Serializable {
         if (instituicao.getProcessoJudicialCollection() == null) {
             instituicao.setProcessoJudicialCollection(new ArrayList<ProcessoJudicial>());
         }
+        if (instituicao.getLogCollection() == null) {
+            instituicao.setLogCollection(new ArrayList<Log>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -94,6 +98,12 @@ public class InstituicaoDAO implements Serializable {
                 attachedProcessoJudicialCollection.add(processoJudicialCollectionProcessoJudicialToAttach);
             }
             instituicao.setProcessoJudicialCollection(attachedProcessoJudicialCollection);
+            Collection<Log> attachedLogCollection = new ArrayList<Log>();
+            for (Log logCollectionLogToAttach : instituicao.getLogCollection()) {
+                logCollectionLogToAttach = em.getReference(logCollectionLogToAttach.getClass(), logCollectionLogToAttach.getId());
+                attachedLogCollection.add(logCollectionLogToAttach);
+            }
+            instituicao.setLogCollection(attachedLogCollection);
             em.persist(instituicao);
             if (estadoFk != null) {
                 estadoFk.getInstituicaoCollection().add(instituicao);
@@ -139,6 +149,15 @@ public class InstituicaoDAO implements Serializable {
                     oldInstituicaoFkOfProcessoJudicialCollectionProcessoJudicial = em.merge(oldInstituicaoFkOfProcessoJudicialCollectionProcessoJudicial);
                 }
             }
+            for (Log logCollectionLog : instituicao.getLogCollection()) {
+                Instituicao oldInstituicaoFkOfLogCollectionLog = logCollectionLog.getInstituicaoFk();
+                logCollectionLog.setInstituicaoFk(instituicao);
+                logCollectionLog = em.merge(logCollectionLog);
+                if (oldInstituicaoFkOfLogCollectionLog != null) {
+                    oldInstituicaoFkOfLogCollectionLog.getLogCollection().remove(logCollectionLog);
+                    oldInstituicaoFkOfLogCollectionLog = em.merge(oldInstituicaoFkOfLogCollectionLog);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -172,6 +191,8 @@ public class InstituicaoDAO implements Serializable {
             Collection<PessoaFisica> pessoaFisicaCollectionNew = instituicao.getPessoaFisicaCollection();
             Collection<ProcessoJudicial> processoJudicialCollectionOld = persistentInstituicao.getProcessoJudicialCollection();
             Collection<ProcessoJudicial> processoJudicialCollectionNew = instituicao.getProcessoJudicialCollection();
+            Collection<Log> logCollectionOld = persistentInstituicao.getLogCollection();
+            Collection<Log> logCollectionNew = instituicao.getLogCollection();
             List<String> illegalOrphanMessages = null;
             for (Autorizacao autorizacaoCollectionOldAutorizacao : autorizacaoCollectionOld) {
                 if (!autorizacaoCollectionNew.contains(autorizacaoCollectionOldAutorizacao)) {
@@ -203,6 +224,14 @@ public class InstituicaoDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain ProcessoJudicial " + processoJudicialCollectionOldProcessoJudicial + " since its instituicaoFk field is not nullable.");
+                }
+            }
+            for (Log logCollectionOldLog : logCollectionOld) {
+                if (!logCollectionNew.contains(logCollectionOldLog)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain Log " + logCollectionOldLog + " since its instituicaoFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -244,6 +273,13 @@ public class InstituicaoDAO implements Serializable {
             }
             processoJudicialCollectionNew = attachedProcessoJudicialCollectionNew;
             instituicao.setProcessoJudicialCollection(processoJudicialCollectionNew);
+            Collection<Log> attachedLogCollectionNew = new ArrayList<Log>();
+            for (Log logCollectionNewLogToAttach : logCollectionNew) {
+                logCollectionNewLogToAttach = em.getReference(logCollectionNewLogToAttach.getClass(), logCollectionNewLogToAttach.getId());
+                attachedLogCollectionNew.add(logCollectionNewLogToAttach);
+            }
+            logCollectionNew = attachedLogCollectionNew;
+            instituicao.setLogCollection(logCollectionNew);
             instituicao = em.merge(instituicao);
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getInstituicaoCollection().remove(instituicao);
@@ -302,6 +338,17 @@ public class InstituicaoDAO implements Serializable {
                     if (oldInstituicaoFkOfProcessoJudicialCollectionNewProcessoJudicial != null && !oldInstituicaoFkOfProcessoJudicialCollectionNewProcessoJudicial.equals(instituicao)) {
                         oldInstituicaoFkOfProcessoJudicialCollectionNewProcessoJudicial.getProcessoJudicialCollection().remove(processoJudicialCollectionNewProcessoJudicial);
                         oldInstituicaoFkOfProcessoJudicialCollectionNewProcessoJudicial = em.merge(oldInstituicaoFkOfProcessoJudicialCollectionNewProcessoJudicial);
+                    }
+                }
+            }
+            for (Log logCollectionNewLog : logCollectionNew) {
+                if (!logCollectionOld.contains(logCollectionNewLog)) {
+                    Instituicao oldInstituicaoFkOfLogCollectionNewLog = logCollectionNewLog.getInstituicaoFk();
+                    logCollectionNewLog.setInstituicaoFk(instituicao);
+                    logCollectionNewLog = em.merge(logCollectionNewLog);
+                    if (oldInstituicaoFkOfLogCollectionNewLog != null && !oldInstituicaoFkOfLogCollectionNewLog.equals(instituicao)) {
+                        oldInstituicaoFkOfLogCollectionNewLog.getLogCollection().remove(logCollectionNewLog);
+                        oldInstituicaoFkOfLogCollectionNewLog = em.merge(oldInstituicaoFkOfLogCollectionNewLog);
                     }
                 }
             }
@@ -367,6 +414,13 @@ public class InstituicaoDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This Instituicao (" + instituicao + ") cannot be destroyed since the ProcessoJudicial " + processoJudicialCollectionOrphanCheckProcessoJudicial + " in its processoJudicialCollection field has a non-nullable instituicaoFk field.");
+            }
+            Collection<Log> logCollectionOrphanCheck = instituicao.getLogCollection();
+            for (Log logCollectionOrphanCheckLog : logCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Instituicao (" + instituicao + ") cannot be destroyed since the Log " + logCollectionOrphanCheckLog + " in its logCollection field has a non-nullable instituicaoFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

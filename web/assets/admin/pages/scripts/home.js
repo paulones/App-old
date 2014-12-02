@@ -396,7 +396,8 @@ var Home = function() {
                 dataType: "json",
                 data: {
                     quantidade: quantidade,
-                    indice: indice
+                    indice: indice,
+                    usuario: $.cookie("usuario")
                 },
                 cache: false
             })
