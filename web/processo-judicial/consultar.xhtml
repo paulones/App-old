@@ -1711,7 +1711,7 @@
                                                                                                             <h:panelGroup layout="block" class="panel-group accordion accordion-ar-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="ar" varStatus="statusAr">
                                                                                                                     <ui:fragment rendered="#{ar.tipoCitacao eq 'AR'}">
-                                                                                                                        <div class="panel panel-danger">
+                                                                                                                        <div class="panel panel-default">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
                                                                                                                                     <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-ar-#{parentstatus.index}"  href="#collapse_ar_#{parentstatus.index}_#{statusAr.index}">
@@ -1788,7 +1788,7 @@
                                                                                                             <h:panelGroup layout="block" class="panel-group accordion accordion-oficial-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="oficial" varStatus="statusOficial">
                                                                                                                     <ui:fragment rendered="#{oficial.tipoCitacao eq 'OJ'}">
-                                                                                                                        <div class="panel panel-danger">
+                                                                                                                        <div class="panel panel-default">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
                                                                                                                                     <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-oficial-#{parentstatus.index}"  href="#collapse_oficial_#{parentstatus.index}_#{statusOficial.index}">
@@ -1865,7 +1865,7 @@
                                                                                                             <h:panelGroup layout="block" class="panel-group accordion accordion-edital-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="edital" varStatus="statusEdital">
                                                                                                                     <ui:fragment rendered="#{edital.tipoCitacao eq 'ED'}">
-                                                                                                                        <div class="panel panel-danger">
+                                                                                                                        <div class="panel panel-default">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
                                                                                                                                     <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-edital-#{parentstatus.index}"  href="#collapse_edital_#{parentstatus.index}_#{statusEdital.index}">
@@ -1929,7 +1929,7 @@
                                                                                                             <h:panelGroup layout="block" class="panel-group accordion accordion-enderecosocio-#{parentstatus.index}">
                                                                                                                 <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="enderecosocio" varStatus="statusEnderecoSocio" >
                                                                                                                     <ui:fragment rendered="#{enderecosocio.tipoCitacao eq 'ES'}" >
-                                                                                                                        <div class="panel panel-danger">
+                                                                                                                        <div class="panel panel-default">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
                                                                                                                                     <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-enderecosocio-#{parentstatus.index}"  href="#collapse_enderecosocio_#{parentstatus.index}_#{statusEnderecoSocio.index}">
@@ -2038,14 +2038,14 @@
                                                                                                                                     <th style="min-width:70%; text-align:center">
                                                                                                                                         Sócios
                                                                                                                                     </th>
-                                                                                                                                    <th style="min-width:20%; text-align:center">
+                                                                                                                                    <th style="min-width:20%; text-align:center" class="socio-data-title">
                                                                                                                                         Data
                                                                                                                                     </th>
                                                                                                                                     <th style="min-width:5%">
                                                                                                                                     </th>
                                                                                                                                 </tr>
                                                                                                                             </thead>
-                                                                                                                            <tbody>
+                                                                                                                            <tbody class="rows-redirecionamento">
                                                                                                                                 <ui:repeat value="#{executadoHistorico.socioRedirecionamentoHistoricoList}" var="socio" varStatus="status">
                                                                                                                                     <tr class="gradeX">
                                                                                                                                         <td style="text-align:center">

@@ -221,12 +221,14 @@ var PjudCon = function() {
 
             var checkSucedidasChanges = checkSucessoes('.sucedidas');
             var checkSucessorasChanges = checkSucessoes('.sucessoras');
-            var checkPffChanges = checkChangesTable('.rows-pff tr')
-            var checkPfjChanges = checkChangesTable('.rows-pfj tr');
-            var checkPjjChanges = checkChangesTable('.rows-pjj tr');
-            var checkPjjPartChanges = checkChangesTable('.rows-pjj-part tr');
+            var checkPffChanges = checkChangesTableVinculos('.rows-pff tr')
+            var checkPfjChanges = checkChangesTableVinculos('.rows-pfj tr');
+            var checkPjjChanges = checkChangesTableVinculos('.rows-pjj tr');
+            var checkPjjPartChanges = checkChangesTableVinculos('.rows-pjj-part tr');
             var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab1');
             var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
+            var checkCitacoesChanges = checkChangesLabel('.form-control-citacao-static', '.tab3');
+            var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr')
             processo = (!processo) ? checkProcessoChanges : true;
             executado = (!executado) ? checkBensChanges : true;
             executado = (!executado) ? checkSucedidasChanges : true;
@@ -235,8 +237,10 @@ var PjudCon = function() {
             executado = (!executado) ? checkPfjChanges : true;
             executado = (!executado) ? checkPjjChanges : true;
             executado = (!executado) ? checkPjjPartChanges : true;
+            atoProcessual = (!atoProcessual) ? checkCitacoesChanges : true;
+            atoProcessual = (!atoProcessual) ? checkRedirecionamentoChanges : true;
 
-            function checkChangesTable(tr) {
+            function checkChangesTableVinculos(tr) {
                 var changed = false;
                 if ($(atual).find(tr).length !== $(history).find(tr).length) {
                     changed = true;
@@ -272,6 +276,38 @@ var PjudCon = function() {
                 });
                 if (changed) {
                     $(history).find('.tab-pj-info').css("color", "#a94442");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkChangesTableRedirecionamento(tr) {
+                var changed = false;
+                $(history).find('.socio-data').css("color", "#a94442");
+                $.each($(atual).find(tr), function() {
+                    var atual = this;
+                    var exists = false;
+                    $.each($(history).find(tr), function() {
+                        var pessoaAtual = $(atual).find('td').eq(0).html().trim();
+                        var pessoaHistorico = $(this).find('td').eq(0).html().trim();
+                        if (pessoaAtual === pessoaHistorico) {
+                            exists = true;
+                            if ($(atual).find('.socio-data').html().trim() === $(this).find('.socio-data').html().trim()) {
+                                $(this).find('.socio-data').css("color", "black");
+                            }
+                        }
+                    });
+                    if (!exists) {
+                        changed = true;
+                    }
+                });
+                $.each($(history).find(tr), function() {
+                    if ($(this).find(".socio-data").css("color") !== "rgb(0, 0, 0)") {
+                        $(history).find('.socio-data-title').css("color", "#a94442");
+                    }
+                });
+                if (changed) {
                     return true;
                 } else {
                     return false;
@@ -391,7 +427,6 @@ var PjudCon = function() {
 
             if (window.location.search != "") {
                 initHistoryTable();
-                citado();
                 getMoneyMask(".accordion")
                 if ($('.pj-id').length !== 0) {
                     var lastIndex = $('.pj-id').length - 1;
