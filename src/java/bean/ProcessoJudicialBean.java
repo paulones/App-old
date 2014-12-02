@@ -432,6 +432,14 @@ public class ProcessoJudicialBean implements Serializable {
         }
     }
     
+    public int checkCitacaoVazia(List<CitacaoHistorico> citacaoHistoricoList, String tipo){
+        int quantidade = 0;
+        for (CitacaoHistorico citacaoHistorico : citacaoHistoricoList){
+            quantidade = citacaoHistorico.getTipoCitacao().equals(tipo) ? quantidade + 1 : quantidade;
+        }
+        return quantidade;
+    }
+    
     public List<Citacao> carregarCitacoes(List<Citacao> citacaoList){
         ars = 0; oficiais = 0; editais = 0; enderecosSocios = 0;
         for (Citacao citacao : citacaoList){

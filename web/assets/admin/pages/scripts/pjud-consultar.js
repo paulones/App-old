@@ -391,6 +391,7 @@ var PjudCon = function() {
 
             if (window.location.search != "") {
                 initHistoryTable();
+                citado();
                 getMoneyMask(".accordion")
                 if ($('.pj-id').length !== 0) {
                     var lastIndex = $('.pj-id').length - 1;
@@ -480,6 +481,15 @@ var PjudCon = function() {
                 $('.detailed-info').remove();
             });
 
+            function citado() {
+                $.each($('.citado'), function() {
+                    if ($(this).html().trim() === "Sim") {
+                        $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
+                        $(this).parents('.panel-body').find('.motivo').hide();
+                    }
+                })
+            }
+
             jsf.ajax.addOnEvent(function(data) {
                 switch (data.status) {
                     case "begin":
@@ -501,12 +511,7 @@ var PjudCon = function() {
                             $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
                             initVinculationsTable();
                         }
-                        $.each($('.citado'),function(){
-                            if ($(this).html().trim() === "Sim") {
-                                $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
-                                $(this).parents('.panel-body').find('.motivo').hide();
-                            }
-                        })
+                        citado();
                     }
                 }
             });

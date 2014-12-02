@@ -57,11 +57,11 @@ public class SocioRedirecionamentoHistorico implements Serializable{
         this.pessoa = pessoa;
     }
 
-    public RedirecionamentoHistorico getRedirecionamento() {
+    public RedirecionamentoHistorico getRedirecionamentoHistorico() {
         return redirecionamentoHistorico;
     }
 
-    public void setRedirecionamento(RedirecionamentoHistorico redirecionamentoHistorico) {
+    public void setRedirecionamentoHistorico(RedirecionamentoHistorico redirecionamentoHistorico) {
         this.redirecionamentoHistorico = redirecionamentoHistorico;
     }
     

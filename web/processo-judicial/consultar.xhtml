@@ -1703,22 +1703,22 @@
                                                                                                             <br/>
                                                                                                             <h4 class="help-block">AR</h4>
                                                                                                             <br/>
-                                                                                                            <ui:fragment rendered="#{executadoHistorico.citacaoHistoricoList.ars eq 0}">
+                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'AR') eq 0}">
                                                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-ar-#{processoJudicialBean.executado.processoJudicial.id}">
-                                                                                                                <ui:repeat value="#{processoJudicialBean.executado.citacaoList}" var="ar" varStatus="statusAr">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-ar-#{parentstatus.index}">
+                                                                                                                <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="ar" varStatus="statusAr">
                                                                                                                     <ui:fragment rendered="#{ar.tipoCitacao eq 'AR'}">
                                                                                                                         <div class="panel panel-danger">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
-                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-ar-#{processoJudicialBean.executado.processoJudicial.id}"  href="#collapse_ar_#{processoJudicialBean.executado.processoJudicial.id}_#{statusAr.index}">
+                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-ar-#{parentstatus.index}"  href="#collapse_ar_#{parentstatus.index}_#{statusAr.index}">
                                                                                                                                         #{ar.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
                                                                                                                                 </h4>
                                                                                                                             </div>
-                                                                                                                            <div id="collapse_ar_#{processoJudicialBean.executado.processoJudicial.id}_#{statusAr.index}" class="panel-collapse collapse">
+                                                                                                                            <div id="collapse_ar_#{parentstatus.index}_#{statusAr.index}" class="panel-collapse collapse">
                                                                                                                                 <div class="panel-body">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
@@ -1780,22 +1780,22 @@
                                                                                                             <br/>
                                                                                                             <h4 class="help-block">Oficial de Justiça</h4>
                                                                                                             <br/>
-                                                                                                            <ui:fragment rendered="#{processoJudicialBean.oficiais eq 0}">
+                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'OJ') eq 0}">
                                                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-oficial-#{processoJudicialBean.executado.processoJudicial.id}">
-                                                                                                                <ui:repeat value="#{processoJudicialBean.executado.citacaoList}" var="oficial" varStatus="statusOficial">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-oficial-#{parentstatus.index}">
+                                                                                                                <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="oficial" varStatus="statusOficial">
                                                                                                                     <ui:fragment rendered="#{oficial.tipoCitacao eq 'OJ'}">
                                                                                                                         <div class="panel panel-danger">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
-                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-oficial-#{processoJudicialBean.executado.processoJudicial.id}"  href="#collapse_oficial_#{processoJudicialBean.executado.processoJudicial.id}_#{statusOficial.index}">
+                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-oficial-#{parentstatus.index}"  href="#collapse_oficial_#{parentstatus.index}_#{statusOficial.index}">
                                                                                                                                         #{oficial.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
                                                                                                                                 </h4>
                                                                                                                             </div>
-                                                                                                                            <div id="collapse_oficial_#{processoJudicialBean.executado.processoJudicial.id}_#{statusOficial.index}" class="panel-collapse collapse">
+                                                                                                                            <div id="collapse_oficial_#{parentstatus.index}_#{statusOficial.index}" class="panel-collapse collapse">
                                                                                                                                 <div class="panel-body">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
@@ -1857,22 +1857,22 @@
                                                                                                             <br/>
                                                                                                             <h4 class="help-block">Edital</h4>
                                                                                                             <br/>
-                                                                                                            <ui:fragment rendered="#{processoJudicialBean.editais eq 0}">
+                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'OJ') eq 0}">
                                                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-edital-#{processoJudicialBean.executado.processoJudicial.id}">
-                                                                                                                <ui:repeat value="#{processoJudicialBean.executado.citacaoList}" var="edital" varStatus="statusEdital">
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-edital-#{parentstatus.index}">
+                                                                                                                <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="edital" varStatus="statusEdital">
                                                                                                                     <ui:fragment rendered="#{edital.tipoCitacao eq 'ED'}">
                                                                                                                         <div class="panel panel-danger">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
-                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-edital-#{processoJudicialBean.executado.processoJudicial.id}"  href="#collapse_edital_#{processoJudicialBean.executado.processoJudicial.id}_#{statusEdital.index}">
+                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-edital-#{parentstatus.index}"  href="#collapse_edital_#{parentstatus.index}_#{statusEdital.index}">
                                                                                                                                         #{edital.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
                                                                                                                                 </h4>
                                                                                                                             </div>
-                                                                                                                            <div id="collapse_edital_#{processoJudicialBean.executado.processoJudicial.id}_#{statusEdital.index}" class="panel-collapse collapse">
+                                                                                                                            <div id="collapse_edital_#{parentstatus.index}_#{statusEdital.index}" class="panel-collapse collapse">
                                                                                                                                 <div class="panel-body">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
@@ -1921,22 +1921,22 @@
                                                                                                             <br/>
                                                                                                             <h4 class="help-block">Endereço do Sócio</h4>
                                                                                                             <br/>
-                                                                                                            <ui:fragment rendered="#{processoJudicialBean.enderecosSocios eq 0}">
+                                                                                                            <ui:fragment rendered="#{processoJudicialBean.checkCitacaoVazia(executadoHistorico.citacaoHistoricoList, 'OJ') eq 0}">
                                                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                                                     Não houve citação.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-enderecosocio-#{processoJudicialBean.executado.processoJudicial.id}">
-                                                                                                                <ui:repeat value="#{processoJudicialBean.executado.citacaoList}" var="enderecosocio" varStatus="statusEnderecoSocio" >
+                                                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-enderecosocio-#{parentstatus.index}">
+                                                                                                                <ui:repeat value="#{executadoHistorico.citacaoHistoricoList}" var="enderecosocio" varStatus="statusEnderecoSocio" >
                                                                                                                     <ui:fragment rendered="#{enderecosocio.tipoCitacao eq 'ES'}" >
                                                                                                                         <div class="panel panel-danger">
                                                                                                                             <div class="panel-heading">
                                                                                                                                 <h4 class="panel-title">
-                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-enderecosocio-#{processoJudicialBean.executado.processoJudicial.id}"  href="#collapse_enderecosocio_#{processoJudicialBean.executado.processoJudicial.id}_#{statusEnderecoSocio.index}">
+                                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-enderecosocio-#{parentstatus.index}"  href="#collapse_enderecosocio_#{parentstatus.index}_#{statusEnderecoSocio.index}">
                                                                                                                                         #{enderecosocio.citado eq 'N' ? 'Não Citado' : 'Citado'} </a>
                                                                                                                                 </h4>
                                                                                                                             </div>
-                                                                                                                            <div id="collapse_enderecosocio_#{processoJudicialBean.executado.processoJudicial.id}_#{statusEnderecoSocio.index}" class="panel-collapse collapse">
+                                                                                                                            <div id="collapse_enderecosocio_#{parentstatus.index}_#{statusEnderecoSocio.index}" class="panel-collapse collapse">
                                                                                                                                 <div class="panel-body">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
@@ -2008,19 +2008,19 @@
                                                                                                                 </ui:repeat>
                                                                                                             </h:panelGroup>
                                                                                                             <h3 class="form-section">Redirecionamento</h3>
-                                                                                                            <ui:fragment rendered="#{processoJudicialBean.executado.socioRedirecionamentoList.isEmpty()}">
+                                                                                                            <ui:fragment rendered="#{executadoHistorico.socioRedirecionamentoHistoricoList.isEmpty()}">
                                                                                                                 <h:panelGroup layout="block" class="alert alert-warning">
                                                                                                                     Nenhum redirecionamento.
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
-                                                                                                            <ui:fragment rendered="#{!processoJudicialBean.executado.socioRedirecionamentoList.isEmpty()}">
+                                                                                                            <ui:fragment rendered="#{!executadoHistorico.socioRedirecionamentoHistoricoList.isEmpty()}">
                                                                                                                 <div class="row">
                                                                                                                     <div class="col-md-12">
                                                                                                                         <div class="form-group">
                                                                                                                             <label class="control-label col-md-2">Condição:</label>
                                                                                                                             <div class="col-md-10">
                                                                                                                                 <p class="form-control-citacao-static">
-                                                                                                                                    #{processoJudicialBean.redirecionamento eq 'D' ? 'Deferido' : 'Indeferido'}
+                                                                                                                                    #{executadoHistorico.socioRedirecionamentoHistoricoList.isEmpty() ? '' : executadoHistorico.socioRedirecionamentoHistoricoList.get(0).redirecionamentoHistorico.redirecionado eq 'D' ? 'Deferido' : 'Indeferido'}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
@@ -2046,9 +2046,9 @@
                                                                                                                                 </tr>
                                                                                                                             </thead>
                                                                                                                             <tbody>
-                                                                                                                                <ui:repeat value="#{processoJudicialBean.executado.socioRedirecionamentoList}" var="socio" varStatus="status">
+                                                                                                                                <ui:repeat value="#{executadoHistorico.socioRedirecionamentoHistoricoList}" var="socio" varStatus="status">
                                                                                                                                     <tr class="gradeX">
-                                                                                                                                        <td>
+                                                                                                                                        <td style="text-align:center">
                                                                                                                                             #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
                                                                                                                                               ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
                                                                                                                                               : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
@@ -2056,14 +2056,9 @@
                                                                                                                                         <td class="socio-name" style="text-align:center">
                                                                                                                                             #{socio.pessoa.nome}
                                                                                                                                         </td>
-                                                                                                                                        <td class="socio-data">
-                                                                                                                                            <div class="form-group margin-bottom-0">
-                                                                                                                                                <div class="col-md-12">
-                                                                                                                                                    <p class="form-control-redirecionamento-static">
-                                                                                                                                                        #{socio.redirecionamento.dataDeRedirecionamento eq null ? '-' : socio.redirecionamento.dataDeRedirecionamento}
-                                                                                                                                                    </p>
-                                                                                                                                                </div>
-                                                                                                                                            </div>
+                                                                                                                                        <td class="socio-data" style="text-align:center">
+                                                                                                                                            #{socio.redirecionamentoHistorico.dataDeRedirecionamento eq null ? '-' : socio.redirecionamentoHistorico.dataDeRedirecionamento}
+
                                                                                                                                         </td>
                                                                                                                                         <td>
                                                                                                                                             <a href="javascript:;" class="#{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' ? 'pf-info' : 'pj-info'}" >
@@ -4030,7 +4025,7 @@
                                                                                             <tbody>
                                                                                                 <ui:repeat value="#{processoJudicialBean.executado.socioRedirecionamentoList}" var="socio" varStatus="status">
                                                                                                     <tr class="gradeX">
-                                                                                                        <td>
+                                                                                                        <td style="text-align:center">
                                                                                                             #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
                                                                                                               ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
                                                                                                               : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
@@ -4038,14 +4033,9 @@
                                                                                                         <td class="socio-name" style="text-align:center">
                                                                                                             #{socio.pessoa.nome}
                                                                                                         </td>
-                                                                                                        <td class="socio-data">
-                                                                                                            <div class="form-group margin-bottom-0">
-                                                                                                                <div class="col-md-12">
-                                                                                                                    <p class="form-control-redirecionamento-static">
-                                                                                                                        #{socio.redirecionamento.dataDeRedirecionamento eq null ? '-' : socio.redirecionamento.dataDeRedirecionamento}
-                                                                                                                    </p>
-                                                                                                                </div>
-                                                                                                            </div>
+                                                                                                        <td class="socio-data" style="text-align:center">
+                                                                                                            #{socio.redirecionamento.dataDeRedirecionamento eq null ? '-' : socio.redirecionamento.dataDeRedirecionamento}
+
                                                                                                         </td>
                                                                                                         <td>
                                                                                                             <a href="javascript:;" class="#{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' ? 'pf-info' : 'pj-info'}" >
