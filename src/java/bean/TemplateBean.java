@@ -28,6 +28,7 @@ import bo.UsuarioBO;
 import bo.VinculoSocialBO;
 import entidade.Bem;
 import entidade.Cidade;
+import entidade.Citacao;
 import entidade.Endereco;
 import entidade.EnderecoPessoa;
 import entidade.Estado;
@@ -405,7 +406,29 @@ public class TemplateBean implements Serializable {
             enderecoPessoa = new EnderecoPessoa();
         }
     }
-    
+
+    public int checkCitacaoVazia(List<Citacao> citacaoList, String tipo) {
+        int quantidade = 0;
+        if (citacaoList != null) {
+            for (Citacao citacao : citacaoList) {
+                quantidade = citacao.getTipoCitacao().equals(tipo) ? quantidade + 1 : quantidade;
+            }
+        }
+        return quantidade;
+    }
+
+    public String loadSocio(String tipo, String id) {
+        if (tipo.equals("PF")) {
+            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
+            String cpf = (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
+            return cpf + " - " + pf.getNome();
+        } else {
+            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
+            String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
+            return cnpj + " - " + pj.getNome();
+        }
+    }
+
     public List<SocioRedirecionamento> carregarSocioRedirecionamento(List<Redirecionamento> redirecionamentoList) {
         List<SocioRedirecionamento> socioRedirecionamentoList = new ArrayList<>();
         for (Redirecionamento redirecionamento : redirecionamentoList) {
@@ -415,7 +438,7 @@ public class TemplateBean implements Serializable {
                 socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaJuridicaBO.findPessoaJuridica(redirecionamento.getSocioFk()), redirecionamento));
             }
         }
-        return socioRedirecionamentoList; 
+        return socioRedirecionamentoList;
     }
 
     public void exibirSucessao() {

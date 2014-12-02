@@ -516,15 +516,6 @@ var PjudCon = function() {
                 $('.detailed-info').remove();
             });
 
-            function citado() {
-                $.each($('.citado'), function() {
-                    if ($(this).html().trim() === "Sim") {
-                        $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
-                        $(this).parents('.panel-body').find('.motivo').hide();
-                    }
-                })
-            }
-
             jsf.ajax.addOnEvent(function(data) {
                 switch (data.status) {
                     case "begin":

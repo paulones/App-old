@@ -44,6 +44,7 @@
         <style>
             .modal-lg{width:980px !important}
             .form-control-bem-static{margin-top:7px}
+            .form-control-citacao-static{margin-bottom: 0;padding-bottom: 7px;padding-top: 7px;}
         </style>
         <!-- END PAULO'S STYLES -->
     </h:head>
@@ -705,6 +706,7 @@
                             getSucessoes('#id-modal', '#modal-info-pj');
                         } else if ($('#tabela-modal').val() === "PJUD") {
                             getMoneyMask('#modal-info-pjud');
+                            citado();
                             $('.modal-info-pjud').click();
                             getSucessoes('#pj-id', '#modal-info-pjud');
                         } else if ($('#tabela-modal').val() === "PJS") {
@@ -753,6 +755,15 @@
                     executing = false;
                 }
             });
+
+            function citado() {
+                $.each($('.citado'), function() {
+                    if ($(this).html().trim() === "Sim") {
+                        $(this).parents('.panel').removeClass('panel-danger').addClass('panel-success');
+                        $(this).parents('.panel-body').find('.motivo').hide();
+                    }
+                })
+            }
 
             function refreshCNPJDropdown(object) {
                 $.ajax({
