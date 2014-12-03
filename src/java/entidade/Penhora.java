@@ -9,6 +9,7 @@ package entidade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -38,7 +39,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Penhora.findByValor", query = "SELECT p FROM Penhora p WHERE p.valor = :valor"),
     @NamedQuery(name = "Penhora.findByDataDaPenhora", query = "SELECT p FROM Penhora p WHERE p.dataDaPenhora = :dataDaPenhora"),
     @NamedQuery(name = "Penhora.findBySocioFk", query = "SELECT p FROM Penhora p WHERE p.socioFk = :socioFk"),
-    @NamedQuery(name = "Penhora.findBySocio", query = "SELECT p FROM Penhora p WHERE p.socio = :socio")})
+    @NamedQuery(name = "Penhora.findBySocio", query = "SELECT p FROM Penhora p WHERE p.socio = :socio"),
+    @NamedQuery(name = "Penhora.findByEndereco", query = "SELECT p FROM Penhora p WHERE p.endereco = :endereco")})
 public class Penhora implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -53,6 +55,9 @@ public class Penhora implements Serializable {
     @Size(max = 10)
     @Column(name = "data_da_penhora")
     private String dataDaPenhora;
+    @Size(max = 200)
+    @Column(name = "endereco")
+    private String endereco;
     @Column(name = "socio_fk")
     private Integer socioFk;
     @Size(max = 2)
@@ -67,6 +72,8 @@ public class Penhora implements Serializable {
     @JoinColumn(name = "tipo_penhora_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoPenhora tipoPenhoraFk;
+    private transient String socioTipo;
+    private transient List<Bem> bemList;
 
     public Penhora() {
     }
@@ -181,6 +188,9 @@ public class Penhora implements Serializable {
         if (!Objects.equals(this.dataDaPenhora, other.dataDaPenhora)) {
             return false;
         }
+        if (!Objects.equals(this.endereco, other.endereco)) {
+            return false;
+        }
         if (!Objects.equals(this.processoJudicialFk, other.processoJudicialFk)) {
             return false;
         }
@@ -196,6 +206,9 @@ public class Penhora implements Serializable {
         if (!Objects.equals(this.tipoPenhoraFk, other.tipoPenhoraFk)) {
             return false;
         }
+        if (!Objects.equals(this.socioTipo, other.socioTipo)) {
+            return false;
+        }
         if (!Objects.equals(this.valor, other.valor)) {
             return false;
         }
@@ -205,6 +218,30 @@ public class Penhora implements Serializable {
     @Override
     public String toString() {
         return "entidade.Penhora[ id=" + id + " ]";
+    }
+
+    public String getSocioTipo() {
+        return socioTipo;
+    }
+
+    public void setSocioTipo(String socioTipo) {
+        this.socioTipo = socioTipo;
+    }
+
+    public List<Bem> getBemList() {
+        return bemList;
+    }
+
+    public void setBemList(List<Bem> bemList) {
+        this.bemList = bemList;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
     
 }

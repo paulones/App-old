@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PenhoraHistorico.findByValor", query = "SELECT p FROM PenhoraHistorico p WHERE p.valor = :valor"),
     @NamedQuery(name = "PenhoraHistorico.findByDataDaPenhora", query = "SELECT p FROM PenhoraHistorico p WHERE p.dataDaPenhora = :dataDaPenhora"),
     @NamedQuery(name = "PenhoraHistorico.findBySocioFk", query = "SELECT p FROM PenhoraHistorico p WHERE p.socioFk = :socioFk"),
-    @NamedQuery(name = "PenhoraHistorico.findBySocio", query = "SELECT p FROM PenhoraHistorico p WHERE p.socio = :socio")})
+    @NamedQuery(name = "PenhoraHistorico.findBySocio", query = "SELECT p FROM PenhoraHistorico p WHERE p.socio = :socio"),
+    @NamedQuery(name = "PenhoraHistorico.findByEndereco", query = "SELECT p FROM PenhoraHistorico p WHERE p.endereco = :endereco")})
 public class PenhoraHistorico implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -51,6 +52,9 @@ public class PenhoraHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_da_penhora")
     private String dataDaPenhora;
+    @Size(max = 200)
+    @Column(name = "endereco")
+    private String endereco;
     @Column(name = "socio_fk")
     private Integer socioFk;
     @Size(max = 2)
@@ -143,6 +147,14 @@ public class PenhoraHistorico implements Serializable {
 
     public void setTipoPenhoraFk(TipoPenhora tipoPenhoraFk) {
         this.tipoPenhoraFk = tipoPenhoraFk;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     @Override

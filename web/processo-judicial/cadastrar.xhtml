@@ -19,12 +19,13 @@
             .pessoa .form-group{margin: 0}
             .fixed-menu{position:fixed;top:50px;width:17.5%}
             .margin-bottom-0{margin-bottom:0 !important}
+            .form-control-bem-penhora-static{margin-top:9px}
         </style>
         <!-- END PAGE STYLES -->
     </ui:define>
     <ui:define name="content">
         <!-- BEGIN FORM-->
-        <h:form prependId="false" id="submit_form" class="form-horizontal">
+        <h:form id="submit_form" prependId="false" class="form-horizontal">
             <!-- BEGIN PAGE HEADER-->
             <div class="row">
                 <div class="col-md-12">
@@ -2454,9 +2455,11 @@
                                                                             </div>
                                                                         </div>
                                                                         <br/>
-                                                                        <ui:param name="executadoID" value="#{processoJudicialBean.executadoPF ne null ? 'PF'.concat(processoJudicialBean.executadoPF) : processoJudicialBean.executadoPJ ne null ? 'PJ'.concat(processoJudicialBean.executadoPJ) : ''}"/>
                                                                         <h:commandLink class="penhora-refresher">
                                                                             <f:ajax execute="accordion-penhora" render="accordion-penhora"/>
+                                                                        </h:commandLink>
+                                                                        <h:commandLink class="bem-refresher">
+                                                                            <f:ajax execute="accordion-penhora" listener="#{processoJudicialBean.refreshListaDeBens(null)}" render="accordion-penhora"/>
                                                                         </h:commandLink>
                                                                         <h:panelGroup layout="block" class="panel-group accordion" id="accordion-penhora">
                                                                             <ui:repeat value="#{processoJudicialBean.penhoraList}" var="penhora" varStatus="status">
@@ -2469,6 +2472,26 @@
                                                                                     </div>
                                                                                     <div id="collapse_penhora_#{status.index}" class="panel-collapse collapse">
                                                                                         <div class="panel-body">
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Situacao</label>
+                                                                                                            <div class="col-md-10">
+                                                                                                                <div class="radio-list">
+                                                                                                                    <h:selectOneRadio styleClass="uniformization situacao-penhora" value="#{penhora.situacao}">
+                                                                                                                        <f:selectItem itemLabel="Deferido" itemValue="D"/>
+                                                                                                                        <f:selectItem itemLabel="Indeferido" itemValue="I"/>
+                                                                                                                    </h:selectOneRadio>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </ui:fragment>
                                                                                             <div class="row">
                                                                                                 <div class="col-md-9">
                                                                                                     <div class="form-group">
@@ -2482,22 +2505,192 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-9">
-                                                                                                    <div class="form-group">
-                                                                                                        <label class="control-label col-md-2">Bem</label>
-                                                                                                        <div class="col-md-10">
-                                                                                                            <h:selectOneMenu class="select2_category select2me form-control indicacao-bem" id="indicacao-bem" p:placeholder="Selecione..." tabindex="1" value="#{penhora.bemFk}" converter="entityConverter" >
-                                                                                                                <f:selectItem itemLabel="" itemValue=""/>
-                                                                                                                <f:selectItems value="#{processoJudicialBean.bemList}" var="bem" itemLabel="Descrição: #{bem.descricao eq null ? '-' : bem.descricao} / Tipo: #{bem.tipoBemFk eq null ? '-' : bem.tipoBemFk.tipo} / Valor: #{bem.valor eq null ? '-' : bem.valor} " itemValue="#{bem}"/>
-                                                                                                            </h:selectOneMenu>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')}">
+                                                                                                <div class="row valor-bacen display-hide">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Valor</label>
+                                                                                                            <div class="col-md-6">
+                                                                                                                <div class="input-icon right">
+                                                                                                                    <i class="fa"></i>
+                                                                                                                    <h:inputText value="#{penhora.valor}" class="form-control money" autocomplete="off" converter="maskMoneyConverter" />
+                                                                                                                </div>
+                                                                                                            </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                                <a href="javascript:;" class="btn blue-chambray bem-new">
-                                                                                                    <h:outputText class="object-id display-hide" value="#{executadoID}"/>
-                                                                                                    Novo Bem <i class="fa fa-arrow-circle-right"></i></a>
-                                                                                            </div>
+                                                                                            </ui:fragment>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Endereço</label>
+                                                                                                            <div class="col-md-10">
+                                                                                                                <div class="input-icon right">
+                                                                                                                    <i class="fa"></i>
+                                                                                                                    <h:inputText value="#{penhora.endereco}" class="form-control" autocomplete="off" />
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </ui:fragment>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')}">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Bem</label>
+                                                                                                            <div class="col-md-10">
+                                                                                                                <h:selectOneMenu class="select2_category select2me form-control bemVinculate" p:placeholder="Selecione..." tabindex="1" value="#{penhora.bemFk}" converter="entityConverter" >
+                                                                                                                    <f:ajax event="change" execute="@this" render="bem-show" />
+                                                                                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                    <f:selectItems value="#{processoJudicialBean.bemList}" var="bem" itemLabel="#{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao}" itemValue="#{bem}"/>
+                                                                                                                </h:selectOneMenu>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <a href="javascript:;" class="btn blue-chambray bem-new">
+                                                                                                        <h:outputText class="object-id display-hide" value="#{processoJudicialBean.executadoPF ne null ? 'PF'.concat(processoJudicialBean.executadoPF) : processoJudicialBean.executadoPJ ne null ? 'PJ'.concat(processoJudicialBean.executadoPJ) : ''}"/>
+                                                                                                        Novo Bem <i class="fa fa-arrow-circle-right"></i></a>
+                                                                                                </div>
+                                                                                            </ui:fragment>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Sócio</label>
+                                                                                                            <div class="col-md-7">
+                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios penhora-socio" p:placeholder="Selecione..." tabindex="1" value="#{penhora.socioTipo}" >
+                                                                                                                    <f:ajax execute="@this" listener="#{processoJudicialBean.refreshListaDeBens(status.index)}" render="socio-bem"/>
+                                                                                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioList}" var="socio" itemLabel="#{socio.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                                                            ? (socio.cpf eq null ? 'Sem CPF' : socio.cpf.substring(0,3).concat('.').concat(socio.cpf.substring(3,6)).concat('.').concat(socio.cpf.substring(6,9)).concat('-').concat(socio.cpf.substring(9)))
+                                                                                                                                            : socio.cnpj.substring(0,2).concat('.').concat(socio.cnpj.substring(2,5)).concat('.').concat(socio.cnpj.substring(5,8)).concat('/').concat(socio.cnpj.substring(8,12)).concat('-').concat(socio.cnpj.substring(12))} - #{socio.nome}" itemValue="#{socio.getClass().getSimpleName() eq 'PessoaFisica' ? 'PF' : 'PJ'}#{socio.id}"/>
+                                                                                                                </h:selectOneMenu>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <h:panelGroup class="socio-bem display-hide" id="socio-bem">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Bem</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <h:selectOneMenu class="select2_category select2me form-control indicacao-bem bemVinculate" p:placeholder="Selecione..." tabindex="1" value="#{penhora.bemFk}" converter="entityConverter" >
+                                                                                                                        <f:ajax event="change" execute="@this" render="bem-show" />
+                                                                                                                        <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                        <f:selectItems value="#{penhora.bemList}" var="bem" itemLabel="#{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao}" itemValue="#{bem}"/>
+                                                                                                                    </h:selectOneMenu>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <a href="javascript:;" class="btn blue-chambray bem-new">
+                                                                                                            <h:outputText class="object-id display-hide" value="#{penhora.socioTipo}"/>
+                                                                                                            Novo Bem <i class="fa fa-arrow-circle-right"></i></a>
+                                                                                                    </div>
+                                                                                                </h:panelGroup>
+                                                                                            </ui:fragment>
+                                                                                                <h:panelGroup id="bem-show">
+                                                                                                    <ui:fragment rendered="#{penhora.bemFk ne null}">
+                                                                                                        <div layout="block" class="portlet box blue-chambray">
+                                                                                                            <div class="portlet-title">
+                                                                                                                <div class="caption">
+                                                                                                                    <i class="fa fa-car"></i>#{penhora.bemFk.descricao}
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="portlet-body form">
+                                                                                                                <div class="form-body">
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col-md-8">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-2">Descrição:</label>
+                                                                                                                                <div class="col-md-10">
+                                                                                                                                    <p class="form-control-bem-penhora-static">
+                                                                                                                                        #{penhora.bemFk.descricao eq null ? '-' : penhora.bemFk.descricao}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-4">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-3">Tipo:</label>
+                                                                                                                                <div class="col-md-9">
+                                                                                                                                    <p class="form-control-bem-penhora-static">
+                                                                                                                                        #{penhora.bemFk.tipoBemFk eq null ? '-' : penhora.bemFk.tipoBemFk.tipo}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col-md-8">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-2">Endereço:</label>
+                                                                                                                                <div class="col-md-10">
+                                                                                                                                    <p class="form-control-bem-penhora-static">
+                                                                                                                                        #{penhora.bemFk.endereco eq null ? '-' : penhora.bemFk.endereco}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-4">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-3">Valor:</label>
+                                                                                                                                <div class="col-md-9">
+                                                                                                                                    <p class="form-control-bem-penhora-static money">
+                                                                                                                                        #{penhora.bemFk.valor eq null ? '-' : penhora.bemFk.valor}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col-md-8">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-2">Aquisição:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-penhora-static">
+                                                                                                                                        #{penhora.bemFk.dataDeAquisicao eq null ? '-' : penhora.bemFk.dataDeAquisicao}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-4">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-3 col-md-pull-1">Extinção:</label>
+                                                                                                                                <div class="col-md-9">
+                                                                                                                                    <p class="form-control-bem-penhora-static">
+                                                                                                                                        #{penhora.bemFk.dataDeTransferenciaOuExtincao eq null ? '-' : penhora.bemFk.dataDeTransferenciaOuExtincao}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </ui:fragment>
+                                                                                                </h:panelGroup>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Sócio</label>
+                                                                                                            <div class="col-md-7">
+                                                                                                                <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..." tabindex="1" value="#{penhora.socioTipo}" >
+                                                                                                                    <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                    <f:selectItems value="#{processoJudicialBean.socioList}" var="socio" itemLabel="#{socio.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                                                            ? (socio.cpf eq null ? 'Sem CPF' : socio.cpf.substring(0,3).concat('.').concat(socio.cpf.substring(3,6)).concat('.').concat(socio.cpf.substring(6,9)).concat('-').concat(socio.cpf.substring(9)))
+                                                                                                                                            : socio.cnpj.substring(0,2).concat('.').concat(socio.cnpj.substring(2,5)).concat('.').concat(socio.cnpj.substring(5,8)).concat('/').concat(socio.cnpj.substring(8,12)).concat('-').concat(socio.cnpj.substring(12))} - #{socio.nome}" itemValue="#{socio.getClass().getSimpleName() eq 'PessoaFisica' ? 'PF' : 'PJ'}#{socio.id}"/>
+                                                                                                                </h:selectOneMenu>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </ui:fragment>
                                                                                             <div class="row">
                                                                                                 <div class="col-md-5"></div>
                                                                                                 <div class="col-md-7">

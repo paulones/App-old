@@ -9,6 +9,7 @@ import bo.BemBO;
 import bo.CitacaoBO;
 import bo.CitacaoHistoricoBO;
 import bo.EnderecoBO;
+import bo.PenhoraBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaFisicaJuridicaBO;
 import bo.PessoaJuridicaBO;
@@ -126,6 +127,7 @@ public class ProcessoJudicialBean implements Serializable {
     private RedirecionamentoBO redirecionamentoBO;
     private CitacaoHistoricoBO citacaoHistoricoBO;
     private RedirecionamentoHistoricoBO redirecionamentoHistoricoBO;
+    private PenhoraBO penhoraBO;
 
     private Integer vinculos;
     private String executadoPF;
@@ -173,6 +175,7 @@ public class ProcessoJudicialBean implements Serializable {
             redirecionamentoBO = new RedirecionamentoBO();
             citacaoHistoricoBO = new CitacaoHistoricoBO();
             redirecionamentoHistoricoBO = new RedirecionamentoHistoricoBO();
+            penhoraBO = new PenhoraBO();
 
             vinculos = 0;
             ars = 0;
@@ -351,11 +354,13 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     public void adicionarPenhora() {
-        Penhora penhora = new Penhora();
-        penhora.setTipoPenhoraFk(tipoPenhora);
-        penhoraList.add(penhora);
+        if (tipoPenhora != null) {
+            Penhora penhora = new Penhora();
+            penhora.setTipoPenhoraFk(tipoPenhora);
+            penhoraList.add(penhora);
+        }
     }
-    
+
     public void removerPenhora(int index) {
         penhoraList.remove(index);
     }
@@ -376,9 +381,36 @@ public class ProcessoJudicialBean implements Serializable {
         }
         return citacaoList;
     }
-    
-    public void refreshListaDeBens(){
-        
+
+    public void refreshListaDeBens(Integer index) {
+        if (index == null) {
+            if (executadoPJ != null) {
+                bemList = bemBO.findPJBens(Integer.valueOf(executadoPJ));
+            } else if (executadoPF != null) {
+                bemList = bemBO.findPFBens(Integer.valueOf(executadoPF));
+            }
+            for (Penhora penhora : penhoraList) {
+                if (penhora.getSocioTipo() != null) {
+                    String tabela = penhora.getSocioTipo().substring(0, 2);
+                    Integer id = Integer.valueOf(penhora.getSocioTipo().substring(2));
+                    if (tabela.equals("PF")) {
+                        penhora.setBemList(bemBO.findPFBens(id));
+                    } else if (tabela.equals("PJ")) {
+                        penhora.setBemList(bemBO.findPJBens(id));
+                    }
+                }
+            }
+        } else if (index != null) {
+            if (penhoraList.get(index).getSocioTipo() != null) {
+                String tabela = penhoraList.get(index).getSocioTipo().substring(0, 2);
+                Integer id = Integer.valueOf(penhoraList.get(index).getSocioTipo().substring(2));
+                if (tabela.equals("PF")) {
+                    penhoraList.get(index).setBemList(bemBO.findPFBens(id));
+                } else if (tabela.equals("PJ")) {
+                    penhoraList.get(index).setBemList(bemBO.findPJBens(id));
+                }
+            }
+        }
     }
 
     public void listarSocios(String tipo) {
@@ -413,7 +445,7 @@ public class ProcessoJudicialBean implements Serializable {
                     }
                 }
             }
-        } else if (tipo.equals("PF") && executadoPF != null){
+        } else if (tipo.equals("PF") && executadoPF != null) {
             bemList = bemBO.findPFBens(Integer.valueOf(executadoPF));
             enderecosSocios = 0;
             enderecoSocioList = new ArrayList<>();
@@ -565,6 +597,14 @@ public class ProcessoJudicialBean implements Serializable {
                         redirecionamentoBO.create(sr.getRedirecionamento());
                     }
                 }
+                for (Penhora penhora : penhoraList) {
+                    if (penhora.getSocioTipo() != null) {
+                        penhora.setSocioFk(Integer.valueOf(penhora.getSocioTipo().substring(2)));
+                        penhora.setSocio(penhora.getSocioTipo().substring(0, 2));
+                    }
+                    penhora.setProcessoJudicialFk(processoJudicial);
+                    penhoraBO.create(penhora);
+                }
                 register = "success";
                 GeradorLog.criar(processoJudicial.getId(), "PJUD", 'C');
                 processoJudicial = new ProcessoJudicial();
@@ -576,6 +616,8 @@ public class ProcessoJudicialBean implements Serializable {
                 oficialList = new ArrayList<>();
                 editalList = new ArrayList<>();
                 enderecoSocioList = new ArrayList<>();
+                penhoraList = new ArrayList<>();
+                tipoPenhora = new TipoPenhora();
                 ars = 0;
                 oficiais = 0;
                 editais = 0;

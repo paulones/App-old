@@ -636,7 +636,7 @@
             });
             var cnpjDropdown;
             var cpfDropdown;
-            var bemDropdown;
+            var bemPanel;
             $(document).on('click', '.pj-new', function() {
                 if (!executing) {
                     cnpjDropdown = $(this).closest(".row").find(".cnpjVinculate");
@@ -653,7 +653,9 @@
             });
             $(document).on('click', '.bem-new', function() {
                 if (!executing) {
-                    bemDropdown = $(this).closest(".row").find(".bemVinculate");
+                    bemPanel = {
+                        panel : $(this).closest('.panel-collapse').attr('id')
+                    };
                     $('#id-modal').val($(this).find('.object-id').html().trim());
                     $('#tabela-modal').val('BEM');
                     $('.show-new-modal').click();
@@ -765,6 +767,7 @@
                         }
                     } else if ($(data.source).attr('class') === "modal_bem_register") {
                         $('#largenewbem').modal("hide");
+                        $('.bem-refresher').click();
                     } else if ($(data.source).attr('class') === 'sucessao-refresher') {
                         $(element).closest('.nestable-list').find('.sucessao-info').remove();
                         $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));
