@@ -121,6 +121,7 @@ public class TemplateBean implements Serializable {
     private String tabela;
     private String searchValue;
     private String sucessaoId;
+    private boolean bemRepetido;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -160,6 +161,7 @@ public class TemplateBean implements Serializable {
             register = "";
             idfk = "";
             tabela = "";
+            bemRepetido = false;
         }
     }
 
@@ -177,6 +179,11 @@ public class TemplateBean implements Serializable {
         } else if (tabela.equals("PJ")) {
             enderecoPessoaJuridica = new EnderecoPessoa(new PessoaJuridica(), new Endereco(), new ArrayList<Bem>());
             carregarFormularioModalPJ();
+        } else if (tabela.equals("BEM")) {
+            bem.setTipo(idfk.substring(0, 2));
+            bem.setIdFk(Integer.valueOf(idfk.substring(2)));
+            bem.setStatus('A');
+            tipoBemList = tipoBemBO.findAll();
         }
     }
 
@@ -316,6 +323,29 @@ public class TemplateBean implements Serializable {
 
     public void removerVinculoJuridico(int index) {
         pessoaJuridicaJuridicaList.remove(index);
+    }
+
+    public void cadastrarBem() {
+        bemRepetido = false;
+        List<Bem> bemList = new ArrayList<>();
+        if (bem.getTipo().equals("PF")) {
+            bemList = bemBO.findPFBens(bem.getIdFk());
+        } else if (bem.getTipo().equals("PJ")) {
+            bemList = bemBO.findPJBens(bem.getIdFk());
+        }
+        for (Bem bem : bemList) {
+            if (this.bem.equalsValues(bem)) {
+                bemRepetido = true;
+                break;
+            }
+        }
+        if (!bemRepetido) {
+            if (bem.getDataDeAquisicao() != null || bem.getDataDeTransferenciaOuExtincao() != null
+                    || bem.getDescricao() != null || bem.getEndereco() != null || bem.getValor() != null
+                    || bem.getTipoBemFk() != null) {
+                bemBO.create(bem);
+            }
+        }
     }
 
     public void cadastrarPF() {

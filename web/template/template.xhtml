@@ -427,7 +427,7 @@
                 <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModalInfo}" render=":modal-info-pf :modal-info-pj :modal-info-pjud :modal-info-pjs"/>
             </h:commandLink>
             <h:commandLink class="show-new-modal">
-                <f:ajax execute="tabela-modal" listener="#{templateBean.exibirModalNew}" render=":modal_pf_form:modal-new-pf :modal_pj_form:modal-new-pj"/>
+                <f:ajax execute="id-modal tabela-modal" listener="#{templateBean.exibirModalNew}" render=":modal_pf_form:modal-new-pf :modal_pj_form:modal-new-pj :modal_bem_form:modal-new-bem"/>
             </h:commandLink>
             <h:inputHidden id="sucessao-id" value="#{templateBean.sucessaoId}"></h:inputHidden>
             <h:commandLink class="sucessao-refresher">
@@ -521,6 +521,8 @@
         <ui:include src="../modal/pessoa-juridica-cadastro.xhtml"></ui:include>
         <a class="btn default modal-new-pf display-hide" data-toggle="modal" href="#largenewpf"></a>
         <ui:include src="../modal/pessoa-fisica-cadastro.xhtml"></ui:include>
+        <a class="btn default modal-new-bem display-hide" data-toggle="modal" href="#largenewbem"></a>
+        <ui:include src="../modal/bem-cadastro.xhtml"></ui:include>
         <a class="btn default display-hide modal-activator" data-toggle="modal" href="#static"></a>
         <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
@@ -567,6 +569,7 @@
         <script src="../assets/global/scripts/combined_metronic-layout.min.js" type="text/javascript"></script>
         <script src="../assets/admin/pages/scripts/modal-pf-cadastrar.js" type="text/javascript"></script>
         <script src="../assets/admin/pages/scripts/modal-pj-cadastrar.js" type="text/javascript"></script>
+        <script src="../assets/admin/pages/scripts/modal-bem-cadastrar.js" type="text/javascript"></script>
         <ui:insert name="page-scripts"></ui:insert>
 
         <script>
@@ -633,6 +636,7 @@
             });
             var cnpjDropdown;
             var cpfDropdown;
+            var bemDropdown;
             $(document).on('click', '.pj-new', function() {
                 if (!executing) {
                     cnpjDropdown = $(this).closest(".row").find(".cnpjVinculate");
@@ -644,6 +648,14 @@
                 if (!executing) {
                     cpfDropdown = $(this).closest(".row").find(".cpfVinculate");
                     $('#tabela-modal').val('PF');
+                    $('.show-new-modal').click();
+                }
+            });
+            $(document).on('click', '.bem-new', function() {
+                if (!executing) {
+                    bemDropdown = $(this).closest(".row").find(".bemVinculate");
+                    $('#id-modal').val($(this).find('.object-id').html().trim());
+                    $('#tabela-modal').val('BEM');
                     $('.show-new-modal').click();
                 }
             });
@@ -733,6 +745,9 @@
                         else if ($('#tabela-modal').val() === "PJ") {
                             $('.modal-new-pj').click();
                             ModalPJCad.init();
+                        } else if ($('#tabela-modal').val() === "BEM") {
+                            $('.modal-new-bem').click();
+                            ModalBEMCad.init();
                         }
                     } else if ($(data.source).attr('class') === "modal_pj_register") {
                         $('#largenewpj').modal("hide");
@@ -748,6 +763,8 @@
                         if ((window.location.pathname).indexOf("processo-judicial") !== -1) {
                             verExecutado();
                         }
+                    } else if ($(data.source).attr('class') === "modal_bem_register") {
+                        $('#largenewbem').modal("hide");
                     } else if ($(data.source).attr('class') === 'sucessao-refresher') {
                         $(element).closest('.nestable-list').find('.sucessao-info').remove();
                         $('#sucessao').children().clone().appendTo($(element).closest('.nestable-list'));

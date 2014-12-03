@@ -1,0 +1,131 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:form prependId="false" id="modal_bem_form" class="form-horizontal">
+        <h:panelGroup id="modal-new-bem">
+            <h:panelGroup layout="block" class="modal fade bs-modal-lg" id="largenewbem" p:data-backdrop="static" p:data-keyboard="false" p:tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body modal-pessoa">
+                            <div class="portlet box blue-chambray">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-user"></i>Dados do Bem
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <div class="form-body">
+                                        <h3 class="form-section">Bem</h3>
+                                        <div class="alert alert-danger modal_bem_date-bem-error display-hide">
+                                            <button class="close" data-close="alert"></button>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">Descrição</label>
+                                                    <div class="col-md-10">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_bem_descricaobem" autocomplete="off" value="#{templateBean.bem.descricao}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Tipo </label>
+                                                    <div class="col-md-9">
+                                                        <h:selectOneMenu class="select2_category select2me form-control modal_bem_tipobem" p:placeholder="Selecione..." id="modal_bem_tipobem" tabindex="1" value="#{templateBean.bem.tipoBemFk}" converter="entityConverter">
+                                                            <f:selectItem itemLabel="" itemValue=""/>
+                                                            <f:selectItems value="#{templateBean.tipoBemList}" var="tipo" itemLabel="#{tipo.tipo}" itemValue="#{tipo}"/>
+                                                        </h:selectOneMenu>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">Endereço</label>
+                                                    <div class="col-md-10">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control" id="modal_bem_enderecobem" autocomplete="off" value="#{templateBean.bem.endereco}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-3">Valor</label>
+                                                    <div class="col-md-9">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control money" id="modal_bem_valorbem" value="#{templateBean.bem.valor}" converter="maskMoneyConverter"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">Data de Aquisição</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control modal_bem_date modal_bem_aquisicao-date" id="modal_bem_aquisicaobem" p:placeholder="dd/mm/aaaa" value="#{templateBean.bem.dataDeAquisicao}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-6">Data de Transferência / Extinção</label>
+                                                    <div class="col-md-6">
+                                                        <div class="input-icon right">
+                                                            <i class="fa"></i>
+                                                            <h:inputText class="form-control modal_bem_date modal_bem_extincao-date" id="modal_bem_extincaobem" p:placeholder="dd/mm/aaaa" value="#{templateBean.bem.dataDeTransferenciaOuExtincao}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3 class="form-section"></h3> 
+                                    <!--/row-->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-offset-9 col-md-3">
+                                                <div class="col-md-5">
+                                                    <button type="button" data-dismiss="modal" class="btn blue-chambray">Fechar</button>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <button type="submit" class="modal_bem_submit btn blue-chambray">
+                                                        <i class="fa fa-save"></i> Cadastrar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <h:commandLink styleClass="modal_bem_register">
+                                                <f:ajax execute="@form" listener="#{templateBean.cadastrarBem()}" render="modal_bem_id" />
+                                            </h:commandLink>
+                                            <h:inputHidden id="modal_bem_id" value="#{templateBean.bem.id}"/>
+                                        </div>
+                                    </div>
+                                    <br/> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:form>
+</ui:composition>

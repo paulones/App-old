@@ -2323,8 +2323,8 @@
                                                                                                                 <h:selectOneMenu class="select2_category select2me form-control socios" p:placeholder="Selecione..."  tabindex="1" value="#{enderecosocio.socioTipo}" >
                                                                                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                                                                                     <f:selectItems value="#{processoJudicialBean.socioList}" var="socio" itemLabel="#{socio.getClass().getSimpleName() eq 'PessoaFisica' 
-                                                                                                          ? (socio.cpf eq null ? 'Sem CPF' : socio.cpf.substring(0,3).concat('.').concat(socio.cpf.substring(3,6)).concat('.').concat(socio.cpf.substring(6,9)).concat('-').concat(socio.cpf.substring(9)))
-                                                                                                          : socio.cnpj.substring(0,2).concat('.').concat(socio.cnpj.substring(2,5)).concat('.').concat(socio.cnpj.substring(5,8)).concat('/').concat(socio.cnpj.substring(8,12)).concat('-').concat(socio.cnpj.substring(12))} - #{socio.nome}" itemValue="#{socio.getClass().getSimpleName() eq 'PessoaFisica' ? 'PF' : 'PJ'}#{socio.id}"/>
+                                                                                                                                            ? (socio.cpf eq null ? 'Sem CPF' : socio.cpf.substring(0,3).concat('.').concat(socio.cpf.substring(3,6)).concat('.').concat(socio.cpf.substring(6,9)).concat('-').concat(socio.cpf.substring(9)))
+                                                                                                                                            : socio.cnpj.substring(0,2).concat('.').concat(socio.cnpj.substring(2,5)).concat('.').concat(socio.cnpj.substring(5,8)).concat('/').concat(socio.cnpj.substring(8,12)).concat('-').concat(socio.cnpj.substring(12))} - #{socio.nome}" itemValue="#{socio.getClass().getSimpleName() eq 'PessoaFisica' ? 'PF' : 'PJ'}#{socio.id}"/>
                                                                                                                 </h:selectOneMenu>
                                                                                                             </div>
                                                                                                         </div>
@@ -2445,30 +2445,35 @@
                                                                                         </h:selectOneMenu>
                                                                                     </div>
                                                                                     <div class="col-md-3">
-                                                                                            <h:commandLink class="btn blue-chambray">
-                                                                                                <f:ajax execute="tipoPenhora accordion-penhora" listener="#{processoJudicialBean.adicionarPenhora}" render="accordion-penhora"/>
-                                                                                                <i class="fa fa-plus-circle"> Adicionar </i>
-                                                                                            </h:commandLink>
-                                                                                        </div>
+                                                                                        <h:commandLink class="btn blue-chambray add-penhora">
+                                                                                            <f:ajax execute="tipoPenhora accordion-penhora" listener="#{processoJudicialBean.adicionarPenhora}" render="accordion-penhora"/>
+                                                                                            <i class="fa fa-plus-circle"> Adicionar </i>
+                                                                                        </h:commandLink>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                        <br/>
+                                                                        <ui:param name="executadoID" value="#{processoJudicialBean.executadoPF ne null ? 'PF'.concat(processoJudicialBean.executadoPF) : processoJudicialBean.executadoPJ ne null ? 'PJ'.concat(processoJudicialBean.executadoPJ) : ''}"/>
+                                                                        <h:commandLink class="penhora-refresher">
+                                                                            <f:ajax execute="accordion-penhora" render="accordion-penhora"/>
+                                                                        </h:commandLink>
                                                                         <h:panelGroup layout="block" class="panel-group accordion" id="accordion-penhora">
                                                                             <ui:repeat value="#{processoJudicialBean.penhoraList}" var="penhora" varStatus="status">
-                                                                                <div class="panel panel-danger">
+                                                                                <div class="panel panel-default">
                                                                                     <div class="panel-heading">
                                                                                         <h4 class="panel-title">
                                                                                             <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-penhora"  href="#collapse_penhora_#{status.index}">
-                                                                                                Indicação de Bem </a>
+                                                                                                #{penhora.tipoPenhoraFk.tipo} </a>
                                                                                         </h4>
                                                                                     </div>
                                                                                     <div id="collapse_penhora_#{status.index}" class="panel-collapse collapse">
                                                                                         <div class="panel-body">
                                                                                             <div class="row">
-                                                                                                <div class="col-md-6">
+                                                                                                <div class="col-md-9">
                                                                                                     <div class="form-group">
-                                                                                                        <label class="control-label col-md-3">Data</label>
-                                                                                                        <div class="col-md-7">
+                                                                                                        <label class="control-label col-md-2">Data</label>
+                                                                                                        <div class="col-md-4">
                                                                                                             <div class="input-icon right">
                                                                                                                 <i class="fa"></i>
                                                                                                                 <h:inputText value="#{penhora.dataDaPenhora}" class="form-control date penhoradata" p:placeholder="dd/mm/aaaa" autocomplete="off" />
@@ -2477,12 +2482,39 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-2">Bem</label>
+                                                                                                        <div class="col-md-10">
+                                                                                                            <h:selectOneMenu class="select2_category select2me form-control indicacao-bem" id="indicacao-bem" p:placeholder="Selecione..." tabindex="1" value="#{penhora.bemFk}" converter="entityConverter" >
+                                                                                                                <f:selectItem itemLabel="" itemValue=""/>
+                                                                                                                <f:selectItems value="#{processoJudicialBean.bemList}" var="bem" itemLabel="Descrição: #{bem.descricao eq null ? '-' : bem.descricao} / Tipo: #{bem.tipoBemFk eq null ? '-' : bem.tipoBemFk.tipo} / Valor: #{bem.valor eq null ? '-' : bem.valor} " itemValue="#{bem}"/>
+                                                                                                            </h:selectOneMenu>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <a href="javascript:;" class="btn blue-chambray bem-new">
+                                                                                                    <h:outputText class="object-id display-hide" value="#{executadoID}"/>
+                                                                                                    Novo Bem <i class="fa fa-arrow-circle-right"></i></a>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-5"></div>
+                                                                                                <div class="col-md-7">
+                                                                                                    <div class="col-md-8 col-md-offset-1">
+                                                                                                        <h:commandLink class="btn blue-chambray delete-penhora">
+                                                                                                            <f:ajax execute="@this" listener="#{processoJudicialBean.removerPenhora(status.index)}"/>
+                                                                                                            <i class="glyphicon glyphicon-remove"/> Remover Penhora
+                                                                                                        </h:commandLink>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </ui:repeat>
                                                                         </h:panelGroup>
-                                                                        
+
                                                                     </div>
                                                                 </div>
                                                             </div>

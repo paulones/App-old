@@ -26,6 +26,7 @@ import bo.UsuarioBO;
 import bo.UtilBO;
 import bo.VinculoProcessualBO;
 import bo.VinculoProcessualHistoricoBO;
+import entidade.Bem;
 import entidade.Citacao;
 import entidade.CitacaoHistorico;
 import entidade.EnderecoPessoa;
@@ -105,6 +106,7 @@ public class ProcessoJudicialBean implements Serializable {
     private List<CitacaoHistorico> citacaoHistoricoList;
     private List<RedirecionamentoHistorico> redirecionamentoHistoricoList;
     private List<Penhora> penhoraList;
+    private List<Bem> bemList;
 
     private PessoaFisicaBO pessoaFisicaBO;
     private PessoaJuridicaBO pessoaJuridicaBO;
@@ -353,6 +355,10 @@ public class ProcessoJudicialBean implements Serializable {
         penhora.setTipoPenhoraFk(tipoPenhora);
         penhoraList.add(penhora);
     }
+    
+    public void removerPenhora(int index) {
+        penhoraList.remove(index);
+    }
 
     public List<Citacao> adicionarCitacoes(List<Citacao> citacaoList, Integer quantidade, String tipo) {
         if (quantidade > citacaoList.size()) {
@@ -370,6 +376,10 @@ public class ProcessoJudicialBean implements Serializable {
         }
         return citacaoList;
     }
+    
+    public void refreshListaDeBens(){
+        
+    }
 
     public void listarSocios(String tipo) {
         PessoaFisicaJuridicaBO pfjBO = new PessoaFisicaJuridicaBO();
@@ -380,6 +390,7 @@ public class ProcessoJudicialBean implements Serializable {
             oldSocioRedirecionamentoList = new ArrayList<>();
         }
         if (tipo.equals("PJ") && executadoPJ != null) {
+            bemList = bemBO.findPJBens(Integer.valueOf(executadoPJ));
             List<PessoaFisicaJuridica> pfjList = pfjBO.findAllByPJ(Integer.valueOf(executadoPJ));
             for (PessoaFisicaJuridica pfj : pfjList) {
                 socioList.add(pfj.getPessoaFisicaFk());
@@ -403,6 +414,7 @@ public class ProcessoJudicialBean implements Serializable {
                 }
             }
         } else if (tipo.equals("PF") && executadoPF != null){
+            bemList = bemBO.findPFBens(Integer.valueOf(executadoPF));
             enderecosSocios = 0;
             enderecoSocioList = new ArrayList<>();
         }
@@ -1195,6 +1207,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setPenhoraList(List<Penhora> penhoraList) {
         this.penhoraList = penhoraList;
+    }
+
+    public List<Bem> getBemList() {
+        return bemList;
+    }
+
+    public void setBemList(List<Bem> bemList) {
+        this.bemList = bemList;
     }
 
 }

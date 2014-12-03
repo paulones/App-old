@@ -643,6 +643,11 @@ var PjudCad = function() {
                         $('.uniformization input[type=radio]').uniform();
                         $('.number-tentativas').mask("99");
                         $('.date').mask("99/99/9999");
+                    } else if ($(data.source).hasClass("add-penhora") || $(data.source).hasClass("penhora-refresher")) {
+                        $('.date').mask("99/99/9999");
+                        $('select.indicacao-bem').select2({allowClear:true});
+                    } else if ($(data.source).hasClass("delete-penhora")) {
+                        $('.penhora-refresher').click();
                     }
                 }
             });
