@@ -27,7 +27,8 @@ var Home = function() {
                 dataType: "json",
                 cache: false,
                 data: {
-                    ano: anoInteractiveChart
+                    ano: anoInteractiveChart,
+                    usuario: $.cookie("usuario")
                 }
             })
                     .done(function(data) {
@@ -186,7 +187,8 @@ var Home = function() {
             url: "/webresources/reaver/getPizza",
             dataType: "json",
             cache: false,
-            dado: {
+            data: {
+                usuario: $.cookie("usuario")
             }
         })
                 .done(function(dado) {
@@ -252,7 +254,8 @@ var Home = function() {
             dataType: "json",
             cache: false,
             data: {
-                ano: anoRevenueChart
+                ano: anoRevenueChart,
+                usuario: $.cookie("usuario")
             }
         })
                 .done(function(data) {

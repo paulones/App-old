@@ -647,11 +647,12 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
 
-    public Integer countPJUDByMonth(Integer ano, Integer mes) {
+    public Integer countPJUDByMonth(Integer ano, Integer mes, Instituicao instituicao) {
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(distinct pjud.id) from processo_judicial pjud, log l "
                     + "where l.tabela = 'PJUD' and l.id_fk= pjud.id and "
+                    + "pjud.instituicao_fk = "+instituicao.getId()+" and "
                     + "pjud.status = 'A' and l.operacao = 'C' and "
                     + "DATE_PART('MONTH', l.data_de_criacao) = " + mes + " and "
                     + "DATE_PART('YEAR', l.data_de_criacao) = " + ano).getSingleResult();
@@ -663,11 +664,12 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
 
-    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes) {
+    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao) {
         EntityManager em = getEntityManager();
         try {
             BigDecimal count = (BigDecimal) em.createNativeQuery("select sum(valor_atualizado) from processo_judicial pj  "
-                    + "where to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
+                    + "where pj.instituicao_fk = "+instituicao.getId()+" and "
+                    + "to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
                     + "pj.id not in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.tabela = 'PJUD' and sl.operacao = 'D') ").getSingleResult();
             if (count == null) {
                 return 0.0;
@@ -681,11 +683,12 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
     
-    public Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes) {
+    public Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes, Instituicao instituicao) {
         EntityManager em = getEntityManager();
         try {
             BigDecimal count = (BigDecimal) em.createNativeQuery("select sum(valor_arrecadado) from processo_judicial pj  "
                     + "where to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
+                    + "pj.instituicao_fk = "+instituicao.getId()+" and "
                     + "pj.id not in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.tabela = 'PJUD' and sl.operacao = 'D') ").getSingleResult();
             if (count == null) {
                 return 0.0;
@@ -699,11 +702,12 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
 
-    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes) {
+    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao) {
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(pj.id) from processo_judicial pj "
                     + "where to_date(distribuicao_data_do_ato, 'DD/MM/YYYY') <= to_date('"+mes+"/"+ano+"', 'MM/YYYY') and "
+                    + "pj.instituicao_fk = "+instituicao.getId()+" and "
                     + "pj.id not in (select spj.id from processo_judicial spj, log sl where spj.id = sl.id_fk and sl.tabela = 'PJUD' and sl.operacao = 'D') ").getSingleResult();
             return count.intValue();
         } catch (NoResultException e) {
@@ -713,11 +717,14 @@ public class ProcessoJudicialDAO implements Serializable {
         }
     }
     
-    public Integer getPJUDSituations(String situacao) {
+    public Integer getPJUDSituations(String situacao, Instituicao instituicao) {
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(*) from processo_judicial pj, situacao s "
-                    + "where pj.situacao_fk = s.id and s.situacao = '"+situacao+"' group by pj.situacao_fk, s.situacao ").getSingleResult();
+                    + "where pj.situacao_fk = s.id and "
+                    + "s.situacao = '"+situacao+"' and "
+                    + "pj.instituicao_fk = "+instituicao.getId()+" "
+                    + "group by pj.situacao_fk, s.situacao ").getSingleResult();
             if (count == null) {
                 return 0;
             } else {

@@ -937,11 +937,12 @@ public void create(PessoaJuridica pessoaJuridica) throws RollbackFailureExceptio
         }
     }
     
-    public Integer countPJByMonth(Integer ano, Integer mes){
+    public Integer countPJByMonth(Integer ano, Integer mes, Instituicao instituicao){
         EntityManager em = getEntityManager();
         try {
             Long count = (Long) em.createNativeQuery("select count(distinct pj.id) from pessoa_juridica pj, log l "
                     + "where l.tabela = 'PJ' and l.id_fk= pj.id and "
+                    + "pj.instituicao_fk = "+instituicao.getId()+" and "
                     + "pj.status = 'A' and l.operacao = 'C' and "
                     + "DATE_PART('MONTH', l.data_de_criacao) = "+mes+" and "
                     + "DATE_PART('YEAR', l.data_de_criacao) = "+ano).getSingleResult();
