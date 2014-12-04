@@ -32,4 +32,13 @@ public class TipoPenhoraBO implements Serializable{
         }
         return new ArrayList<TipoPenhora>();
     }
+    
+    public List<TipoPenhora> findPenhorasSemSocio(){
+        try { 
+            return tipoPenhoraDAO.findPenhorasSemSocio();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<TipoPenhora>();
+    }
 }

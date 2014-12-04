@@ -156,7 +156,7 @@
                                                         <div class="col-md-4">
                                                             <h:inputText class="select2_category form-control cpfVinculate" id="cpf" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPF}" />
                                                             <h:commandLink styleClass="carregar_socios_pf">
-                                                                <f:ajax execute="cpf" listener="#{processoJudicialBean.listarSocios('PF')}" render="tab3" />
+                                                                <f:ajax execute="accordion-ar accordion-oficial accordion-edital accordion-enderecosocio redirecionamento accordion-penhora cpf" listener="#{processoJudicialBean.listarSocios('PF')}" render="tab3" />
                                                             </h:commandLink>
                                                         </div>
                                                         <div class="col-md-6">
@@ -176,7 +176,7 @@
                                                         <div class="col-md-4">
                                                             <h:inputText class="select2_category form-control cnpjVinculate" id="cnpj" p:placeholder="Selecione..." tabindex="1" value="#{processoJudicialBean.executadoPJ}" />
                                                             <h:commandLink styleClass="carregar_socios_pj">
-                                                                <f:ajax execute="cnpj" listener="#{processoJudicialBean.listarSocios('PJ')}" render="tab3" />
+                                                                <f:ajax execute="accordion-ar accordion-oficial accordion-edital accordion-enderecosocio redirecionamento accordion-penhora cnpj" listener="#{processoJudicialBean.listarSocios('PJ')}" render="tab3" />
                                                             </h:commandLink>
                                                         </div>
                                                         <div class="col-md-6">
@@ -2343,6 +2343,7 @@
                                                                                 Nenhum sócio registrado no executado.
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
+                                                                        <h:panelGroup id="redirecionamento">
                                                                         <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
                                                                             <div class="row">
                                                                                 <div class="col-md-6">
@@ -2421,6 +2422,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </ui:fragment>
+                                                                            </h:panelGroup>
                                                                     </div>
                                                                 </div>
                                                             </div>

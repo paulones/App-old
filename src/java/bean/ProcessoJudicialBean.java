@@ -56,6 +56,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -324,7 +325,6 @@ public class ProcessoJudicialBean implements Serializable {
         tipoDoProcessoList = tipoProcessoBO.findAll();
         situacaoList = situacaoBO.findAll();
         procuradorList = procuradorBO.findAll();
-        tipoPenhoraList = tipoPenhoraBO.findAll();
     }
 
     public void adicionarVinculosProcessuais() {
@@ -449,6 +449,19 @@ public class ProcessoJudicialBean implements Serializable {
             bemList = bemBO.findPFBens(Integer.valueOf(executadoPF));
             enderecosSocios = 0;
             enderecoSocioList = new ArrayList<>();
+        }
+        if (!socioList.isEmpty()) {
+            tipoPenhoraList = tipoPenhoraBO.findAll();
+        } else {
+            redirecionamento = null;
+            tipoPenhoraList = tipoPenhoraBO.findPenhorasSemSocio();
+            Iterator<Penhora> i = penhoraList.iterator();
+            while (i.hasNext()) {
+                Penhora penhora = i.next();
+                if (penhora.getTipoPenhoraFk().getTipo().contains("Sócio")) {
+                    i.remove();
+                }
+            }
         }
         initialLoad = false;
     }
