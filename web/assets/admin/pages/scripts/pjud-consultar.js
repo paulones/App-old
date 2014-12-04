@@ -229,7 +229,8 @@ var PjudCon = function() {
             var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
             var checkCitacoesChanges = checkChangesCitacoes('.accordion-citacao');
             var checkRedirecionamentoLabelChange = checkChangesLabel('.form-control-redirecionamento-static', '.tab3');
-            var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr')
+            var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr');
+            var checkPenhoraChanges = checkChangesPenhoras('.accordion-penhora');
             processo = (!processo) ? checkProcessoChanges : true;
             executado = (!executado) ? checkBensChanges : true;
             executado = (!executado) ? checkSucedidasChanges : true;
@@ -241,6 +242,7 @@ var PjudCon = function() {
             atoProcessual = (!atoProcessual) ? checkCitacoesChanges : true;
             atoProcessual = (!atoProcessual) ? checkRedirecionamentoLabelChange : true;
             atoProcessual = (!atoProcessual) ? checkRedirecionamentoChanges : true;
+            atoProcessual = (!atoProcessual) ? checkPenhoraChanges : true;
 
             function checkChangesTableVinculos(tr) {
                 var changed = false;
@@ -288,11 +290,11 @@ var PjudCon = function() {
                 var changed = false;
                 $(history).find('.socio-data').css("color", "#a94442");
                 if ($(atual).find('.table-redirecionamento').length === 0 && $(history).find('.table-redirecionamento').length > 0) {
-                    $(history).find('.table-redirecionamento').find('td').css('color','#a94442');
-                    $(history).find('.table-redirecionamento').find('th').css('color','#a94442');
+                    $(history).find('.table-redirecionamento').find('td').css('color', '#a94442');
+                    $(history).find('.table-redirecionamento').find('th').css('color', '#a94442');
                     $(history).find('.portlet_ato_processual').find('.tab_1').css("color", "red");
                     changed = true;
-                } else if ($(atual).find('.table-redirecionamento').length > 0 && $(history).find('.table-redirecionamento').length === 0){
+                } else if ($(atual).find('.table-redirecionamento').length > 0 && $(history).find('.table-redirecionamento').length === 0) {
                     $(history).find('.alert-redirecionamento').css('color', '#a94442');
                     $(history).find('.portlet_ato_processual').find('.tab_1').css("color", "red");
                 }
@@ -340,6 +342,10 @@ var PjudCon = function() {
                                     changed = true;
                                     $(this).closest('.portlet_ato_processual').find('.tab_1').css("color", "red");
                                 }
+                                if ($(accordion_atual).find('.panel').length !== $(this).find('.panel').length) {
+                                    changed = true;
+                                    $(this).closest('.portlet_ato_processual').find('.tab_1').css("color", "red");
+                                }
                                 var accordion_history = this;
                                 $(this).find('.panel').addClass('panel-danger').removeClass('panel-default');
                                 $(this).find('.form-control-citacao-static').closest('.form-group').css('color', '#a94442');
@@ -367,6 +373,57 @@ var PjudCon = function() {
                         changed = true;
                         $(this).closest('.portlet_ato_processual').find('.tab_1').css("color", "red");
                         $(this).closest('.panel').removeClass('panel-default').addClass('panel-danger');
+                    }
+                });
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            function checkChangesPenhoras(accordion) {
+                var changed = false;
+                $.each($(atual).find(accordion), function() {
+                    var accordion_atual = this;
+                    $.each($(history).find(accordion), function(index) {
+                        if ($(accordion_atual).find('.panel').length > 0 && $(this).find('.panel').length === 0) {
+                            $(this).parent().find('.alert-penhora').css('color', '#a94442');
+                            changed = true;
+                            $(this).closest('.portlet_ato_processual').find('.tab_2').css("color", "red");
+                        }
+                        if ($(accordion_atual).find('.panel').length !== $(this).find('.panel').length) {
+                            changed = true;
+                            $(this).closest('.portlet_ato_processual').find('.tab_2').css("color", "red");
+                        }
+                        var accordion_history = this;
+                        $(this).find('.panel').addClass('panel-danger').removeClass('panel-default');
+                        $(this).find('.form-control-penhora-static').closest('.form-group').css('color', '#a94442');
+                        $.each($(accordion_atual).find('.panel'), function() {
+                            var panel_atual = this;
+                            $.each($(accordion_history).find('.panel'), function() {
+                                var panel_history = this;
+                                $.each($(panel_atual).find('.form-control-penhora-static'), function() {
+                                    var atual = this;
+                                    $.each($(panel_history).find('.form-control-penhora-static'), function() {
+                                        if ($(atual).text().trim() === $(this).text().trim()) {
+                                            $(this).parent().parent().css("color", "black");
+                                            $(this).closest('.panel').addClass('panel-default').removeClass('panel-danger');
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+                $.each($(history).find('.form-control-penhora-static'), function() {
+                    if ($(this).css("color") === "rgb(169, 68, 66)") {
+                        changed = true;
+                        $(this).closest('.portlet_ato_processual').find('.tab_2').css("color", "red");
+                        $(this).closest('.panel').removeClass('panel-default').addClass('panel-danger');
+                        if ($(this).hasClass('bem-penhorado')) {
+                            $(this).closest('.panel').find('.bem-penhorado-info').find('.form-group').css("color", "#a94442")
+                        }
                     }
                 });
                 if (changed) {

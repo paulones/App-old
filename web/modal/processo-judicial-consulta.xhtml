@@ -1980,7 +1980,7 @@
                                                                                                                             <label class="control-label col-md-2">Situacao:</label>
                                                                                                                             <div class="col-md-10">
                                                                                                                                 <p class="form-control-penhora-static">
-                                                                                                                                    #{penhora.situacao eq 'D' ? 'Deferido' : 'Indeferido'}
+                                                                                                                                    #{penhora.situacao eq 'D' ? 'Deferido' : penhora.situacao eq 'I' ? 'Indeferido' : '-'}
                                                                                                                                 </p>
                                                                                                                             </div>
                                                                                                                         </div>
@@ -2014,7 +2014,7 @@
                                                                                                                 </h:panelGroup>
                                                                                                             </ui:fragment>
                                                                                                             <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
-                                                                                                                <div class="row">
+                                                                                                                <h:panelGroup layout="block" rendered="#{penhora.situacao eq 'D'}" class="row">
                                                                                                                     <div class="col-md-12">
                                                                                                                         <div class="form-group">
                                                                                                                             <label class="control-label col-md-2">Endereço:</label>
@@ -2025,7 +2025,7 @@
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                </div>
+                                                                                                                </h:panelGroup>
                                                                                                             </ui:fragment>
                                                                                                             <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial')
                                                                                                                                      or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')}">

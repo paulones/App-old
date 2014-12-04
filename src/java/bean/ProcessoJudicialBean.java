@@ -271,7 +271,7 @@ public class ProcessoJudicialBean implements Serializable {
                             oldSocioRedirecionamentoList = carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(id));
                             oldProcessoJudicial = processoJudicialBO.findProcessoJudicial(id);
 
-                            prepararHistorico(processoJudicial, citacaoList, socioRedirecionamentoList, penhoraList);
+                            prepararHistorico(processoJudicial, citacaoList, socioRedirecionamentoList, oldPenhoraList);
 
                             carregarFormulario();
                         }

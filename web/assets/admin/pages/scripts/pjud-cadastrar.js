@@ -492,9 +492,9 @@ var PjudCad = function() {
             $(document).on('change', '.situacao-penhora', exibirValorBacen);
             function exibirValorBacen(event) {
                 if ($(this).find("input[type=radio]:checked").val() === 'D') {
-                    $(this).parents('.panel-body').find('.valor-bacen').show();
+                    $(this).parents('.panel-body').find('.valor-endereco').show();
                 } else {
-                    $(this).parents('.panel-body').find('.valor-bacen').hide();
+                    $(this).parents('.panel-body').find('.valor-endereco').hide();
                 }
             }
 
