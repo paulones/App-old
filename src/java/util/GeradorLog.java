@@ -17,12 +17,10 @@ import entidade.Log;
  */
 public class GeradorLog {
     
-    private static LogBO logBO;
-    private static UtilBO utilBO;
     
     public static void criar(Integer idFk, String tabela, char operacao){
-        logBO = new LogBO();
-        utilBO = new UtilBO();
+        LogBO logBO = new LogBO();
+        UtilBO utilBO = new UtilBO();
         UsuarioBO usuarioBO = new UsuarioBO();
         Log log = new Log();
         log.setDataDeCriacao(utilBO.findServerTime());

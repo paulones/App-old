@@ -15,11 +15,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Cookie { 
 
-    private static HttpServletRequest request;
-    private static HttpServletResponse response;
-
     public static String getCookie(String name) {
-        request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
         String value = null;
         if (cookies != null) {
@@ -34,8 +31,8 @@ public class Cookie {
     }
 
     public static void apagarCookies() {
-        request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
@@ -48,8 +45,8 @@ public class Cookie {
     }
 
     public static void apagarCookie(String name) {
-        request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         javax.servlet.http.Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
@@ -64,7 +61,7 @@ public class Cookie {
     }
 
     public static void addCookie(String key, String value, Integer seconds) {
-        response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+        HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
         javax.servlet.http.Cookie cookie = new javax.servlet.http.Cookie(key, value);
         cookie.setPath("/");
         cookie.setMaxAge(seconds);
