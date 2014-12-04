@@ -20,16 +20,18 @@ public class ExecutadoHistorico implements Serializable {
     private EnderecoPessoa enderecoPessoaJuridica;
     private List<CitacaoHistorico> citacaoHistoricoList;
     private List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList;
+    private List<PenhoraHistorico> penhoraHistoricoList;
 
     public ExecutadoHistorico() {
     }
 
-    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica, List<CitacaoHistorico> citacaoHistoricoList, List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList) {
+    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica, List<CitacaoHistorico> citacaoHistoricoList, List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList, List<PenhoraHistorico> penhoraHistoricoList) {
         this.processoJudicialHistorico = processoJudicialHistorico;
         this.enderecoPessoaFisica = enderecoPessoaFisica;
         this.enderecoPessoaJuridica = enderecoPessoaJuridica;
         this.citacaoHistoricoList = citacaoHistoricoList;
         this.socioRedirecionamentoHistoricoList = socioRedirecionamentoHistoricoList;
+        this.penhoraHistoricoList = penhoraHistoricoList;
     }   
     
     public ProcessoJudicialHistorico getProcessoJudicialHistorico() {
@@ -72,6 +74,12 @@ public class ExecutadoHistorico implements Serializable {
         this.socioRedirecionamentoHistoricoList = socioRedirecionamentoHistoricoList;
     }
 
-    
-    
+    public List<PenhoraHistorico> getPenhoraHistoricoList() {
+        return penhoraHistoricoList;
+    }
+
+    public void setPenhoraHistoricoList(List<PenhoraHistorico> penhoraHistoricoList) {
+        this.penhoraHistoricoList = penhoraHistoricoList;
+    }
+
 }

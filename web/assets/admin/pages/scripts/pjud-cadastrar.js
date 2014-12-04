@@ -638,6 +638,8 @@ var PjudCad = function() {
                         $('.uniformization input[type=radio]').uniform();
                         $('.date').mask("99/99/9999");
                     } else if ($(data.source).hasClass("carregar_socios_pj")) {
+                        $('.bemVinculate').trigger("change");
+                        $('.penhora-socio').trigger("change");
                         initTable();
                         $.each($('.citado'), citado);
                         $.each($('.redirecionado'), redirecionado);
@@ -662,6 +664,8 @@ var PjudCad = function() {
                         $.each($('.situacao-penhora'), exibirValorBacen);
                         maskMoney();
                     } else if ($(data.source).hasClass("carregar_socios_pf")) {
+                        $('.bemVinculate').trigger("change");
+                        $('.penhora-socio').trigger("change");
                         $.each($('.citado'), citado);
                         $('select.tipoPenhora').select2({allowClear: true});
                         $('.uniformization input[type=radio]').uniform();
@@ -703,6 +707,8 @@ var PjudCad = function() {
                         $('.bemVinculate').trigger("change");
                     } else if ($(data.source).hasClass("penhora-socio")) {
                         exibirBens($(data.source));
+                        $(data.source).closest(".panel-body").find(".bemVinculate").val($(data.source).closest(".panel-body").find(".bem-penhorado").html().trim());
+                        $('.bemVinculate').trigger("change");
                         $('select.bemVinculate').select2({allowClear: true});
                     } else if ($(data.source).hasClass("bemVinculate")) {
                         maskMoney();

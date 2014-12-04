@@ -4056,6 +4056,238 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            <div id="tab_2" class="tab-pane">
+                                                                <div class="portlet box blue-chambray">
+                                                                    <div class="portlet-title">
+                                                                        <div class="caption">
+                                                                            <i class="fa fa-lock"></i> Penhora
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="portlet-body form">
+                                                                        <div class="form-body">
+                                                                            <h3 class="form-section">Bloqueios/Restrições/Consultas</h3>
+                                                                            <ui:fragment rendered="#{processoJudicialBean.executado.penhoraList.isEmpty()}">
+                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                    Não houve penhora.
+                                                                                </h:panelGroup>
+                                                                            </ui:fragment>
+                                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-penhora-#{processoJudicialBean.executado.processoJudicial.id}">
+                                                                                <ui:repeat value="#{processoJudicialBean.executado.penhoraList}" var="penhora" varStatus="status">
+                                                                                    <div class="panel panel-default">
+                                                                                        <div class="panel-heading">
+                                                                                            <h4 class="panel-title">
+                                                                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-penhora-#{processoJudicialBean.executado.processoJudicial.id}"  href="#collapse_penhora_#{processoJudicialBean.executado.processoJudicial.id}_#{status.index}">
+                                                                                                    #{penhora.tipoPenhoraFk.tipo} </a>
+                                                                                            </h4>
+                                                                                        </div>
+                                                                                        <div id="collapse_penhora_#{processoJudicialBean.executado.processoJudicial.id}_#{status.index}" class="panel-collapse collapse">
+                                                                                            <div class="panel-body">
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Situacao:</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                        #{penhora.situacao eq 'D' ? 'Deferido' : 'Indeferido'}
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Data:</label>
+                                                                                                            <div class="col-md-10">
+                                                                                                                <p class="form-control-penhora-static">
+                                                                                                                    #{penhora.dataDaPenhora eq null ? '-' : penhora.dataDaPenhora}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')}">
+                                                                                                    <h:panelGroup layout="block" rendered="#{penhora.situacao eq 'D'}" class="row valor-bacen">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Valor:</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static money">
+                                                                                                                        #{penhora.valor eq null ? '-' : penhora.valor}
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </h:panelGroup>
+                                                                                                </ui:fragment>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Endereço:</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                        #{penhora.endereco eq null ? '-' : penhora.endereco}
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')}">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Bem:</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                        #{penhora.bemFk eq null ? '-' : penhora.bemFk.descricao}
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Sócio:</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                        #{processoJudicialBean.loadSocio(penhora.socio,penhora.socioFk)}
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="socio-bem">
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-md-12">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label class="control-label col-md-2">Bem:</label>
+                                                                                                                    <div class="col-md-10">
+                                                                                                                        <p class="form-control-penhora-static">
+                                                                                                                        #{penhora.bemFk eq null ? '-' : penhora.bemFk.descricao}
+                                                                                                                    </p>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                                <h:panelGroup>
+                                                                                                    <ui:fragment rendered="#{penhora.bemFk ne null}">
+                                                                                                        <br/>
+                                                                                                        <div layout="block" class="portlet box blue-chambray">
+                                                                                                            <div class="portlet-title">
+                                                                                                                <div class="caption">
+                                                                                                                    <i class="fa fa-car"></i>#{penhora.bemFk.descricao}
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="portlet-body form">
+                                                                                                                <div class="form-body">
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col-md-7">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-4">Descrição:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-static">
+                                                                                                                                        #{penhora.bemFk.descricao eq null ? '-' : penhora.bemFk.descricao}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-5">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-4">Tipo:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-static">
+                                                                                                                                        #{penhora.bemFk.tipoBemFk eq null ? '-' : penhora.bemFk.tipoBemFk.tipo}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col-md-7">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-4">Endereço:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-static">
+                                                                                                                                        #{penhora.bemFk.endereco eq null ? '-' : penhora.bemFk.endereco}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-5">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-4">Valor:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-static money">
+                                                                                                                                        #{penhora.bemFk.valor eq null ? '-' : penhora.bemFk.valor}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="row">
+                                                                                                                        <div class="col-md-7">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-4">Aquisição:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-static">
+                                                                                                                                        #{penhora.bemFk.dataDeAquisicao eq null ? '-' : penhora.bemFk.dataDeAquisicao}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <div class="col-md-5">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-4 col-md-pull-1">Extinção:</label>
+                                                                                                                                <div class="col-md-8">
+                                                                                                                                    <p class="form-control-bem-static">
+                                                                                                                                        #{penhora.bemFk.dataDeTransferenciaOuExtincao eq null ? '-' : penhora.bemFk.dataDeTransferenciaOuExtincao}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </ui:fragment>
+                                                                                                </h:panelGroup>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Sócio</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                        #{processoJudicialBean.loadSocio(penhora.socio,penhora.socioFk)}
+                                                                                                                    </p>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </ui:repeat>
+                                                                            </h:panelGroup>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

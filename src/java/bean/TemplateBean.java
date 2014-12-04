@@ -14,6 +14,7 @@ import bo.EstadoCivilBO;
 import bo.FuncaoBO;
 import bo.NacionalidadeBO;
 import bo.PaisBO;
+import bo.PenhoraBO;
 import bo.PessoaFisicaBO;
 import bo.PessoaFisicaFisicaBO;
 import bo.PessoaFisicaJuridicaBO;
@@ -90,6 +91,7 @@ public class TemplateBean implements Serializable {
     private VinculoSocialBO vinculoSocialBO;
     private TipoBemBO tipoBemBO;
     private BemBO bemBO;
+    private PenhoraBO penhoraBO;
 
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaFisica;
@@ -144,6 +146,7 @@ public class TemplateBean implements Serializable {
             vinculoSocialBO = new VinculoSocialBO();
             tipoBemBO = new TipoBemBO();
             bemBO = new BemBO();
+            penhoraBO = new PenhoraBO();
             usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
 
             enderecoPessoa = new EnderecoPessoa();
@@ -423,10 +426,10 @@ public class TemplateBean implements Serializable {
             ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")) {
                 PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()), bemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())));
+                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()), bemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), penhoraBO.findByPJUD(pjud.getId()));
             } else {
                 PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId()), bemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())));
+                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId()), bemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), penhoraBO.findByPJUD(pjud.getId()));
             }
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
             enderecoPessoa = new EnderecoPessoa();

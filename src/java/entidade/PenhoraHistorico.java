@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -48,7 +49,7 @@ public class PenhoraHistorico implements Serializable {
     @Column(name = "situacao")
     private Character situacao;
     @Column(name = "valor")
-    private BigInteger valor;
+    private BigDecimal valor;
     @Size(max = 10)
     @Column(name = "data_da_penhora")
     private String dataDaPenhora;
@@ -93,11 +94,11 @@ public class PenhoraHistorico implements Serializable {
         this.situacao = situacao;
     }
 
-    public BigInteger getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(BigInteger valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

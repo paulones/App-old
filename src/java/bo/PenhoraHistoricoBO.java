@@ -9,6 +9,8 @@ package bo;
 import dao.PenhoraHistoricoDAO;
 import entidade.PenhoraHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,5 +46,14 @@ public class PenhoraHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public List<PenhoraHistorico> findByPJUD(Integer id){
+        try { 
+            return penhoraHistoricoDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<PenhoraHistorico>();
     }
 }

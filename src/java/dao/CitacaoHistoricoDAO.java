@@ -187,9 +187,9 @@ public class CitacaoHistoricoDAO implements Serializable {
     public List<CitacaoHistorico> findByPJUD(Integer id){
         EntityManager em = getEntityManager();
         try {
-            List<CitacaoHistorico> processoJudicialList = (List<CitacaoHistorico>) em.createNativeQuery("select * from citacao_historico "
+            List<CitacaoHistorico> citacaoHistoricoList = (List<CitacaoHistorico>) em.createNativeQuery("select * from citacao_historico "
                     + "where processo_judicial_historico_fk = '"+id+"'", CitacaoHistorico.class).getResultList();
-            return processoJudicialList;
+            return citacaoHistoricoList;
         } catch (NoResultException e) {
             return null;
         } finally {

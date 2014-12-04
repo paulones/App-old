@@ -20,15 +20,17 @@ public class Executado implements Serializable{
     private EnderecoPessoa enderecoPessoa;
     private List<Citacao> citacaoList;
     private List<SocioRedirecionamento> socioRedirecionamentoList;
+    private List<Penhora> penhoraList;
 
     public Executado() {
     }
 
-    public Executado(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList) {
+    public Executado(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList) {
         this.processoJudicial = processoJudicial;
         this.enderecoPessoa = enderecoPessoa;
         this.citacaoList = citacaoList;
         this.socioRedirecionamentoList = socioRedirecionamentoList;
+        this.penhoraList = penhoraList;
     }
 
     public ProcessoJudicial getProcessoJudicial() {
@@ -63,6 +65,14 @@ public class Executado implements Serializable{
         this.socioRedirecionamentoList = socioRedirecionamentoList;
     }
 
+    public List<Penhora> getPenhoraList() {
+        return penhoraList;
+    }
+
+    public void setPenhoraList(List<Penhora> penhoraList) {
+        this.penhoraList = penhoraList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -70,6 +80,7 @@ public class Executado implements Serializable{
         hash = 11 * hash + Objects.hashCode(this.enderecoPessoa);
         hash = 11 * hash + Objects.hashCode(this.citacaoList);
         hash = 11 * hash + Objects.hashCode(this.socioRedirecionamentoList);
+        hash = 11 * hash + Objects.hashCode(this.penhoraList);
         return hash;
     }
 

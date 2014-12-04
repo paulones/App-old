@@ -9,6 +9,8 @@ package bo;
 import dao.PenhoraDAO;
 import entidade.Penhora;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -41,6 +43,23 @@ public class PenhoraBO implements Serializable{
     public void destroy(Penhora penhora){
         try {
             penhoraDAO.destroy(penhora.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public List<Penhora> findByPJUD(Integer id){
+        try { 
+            return penhoraDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<Penhora>();
+    }
+
+    public void destroyByPJUD(Integer idPjud){
+        try {
+            penhoraDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();
         }

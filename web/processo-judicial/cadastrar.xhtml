@@ -2469,7 +2469,7 @@
                                                                                     <div class="panel-heading">
                                                                                         <h4 class="panel-title">
                                                                                             <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-penhora"  href="#collapse_penhora_#{status.index}">
-                                                                                                #{penhora.tipoPenhoraFk.tipo} </a>
+                                                                                                #{penhora.tipoPenhoraFk.tipo}</a>
                                                                                         </h4>
                                                                                     </div>
                                                                                     <div id="collapse_penhora_#{status.index}" class="panel-collapse collapse">
@@ -2575,6 +2575,7 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
+                                                                                                <h:outputText class="display-hide bem-penhorado" value="#{penhora.bemFk ne null ? penhora.bemFk.id : ''}"/>
                                                                                                 <h:panelGroup class="socio-bem display-hide" id="socio-bem">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-9">
