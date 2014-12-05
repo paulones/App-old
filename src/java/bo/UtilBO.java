@@ -16,14 +16,9 @@ import java.sql.Timestamp;
  */
 public class UtilBO implements Serializable{
     
-    private UtilDAO utilDAO;
-    
-    public UtilBO(){
-        utilDAO = new UtilDAO();
-    }
-    
-    public Timestamp findServerTime() {
+    public static Timestamp findServerTime() {
         try { 
+            UtilDAO utilDAO = new UtilDAO();
             return utilDAO.findServerTime();
         } catch (Exception e) {
             e.printStackTrace();

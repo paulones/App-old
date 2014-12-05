@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class TipoBemBO implements Serializable{
     
-    private TipoBemDAO tipoBemDAO;
-    
-    public TipoBemBO (){
-        tipoBemDAO = new TipoBemDAO();
-    }
-    
-    public List<TipoBem> findAll(){
+    public static List<TipoBem> findAll(){
         try { 
+            TipoBemDAO tipoBemDAO = new TipoBemDAO();
             return tipoBemDAO.findTipoBemEntities();
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class PenhoraHistoricoBO implements Serializable{
     
-    private PenhoraHistoricoDAO penhoraHistoricoDAO;
-
-    public PenhoraHistoricoBO(){
-        penhoraHistoricoDAO = new PenhoraHistoricoDAO();
-    }
-    
-    public void create(PenhoraHistorico penhoraHistorico){
+    public static void create(PenhoraHistorico penhoraHistorico){
         try {
+            PenhoraHistoricoDAO penhoraHistoricoDAO = new PenhoraHistoricoDAO();
             penhoraHistoricoDAO.create(penhoraHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PenhoraHistorico penhoraHistorico){
+    public static void edit(PenhoraHistorico penhoraHistorico){
         try {
+            PenhoraHistoricoDAO penhoraHistoricoDAO = new PenhoraHistoricoDAO();
             penhoraHistoricoDAO.edit(penhoraHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(PenhoraHistorico penhoraHistorico){
+    public static void destroy(PenhoraHistorico penhoraHistorico){
         try {
+            PenhoraHistoricoDAO penhoraHistoricoDAO = new PenhoraHistoricoDAO();
             penhoraHistoricoDAO.destroy(penhoraHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PenhoraHistorico> findByPJUD(Integer id){
+    public static List<PenhoraHistorico> findByPJUD(Integer id){
         try { 
+            PenhoraHistoricoDAO penhoraHistoricoDAO = new PenhoraHistoricoDAO();
             return penhoraHistoricoDAO.findByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();

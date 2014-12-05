@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class PaisBO implements Serializable {
     
-    private PaisDAO paisDAO;
-    
-    public PaisBO(){
-        paisDAO = new PaisDAO();
-    }
-    
-    public List<Pais> findAll(){
+    public static List<Pais> findAll(){
         try { 
+            PaisDAO paisDAO = new PaisDAO();
             return paisDAO.findPaisEntities();
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,8 +28,9 @@ public class PaisBO implements Serializable {
         return new ArrayList<Pais>();
     }
     
-    public Pais findBrasil(){
+    public static Pais findBrasil(){
         try { 
+            PaisDAO paisDAO = new PaisDAO();
             return paisDAO.findBrasil();
         } catch (Exception e) {
             e.printStackTrace();

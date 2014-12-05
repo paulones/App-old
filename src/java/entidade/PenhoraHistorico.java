@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "PenhoraHistorico.findById", query = "SELECT p FROM PenhoraHistorico p WHERE p.id = :id"),
     @NamedQuery(name = "PenhoraHistorico.findBySituacao", query = "SELECT p FROM PenhoraHistorico p WHERE p.situacao = :situacao"),
     @NamedQuery(name = "PenhoraHistorico.findByValor", query = "SELECT p FROM PenhoraHistorico p WHERE p.valor = :valor"),
+    @NamedQuery(name = "PenhoraHistorico.findByMotivo", query = "SELECT p FROM PenhoraHistorico p WHERE p.motivo = :motivo"),
     @NamedQuery(name = "PenhoraHistorico.findByDataDaPenhora", query = "SELECT p FROM PenhoraHistorico p WHERE p.dataDaPenhora = :dataDaPenhora"),
     @NamedQuery(name = "PenhoraHistorico.findBySocioFk", query = "SELECT p FROM PenhoraHistorico p WHERE p.socioFk = :socioFk"),
     @NamedQuery(name = "PenhoraHistorico.findBySocio", query = "SELECT p FROM PenhoraHistorico p WHERE p.socio = :socio"),
@@ -53,6 +54,9 @@ public class PenhoraHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_da_penhora")
     private String dataDaPenhora;
+    @Size(max = 150)
+    @Column(name = "motivo")
+    private String motivo;
     @Size(max = 200)
     @Column(name = "endereco")
     private String endereco;
@@ -156,6 +160,14 @@ public class PenhoraHistorico implements Serializable {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
 
     @Override

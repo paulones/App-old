@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class PenhoraBO implements Serializable{
     
-    private PenhoraDAO penhoraDAO;
-
-    public PenhoraBO(){
-        penhoraDAO = new PenhoraDAO();
-    }
-    
-    public void create(Penhora penhora){
+    public static void create(Penhora penhora){
         try {
+            PenhoraDAO penhoraDAO = new PenhoraDAO();
             penhoraDAO.create(penhora);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(Penhora penhora){
+    public static void edit(Penhora penhora){
         try {
+            PenhoraDAO penhoraDAO = new PenhoraDAO();
             penhoraDAO.edit(penhora);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(Penhora penhora){
+    public static void destroy(Penhora penhora){
         try {
+            PenhoraDAO penhoraDAO = new PenhoraDAO();
             penhoraDAO.destroy(penhora.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<Penhora> findByPJUD(Integer id){
+    public static List<Penhora> findByPJUD(Integer id){
         try { 
+            PenhoraDAO penhoraDAO = new PenhoraDAO();
             return penhoraDAO.findByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +55,9 @@ public class PenhoraBO implements Serializable{
         return new ArrayList<Penhora>();
     }
 
-    public void destroyByPJUD(Integer idPjud){
+    public static void destroyByPJUD(Integer idPjud){
         try {
+            PenhoraDAO penhoraDAO = new PenhoraDAO();
             penhoraDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();

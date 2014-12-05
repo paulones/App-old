@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class VinculoSocialBO implements Serializable{
     
-    private VinculoSocialDAO vinculoSocialDAO;
-    
-    public VinculoSocialBO (){
-        vinculoSocialDAO = new VinculoSocialDAO();
-    }
-    
-    public List<VinculoSocial> findAll(){
+    public static List<VinculoSocial> findAll(){
         try { 
+            VinculoSocialDAO vinculoSocialDAO = new VinculoSocialDAO();
             return vinculoSocialDAO.findVinculoSocialEntities();
         } catch (Exception e) {
             e.printStackTrace();

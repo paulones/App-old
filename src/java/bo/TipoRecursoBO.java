@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class TipoRecursoBO implements Serializable{
     
-    private TipoRecursoDAO tipoRecursoDAO;
-    
-    public TipoRecursoBO(){
-        tipoRecursoDAO = new TipoRecursoDAO();
-    }
-    
-    public List<TipoRecurso> findAll(){
+    public static List<TipoRecurso> findAll(){
         try { 
+            TipoRecursoDAO tipoRecursoDAO = new TipoRecursoDAO();
             return tipoRecursoDAO.findTipoRecursoEntities();
         } catch (Exception e) {
             e.printStackTrace();

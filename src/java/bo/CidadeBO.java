@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class CidadeBO implements Serializable {
     
-    private CidadeDAO cidadeDAO;
-    
-    public CidadeBO(){
-        cidadeDAO = new CidadeDAO();
-    }
-    
-    public List<Cidade> findAll(){
+    public static List<Cidade> findAll(){
         try { 
+            CidadeDAO cidadeDAO = new CidadeDAO();
             return cidadeDAO.findCidadeEntities();
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,8 +28,9 @@ public class CidadeBO implements Serializable {
         return new ArrayList<Cidade>();
     }
     
-    public List<Cidade> getByStateId(Integer estadoId){
+    public static List<Cidade> getByStateId(Integer estadoId){
         try { 
+            CidadeDAO cidadeDAO = new CidadeDAO();
             return cidadeDAO.getByStateId(estadoId);
         } catch (Exception e) {
             e.printStackTrace();

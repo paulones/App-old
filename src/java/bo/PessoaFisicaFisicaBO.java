@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class PessoaFisicaFisicaBO implements Serializable{
     
-    private PessoaFisicaFisicaDAO pessoaFisicaFisicaDAO;
-    
-    public PessoaFisicaFisicaBO () {
-        pessoaFisicaFisicaDAO = new PessoaFisicaFisicaDAO();
-    }
-    
-    public void create(PessoaFisicaFisica pessoaFisicaFisica){
+    public static void create(PessoaFisicaFisica pessoaFisicaFisica){
         try {
+            PessoaFisicaFisicaDAO pessoaFisicaFisicaDAO = new PessoaFisicaFisicaDAO();
             pessoaFisicaFisicaDAO.create(pessoaFisicaFisica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaFisicaFisica pessoaFisicaFisica){
+    public static void edit(PessoaFisicaFisica pessoaFisicaFisica){
         try {
+            PessoaFisicaFisicaDAO pessoaFisicaFisicaDAO = new PessoaFisicaFisicaDAO();
             pessoaFisicaFisicaDAO.edit(pessoaFisicaFisica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroyByPFBOrPFA(Integer idPj){
+    public static void destroyByPFBOrPFA(Integer idPj){
         try {
+            PessoaFisicaFisicaDAO pessoaFisicaFisicaDAO = new PessoaFisicaFisicaDAO();
             pessoaFisicaFisicaDAO.destroyByPFBOrPFA(idPj);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaFisicaFisica> findAllByPFAOrPFB(Integer id){
+    public static List<PessoaFisicaFisica> findAllByPFAOrPFB(Integer id){
         try { 
+            PessoaFisicaFisicaDAO pessoaFisicaFisicaDAO = new PessoaFisicaFisicaDAO();
             return pessoaFisicaFisicaDAO.findAllByPFAOrPFB(id);
         } catch (Exception e) {
             e.printStackTrace();

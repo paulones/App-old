@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class EnderecoHistoricoBO implements Serializable{
     
-    private EnderecoHistoricoDAO enderecoHistoricoDAO;
-    
-    public EnderecoHistoricoBO(){
-        enderecoHistoricoDAO = new EnderecoHistoricoDAO();
-    }
-    
-    public void create(EnderecoHistorico enderecoHistorico){
+    public static void create(EnderecoHistorico enderecoHistorico){
         try {
+            EnderecoHistoricoDAO enderecoHistoricoDAO = new EnderecoHistoricoDAO();
             enderecoHistoricoDAO.create(enderecoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(EnderecoHistorico enderecoHistorico){
+    public static void edit(EnderecoHistorico enderecoHistorico){
         try {
+            EnderecoHistoricoDAO enderecoHistoricoDAO = new EnderecoHistoricoDAO();
             enderecoHistoricoDAO.edit(enderecoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(EnderecoHistorico enderecoHistorico){
+    public static void destroy(EnderecoHistorico enderecoHistorico){
         try {
+            EnderecoHistoricoDAO enderecoHistoricoDAO = new EnderecoHistoricoDAO();
             enderecoHistoricoDAO.destroy(enderecoHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<EnderecoHistorico> findAllByPF(Integer id){
+    public static List<EnderecoHistorico> findAllByPF(Integer id){
         try { 
+            EnderecoHistoricoDAO enderecoHistoricoDAO = new EnderecoHistoricoDAO();
             return enderecoHistoricoDAO.findAllByPF(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +55,9 @@ public class EnderecoHistoricoBO implements Serializable{
         return new ArrayList<EnderecoHistorico>();
     }
     
-    public List<EnderecoHistorico> findAllByPJ(Integer id){
+    public static List<EnderecoHistorico> findAllByPJ(Integer id){
         try { 
+            EnderecoHistoricoDAO enderecoHistoricoDAO = new EnderecoHistoricoDAO();
             return enderecoHistoricoDAO.findAllByPJ(id);
         } catch (Exception e) {
             e.printStackTrace();

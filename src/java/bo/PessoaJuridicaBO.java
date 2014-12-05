@@ -19,30 +19,27 @@ import java.util.List;
  */
 public class PessoaJuridicaBO implements Serializable{
     
-    private PessoaJuridicaDAO pessoaJuridicaDAO;
-    
-    public PessoaJuridicaBO(){
-        pessoaJuridicaDAO = new PessoaJuridicaDAO();
-    }
-    
-    public void create(PessoaJuridica pessoaJuridica){
+    public static void create(PessoaJuridica pessoaJuridica){
         try {
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             pessoaJuridicaDAO.create(pessoaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaJuridica pessoaJuridica){
+    public static void edit(PessoaJuridica pessoaJuridica){
         try {
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             pessoaJuridicaDAO.edit(pessoaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public PessoaJuridica findDuplicates(PessoaJuridica pessoaJuridica){
+    public static PessoaJuridica findDuplicates(PessoaJuridica pessoaJuridica){
         try {
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             return pessoaJuridicaDAO.findDuplicates(pessoaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,8 +47,9 @@ public class PessoaJuridicaBO implements Serializable{
         return null;
     }
     
-    public PessoaJuridica findByCNPJ (String cnpj){
+    public static PessoaJuridica findByCNPJ (String cnpj){
         try {
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             return pessoaJuridicaDAO.findByCNPJ(cnpj);
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,8 +57,9 @@ public class PessoaJuridicaBO implements Serializable{
         return null;
     }
     
-    public PessoaJuridica findPessoaJuridica(Integer id){
+    public static PessoaJuridica findPessoaJuridica(Integer id){
         try { 
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             return pessoaJuridicaDAO.findPessoaJuridica(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,8 +67,9 @@ public class PessoaJuridicaBO implements Serializable{
         return null;
     }
     
-    public List<PessoaJuridica> findAll(){
+    public static List<PessoaJuridica> findAll(){
         try { 
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             return pessoaJuridicaDAO.findPessoaJuridicaEntities();
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,8 +77,9 @@ public class PessoaJuridicaBO implements Serializable{
         return new ArrayList<PessoaJuridica>();
     }
     
-    public List<PessoaJuridica> findAllActive(Instituicao instituicao){
+    public static List<PessoaJuridica> findAllActive(Instituicao instituicao){
         try { 
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             return pessoaJuridicaDAO.findAllActive(instituicao);
         } catch (Exception e) {
             e.printStackTrace();

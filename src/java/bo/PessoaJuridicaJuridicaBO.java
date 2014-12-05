@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class PessoaJuridicaJuridicaBO implements Serializable{
     
-    private PessoaJuridicaJuridicaDAO pessoaJuridicaJuridicaDAO;
-    
-    public PessoaJuridicaJuridicaBO () {
-        pessoaJuridicaJuridicaDAO = new PessoaJuridicaJuridicaDAO();
-    }
-    
-    public void create(PessoaJuridicaJuridica pessoaJuridicaJuridica){
+    public static void create(PessoaJuridicaJuridica pessoaJuridicaJuridica){
         try {
+            PessoaJuridicaJuridicaDAO pessoaJuridicaJuridicaDAO = new PessoaJuridicaJuridicaDAO();
             pessoaJuridicaJuridicaDAO.create(pessoaJuridicaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaJuridicaJuridica pessoaJuridicaJuridica){
+    public static void edit(PessoaJuridicaJuridica pessoaJuridicaJuridica){
         try {
+            PessoaJuridicaJuridicaDAO pessoaJuridicaJuridicaDAO = new PessoaJuridicaJuridicaDAO();
             pessoaJuridicaJuridicaDAO.edit(pessoaJuridicaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroyByPJBOrPJA(Integer idPj){
+    public static void destroyByPJBOrPJA(Integer idPj){
         try {
+            PessoaJuridicaJuridicaDAO pessoaJuridicaJuridicaDAO = new PessoaJuridicaJuridicaDAO();
             pessoaJuridicaJuridicaDAO.destroyByPJBOrPJA(idPj);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaJuridicaJuridica> findAllByPJAOrPJB(Integer id){
+    public static List<PessoaJuridicaJuridica> findAllByPJAOrPJB(Integer id){
         try { 
+            PessoaJuridicaJuridicaDAO pessoaJuridicaJuridicaDAO = new PessoaJuridicaJuridicaDAO();
             return pessoaJuridicaJuridicaDAO.findAllByPJAOrPJB(id);
         } catch (Exception e) {
             e.printStackTrace();

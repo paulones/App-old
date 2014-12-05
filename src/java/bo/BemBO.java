@@ -19,38 +19,36 @@ import java.util.List;
  */
 public class BemBO implements Serializable{
     
-    private BemDAO bemDAO;
-    
-    public BemBO(){
-        bemDAO = new BemDAO();
-    }
-    
-    public void create(Bem bem){
+    public static void create(Bem bem){
         try {
+            BemDAO bemDAO = new BemDAO();
             bemDAO.create(bem);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(Bem bem){
+    public static void edit(Bem bem){
         try {
+            BemDAO bemDAO = new BemDAO();
             bemDAO.edit(bem);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(Bem bem){
+    public static void destroy(Bem bem){
         try {
+            BemDAO bemDAO = new BemDAO();
             bemDAO.destroy(bem.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<Bem> findPFBens(Integer id){
+    public static List<Bem> findPFBens(Integer id){
         try { 
+            BemDAO bemDAO = new BemDAO();
             return bemDAO.findPFBens(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,8 +56,9 @@ public class BemBO implements Serializable{
         return new ArrayList<Bem>();
     }
     
-    public List<Bem> findPJBens(Integer id){
+    public static List<Bem> findPJBens(Integer id){
         try { 
+            BemDAO bemDAO = new BemDAO();
             return bemDAO.findPJBens(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,16 +66,18 @@ public class BemBO implements Serializable{
         return new ArrayList<Bem>();
     }
     
-    public void destroyByPF(Integer id){
+    public static void destroyByPF(Integer id){
         try {
+            BemDAO bemDAO = new BemDAO();
             bemDAO.destroyByPF(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroyByPJ(Integer id){
+    public static void destroyByPJ(Integer id){
         try {
+            BemDAO bemDAO = new BemDAO();
             bemDAO.destroyByPJ(id);
         } catch (Exception e) {
             e.printStackTrace();

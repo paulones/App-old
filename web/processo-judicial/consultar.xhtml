@@ -2109,7 +2109,10 @@
                                                                                                                                 <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
                                                                                                                                                          or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
                                                                                                                                                          or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
-                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
                                                                                                                                             <div class="form-group">
@@ -2122,20 +2125,23 @@
                                                                                                                                             </div>
                                                                                                                                         </div>
                                                                                                                                     </div>
-                                                                                                                                </ui:fragment>
-                                                                                                                                <div class="row">
-                                                                                                                                    <div class="col-md-12">
-                                                                                                                                        <div class="form-group">
-                                                                                                                                            <label class="control-label col-md-2">Data:</label>
-                                                                                                                                            <div class="col-md-10">
-                                                                                                                                                <p class="form-control-penhora-static">
-                                                                                                                                                    #{penhora.dataDaPenhora eq null ? '-' : penhora.dataDaPenhora}
-                                                                                                                                                </p>
+                                                                                                                                    <h:panelGroup layout="block" rendered="#{penhora.situacao eq 'I'}" class="row motivo">
+                                                                                                                                        <div class="col-md-12">
+                                                                                                                                            <div class="form-group">
+                                                                                                                                                <label class="control-label col-md-2">Motivo</label>
+                                                                                                                                                <div class="col-md-10">
+                                                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                                                        #{penhora.motivo eq null ? '-' : penhora.motivo}
+                                                                                                                                                    </p>
+                                                                                                                                                </div>
                                                                                                                                             </div>
                                                                                                                                         </div>
-                                                                                                                                    </div>
-                                                                                                                                </div>
-                                                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')}">
+                                                                                                                                    </h:panelGroup>
+                                                                                                                                </ui:fragment>
+                                                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                                                     <h:panelGroup layout="block" rendered="#{penhora.situacao eq 'D'}" class="row valor-bacen">
                                                                                                                                         <div class="col-md-12">
                                                                                                                                             <div class="form-group">
@@ -2163,8 +2169,21 @@
                                                                                                                                         </div>
                                                                                                                                     </h:panelGroup>
                                                                                                                                 </ui:fragment>
+                                                                                                                                <div class="row">
+                                                                                                                                    <div class="col-md-12">
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <label class="control-label col-md-2">Data:</label>
+                                                                                                                                            <div class="col-md-10">
+                                                                                                                                                <p class="form-control-penhora-static">
+                                                                                                                                                    #{penhora.dataDaPenhora eq null ? '-' : penhora.dataDaPenhora}
+                                                                                                                                                </p>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
                                                                                                                                 <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial')
-                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')}">
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I')}">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
                                                                                                                                             <div class="form-group">
@@ -2179,7 +2198,8 @@
                                                                                                                                     </div>
                                                                                                                                 </ui:fragment>
                                                                                                                                 <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial (Sócio)')
-                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
+                                                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
                                                                                                                                             <div class="form-group">
@@ -2289,7 +2309,8 @@
                                                                                                                                         </div>
                                                                                                                                     </ui:fragment>
                                                                                                                                 </h:panelGroup>
-                                                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                                                        or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                                                     <div class="row">
                                                                                                                                         <div class="col-md-12">
                                                                                                                                             <div class="form-group">
@@ -4318,7 +4339,10 @@
                                                                                                 <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
                                                                                                                          or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
                                                                                                                          or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
-                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-12">
                                                                                                             <div class="form-group">
@@ -4331,20 +4355,23 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </ui:fragment>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-md-12">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="control-label col-md-2">Data:</label>
-                                                                                                            <div class="col-md-10">
-                                                                                                                <p class="form-control-penhora-static">
-                                                                                                                    #{penhora.dataDaPenhora eq null ? '-' : penhora.dataDaPenhora}
-                                                                                                                </p>
+                                                                                                    <h:panelGroup layout="block" rendered="#{penhora.situacao eq 'I'}" class="row motivo">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Motivo</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <p class="form-control-penhora-static">
+                                                                                                                        #{penhora.motivo eq null ? '-' : penhora.motivo}
+                                                                                                                    </p>
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')}">
+                                                                                                    </h:panelGroup>
+                                                                                                </ui:fragment>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                     <h:panelGroup layout="block" rendered="#{penhora.situacao eq 'D'}" class="row valor-bacen">
                                                                                                         <div class="col-md-12">
                                                                                                             <div class="form-group">
@@ -4372,8 +4399,21 @@
                                                                                                         </div>
                                                                                                     </h:panelGroup>
                                                                                                 </ui:fragment>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Data:</label>
+                                                                                                            <div class="col-md-10">
+                                                                                                                <p class="form-control-penhora-static">
+                                                                                                                    #{penhora.dataDaPenhora eq null ? '-' : penhora.dataDaPenhora}
+                                                                                                                </p>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
                                                                                                 <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial')
-                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')}">
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I')}">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-12">
                                                                                                             <div class="form-group">
@@ -4388,7 +4428,8 @@
                                                                                                     </div>
                                                                                                 </ui:fragment>
                                                                                                 <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial (Sócio)')
-                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-12">
                                                                                                             <div class="form-group">
@@ -4498,7 +4539,8 @@
                                                                                                         </div>
                                                                                                     </ui:fragment>
                                                                                                 </h:panelGroup>
-                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-12">
                                                                                                             <div class="form-group">

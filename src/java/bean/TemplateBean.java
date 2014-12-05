@@ -72,27 +72,6 @@ import util.GeradorLog;
 public class TemplateBean implements Serializable {
 
     private Usuario usuario;
-    private UsuarioBO usuarioBO;
-    private EnderecoBO enderecoBO;
-    private PessoaFisicaBO pessoaFisicaBO;
-    private PessoaJuridicaBO pessoaJuridicaBO;
-    private ProcessoJudicialBO processoJudicialBO;
-    private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
-    private PessoaFisicaFisicaBO pessoaFisicaFisicaBO;
-    private PessoaFisicaJuridicaBO pessoaFisicaJuridicaBO;
-    private PessoaJuridicaJuridicaBO pessoaJuridicaJuridicaBO;
-    private TipoEmpresarialBO tipoEmpresarialBO;
-    private PaisBO paisBO;
-    private NacionalidadeBO nacionalidadeBO;
-    private EstadoCivilBO estadoCivilBO;
-    private EstadoBO estadoBO;
-    private CidadeBO cidadeBO;
-    private FuncaoBO funcaoBO;
-    private VinculoSocialBO vinculoSocialBO;
-    private TipoBemBO tipoBemBO;
-    private BemBO bemBO;
-    private PenhoraBO penhoraBO;
-
     private EnderecoPessoa enderecoPessoa;
     private EnderecoPessoa enderecoPessoaFisica;
     private EnderecoPessoa enderecoPessoaJuridica;
@@ -127,27 +106,7 @@ public class TemplateBean implements Serializable {
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            usuarioBO = new UsuarioBO();
-            enderecoBO = new EnderecoBO();
-            pessoaFisicaBO = new PessoaFisicaBO();
-            pessoaJuridicaBO = new PessoaJuridicaBO();
-            processoJudicialBO = new ProcessoJudicialBO();
-            pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
-            pessoaFisicaFisicaBO = new PessoaFisicaFisicaBO();
-            pessoaFisicaJuridicaBO = new PessoaFisicaJuridicaBO();
-            pessoaJuridicaJuridicaBO = new PessoaJuridicaJuridicaBO();
-            estadoBO = new EstadoBO();
-            tipoEmpresarialBO = new TipoEmpresarialBO();
-            cidadeBO = new CidadeBO();
-            funcaoBO = new FuncaoBO();
-            paisBO = new PaisBO();
-            nacionalidadeBO = new NacionalidadeBO();
-            estadoCivilBO = new EstadoCivilBO();
-            vinculoSocialBO = new VinculoSocialBO();
-            tipoBemBO = new TipoBemBO();
-            bemBO = new BemBO();
-            penhoraBO = new PenhoraBO();
-            usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
+            usuario = UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
 
             enderecoPessoa = new EnderecoPessoa();
             enderecoPessoaFisica = new EnderecoPessoa(new PessoaFisica(), new Endereco(), new ArrayList<Bem>());
@@ -186,49 +145,49 @@ public class TemplateBean implements Serializable {
             bem.setTipo(idfk.substring(0, 2));
             bem.setIdFk(Integer.valueOf(idfk.substring(2)));
             bem.setStatus('A');
-            tipoBemList = tipoBemBO.findAll();
+            tipoBemList = TipoBemBO.findAll();
         }
     }
 
     public void carregarFormularioModalPF() {
-        paisList = paisBO.findAll();
-        paisList.remove(paisBO.findBrasil());
-        estadoList = estadoBO.findAll();
-        nacionalidadeList = nacionalidadeBO.findAll();
-        estadoCivilList = estadoCivilBO.findAll();
-        funcaoList = funcaoBO.findAll();
-        vinculoSocialList = vinculoSocialBO.findAll();
-        tipoBemList = tipoBemBO.findAll();
+        paisList = PaisBO.findAll();
+        paisList.remove(PaisBO.findBrasil());
+        estadoList = EstadoBO.findAll();
+        nacionalidadeList = NacionalidadeBO.findAll();
+        estadoCivilList = EstadoCivilBO.findAll();
+        funcaoList = FuncaoBO.findAll();
+        vinculoSocialList = VinculoSocialBO.findAll();
+        tipoBemList = TipoBemBO.findAll();
     }
 
     public void carregarFormularioModalPJ() {
-        estadoList = estadoBO.findAll();
-        tipoEmpresarialList = tipoEmpresarialBO.findAll();
-        funcaoList = funcaoBO.findAll();
-        tipoBemList = tipoBemBO.findAll();
+        estadoList = EstadoBO.findAll();
+        tipoEmpresarialList = TipoEmpresarialBO.findAll();
+        funcaoList = FuncaoBO.findAll();
+        tipoBemList = TipoBemBO.findAll();
     }
 
     public void getCidadesPeloEstado() {
         if (tabela.equals("PF")) {
             PessoaFisica pessoaFisica = (PessoaFisica) enderecoPessoaFisica.getPessoa();
             if (pessoaFisica.getEstadoFk() != null) {
-                cidadeNatList = cidadeBO.getByStateId(pessoaFisica.getEstadoFk().getId());
+                cidadeNatList = CidadeBO.getByStateId(pessoaFisica.getEstadoFk().getId());
             } else {
                 cidadeNatList.clear();
             }
             if (enderecoPessoaFisica.getEndereco().getEstadoFk() != null) {
-                cidadeEndList = cidadeBO.getByStateId(enderecoPessoaFisica.getEndereco().getEstadoFk().getId());
+                cidadeEndList = CidadeBO.getByStateId(enderecoPessoaFisica.getEndereco().getEstadoFk().getId());
             } else {
                 cidadeEndList.clear();
             }
             if (pessoaFisica.getEstadoEleitoralFk() != null) {
-                cidadeEleList = cidadeBO.getByStateId(pessoaFisica.getEstadoEleitoralFk().getId());
+                cidadeEleList = CidadeBO.getByStateId(pessoaFisica.getEstadoEleitoralFk().getId());
             } else {
                 cidadeEleList.clear();
             }
         } else if (tabela.equals("PJ")) {
             if (enderecoPessoaJuridica.getEndereco().getEstadoFk() != null) {
-                cidadeEndList = cidadeBO.getByStateId(enderecoPessoaJuridica.getEndereco().getEstadoFk().getId());
+                cidadeEndList = CidadeBO.getByStateId(enderecoPessoaJuridica.getEndereco().getEstadoFk().getId());
             } else {
                 cidadeEndList.clear();
             }
@@ -258,7 +217,7 @@ public class TemplateBean implements Serializable {
     }
 
     public void vincularPessoaFisica() {
-        PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfVId));
+        PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(Integer.valueOf(pfVId));
         if (tabela.equals("PF")) {
             PessoaFisicaFisica pessoaFisicaFisica = new PessoaFisicaFisica();
             pessoaFisicaFisica.setPessoaFisicaSecundariaFk(pessoaFisica);
@@ -296,7 +255,7 @@ public class TemplateBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
-        PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjVId));
+        PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(pjVId));
         if (tabela.equals("PF")) {
             PessoaFisicaJuridica pessoaFisicaJuridica = new PessoaFisicaJuridica();
             pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
@@ -332,9 +291,9 @@ public class TemplateBean implements Serializable {
         bemRepetido = false;
         List<Bem> bemList = new ArrayList<>();
         if (bem.getTipo().equals("PF")) {
-            bemList = bemBO.findPFBens(bem.getIdFk());
+            bemList = BemBO.findPFBens(bem.getIdFk());
         } else if (bem.getTipo().equals("PJ")) {
-            bemList = bemBO.findPJBens(bem.getIdFk());
+            bemList = BemBO.findPJBens(bem.getIdFk());
         }
         for (Bem bem : bemList) {
             if (this.bem.equalsValues(bem)) {
@@ -346,7 +305,7 @@ public class TemplateBean implements Serializable {
             if (bem.getDataDeAquisicao() != null || bem.getDataDeTransferenciaOuExtincao() != null
                     || bem.getDescricao() != null || bem.getEndereco() != null || bem.getValor() != null
                     || bem.getTipoBemFk() != null) {
-                bemBO.create(bem);
+                BemBO.create(bem);
             }
         }
     }
@@ -357,28 +316,28 @@ public class TemplateBean implements Serializable {
             pessoaFisica.setRgOrgaoEmissor(pessoaFisica.getRgOrgaoEmissor().toUpperCase());
         }
         if (pessoaFisica.getEstadoFk() != null) {
-            pessoaFisica.setPaisFk(paisBO.findBrasil());
+            pessoaFisica.setPaisFk(PaisBO.findBrasil());
         }
         pessoaFisica.setStatus('A');
-        pessoaFisica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-        pessoaFisica.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
-        pessoaFisicaBO.create(pessoaFisica);
+        pessoaFisica.setUsuarioFk(UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+        pessoaFisica.setInstituicaoFk(UsuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
+        PessoaFisicaBO.create(pessoaFisica);
         Endereco endereco = enderecoPessoaFisica.getEndereco();
         endereco.setTipo("PF");
         endereco.setIdFk(pessoaFisica.getId());
-        enderecoBO.create(endereco);
+        EnderecoBO.create(endereco);
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
             pfj.setPessoaFisicaFk(pessoaFisica);
-            pessoaFisicaJuridicaBO.create(pfj);
+            PessoaFisicaJuridicaBO.create(pfj);
         }
         for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
             pff.setPessoaFisicaPrimariaFk(pessoaFisica);
-            pessoaFisicaFisicaBO.create(pff);
+            PessoaFisicaFisicaBO.create(pff);
         }
         for (Bem b : bemList) {
             b.setTipo("PF");
             b.setIdFk(pessoaFisica.getId());
-            bemBO.create(b);
+            BemBO.create(b);
         }
         GeradorLog.criar(pessoaFisica.getId(), "PF", 'C');
     }
@@ -386,55 +345,55 @@ public class TemplateBean implements Serializable {
     public void cadastrarPJ() {
         PessoaJuridica pessoaJuridica = (PessoaJuridica) enderecoPessoaJuridica.getPessoa();
         pessoaJuridica.setStatus('A');
-        pessoaJuridica.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-        pessoaJuridica.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
-        pessoaJuridicaBO.create(pessoaJuridica);
+        pessoaJuridica.setUsuarioFk(UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+        pessoaJuridica.setInstituicaoFk(UsuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
+        PessoaJuridicaBO.create(pessoaJuridica);
         Endereco endereco = enderecoPessoaJuridica.getEndereco();
         endereco.setTipo("PJ");
         endereco.setIdFk(pessoaJuridica.getId());
-        enderecoBO.create(endereco);
+        EnderecoBO.create(endereco);
         for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
             pfj.setPessoaJuridicaFk(pessoaJuridica);
-            pessoaFisicaJuridicaBO.create(pfj);
+            PessoaFisicaJuridicaBO.create(pfj);
         }
         for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
             pjj.setPessoaJuridicaPrimariaFk(pessoaJuridica);
-            pessoaJuridicaJuridicaBO.create(pjj);
+            PessoaJuridicaJuridicaBO.create(pjj);
         }
         for (Bem b : bemList) {
             b.setTipo("PJ");
             b.setIdFk(pessoaJuridica.getId());
-            bemBO.create(b);
+            BemBO.create(b);
         }
         GeradorLog.criar(pessoaJuridica.getId(), "PJ", 'C');
     }
 
     public void exibirModalInfo() {
         if (tabela.equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(idfk));
-            enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()), bemBO.findPFBens(pessoaFisica.getId()));
+            PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(Integer.valueOf(idfk));
+            enderecoPessoa = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(idfk));
-            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
+            PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(idfk));
+            enderecoPessoa = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
             executado = new Executado();
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJUD")) {
             CitacaoBO citacaoBO = new CitacaoBO();
             RedirecionamentoBO redirecionamentoBO = new RedirecionamentoBO();
-            ProcessoJudicial pjud = processoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
+            ProcessoJudicial pjud = ProcessoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")) {
-                PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pf, enderecoBO.findPFAddress(pf.getId()), bemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), penhoraBO.findByPJUD(pjud.getId()));
+                PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
+                executado = new Executado(pjud, new EnderecoPessoa(pf, EnderecoBO.findPFAddress(pf.getId()), BemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), PenhoraBO.findByPJUD(pjud.getId()));
             } else {
-                PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pj, enderecoBO.findPFAddress(pj.getId()), bemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), penhoraBO.findByPJUD(pjud.getId()));
+                PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
+                executado = new Executado(pjud, new EnderecoPessoa(pj, EnderecoBO.findPFAddress(pj.getId()), BemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), PenhoraBO.findByPJUD(pjud.getId()));
             }
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
             enderecoPessoa = new EnderecoPessoa();
         } else if (tabela.equals("PJS")) {
-            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(idfk));
+            pessoaJuridicaSucessao = PessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(idfk));
             executado = new Executado();
             enderecoPessoa = new EnderecoPessoa();
         }
@@ -453,11 +412,11 @@ public class TemplateBean implements Serializable {
     public String loadSocio(String tipo, String id) {
         if (tipo != null) {
             if (tipo.equals("PF")) {
-                PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
+                PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
                 String cpf = (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
                 return cpf + " - " + pf.getNome();
             } else {
-                PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
+                PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
                 String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
                 return cnpj + " - " + pj.getNome();
             }
@@ -469,16 +428,16 @@ public class TemplateBean implements Serializable {
         List<SocioRedirecionamento> socioRedirecionamentoList = new ArrayList<>();
         for (Redirecionamento redirecionamento : redirecionamentoList) {
             if (redirecionamento.getSocio().equals("PF")) {
-                socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaFisicaBO.findPessoaFisica(redirecionamento.getSocioFk()), redirecionamento));
+                socioRedirecionamentoList.add(new SocioRedirecionamento(PessoaFisicaBO.findPessoaFisica(redirecionamento.getSocioFk()), redirecionamento));
             } else {
-                socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaJuridicaBO.findPessoaJuridica(redirecionamento.getSocioFk()), redirecionamento));
+                socioRedirecionamentoList.add(new SocioRedirecionamento(PessoaJuridicaBO.findPessoaJuridica(redirecionamento.getSocioFk()), redirecionamento));
             }
         }
         return socioRedirecionamentoList;
     }
 
     public void exibirSucessao() {
-        pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(sucessaoId));
+        pessoaJuridicaSucessao = PessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(sucessaoId));
     }
 
     public void search() throws IOException {

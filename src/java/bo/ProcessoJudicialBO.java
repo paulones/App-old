@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class ProcessoJudicialBO implements Serializable{
     
-    private ProcessoJudicialDAO processoJudicialDAO;
-    
-    public ProcessoJudicialBO(){
-        processoJudicialDAO = new ProcessoJudicialDAO();
-    }
-    
-    public void create(ProcessoJudicial processoJudicial){
+    public static void create(ProcessoJudicial processoJudicial){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             processoJudicialDAO.create(processoJudicial);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(ProcessoJudicial processoJudicial){
+    public static void edit(ProcessoJudicial processoJudicial){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             processoJudicialDAO.edit(processoJudicial);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(ProcessoJudicial processoJudicial){
+    public static void destroy(ProcessoJudicial processoJudicial){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             processoJudicialDAO.destroy(processoJudicial.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public ProcessoJudicial findProcessoJudicial(Integer id){
+    public static ProcessoJudicial findProcessoJudicial(Integer id){
         try { 
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.findProcessoJudicial(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +55,9 @@ public class ProcessoJudicialBO implements Serializable{
         return new ProcessoJudicial();
     }
     
-    public List<ProcessoJudicial> findAllActive(){
+    public static List<ProcessoJudicial> findAllActive(){
         try { 
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.findAllActive();
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,8 +65,9 @@ public class ProcessoJudicialBO implements Serializable{
         return new ArrayList<ProcessoJudicial>();
     }
     
-    public ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial){
+    public static ProcessoJudicial findByProcessNumberOrCDA(ProcessoJudicial processoJudicial){
         try { 
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.findByProcessNumberOrCDA(processoJudicial);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +75,9 @@ public class ProcessoJudicialBO implements Serializable{
         return new ProcessoJudicial();
     }
     
-    public ProcessoJudicial findByProcessNumber(String processNumber){
+    public static ProcessoJudicial findByProcessNumber(String processNumber){
         try { 
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.findByProcessNumber(processNumber);
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,8 +85,9 @@ public class ProcessoJudicialBO implements Serializable{
         return new ProcessoJudicial();
     }
     
-    public ProcessoJudicial findByCDA(ProcessoJudicial processoJudicial){
+    public static ProcessoJudicial findByCDA(ProcessoJudicial processoJudicial){
         try { 
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.findByCDA(processoJudicial);
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,8 +95,9 @@ public class ProcessoJudicialBO implements Serializable{
         return new ProcessoJudicial();
     }
     
-    public List<ProcessoJudicial> findByExecutado(String executado, String tipoExecutado){
+    public static List<ProcessoJudicial> findByExecutado(String executado, String tipoExecutado){
         try { 
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.findByExecutado(executado, tipoExecutado);
         } catch (Exception e) {
             e.printStackTrace();

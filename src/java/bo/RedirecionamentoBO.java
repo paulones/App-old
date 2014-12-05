@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class RedirecionamentoBO implements Serializable{
     
-    private RedirecionamentoDAO redirecionamentoDAO;
-
-    public RedirecionamentoBO() {
-        redirecionamentoDAO = new RedirecionamentoDAO();
-    }
-    
-    public void create(Redirecionamento redirecionamento){
+    public static void create(Redirecionamento redirecionamento){
         try {
+            RedirecionamentoDAO redirecionamentoDAO = new RedirecionamentoDAO();
             redirecionamentoDAO.create(redirecionamento);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(Redirecionamento redirecionamento){
+    public static void edit(Redirecionamento redirecionamento){
         try {
+            RedirecionamentoDAO redirecionamentoDAO = new RedirecionamentoDAO();
             redirecionamentoDAO.edit(redirecionamento);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(Redirecionamento redirecionamento){
+    public static void destroy(Redirecionamento redirecionamento){
         try {
+            RedirecionamentoDAO redirecionamentoDAO = new RedirecionamentoDAO();
             redirecionamentoDAO.destroy(redirecionamento.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<Redirecionamento> findByPJUD(Integer id){
+    public static List<Redirecionamento> findByPJUD(Integer id){
         try { 
+            RedirecionamentoDAO redirecionamentoDAO = new RedirecionamentoDAO();
             return redirecionamentoDAO.findByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +55,9 @@ public class RedirecionamentoBO implements Serializable{
         return new ArrayList<Redirecionamento>();
     }
     
-    public void destroyByPJUD(Integer idPjud){
+    public static void destroyByPJUD(Integer idPjud){
         try {
+            RedirecionamentoDAO redirecionamentoDAO = new RedirecionamentoDAO();
             redirecionamentoDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();

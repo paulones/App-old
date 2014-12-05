@@ -23,12 +23,10 @@ import util.Cookie;
 public class HomeBean implements Serializable{
     
     private Usuario usuario;
-    private UsuarioBO usuarioBO;
     
     public void init(){
         if (!FacesContext.getCurrentInstance().isPostback()){
-            usuarioBO = new UsuarioBO();
-            usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
+            usuario = UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
         }
     }
 

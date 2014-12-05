@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class EstadoCivilBO implements Serializable {
     
-    private EstadoCivilDAO estadoCivilDAO;
-    
-    public EstadoCivilBO(){
-        estadoCivilDAO = new EstadoCivilDAO();
-    }
-    
-    public List<EstadoCivil> findAll(){
+    public static List<EstadoCivil> findAll(){
         try { 
+            EstadoCivilDAO estadoCivilDAO = new EstadoCivilDAO();
             return estadoCivilDAO.findEstadoCivilEntities();
         } catch (Exception e) {
             e.printStackTrace();

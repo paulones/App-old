@@ -32,24 +32,18 @@ public class LoginBean implements Serializable {
 
     private String mensagem;
     private Usuario usuario;
-    private UsuarioBO usuarioBO;
-    private RecuperarSenhaBO rpBO;
-    private LoginBO loginBO;
     private String licenca;
     private String cod;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            usuarioBO = new UsuarioBO(); 
-            rpBO = new RecuperarSenhaBO();
-            loginBO = new LoginBO();
             usuario = new Usuario();
             mensagem = "";
             licenca = "";
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             cod = request.getParameter("cod");
             if (cod != null) {
-                if (rpBO.findRecuperarSenhaByCod(cod) == null) {
+                if (RecuperarSenhaBO.findRecuperarSenhaByCod(cod) == null) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/login.xhtml");
                 } else {
                     mensagem = "passChange";
@@ -59,10 +53,10 @@ public class LoginBean implements Serializable {
     }
 
     public void login() throws IOException {
-        Usuario usuarioBD = usuarioBO.findUsuarioByCPF(usuario.getCpf());
+        Usuario usuarioBD = UsuarioBO.findUsuarioByCPF(usuario.getCpf());
         if (usuarioBD != null) {
             if (usuarioBD.getSenha().equals(usuario.getSenha())) {
-                if (!loginBO.expirado(usuario.getCpf())) {
+                if (!LoginBO.expirado(usuario.getCpf())) {
                     Cookie.addCookie("usuario", usuario.getCpf(), 36000);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("/home.xhtml");
                 } else {
@@ -83,15 +77,14 @@ public class LoginBean implements Serializable {
         try {
             cod = GeradorMD5.generate(usuario.getEmail() + "aabbccdd");
             RecuperarSenha rp = new RecuperarSenha();
-            rpBO = new RecuperarSenhaBO();
             String accountActivation = "App - Ativar Conta";
             String mailtext = "Olá!\n\nObrigado pelo seu interesse em se registrar no App.\n\nPara concluir o processo, será preciso que você clique no link abaixo para ativar sua conta.\n\n";
             mailtext += "http://prcc.com.br/login.xhtml?cod=" + cod;
             mailtext += "\n\nAtenciosamente,\n\nPRCC - Gestão em TI e negócios.";
             EnviarEmail.enviar(mailtext, accountActivation, usuario.getEmail());
-            rp.setId(usuarioBO.findUsuarioByEmail(usuario.getEmail()).getId());
+            rp.setId(UsuarioBO.findUsuarioByEmail(usuario.getEmail()).getId());
             rp.setCodigo(cod);
-            rpBO.create(rp);
+            RecuperarSenhaBO.create(rp);
             usuario.setEmail(null);
             mensagem = "loginSuccess";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Solicitação enviada. Verifique seu e-mail.", null));
@@ -104,20 +97,20 @@ public class LoginBean implements Serializable {
 
     public void alterarSenha() {
         String senha = usuario.getSenha();
-        RecuperarSenha rp = rpBO.findRecuperarSenhaByCod(cod);
-        usuario = usuarioBO.findUsuario(rp.getUsuario().getId());
+        RecuperarSenha rp = RecuperarSenhaBO.findRecuperarSenhaByCod(cod);
+        usuario = UsuarioBO.findUsuario(rp.getUsuario().getId());
         usuario.setSenha(senha);
-        usuarioBO.edit(usuario);
-        rpBO.destroy(rp);
+        UsuarioBO.edit(usuario);
+        RecuperarSenhaBO.destroy(rp);
         mensagem = "loginSuccess";
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Senha alterada com sucesso!", null));
     }
 
     public void registrar() {
-        if (usuarioBO.findAutorizacaoByCPF(usuario.getCpf()) != null) {
-            if (usuarioBO.findUsuarioByCPF(usuario.getCpf()) == null) {
-                if (usuarioBO.findUsuarioByEmail(usuario.getEmail()) == null) {
-                    usuarioBO.create(usuario);
+        if (UsuarioBO.findAutorizacaoByCPF(usuario.getCpf()) != null) {
+            if (UsuarioBO.findUsuarioByCPF(usuario.getCpf()) == null) {
+                if (UsuarioBO.findUsuarioByEmail(usuario.getEmail()) == null) {
+                    UsuarioBO.create(usuario);
                     mensagem = "loginSuccess";
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Usuário registrado com sucesso!", null));
                     usuario.setNome(null);
@@ -142,7 +135,7 @@ public class LoginBean implements Serializable {
     }
 
     public void licenciar() {
-        if (loginBO.licenciar(licenca)) {
+        if (LoginBO.licenciar(licenca)) {
             mensagem = "loginSuccess";
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Licença registrada com sucesso!", null));
         } else {

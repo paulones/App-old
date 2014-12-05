@@ -17,15 +17,10 @@ import java.util.List;
  * @author paulones
  */
 public class EstadoBO implements Serializable {
-    
-    private EstadoDAO estadoDAO;
-    
-    public EstadoBO(){
-        estadoDAO = new EstadoDAO();
-    }
-    
-    public List<Estado> findAll(){
+   
+    public static List<Estado> findAll(){
         try { 
+            EstadoDAO estadoDAO = new EstadoDAO();
             return estadoDAO.findEstadoEntities();
         } catch (Exception e) {
             e.printStackTrace();

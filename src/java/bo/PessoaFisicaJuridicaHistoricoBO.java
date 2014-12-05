@@ -18,30 +18,27 @@ import java.util.List;
  */
 public class PessoaFisicaJuridicaHistoricoBO implements Serializable{
     
-    private PessoaFisicaJuridicaHistoricoDAO pessoaFisicaJuridicaHistoricoDAO;
-    
-    public PessoaFisicaJuridicaHistoricoBO(){
-        pessoaFisicaJuridicaHistoricoDAO = new PessoaFisicaJuridicaHistoricoDAO();
-    }
-    
-    public void create(PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistorico){
+    public static void create(PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistorico){
         try {
+            PessoaFisicaJuridicaHistoricoDAO pessoaFisicaJuridicaHistoricoDAO = new PessoaFisicaJuridicaHistoricoDAO();
             pessoaFisicaJuridicaHistoricoDAO.create(pessoaFisicaJuridicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistorico){
+    public static void edit(PessoaFisicaJuridicaHistorico pessoaFisicaJuridicaHistorico){
         try {
+            PessoaFisicaJuridicaHistoricoDAO pessoaFisicaJuridicaHistoricoDAO = new PessoaFisicaJuridicaHistoricoDAO();
             pessoaFisicaJuridicaHistoricoDAO.edit(pessoaFisicaJuridicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaFisicaJuridicaHistorico> findAllByPF(Integer id){
+    public static List<PessoaFisicaJuridicaHistorico> findAllByPF(Integer id){
         try { 
+            PessoaFisicaJuridicaHistoricoDAO pessoaFisicaJuridicaHistoricoDAO = new PessoaFisicaJuridicaHistoricoDAO();
             return pessoaFisicaJuridicaHistoricoDAO.findAllByPF(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,8 +46,9 @@ public class PessoaFisicaJuridicaHistoricoBO implements Serializable{
         return new ArrayList<>();
     }
     
-    public List<PessoaFisicaJuridicaHistorico> findAllByPJ(Integer id){
+    public static List<PessoaFisicaJuridicaHistorico> findAllByPJ(Integer id){
         try { 
+            PessoaFisicaJuridicaHistoricoDAO pessoaFisicaJuridicaHistoricoDAO = new PessoaFisicaJuridicaHistoricoDAO();
             return pessoaFisicaJuridicaHistoricoDAO.findAllByPJ(id);
         } catch (Exception e) {
             e.printStackTrace();

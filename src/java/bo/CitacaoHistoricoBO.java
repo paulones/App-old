@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class CitacaoHistoricoBO implements Serializable{
     
-    private CitacaoHistoricoDAO citacaoHistoricoDAO;
-
-    public CitacaoHistoricoBO() {
-        citacaoHistoricoDAO = new CitacaoHistoricoDAO();
-    }
-    
-    public void create(CitacaoHistorico citacaoHistorico){
+    public static void create(CitacaoHistorico citacaoHistorico){
         try {
+            CitacaoHistoricoDAO citacaoHistoricoDAO = new CitacaoHistoricoDAO();
             citacaoHistoricoDAO.create(citacaoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(CitacaoHistorico citacaoHistorico){
+    public static void edit(CitacaoHistorico citacaoHistorico){
         try {
+            CitacaoHistoricoDAO citacaoHistoricoDAO = new CitacaoHistoricoDAO();
             citacaoHistoricoDAO.edit(citacaoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(CitacaoHistorico citacaoHistorico){
+    public static void destroy(CitacaoHistorico citacaoHistorico){
         try {
+            CitacaoHistoricoDAO citacaoHistoricoDAO = new CitacaoHistoricoDAO();
             citacaoHistoricoDAO.destroy(citacaoHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<CitacaoHistorico> findByPJUD(Integer id){
+    public static List<CitacaoHistorico> findByPJUD(Integer id){
         try { 
+            CitacaoHistoricoDAO citacaoHistoricoDAO = new CitacaoHistoricoDAO();
             return citacaoHistoricoDAO.findByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();

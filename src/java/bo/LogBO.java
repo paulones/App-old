@@ -19,22 +19,18 @@ import java.util.List;
  */
 public class LogBO implements Serializable{
     
-    private LogDAO logDAO;
-    
-    public LogBO(){
-        logDAO = new LogDAO();
-    }
-    
-    public void create(Log log){
+    public static void create(Log log){
         try {
+            LogDAO logDAO = new LogDAO();
             logDAO.create(log);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<Log> findLogEntities(Integer quantidade, Integer indice){
+    public static List<Log> findLogEntities(Integer quantidade, Integer indice){
         try { 
+            LogDAO logDAO = new LogDAO();
             return logDAO.findLogEntities(quantidade, indice);
         } catch (Exception e) {
             e.printStackTrace();
@@ -42,8 +38,9 @@ public class LogBO implements Serializable{
         return new ArrayList<Log>();
     }
     
-    public List<Log> findLogByInstituicao(Integer quantidade, Instituicao instituicao){
+    public static List<Log> findLogByInstituicao(Integer quantidade, Instituicao instituicao){
         try { 
+            LogDAO logDAO = new LogDAO();
             return logDAO.findLogByInstituicao(quantidade, instituicao);
         } catch (Exception e) {
             e.printStackTrace();

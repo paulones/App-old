@@ -41,10 +41,6 @@ public class sucessaoBean implements Serializable {
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
     private PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico;
 
-    private PessoaJuridicaBO pessoaJuridicaBO;
-    private PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO;
-    private UsuarioBO usuarioBO;
-    private PessoaJuridicaSucessaoHistoricoBO pessoaJuridicaSucessaoHistoricoBO;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -52,10 +48,6 @@ public class sucessaoBean implements Serializable {
             sucessora = "";
             succeed = "";
             dataDeSucessao = "";
-            pessoaJuridicaBO = new PessoaJuridicaBO();
-            pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
-            pessoaJuridicaSucessaoHistoricoBO = new PessoaJuridicaSucessaoHistoricoBO();
-            usuarioBO = new UsuarioBO();
 
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         }
@@ -63,27 +55,27 @@ public class sucessaoBean implements Serializable {
 
     public void suceder() {
         if (!sucedida.equals(sucessora)) {
-            PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
-            PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
+            PessoaJuridica pjSucedida = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+            PessoaJuridica pjSucessora = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
             UtilBO utilBO = new UtilBO();
             boolean exists = true;
-            pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+            pessoaJuridicaSucessao = PessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
             if (pessoaJuridicaSucessao == null) {
                 pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
                 exists = false;
             } else {
                 prepararHistorico(pessoaJuridicaSucessao);
             }
-            pessoaJuridicaSucessao.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+            pessoaJuridicaSucessao.setUsuarioFk(UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
             pessoaJuridicaSucessao.setPessoaJuridicaSucedidaFk(pjSucedida);
             pessoaJuridicaSucessao.setPessoaJuridicaSucessoraFk(pjSucessora);
             pessoaJuridicaSucessao.setDataDeSucessao(dataDeSucessao);
             pessoaJuridicaSucessao.setStatus('A');
             if (exists) {
-                if (!pessoaJuridicaSucessao.equalsValues(pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
-                    pessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
+                if (!pessoaJuridicaSucessao.equalsValues(PessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora))) {
+                    PessoaJuridicaSucessaoBO.edit(pessoaJuridicaSucessao);
                     pessoaJuridicaSucessaoHistorico.setDataDeModificacao(utilBO.findServerTime());
-                    pessoaJuridicaSucessaoHistoricoBO.create(pessoaJuridicaSucessaoHistorico);
+                    PessoaJuridicaSucessaoHistoricoBO.create(pessoaJuridicaSucessaoHistorico);
                     GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'U');
                     succeed = "success";
                     sucedida = "";
@@ -95,7 +87,7 @@ public class sucessaoBean implements Serializable {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nenhum campo foi alterado.", null));
                 }
             } else {
-                pessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
+                PessoaJuridicaSucessaoBO.create(pessoaJuridicaSucessao);
                 GeradorLog.criar(pessoaJuridicaSucessao.getId(), "PJS", 'C');
                 succeed = "success";
                 sucedida = "";
@@ -112,9 +104,9 @@ public class sucessaoBean implements Serializable {
     public void checkSucessoes() {
         if (sucedida != null && sucessora != null) {
             if (!sucedida.equals(sucessora)) {
-                PessoaJuridica pjSucedida = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
-                PessoaJuridica pjSucessora = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
-                pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
+                PessoaJuridica pjSucedida = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucedida));
+                PessoaJuridica pjSucessora = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(sucessora));
+                pessoaJuridicaSucessao = PessoaJuridicaSucessaoBO.findDuplicates(pjSucedida, pjSucessora);
                 if (pessoaJuridicaSucessao != null) {
                     if (pessoaJuridicaSucessao.getStatus().equals('I')) {
                         succeed = "warning";

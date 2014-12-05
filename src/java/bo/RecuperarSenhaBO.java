@@ -15,23 +15,19 @@ import java.io.Serializable;
  * @author ipti004
  */
 public class RecuperarSenhaBO implements Serializable{
-    
-    private RecuperarSenhaDAO recuperarSenhaDAO;
-    
-    public RecuperarSenhaBO(){
-        recuperarSenhaDAO = new RecuperarSenhaDAO();
-    }
 
-    public void create(RecuperarSenha recuperarSenha) {
+    public static void create(RecuperarSenha recuperarSenha) {
         try {
+            RecuperarSenhaDAO recuperarSenhaDAO = new RecuperarSenhaDAO();
             recuperarSenhaDAO.create(recuperarSenha);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public RecuperarSenha findRecuperarSenhaByCod(String cod) {
+    public static RecuperarSenha findRecuperarSenhaByCod(String cod) {
         try { 
+            RecuperarSenhaDAO recuperarSenhaDAO = new RecuperarSenhaDAO();
             return recuperarSenhaDAO.findRecuperarSenhaByCod(cod);
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,16 +35,18 @@ public class RecuperarSenhaBO implements Serializable{
         return new RecuperarSenha();
     }
 
-    public void edit(RecuperarSenha recuperarSenha) {
+    public static void edit(RecuperarSenha recuperarSenha) {
         try {
+            RecuperarSenhaDAO recuperarSenhaDAO = new RecuperarSenhaDAO();
             recuperarSenhaDAO.edit(recuperarSenha);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(RecuperarSenha recuperarSenha) {
+    public static void destroy(RecuperarSenha recuperarSenha) {
         try {
+            RecuperarSenhaDAO recuperarSenhaDAO = new RecuperarSenhaDAO();
             recuperarSenhaDAO.destroy(recuperarSenha.getUsuario().getId());
         } catch (Exception e) {
             e.printStackTrace();

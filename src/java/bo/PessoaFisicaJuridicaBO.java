@@ -18,46 +18,45 @@ import java.util.List;
  */
 public class PessoaFisicaJuridicaBO implements Serializable{
     
-    private PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO;
-    
-    public PessoaFisicaJuridicaBO(){
-        pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
-    }
-    
-    public void create(PessoaFisicaJuridica pessoaFisicaJuridica){
+    public static void create(PessoaFisicaJuridica pessoaFisicaJuridica){
         try {
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             pessoaFisicaJuridicaDAO.create(pessoaFisicaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaFisicaJuridica pessoaFisicaJuridica){
+    public static void edit(PessoaFisicaJuridica pessoaFisicaJuridica){
         try {
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             pessoaFisicaJuridicaDAO.edit(pessoaFisicaJuridica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroyByPF(Integer idPf){
+    public static void destroyByPF(Integer idPf){
         try {
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             pessoaFisicaJuridicaDAO.destroyByPF(idPf);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroyByPJ(Integer idPj){
+    public static void destroyByPJ(Integer idPj){
         try {
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             pessoaFisicaJuridicaDAO.destroyByPJ(idPj);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public PessoaFisicaJuridica findByPFAndPJ(Integer idPf, Integer idPj){
+    public static PessoaFisicaJuridica findByPFAndPJ(Integer idPf, Integer idPj){
         try { 
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             return pessoaFisicaJuridicaDAO.findByPFAndPJ(idPf, idPj);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,8 +64,9 @@ public class PessoaFisicaJuridicaBO implements Serializable{
         return null;
     }
     
-    public List<PessoaFisicaJuridica> findAllByPF(Integer id){
+    public static List<PessoaFisicaJuridica> findAllByPF(Integer id){
         try { 
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             return pessoaFisicaJuridicaDAO.findAllByPF(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,8 +74,9 @@ public class PessoaFisicaJuridicaBO implements Serializable{
         return new ArrayList<PessoaFisicaJuridica>();
     }
     
-    public List<PessoaFisicaJuridica> findAllByPJ(Integer id){
+    public static List<PessoaFisicaJuridica> findAllByPJ(Integer id){
         try { 
+            PessoaFisicaJuridicaDAO pessoaFisicaJuridicaDAO = new PessoaFisicaJuridicaDAO();
             return pessoaFisicaJuridicaDAO.findAllByPJ(id);
         } catch (Exception e) {
             e.printStackTrace();

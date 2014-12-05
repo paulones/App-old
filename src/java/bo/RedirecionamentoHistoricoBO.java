@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class RedirecionamentoHistoricoBO implements Serializable{
     
-    private RedirecionamentoHistoricoDAO redirecionamentoHistoricoDAO;
-
-    public RedirecionamentoHistoricoBO() {
-        redirecionamentoHistoricoDAO = new RedirecionamentoHistoricoDAO();
-    }
-    
-    public void create(RedirecionamentoHistorico redirecionamentoHistorico){
+    public static void create(RedirecionamentoHistorico redirecionamentoHistorico){
         try {
+            RedirecionamentoHistoricoDAO redirecionamentoHistoricoDAO = new RedirecionamentoHistoricoDAO();
             redirecionamentoHistoricoDAO.create(redirecionamentoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(RedirecionamentoHistorico redirecionamentoHistorico){
+    public static void edit(RedirecionamentoHistorico redirecionamentoHistorico){
         try {
+            RedirecionamentoHistoricoDAO redirecionamentoHistoricoDAO = new RedirecionamentoHistoricoDAO();
             redirecionamentoHistoricoDAO.edit(redirecionamentoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(RedirecionamentoHistorico redirecionamentoHistorico){
+    public static void destroy(RedirecionamentoHistorico redirecionamentoHistorico){
         try {
+            RedirecionamentoHistoricoDAO redirecionamentoHistoricoDAO = new RedirecionamentoHistoricoDAO();
             redirecionamentoHistoricoDAO.destroy(redirecionamentoHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<RedirecionamentoHistorico> findByPJUD(Integer id){
+    public static List<RedirecionamentoHistorico> findByPJUD(Integer id){
         try { 
+            RedirecionamentoHistoricoDAO redirecionamentoHistoricoDAO = new RedirecionamentoHistoricoDAO();
             return redirecionamentoHistoricoDAO.findByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();

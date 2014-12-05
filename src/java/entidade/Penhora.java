@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Penhora.findById", query = "SELECT p FROM Penhora p WHERE p.id = :id"),
     @NamedQuery(name = "Penhora.findBySituacao", query = "SELECT p FROM Penhora p WHERE p.situacao = :situacao"),
     @NamedQuery(name = "Penhora.findByValor", query = "SELECT p FROM Penhora p WHERE p.valor = :valor"),
+    @NamedQuery(name = "Penhora.findByMotivo", query = "SELECT p FROM Penhora p WHERE p.motivo = :motivo"),
     @NamedQuery(name = "Penhora.findByDataDaPenhora", query = "SELECT p FROM Penhora p WHERE p.dataDaPenhora = :dataDaPenhora"),
     @NamedQuery(name = "Penhora.findBySocioFk", query = "SELECT p FROM Penhora p WHERE p.socioFk = :socioFk"),
     @NamedQuery(name = "Penhora.findBySocio", query = "SELECT p FROM Penhora p WHERE p.socio = :socio"),
@@ -52,6 +53,9 @@ public class Penhora implements Serializable {
     private Character situacao;
     @Column(name = "valor")
     private BigDecimal valor;
+    @Size(max = 150)
+    @Column(name = "motivo")
+    private String motivo;
     @Size(max = 10)
     @Column(name = "data_da_penhora")
     private String dataDaPenhora;
@@ -212,6 +216,9 @@ public class Penhora implements Serializable {
         if (!Objects.equals(this.valor, other.valor)) {
             return false;
         }
+        if (!Objects.equals(this.motivo, other.motivo)) {
+            return false;
+        }
         return true;
     }
 
@@ -242,6 +249,14 @@ public class Penhora implements Serializable {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+
+    public String getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(String motivo) {
+        this.motivo = motivo;
     }
     
 }

@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class PessoaFisicaHistoricoBO implements Serializable{
     
-    private PessoaFisicaHistoricoDAO pessoaFisicaHistoricoDAO;
-    
-    public PessoaFisicaHistoricoBO(){
-        pessoaFisicaHistoricoDAO = new PessoaFisicaHistoricoDAO();
-    }
-    
-    public void create(PessoaFisicaHistorico pessoaFisicaHistorico){
+    public static void create(PessoaFisicaHistorico pessoaFisicaHistorico){
         try {
+            PessoaFisicaHistoricoDAO pessoaFisicaHistoricoDAO = new PessoaFisicaHistoricoDAO();
             pessoaFisicaHistoricoDAO.create(pessoaFisicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaFisicaHistorico pessoaFisicaHistorico){
+    public static void edit(PessoaFisicaHistorico pessoaFisicaHistorico){
         try {
+            PessoaFisicaHistoricoDAO pessoaFisicaHistoricoDAO = new PessoaFisicaHistoricoDAO();
             pessoaFisicaHistoricoDAO.edit(pessoaFisicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(PessoaFisicaHistorico pessoaFisicaHistorico){
+    public static void destroy(PessoaFisicaHistorico pessoaFisicaHistorico){
         try {
+            PessoaFisicaHistoricoDAO pessoaFisicaHistoricoDAO = new PessoaFisicaHistoricoDAO();
             pessoaFisicaHistoricoDAO.destroy(pessoaFisicaHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaFisicaHistorico> findAllByPF(Integer id){
+    public static List<PessoaFisicaHistorico> findAllByPF(Integer id){
         try { 
+            PessoaFisicaHistoricoDAO pessoaFisicaHistoricoDAO = new PessoaFisicaHistoricoDAO();
             return pessoaFisicaHistoricoDAO.findAllByPF(id);
         } catch (Exception e) {
             e.printStackTrace();

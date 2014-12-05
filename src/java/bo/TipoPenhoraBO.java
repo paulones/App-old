@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class TipoPenhoraBO implements Serializable{
     
-    private TipoPenhoraDAO tipoPenhoraDAO;
-    
-    public TipoPenhoraBO(){
-        tipoPenhoraDAO = new TipoPenhoraDAO();
-    }
-    
-    public List<TipoPenhora> findAll(){
+    public static List<TipoPenhora> findAll(){
         try { 
+            TipoPenhoraDAO tipoPenhoraDAO = new TipoPenhoraDAO();
             return tipoPenhoraDAO.findTipoPenhoraEntities();
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,8 +28,9 @@ public class TipoPenhoraBO implements Serializable{
         return new ArrayList<TipoPenhora>();
     }
     
-    public List<TipoPenhora> findPenhorasSemSocio(){
+    public static List<TipoPenhora> findPenhorasSemSocio(){
         try { 
+            TipoPenhoraDAO tipoPenhoraDAO = new TipoPenhoraDAO();
             return tipoPenhoraDAO.findPenhorasSemSocio();
         } catch (Exception e) {
             e.printStackTrace();

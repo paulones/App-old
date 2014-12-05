@@ -18,14 +18,9 @@ import util.Base64Crypt;
  */
 public class LoginBO implements Serializable {
 
-    private InstituicaoDAO instituicaoDAO;
-
-    public LoginBO() {
-        instituicaoDAO = new InstituicaoDAO();
-    }
-
     //Verifica a licença fornecida ao sistema
-    public Boolean licenciar(String crypt) {
+    public static Boolean licenciar(String crypt) {
+        InstituicaoDAO instituicaoDAO = new InstituicaoDAO();
         Boolean ok = false;
         try {
             //Consulta em uma persistênca a string de licença
@@ -66,7 +61,8 @@ public class LoginBO implements Serializable {
     }
 
     //Verifica se o tempo da última licença já expirou
-    public Boolean expirado(String cpf) {
+    public static Boolean expirado(String cpf) {
+        InstituicaoDAO instituicaoDAO = new InstituicaoDAO();
         Boolean ok = true;
         Instituicao instituicao = new Instituicao();
         //Consulta em uma persistênca a string de licença

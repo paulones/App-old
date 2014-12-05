@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class ProcuradorBO implements Serializable{
     
-    private ProcuradorDAO procuradorDAO;
-    
-    public ProcuradorBO(){
-        procuradorDAO = new ProcuradorDAO();
-    }
-    
-    public List<Procurador> findAll(){
+    public static List<Procurador> findAll(){
         try { 
+            ProcuradorDAO procuradorDAO = new ProcuradorDAO();
             return procuradorDAO.findProcuradorEntities();
         } catch (Exception e) {
             e.printStackTrace();

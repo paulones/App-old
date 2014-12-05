@@ -18,22 +18,18 @@ import java.util.List;
  */
 public class PessoaJuridicaSucessaoHistoricoBO implements Serializable{
     
-    private PessoaJuridicaSucessaoHistoricoDAO pessoaJuridicaSucessaoHistoricoDAO;
-
-    public PessoaJuridicaSucessaoHistoricoBO() {
-        pessoaJuridicaSucessaoHistoricoDAO = new PessoaJuridicaSucessaoHistoricoDAO();
-    }
-    
-    public void create(PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico){
+    public static void create(PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico){
         try {
+            PessoaJuridicaSucessaoHistoricoDAO pessoaJuridicaSucessaoHistoricoDAO = new PessoaJuridicaSucessaoHistoricoDAO();
             pessoaJuridicaSucessaoHistoricoDAO.create(pessoaJuridicaSucessaoHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaJuridicaSucessaoHistorico> findByPJS(Integer id){
+    public static List<PessoaJuridicaSucessaoHistorico> findByPJS(Integer id){
         try { 
+            PessoaJuridicaSucessaoHistoricoDAO pessoaJuridicaSucessaoHistoricoDAO = new PessoaJuridicaSucessaoHistoricoDAO();
             return pessoaJuridicaSucessaoHistoricoDAO.findByPJS(id);
         } catch (Exception e) {
             e.printStackTrace();

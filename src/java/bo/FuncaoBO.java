@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class FuncaoBO implements Serializable{
     
-    private FuncaoDAO funcaoDAO;
-    
-    public FuncaoBO(){
-        funcaoDAO = new FuncaoDAO();
-    }
-    
-    public List<Funcao> findAll(){
+    public static List<Funcao> findAll(){
         try { 
+            FuncaoDAO funcaoDAO = new FuncaoDAO();
             return funcaoDAO.findFuncaoEntities();
         } catch (Exception e) {
             e.printStackTrace();

@@ -114,27 +114,6 @@ public class ProcessoJudicialBean implements Serializable {
     private List<Penhora> oldPenhoraList;
     private List<Bem> bemList;
 
-    private PessoaFisicaBO pessoaFisicaBO;
-    private PessoaJuridicaBO pessoaJuridicaBO;
-    private ProcessoJudicialBO processoJudicialBO;
-    private TipoRecursoBO tipoRecursoBO;
-    private TipoProcessoBO tipoProcessoBO;
-    private VinculoProcessualBO vinculoProcessualBO;
-    private EnderecoBO enderecoBO;
-    private UsuarioBO usuarioBO;
-    private ProcessoJudicialHistoricoBO processoJudicialHistoricoBO;
-    private BemBO bemBO;
-    private VinculoProcessualHistoricoBO vinculoProcessualHistoricoBO;
-    private SituacaoBO situacaoBO;
-    private ProcuradorBO procuradorBO;
-    private CitacaoBO citacaoBO;
-    private TipoPenhoraBO tipoPenhoraBO;
-    private RedirecionamentoBO redirecionamentoBO;
-    private CitacaoHistoricoBO citacaoHistoricoBO;
-    private RedirecionamentoHistoricoBO redirecionamentoHistoricoBO;
-    private PenhoraBO penhoraBO;
-    private PenhoraHistoricoBO penhoraHistoricoBO;
-
     private Integer vinculos;
     private String executadoPF;
     private String executadoPJ;
@@ -162,27 +141,6 @@ public class ProcessoJudicialBean implements Serializable {
             enderecoPessoaModalFisica = new EnderecoPessoa();
             oldProcessoJudicial = new ProcessoJudicial();
             tipoPenhora = new TipoPenhora();
-
-            pessoaFisicaBO = new PessoaFisicaBO();
-            pessoaJuridicaBO = new PessoaJuridicaBO();
-            processoJudicialBO = new ProcessoJudicialBO();
-            tipoRecursoBO = new TipoRecursoBO();
-            tipoProcessoBO = new TipoProcessoBO();
-            vinculoProcessualBO = new VinculoProcessualBO();
-            enderecoBO = new EnderecoBO();
-            usuarioBO = new UsuarioBO();
-            processoJudicialHistoricoBO = new ProcessoJudicialHistoricoBO();
-            bemBO = new BemBO();
-            vinculoProcessualHistoricoBO = new VinculoProcessualHistoricoBO();
-            situacaoBO = new SituacaoBO();
-            procuradorBO = new ProcuradorBO();
-            citacaoBO = new CitacaoBO();
-            tipoPenhoraBO = new TipoPenhoraBO();
-            redirecionamentoBO = new RedirecionamentoBO();
-            citacaoHistoricoBO = new CitacaoHistoricoBO();
-            redirecionamentoHistoricoBO = new RedirecionamentoHistoricoBO();
-            penhoraBO = new PenhoraBO();
-            penhoraHistoricoBO = new PenhoraHistoricoBO();
 
             vinculos = 0;
             ars = 0;
@@ -216,7 +174,7 @@ public class ProcessoJudicialBean implements Serializable {
                 } else {                                    // Alteração
                     try {
                         Integer id = Integer.valueOf(request.getParameter("id"));
-                        processoJudicial = processoJudicialBO.findProcessoJudicial(id);
+                        processoJudicial = ProcessoJudicialBO.findProcessoJudicial(id);
                         if (processoJudicial == null) {
                             FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
                         } else {
@@ -224,7 +182,7 @@ public class ProcessoJudicialBean implements Serializable {
                             for (VinculoProcessual vinculoProcessual : processoJudicial.getVinculoProcessualCollection()) {
                                 vinculoProcessualList.add(vinculoProcessual);
                             }
-                            List<Citacao> citacaoList = citacaoBO.findByPJUD(id);
+                            List<Citacao> citacaoList = CitacaoBO.findByPJUD(id);
                             for (Citacao citacao : citacaoList) {
                                 if (citacao.getTipoCitacao().equals("AR")) {
                                     arList.add(citacao);
@@ -243,7 +201,7 @@ public class ProcessoJudicialBean implements Serializable {
                                     enderecosSocios++;
                                 }
                             }
-                            socioRedirecionamentoList = carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(id));
+                            socioRedirecionamentoList = carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(id));
                             initialLoad = !socioRedirecionamentoList.isEmpty();
 
                             vinculos = vinculoProcessualList.size();
@@ -253,7 +211,7 @@ public class ProcessoJudicialBean implements Serializable {
                                 executadoPJ = String.valueOf(processoJudicial.getExecutadoFk());
                             }
 
-                            oldCitacaoList = citacaoBO.findByPJUD(id);
+                            oldCitacaoList = CitacaoBO.findByPJUD(id);
                             for (Citacao citacao : oldCitacaoList) {
                                 if (citacao.getTipoCitacao().equals("ES")) {
                                     if (citacao.getSocio() != null && citacao.getSocioFk() != null) {
@@ -261,15 +219,15 @@ public class ProcessoJudicialBean implements Serializable {
                                     }
                                 }
                             }
-                            oldPenhoraList = penhoraBO.findByPJUD(id);
+                            oldPenhoraList = PenhoraBO.findByPJUD(id);
                             for (Penhora penhora : oldPenhoraList) {
                                 if (penhora.getSocio() != null && penhora.getSocioFk() != null) {
                                     penhora.setSocioTipo(penhora.getSocio() + penhora.getSocioFk());
                                 }
                             }
                             oldSocioRedirecionamentoList = new ArrayList<>();
-                            oldSocioRedirecionamentoList = carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(id));
-                            oldProcessoJudicial = processoJudicialBO.findProcessoJudicial(id);
+                            oldSocioRedirecionamentoList = carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(id));
+                            oldProcessoJudicial = ProcessoJudicialBO.findProcessoJudicial(id);
 
                             prepararHistorico(processoJudicial, citacaoList, socioRedirecionamentoList, oldPenhoraList);
 
@@ -290,7 +248,7 @@ public class ProcessoJudicialBean implements Serializable {
                 } else {                                    // Consulta histórico
                     try {
                         Integer id = Integer.valueOf(request.getParameter("id"));
-                        processoJudicial = processoJudicialBO.findProcessoJudicial(id);
+                        processoJudicial = ProcessoJudicialBO.findProcessoJudicial(id);
                         if (processoJudicial == null) {
                             history = false;
                             FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
@@ -300,25 +258,25 @@ public class ProcessoJudicialBean implements Serializable {
                             EnderecoPessoa enderecoPessoa = new EnderecoPessoa();
                             // Inserção do registro atual
                             if (processoJudicial.getExecutado().equals("PF")) {
-                                PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
-                                enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()), bemBO.findPFBens(pessoaFisica.getId()));
+                                PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+                                enderecoPessoa = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
                             } else if (processoJudicial.getExecutado().equals("PJ")) {
-                                PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
-                                enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
+                                PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+                                enderecoPessoa = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
                             }
-                            executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa, citacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(processoJudicial.getId())), penhoraBO.findByPJUD(processoJudicial.getId()));
+                            executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()));
                             executadoHistoricoList.add(executadoHistorico);
                             // Inserção dos históricos
-                            List<ProcessoJudicialHistorico> processoJudicialHistoricoList = processoJudicialHistoricoBO.findAllByPJUD(id);
+                            List<ProcessoJudicialHistorico> processoJudicialHistoricoList = ProcessoJudicialHistoricoBO.findAllByPJUD(id);
                             for (ProcessoJudicialHistorico pjh : processoJudicialHistoricoList) {
                                 if (pjh.getExecutado().equals("PF")) {
-                                    PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
-                                    enderecoPessoa = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()), bemBO.findPFBens(pessoaFisica.getId()));
-                                    executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null, citacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(redirecionamentoHistoricoBO.findByPJUD(pjh.getId())), penhoraHistoricoBO.findByPJUD(pjh.getId()));
+                                    PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
+                                    enderecoPessoa = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
+                                    executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null, CitacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(RedirecionamentoHistoricoBO.findByPJUD(pjh.getId())), PenhoraHistoricoBO.findByPJUD(pjh.getId()));
                                 } else if (pjh.getExecutado().equals("PJ")) {
-                                    PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
-                                    enderecoPessoa = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
-                                    executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa, citacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(redirecionamentoHistoricoBO.findByPJUD(pjh.getId())), penhoraHistoricoBO.findByPJUD(pjh.getId()));
+                                    PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
+                                    enderecoPessoa = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
+                                    executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa, CitacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(RedirecionamentoHistoricoBO.findByPJUD(pjh.getId())), PenhoraHistoricoBO.findByPJUD(pjh.getId()));
                                 }
                                 executadoHistoricoList.add(executadoHistorico);
                             }
@@ -335,12 +293,12 @@ public class ProcessoJudicialBean implements Serializable {
     private void carregarFormulario() { // Carregar listas do formulário
         UsuarioBO usuarioBO = new UsuarioBO();
         Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
-        pessoaFisicaList = pessoaFisicaBO.findAllActive(instituicao);
-        pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
-        tipoDeRecursoList = tipoRecursoBO.findAll();
-        tipoDoProcessoList = tipoProcessoBO.findAll();
-        situacaoList = situacaoBO.findAll();
-        procuradorList = procuradorBO.findAll();
+        pessoaFisicaList = PessoaFisicaBO.findAllActive(instituicao);
+        pessoaJuridicaList = PessoaJuridicaBO.findAllActive(instituicao);
+        tipoDeRecursoList = TipoRecursoBO.findAll();
+        tipoDoProcessoList = TipoProcessoBO.findAll();
+        situacaoList = SituacaoBO.findAll();
+        procuradorList = ProcuradorBO.findAll();
     }
 
     public void adicionarVinculosProcessuais() {
@@ -401,18 +359,18 @@ public class ProcessoJudicialBean implements Serializable {
     public void refreshListaDeBens(Integer index) {
         if (index == null) {
             if (executadoPJ != null) {
-                bemList = bemBO.findPJBens(Integer.valueOf(executadoPJ));
+                bemList = BemBO.findPJBens(Integer.valueOf(executadoPJ));
             } else if (executadoPF != null) {
-                bemList = bemBO.findPFBens(Integer.valueOf(executadoPF));
+                bemList = BemBO.findPFBens(Integer.valueOf(executadoPF));
             }
             for (Penhora penhora : penhoraList) {
                 if (penhora.getSocioTipo() != null) {
                     String tabela = penhora.getSocioTipo().substring(0, 2);
                     Integer id = Integer.valueOf(penhora.getSocioTipo().substring(2));
                     if (tabela.equals("PF")) {
-                        penhora.setBemList(bemBO.findPFBens(id));
+                        penhora.setBemList(BemBO.findPFBens(id));
                     } else if (tabela.equals("PJ")) {
-                        penhora.setBemList(bemBO.findPJBens(id));
+                        penhora.setBemList(BemBO.findPJBens(id));
                     }
                 }
             }
@@ -421,9 +379,9 @@ public class ProcessoJudicialBean implements Serializable {
                 String tabela = penhoraList.get(index).getSocioTipo().substring(0, 2);
                 Integer id = Integer.valueOf(penhoraList.get(index).getSocioTipo().substring(2));
                 if (tabela.equals("PF")) {
-                    penhoraList.get(index).setBemList(bemBO.findPFBens(id));
+                    penhoraList.get(index).setBemList(BemBO.findPFBens(id));
                 } else if (tabela.equals("PJ")) {
-                    penhoraList.get(index).setBemList(bemBO.findPJBens(id));
+                    penhoraList.get(index).setBemList(BemBO.findPJBens(id));
                 }
             }
         }
@@ -438,7 +396,7 @@ public class ProcessoJudicialBean implements Serializable {
             oldSocioRedirecionamentoList = new ArrayList<>();
         }
         if (tipo.equals("PJ") && executadoPJ != null) {
-            bemList = bemBO.findPJBens(Integer.valueOf(executadoPJ));
+            bemList = BemBO.findPJBens(Integer.valueOf(executadoPJ));
             List<PessoaFisicaJuridica> pfjList = pfjBO.findAllByPJ(Integer.valueOf(executadoPJ));
             for (PessoaFisicaJuridica pfj : pfjList) {
                 socioList.add(pfj.getPessoaFisicaFk());
@@ -462,12 +420,12 @@ public class ProcessoJudicialBean implements Serializable {
                 }
             }
         } else if (tipo.equals("PF") && executadoPF != null) {
-            bemList = bemBO.findPFBens(Integer.valueOf(executadoPF));
+            bemList = BemBO.findPFBens(Integer.valueOf(executadoPF));
             enderecosSocios = 0;
             enderecoSocioList = new ArrayList<>();
         }
         if (edit) {
-            penhoraList = penhoraBO.findByPJUD(processoJudicial.getId());
+            penhoraList = PenhoraBO.findByPJUD(processoJudicial.getId());
             for (Penhora penhora : penhoraList) {
                 if (penhora.getSocio() != null && penhora.getSocioFk() != null) {
                     penhora.setSocioTipo(penhora.getSocio() + penhora.getSocioFk());
@@ -475,10 +433,10 @@ public class ProcessoJudicialBean implements Serializable {
             }
         }
         if (!socioList.isEmpty()) {
-            tipoPenhoraList = tipoPenhoraBO.findAll();
+            tipoPenhoraList = TipoPenhoraBO.findAll();
         } else {
             redirecionamento = null;
-            tipoPenhoraList = tipoPenhoraBO.findPenhorasSemSocio();
+            tipoPenhoraList = TipoPenhoraBO.findPenhorasSemSocio();
             Iterator<Penhora> i = penhoraList.iterator();
             while (i.hasNext()) {
                 Penhora penhora = i.next();
@@ -492,37 +450,37 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void exibirExecutado() {
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(executadoPF));
-            enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()), bemBO.findPFBens(pessoaFisica.getId()));
-            executadoProcessoJudicialList = processoJudicialBO.findByExecutado(executadoPF, "PF");
+            PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(Integer.valueOf(executadoPF));
+            enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
+            executadoProcessoJudicialList = ProcessoJudicialBO.findByExecutado(executadoPF, "PF");
         } else if (processoJudicial.getExecutado().equals("PJ")) {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(executadoPJ));
-            enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
-            executadoProcessoJudicialList = processoJudicialBO.findByExecutado(executadoPJ, "PJ");
+            PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(executadoPJ));
+            enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
+            executadoProcessoJudicialList = ProcessoJudicialBO.findByExecutado(executadoPJ, "PJ");
         }
     }
 
     public void exibirInfo() {
-        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
+        processoJudicial = ProcessoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pessoaFisica = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
-            enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, enderecoBO.findPFAddress(pessoaFisica.getId()), bemBO.findPFBens(pessoaFisica.getId()));
-            executado = new Executado(processoJudicial, enderecoPessoaFisica, citacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(processoJudicial.getId())), penhoraBO.findByPJUD(processoJudicial.getId()));
+            PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+            enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
+            executado = new Executado(processoJudicial, enderecoPessoaFisica, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()));
         } else {
-            PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
-            enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, enderecoBO.findPJAddress(pessoaJuridica.getId()), bemBO.findPJBens(pessoaJuridica.getId()));
-            executado = new Executado(processoJudicial, enderecoPessoaJuridica, citacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(processoJudicial.getId())), penhoraBO.findByPJUD(processoJudicial.getId()));
+            PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+            enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
+            executado = new Executado(processoJudicial, enderecoPessoaJuridica, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()));
         }
     }
 
     public String loadSocio(String tipo, String id) {
         if (tipo != null) {
             if (tipo.equals("PF")) {
-                PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
+                PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
                 String cpf = (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
                 return cpf + " - " + pf.getNome();
             } else {
-                PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
+                PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
                 String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
                 return cnpj + " - " + pj.getNome();
             }
@@ -550,9 +508,9 @@ public class ProcessoJudicialBean implements Serializable {
         for (Redirecionamento redirecionamento : redirecionamentoList) {
             this.redirecionamento = redirecionamento.getRedirecionado();
             if (redirecionamento.getSocio().equals("PF")) {
-                socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaFisicaBO.findPessoaFisica(redirecionamento.getSocioFk()), redirecionamento));
+                socioRedirecionamentoList.add(new SocioRedirecionamento(PessoaFisicaBO.findPessoaFisica(redirecionamento.getSocioFk()), redirecionamento));
             } else {
-                socioRedirecionamentoList.add(new SocioRedirecionamento(pessoaJuridicaBO.findPessoaJuridica(redirecionamento.getSocioFk()), redirecionamento));
+                socioRedirecionamentoList.add(new SocioRedirecionamento(PessoaJuridicaBO.findPessoaJuridica(redirecionamento.getSocioFk()), redirecionamento));
             }
         }
         return socioRedirecionamentoList;
@@ -562,18 +520,18 @@ public class ProcessoJudicialBean implements Serializable {
         List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList = new ArrayList<>();
         for (RedirecionamentoHistorico redirecionamentoHistorico : redirecionamentoHistoricoList) {
             if (redirecionamentoHistorico.getSocio().equals("PF")) {
-                socioRedirecionamentoHistoricoList.add(new SocioRedirecionamentoHistorico(pessoaFisicaBO.findPessoaFisica(redirecionamentoHistorico.getSocioFk()), redirecionamentoHistorico));
+                socioRedirecionamentoHistoricoList.add(new SocioRedirecionamentoHistorico(PessoaFisicaBO.findPessoaFisica(redirecionamentoHistorico.getSocioFk()), redirecionamentoHistorico));
             } else {
-                socioRedirecionamentoHistoricoList.add(new SocioRedirecionamentoHistorico(pessoaJuridicaBO.findPessoaJuridica(redirecionamentoHistorico.getSocioFk()), redirecionamentoHistorico));
+                socioRedirecionamentoHistoricoList.add(new SocioRedirecionamentoHistorico(PessoaJuridicaBO.findPessoaJuridica(redirecionamentoHistorico.getSocioFk()), redirecionamentoHistorico));
             }
         }
         return socioRedirecionamentoHistoricoList;
     }
 
     public void removerProcessoJudicial() {
-        processoJudicial = processoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
+        processoJudicial = ProcessoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
         processoJudicial.setStatus('I');
-        processoJudicialBO.edit(processoJudicial);
+        ProcessoJudicialBO.edit(processoJudicial);
         GeradorLog.criar(processoJudicial.getId(), "PJUD", 'D');
         redirect = "";
         register = "success";
@@ -586,8 +544,8 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void cadastrar() throws IOException {
         boolean error = false;
-        ProcessoJudicial pjudDBCDA = processoJudicialBO.findByCDA(processoJudicial);
-        ProcessoJudicial pjudDBProcess = processoJudicialBO.findByProcessNumber(processoJudicial.getNumeroDoProcesso());
+        ProcessoJudicial pjudDBCDA = ProcessoJudicialBO.findByCDA(processoJudicial);
+        ProcessoJudicial pjudDBProcess = ProcessoJudicialBO.findByProcessNumber(processoJudicial.getNumeroDoProcesso());
         processoJudicial.setExecutadoFk(executadoPF != null ? Integer.valueOf(executadoPF) : Integer.valueOf(executadoPJ));
         List<Citacao> citacaoList = new ArrayList<>();
         citacaoList.addAll(arList);
@@ -599,16 +557,16 @@ public class ProcessoJudicialBean implements Serializable {
              Cadastrar novo Processo Judicial
              */
             if (pjudDBCDA == null && pjudDBProcess == null) { // Processo novo
-                processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
-                processoJudicial.setInstituicaoFk(usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
+                processoJudicial.setUsuarioFk(UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                processoJudicial.setInstituicaoFk(UsuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk());
                 processoJudicial.setStatus('A');
                 if (processoJudicial.getValorAtualizado() == null && processoJudicial.getValorDaCausa() != null) {
                     processoJudicial.setValorAtualizado(processoJudicial.getValorDaCausa());
                 }
-                processoJudicialBO.create(processoJudicial);
+                ProcessoJudicialBO.create(processoJudicial);
                 for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
                     vinculoProcessual.setProcessoJudicialFk(processoJudicial);
-                    vinculoProcessualBO.create(vinculoProcessual);
+                    VinculoProcessualBO.create(vinculoProcessual);
                 }
                 for (Citacao c : citacaoList) {
                     if (c.getSocioTipo() != null) {
@@ -616,7 +574,7 @@ public class ProcessoJudicialBean implements Serializable {
                         c.setSocioFk(Integer.valueOf(c.getSocioTipo().substring(2)));
                     }
                     c.setProcessoJudicialFk(processoJudicial);
-                    citacaoBO.create(c);
+                    CitacaoBO.create(c);
                 }
                 for (SocioRedirecionamento sr : socioRedirecionamentoList) {
                     if (redirecionamento != null) {
@@ -631,7 +589,7 @@ public class ProcessoJudicialBean implements Serializable {
                             sr.getRedirecionamento().setSocioFk(pessoaJuridica.getId());
                             sr.getRedirecionamento().setSocio("PJ");
                         }
-                        redirecionamentoBO.create(sr.getRedirecionamento());
+                        RedirecionamentoBO.create(sr.getRedirecionamento());
                     }
                 }
                 for (Penhora penhora : penhoraList) {
@@ -640,7 +598,7 @@ public class ProcessoJudicialBean implements Serializable {
                         penhora.setSocio(penhora.getSocioTipo().substring(0, 2));
                     }
                     penhora.setProcessoJudicialFk(processoJudicial);
-                    penhoraBO.create(penhora);
+                    PenhoraBO.create(penhora);
                 }
                 register = "success";
                 GeradorLog.criar(processoJudicial.getId(), "PJUD", 'C');
@@ -762,28 +720,28 @@ public class ProcessoJudicialBean implements Serializable {
                 } else {
                     UtilBO utilBO = new UtilBO();
                     Timestamp timestamp = utilBO.findServerTime();
-                    processoJudicial.setUsuarioFk(usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
+                    processoJudicial.setUsuarioFk(UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario")));
                     if (processoJudicial.getValorAtualizado() == null && processoJudicial.getValorDaCausa() != null) {
                         processoJudicial.setValorAtualizado(processoJudicial.getValorDaCausa());
                     }
-                    processoJudicialBO.edit(processoJudicial);
+                    ProcessoJudicialBO.edit(processoJudicial);
                     processoJudicialHistorico.setDataDeModificacao(timestamp);
-                    processoJudicialHistoricoBO.create(processoJudicialHistorico);
-                    vinculoProcessualBO.destroyByPJUD(processoJudicial.getId());
+                    ProcessoJudicialHistoricoBO.create(processoJudicialHistorico);
+                    VinculoProcessualBO.destroyByPJUD(processoJudicial.getId());
                     for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
                         vinculoProcessual.setProcessoJudicialFk(processoJudicial);
-                        vinculoProcessualBO.create(vinculoProcessual);
+                        VinculoProcessualBO.create(vinculoProcessual);
                     }
-                    citacaoBO.destroyByPJUD(processoJudicial.getId());
+                    CitacaoBO.destroyByPJUD(processoJudicial.getId());
                     for (Citacao citacao : citacaoList) {
                         if (citacao.getSocioTipo() != null) {
                             citacao.setSocio(citacao.getSocioTipo().substring(0, 2));
                             citacao.setSocioFk(Integer.valueOf(citacao.getSocioTipo().substring(2)));
                         }
                         citacao.setProcessoJudicialFk(processoJudicial);
-                        citacaoBO.create(citacao);
+                        CitacaoBO.create(citacao);
                     }
-                    redirecionamentoBO.destroyByPJUD(processoJudicial.getId());
+                    RedirecionamentoBO.destroyByPJUD(processoJudicial.getId());
                     for (SocioRedirecionamento sr : socioRedirecionamentoList) {
                         if (redirecionamento != null) {
                             sr.getRedirecionamento().setProcessoJudicialFk(processoJudicial);
@@ -796,33 +754,33 @@ public class ProcessoJudicialBean implements Serializable {
                                 sr.getRedirecionamento().setSocioFk(pessoaJuridica.getId());
                                 sr.getRedirecionamento().setSocio("PJ");
                             }
-                            redirecionamentoBO.create(sr.getRedirecionamento());
+                            RedirecionamentoBO.create(sr.getRedirecionamento());
                         }
                     }
-                    penhoraBO.destroyByPJUD(processoJudicial.getId());
+                    PenhoraBO.destroyByPJUD(processoJudicial.getId());
                     for (Penhora penhora : penhoraList) {
                         if (penhora.getSocioTipo() != null) {
                             penhora.setSocio(penhora.getSocioTipo().substring(0, 2));
                             penhora.setSocioFk(Integer.valueOf(penhora.getSocioTipo().substring(2)));
                         }
                         penhora.setProcessoJudicialFk(processoJudicial);
-                        penhoraBO.create(penhora);
+                        PenhoraBO.create(penhora);
                     }
                     for (VinculoProcessualHistorico vph : vinculoProcessualHistoricoList) {
                         vph.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
-                        vinculoProcessualHistoricoBO.create(vph);
+                        VinculoProcessualHistoricoBO.create(vph);
                     }
                     for (CitacaoHistorico ch : citacaoHistoricoList) {
                         ch.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
-                        citacaoHistoricoBO.create(ch);
+                        CitacaoHistoricoBO.create(ch);
                     }
                     for (RedirecionamentoHistorico rh : redirecionamentoHistoricoList) {
                         rh.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
-                        redirecionamentoHistoricoBO.create(rh);
+                        RedirecionamentoHistoricoBO.create(rh);
                     }
                     for (PenhoraHistorico ph : penhoraHistoricoList) {
                         ph.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
-                        penhoraHistoricoBO.create(ph);
+                        PenhoraHistoricoBO.create(ph);
                     }
                     GeradorLog.criar(processoJudicial.getId(), "PJUD", 'U');
                     Cookie.addCookie("FacesMessage", "success", 10);
@@ -856,11 +814,11 @@ public class ProcessoJudicialBean implements Serializable {
     private String prepararMensagemDeErro(ProcessoJudicial processoJudicial) {
         String mensagem = "\nComarca: " + processoJudicial.getComarca();
         if (processoJudicial.getExecutado().equals("PF")) {
-            PessoaFisica pf = pessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
+            PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
             mensagem += "\nExecutado: " + pf.getNome();
             mensagem += "\nCPF: " + (pf.getCpf() != null ? pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9) : "-");
         } else {
-            PessoaJuridica pj = pessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
+            PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
             mensagem += "\nExecutado: " + pj.getNome();
             mensagem += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
         }
@@ -947,6 +905,7 @@ public class ProcessoJudicialBean implements Serializable {
             ph.setSituacao(penhora.getSituacao());
             ph.setSocio(penhora.getSocio());
             ph.setSocioFk(penhora.getSocioFk());
+            ph.setMotivo(penhora.getMotivo());
             ph.setTipoPenhoraFk(penhora.getTipoPenhoraFk());
             ph.setValor(penhora.getValor());
             penhoraHistoricoList.add(ph);
@@ -1035,6 +994,7 @@ public class ProcessoJudicialBean implements Serializable {
             ph.setSituacao(penhora.getSituacao());
             ph.setSocio(penhora.getSocio());
             ph.setSocioFk(penhora.getSocioFk());
+            ph.setMotivo(penhora.getMotivo());
             ph.setTipoPenhoraFk(penhora.getTipoPenhoraFk());
             ph.setValor(penhora.getValor());
             penhoraHistoricoList.add(ph);

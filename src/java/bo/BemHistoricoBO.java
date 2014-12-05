@@ -18,38 +18,37 @@ import java.util.List;
  */
 public class BemHistoricoBO implements Serializable{
     
-    private BemHistoricoDAO bemHistoricoDAO;
     
-    public BemHistoricoBO(){
-        bemHistoricoDAO = new BemHistoricoDAO();
-    }
-    
-    public void create(BemHistorico bemHistorico){
+    public static void create(BemHistorico bemHistorico){
         try {
+            BemHistoricoDAO bemHistoricoDAO = new BemHistoricoDAO();
             bemHistoricoDAO.create(bemHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(BemHistorico bemHistorico){
+    public static void edit(BemHistorico bemHistorico){
         try {
+            BemHistoricoDAO bemHistoricoDAO = new BemHistoricoDAO();
             bemHistoricoDAO.edit(bemHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(BemHistorico bemHistorico){
+    public static void destroy(BemHistorico bemHistorico){
         try {
+            BemHistoricoDAO bemHistoricoDAO = new BemHistoricoDAO();
             bemHistoricoDAO.destroy(bemHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<BemHistorico> findAllByPF(Integer id){
+    public static List<BemHistorico> findAllByPF(Integer id){
         try { 
+            BemHistoricoDAO bemHistoricoDAO = new BemHistoricoDAO();
             return bemHistoricoDAO.findAllByPF(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +56,9 @@ public class BemHistoricoBO implements Serializable{
         return new ArrayList<>();
     }
     
-    public List<BemHistorico> findAllByPJ(Integer id){
+    public static List<BemHistorico> findAllByPJ(Integer id){
         try { 
+            BemHistoricoDAO bemHistoricoDAO = new BemHistoricoDAO();
             return bemHistoricoDAO.findAllByPJ(id);
         } catch (Exception e) {
             e.printStackTrace();

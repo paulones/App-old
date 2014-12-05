@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class CitacaoBO implements Serializable{
     
-    private CitacaoDAO citacaoDAO;
-
-    public CitacaoBO() {
-        citacaoDAO = new CitacaoDAO();
-    }
-    
-    public void create(Citacao citacao){
+    public static void create(Citacao citacao){
         try {
+            CitacaoDAO citacaoDAO = new CitacaoDAO();
             citacaoDAO.create(citacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(Citacao citacao){
+    public static void edit(Citacao citacao){
         try {
+            CitacaoDAO citacaoDAO = new CitacaoDAO();
             citacaoDAO.edit(citacao);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(Citacao citacao){
+    public static void destroy(Citacao citacao){
         try {
+            CitacaoDAO citacaoDAO = new CitacaoDAO();
             citacaoDAO.destroy(citacao.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<Citacao> findByPJUD(Integer id){
+    public static List<Citacao> findByPJUD(Integer id){
         try { 
+            CitacaoDAO citacaoDAO = new CitacaoDAO();
             return citacaoDAO.findByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +55,9 @@ public class CitacaoBO implements Serializable{
         return new ArrayList<Citacao>();
     }
 
-    public void destroyByPJUD(Integer idPjud){
+    public static void destroyByPJUD(Integer idPjud){
         try {
+            CitacaoDAO citacaoDAO = new CitacaoDAO();
             citacaoDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();

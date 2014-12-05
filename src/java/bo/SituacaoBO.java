@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class SituacaoBO implements Serializable{
     
-    private SituacaoDAO situacaoDAO;
-    
-    public SituacaoBO(){
-        situacaoDAO = new SituacaoDAO();
-    }
-    
-    public List<Situacao> findAll(){
+    public static List<Situacao> findAll(){
         try { 
+            SituacaoDAO situacaoDAO = new SituacaoDAO();
             return situacaoDAO.findSituacaoEntities();
         } catch (Exception e) {
             e.printStackTrace();

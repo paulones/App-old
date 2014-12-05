@@ -17,39 +17,37 @@ import java.util.List;
  * @author paulones
  */
 public class EnderecoBO implements Serializable{
-
-    private EnderecoDAO enderecoDAO;
     
-    public EnderecoBO(){
-        enderecoDAO = new EnderecoDAO();
-    }
-    
-    public void create(Endereco endereco){
+    public static void create(Endereco endereco){
         try {
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             enderecoDAO.create(endereco);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(Endereco endereco){
+    public static void edit(Endereco endereco){
         try {
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             enderecoDAO.edit(endereco);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(Endereco endereco){
+    public static void destroy(Endereco endereco){
         try {
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             enderecoDAO.destroy(endereco.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<Endereco> findAllPFAddress(){
+    public static List<Endereco> findAllPFAddress(){
         try { 
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             return enderecoDAO.findAllPFAddress();
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,8 +55,9 @@ public class EnderecoBO implements Serializable{
         return new ArrayList<Endereco>();
     }
     
-    public List<Endereco> findAllPJAddress(){
+    public static List<Endereco> findAllPJAddress(){
         try { 
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             return enderecoDAO.findAllPJAddress();
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,8 +65,9 @@ public class EnderecoBO implements Serializable{
         return new ArrayList<Endereco>();
     }
     
-    public Endereco findPFAddress(Integer id){
+    public static Endereco findPFAddress(Integer id){
         try { 
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             return enderecoDAO.findPFAddress(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,8 +75,9 @@ public class EnderecoBO implements Serializable{
         return null;
     }
     
-    public Endereco findPJAddress(Integer id){
+    public static Endereco findPJAddress(Integer id){
         try { 
+            EnderecoDAO enderecoDAO = new EnderecoDAO();
             return enderecoDAO.findPJAddress(id);
         } catch (Exception e) {
             e.printStackTrace();

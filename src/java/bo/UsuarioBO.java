@@ -18,25 +18,19 @@ import java.util.List;
  * @author PRCC
  */
 public class UsuarioBO implements Serializable {
-    
-    private UsuarioDAO usuarioDAO;
-    private AutorizacaoDAO autorizacaoDAO;
-    
-    public UsuarioBO(){
-        usuarioDAO = new UsuarioDAO();
-        autorizacaoDAO = new AutorizacaoDAO();
-    }
 
-    public void create(Usuario usuario) {
+    public static void create(Usuario usuario) {
         try {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.create(usuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public Usuario findUsuario(Integer id) {
+    public static Usuario findUsuario(Integer id) {
         try { 
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             return usuarioDAO.findUsuario(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -44,8 +38,9 @@ public class UsuarioBO implements Serializable {
         return new Usuario();
     }
 
-    public Usuario findUsuarioByCPF(String cpf) {
+    public static Usuario findUsuarioByCPF(String cpf) {
         try { 
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             return usuarioDAO.findUsuarioByCPF(cpf);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,8 +48,9 @@ public class UsuarioBO implements Serializable {
         return new Usuario();
     }
     
-    public Autorizacao findAutorizacaoByCPF(String cpf) {
+    public static Autorizacao findAutorizacaoByCPF(String cpf) {
         try { 
+            AutorizacaoDAO autorizacaoDAO = new AutorizacaoDAO();
             return autorizacaoDAO.findAutorizacaoByCPF(cpf);
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,8 +58,9 @@ public class UsuarioBO implements Serializable {
         return new Autorizacao();
     }
     
-    public Usuario findUsuarioByCNPJ(String cnpj) {
+    public static Usuario findUsuarioByCNPJ(String cnpj) {
         try { 
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             return usuarioDAO.findUsuarioByCNPJ(cnpj);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,8 +68,9 @@ public class UsuarioBO implements Serializable {
         return new Usuario();
     }
     
-    public Usuario findUsuarioByEmail(String email) {
+    public static Usuario findUsuarioByEmail(String email) {
         try { 
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             return usuarioDAO.findUsuarioByEmail(email);
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,8 +78,9 @@ public class UsuarioBO implements Serializable {
         return new Usuario();
     }
 
-    public void edit(Usuario usuario) {
+    public static void edit(Usuario usuario) {
         try {
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             usuarioDAO.edit(usuario);
         } catch (Exception e) {
             e.printStackTrace();

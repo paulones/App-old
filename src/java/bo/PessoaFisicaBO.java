@@ -19,38 +19,36 @@ import java.util.List;
  */
 public class PessoaFisicaBO implements Serializable {
     
-    private PessoaFisicaDAO pessoaFisicaDAO;
-    
-    public PessoaFisicaBO(){
-        pessoaFisicaDAO = new PessoaFisicaDAO();
-    }
-    
-    public void create(PessoaFisica pessoaFisica){
+    public static void create(PessoaFisica pessoaFisica){
         try {
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             pessoaFisicaDAO.create(pessoaFisica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaFisica pessoaFisica){
+    public static void edit(PessoaFisica pessoaFisica){
         try {
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             pessoaFisicaDAO.edit(pessoaFisica);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(PessoaFisica pessoaFisica){
+    public static void destroy(PessoaFisica pessoaFisica){
         try {
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             pessoaFisicaDAO.destroy(pessoaFisica.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public PessoaFisica findByCPF(String cpf){
+    public static PessoaFisica findByCPF(String cpf){
         try {
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.findByCPF(cpf);
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,8 +56,9 @@ public class PessoaFisicaBO implements Serializable {
         return null;
     }
     
-    public PessoaFisica findPessoaFisica(Integer id){
+    public static PessoaFisica findPessoaFisica(Integer id){
         try { 
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.findPessoaFisica(id);
         } catch (Exception e) {
             e.printStackTrace();
@@ -67,8 +66,9 @@ public class PessoaFisicaBO implements Serializable {
         return null;
     }
     
-    public List<PessoaFisica> findAll(){
+    public static List<PessoaFisica> findAll(){
         try { 
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.findPessoaFisicaEntities();
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,8 +76,9 @@ public class PessoaFisicaBO implements Serializable {
         return new ArrayList<PessoaFisica>();
     }
     
-    public List<PessoaFisica> findAllActive(Instituicao instituicao){
+    public static List<PessoaFisica> findAllActive(Instituicao instituicao){
         try { 
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.findAllActive(instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,8 +86,9 @@ public class PessoaFisicaBO implements Serializable {
         return new ArrayList<PessoaFisica>();
     }
     
-    public List<PessoaFisica> findFirstTenActive(){
+    public static List<PessoaFisica> findFirstTenActive(){
         try { 
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.findFirstTenActive();
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,8 +96,9 @@ public class PessoaFisicaBO implements Serializable {
         return new ArrayList<PessoaFisica>();
     } 
     
-    public Integer getPessoaFisicaCount(){
-        try { 
+    public static Integer getPessoaFisicaCount(){
+        try {
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.getPessoaFisicaCount();
         } catch (Exception e) {
             e.printStackTrace();

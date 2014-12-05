@@ -18,31 +18,27 @@ import java.util.List;
  */
 public class PessoaFisicaFisicaHistoricoBO implements Serializable{
     
-    
-    private PessoaFisicaFisicaHistoricoDAO pessoaFisicaFisicaHistoricoDAO;
-    
-    public PessoaFisicaFisicaHistoricoBO(){
-        pessoaFisicaFisicaHistoricoDAO = new PessoaFisicaFisicaHistoricoDAO();
-    }
-    
-    public void create(PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistorico){
+    public static void create(PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistorico){
         try {
+            PessoaFisicaFisicaHistoricoDAO pessoaFisicaFisicaHistoricoDAO = new PessoaFisicaFisicaHistoricoDAO();
             pessoaFisicaFisicaHistoricoDAO.create(pessoaFisicaFisicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistorico){
+    public static void edit(PessoaFisicaFisicaHistorico pessoaFisicaFisicaHistorico){
         try {
+            PessoaFisicaFisicaHistoricoDAO pessoaFisicaFisicaHistoricoDAO = new PessoaFisicaFisicaHistoricoDAO();
             pessoaFisicaFisicaHistoricoDAO.edit(pessoaFisicaFisicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaFisicaFisicaHistorico> findAllByPFH(Integer id){
+    public static List<PessoaFisicaFisicaHistorico> findAllByPFH(Integer id){
         try { 
+            PessoaFisicaFisicaHistoricoDAO pessoaFisicaFisicaHistoricoDAO = new PessoaFisicaFisicaHistoricoDAO();
             return pessoaFisicaFisicaHistoricoDAO.findAllByPFH(id);
         } catch (Exception e) {
             e.printStackTrace();

@@ -16,38 +16,36 @@ import java.io.Serializable;
  */
 public class VinculoProcessualBO implements Serializable{
     
-    private VinculoProcessualDAO vinculoProcessualDAO;
-    
-    public VinculoProcessualBO(){
-        vinculoProcessualDAO = new VinculoProcessualDAO();
-    }
-    
-    public void create(VinculoProcessual vinculoProcessual){
+    public static void create(VinculoProcessual vinculoProcessual){
         try {
+            VinculoProcessualDAO vinculoProcessualDAO = new VinculoProcessualDAO();
             vinculoProcessualDAO.create(vinculoProcessual);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(VinculoProcessual vinculoProcessual){
+    public static void edit(VinculoProcessual vinculoProcessual){
         try {
+            VinculoProcessualDAO vinculoProcessualDAO = new VinculoProcessualDAO();
             vinculoProcessualDAO.edit(vinculoProcessual);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(VinculoProcessual vinculoProcessual){
+    public static void destroy(VinculoProcessual vinculoProcessual){
         try {
+            VinculoProcessualDAO vinculoProcessualDAO = new VinculoProcessualDAO();
             vinculoProcessualDAO.destroy(vinculoProcessual.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroyByPJUD(Integer idPjud){
+    public static void destroyByPJUD(Integer idPjud){
         try {
+            VinculoProcessualDAO vinculoProcessualDAO = new VinculoProcessualDAO();
             vinculoProcessualDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();

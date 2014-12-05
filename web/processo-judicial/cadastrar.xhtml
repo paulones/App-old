@@ -2344,85 +2344,85 @@
                                                                             </h:panelGroup>
                                                                         </ui:fragment>
                                                                         <h:panelGroup id="redirecionamento">
-                                                                        <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
-                                                                            <div class="row">
-                                                                                <div class="col-md-6">
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label col-md-3">Condição</label>
-                                                                                        <div class="col-md-9">
-                                                                                            <div class="radio-list">
-                                                                                                <h:selectOneRadio styleClass="redirecionado uniformization" value="#{processoJudicialBean.redirecionamento}">
-                                                                                                    <f:selectItem itemLabel="Deferido" itemValue="D"/>
-                                                                                                    <f:selectItem itemLabel="Indeferido" itemValue="I"/>
-                                                                                                </h:selectOneRadio>
+                                                                            <ui:fragment rendered="#{!processoJudicialBean.socioList.isEmpty()}">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6">
+                                                                                        <div class="form-group">
+                                                                                            <label class="control-label col-md-3">Condição</label>
+                                                                                            <div class="col-md-9">
+                                                                                                <div class="radio-list">
+                                                                                                    <h:selectOneRadio styleClass="redirecionado uniformization" value="#{processoJudicialBean.redirecionamento}">
+                                                                                                        <f:selectItem itemLabel="Deferido" itemValue="D"/>
+                                                                                                        <f:selectItem itemLabel="Indeferido" itemValue="I"/>
+                                                                                                    </h:selectOneRadio>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="row socios-table display-hide">
-                                                                                <div class="col-md-12">
-                                                                                    <!-- BEGIN EXAMPLE TABLE PORTLET-->
-                                                                                    <table class="table table-bordered table-striped table-condensed table-hover vinculations checkbox-table">
-                                                                                        <thead>
-                                                                                            <tr>
-                                                                                                <th class="table-checkbox" style="min-width:5%;">
-                                                                                                    <input type="checkbox" class="group-checkable" data-set=".checkboxes-socios"/>
-                                                                                                </th>
-                                                                                                <th style="min-width:20%">
-                                                                                                    CPF/CNPJ
-                                                                                                </th>
-                                                                                                <th style="min-width:50%">
-                                                                                                    Sócios
-                                                                                                </th>
-                                                                                                <th style="min-width:20%">
-                                                                                                    Data
-                                                                                                </th>
-                                                                                                <th style="min-width:5%">
-                                                                                                </th>
-                                                                                            </tr>
-                                                                                        </thead>
-                                                                                        <tbody>
-                                                                                            <ui:repeat value="#{processoJudicialBean.socioRedirecionamentoList}" var="socio" varStatus="status">
-                                                                                                <tr class="gradeX">
-                                                                                                    <td>
-                                                                                                        <input type="checkbox" class="checkboxes-socios" value="#{status.index}"/>
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
-                                                                                                          ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
-                                                                                                          : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
-                                                                                                    </td>
-                                                                                                    <td class="socio-name">
-                                                                                                        #{socio.pessoa.nome}
-                                                                                                    </td>
-                                                                                                    <td class="socio-data">
-                                                                                                        <div class="form-group margin-bottom-0">
-                                                                                                            <div class="col-md-12">
-                                                                                                                <div class="input-icon right display-hide">
-                                                                                                                    <i class="fa"></i>
-                                                                                                                    <h:inputText value="#{socio.redirecionamento.dataDeRedirecionamento}" class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                <div class="row socios-table display-hide">
+                                                                                    <div class="col-md-12">
+                                                                                        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                                                                                        <table class="table table-bordered table-striped table-condensed table-hover vinculations checkbox-table">
+                                                                                            <thead>
+                                                                                                <tr>
+                                                                                                    <th class="table-checkbox" style="min-width:5%;">
+                                                                                                        <input type="checkbox" class="group-checkable" data-set=".checkboxes-socios"/>
+                                                                                                    </th>
+                                                                                                    <th style="min-width:20%">
+                                                                                                        CPF/CNPJ
+                                                                                                    </th>
+                                                                                                    <th style="min-width:50%">
+                                                                                                        Sócios
+                                                                                                    </th>
+                                                                                                    <th style="min-width:20%">
+                                                                                                        Data
+                                                                                                    </th>
+                                                                                                    <th style="min-width:5%">
+                                                                                                    </th>
+                                                                                                </tr>
+                                                                                            </thead>
+                                                                                            <tbody>
+                                                                                                <ui:repeat value="#{processoJudicialBean.socioRedirecionamentoList}" var="socio" varStatus="status">
+                                                                                                    <tr class="gradeX">
+                                                                                                        <td>
+                                                                                                            <input type="checkbox" class="checkboxes-socios" value="#{status.index}"/>
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            #{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' 
+                                                                                                              ? (socio.pessoa.cpf eq null ? '-' : socio.pessoa.cpf.substring(0,3).concat('.').concat(socio.pessoa.cpf.substring(3,6)).concat('.').concat(socio.pessoa.cpf.substring(6,9)).concat('-').concat(socio.pessoa.cpf.substring(9)))
+                                                                                                              : socio.pessoa.cnpj.substring(0,2).concat('.').concat(socio.pessoa.cnpj.substring(2,5)).concat('.').concat(socio.pessoa.cnpj.substring(5,8)).concat('/').concat(socio.pessoa.cnpj.substring(8,12)).concat('-').concat(socio.pessoa.cnpj.substring(12))}
+                                                                                                        </td>
+                                                                                                        <td class="socio-name">
+                                                                                                            #{socio.pessoa.nome}
+                                                                                                        </td>
+                                                                                                        <td class="socio-data">
+                                                                                                            <div class="form-group margin-bottom-0">
+                                                                                                                <div class="col-md-12">
+                                                                                                                    <div class="input-icon right display-hide">
+                                                                                                                        <i class="fa"></i>
+                                                                                                                        <h:inputText value="#{socio.redirecionamento.dataDeRedirecionamento}" class="form-control input-sm date data_redirecionamento" autocomplete="off" />
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                        </div>
-                                                                                                    </td>
-                                                                                                    <td>
-                                                                                                        <a href="javascript:;" class="#{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' ? 'pf-info' : 'pj-info'}" >
-                                                                                                            <div class='label label-default'>
-                                                                                                                <i class='fa fa-search'></i>
-                                                                                                                <input type='hidden' class='object-id' value="#{socio.pessoa.id}"></input>
-                                                                                                            </div>
-                                                                                                        </a>
-                                                                                                    </td>
-                                                                                                </tr>
-                                                                                            </ui:repeat>
-                                                                                        </tbody>
-                                                                                    </table>
-                                                                                    <!-- END EXAMPLE TABLE PORTLET-->
+                                                                                                        </td>
+                                                                                                        <td>
+                                                                                                            <a href="javascript:;" class="#{socio.pessoa.getClass().getSimpleName() eq 'PessoaFisica' ? 'pf-info' : 'pj-info'}" >
+                                                                                                                <div class='label label-default'>
+                                                                                                                    <i class='fa fa-search'></i>
+                                                                                                                    <input type='hidden' class='object-id' value="#{socio.pessoa.id}"></input>
+                                                                                                                </div>
+                                                                                                            </a>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </ui:repeat>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                        <!-- END EXAMPLE TABLE PORTLET-->
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </ui:fragment>
-                                                                            </h:panelGroup>
+                                                                            </ui:fragment>
+                                                                        </h:panelGroup>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -2477,7 +2477,10 @@
                                                                                             <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
                                                                                                                      or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
                                                                                                                      or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                 <div class="row">
                                                                                                     <div class="col-md-9">
                                                                                                         <div class="form-group">
@@ -2493,21 +2496,24 @@
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            </ui:fragment>
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-9">
-                                                                                                    <div class="form-group">
-                                                                                                        <label class="control-label col-md-2">Data</label>
-                                                                                                        <div class="col-md-4">
-                                                                                                            <div class="input-icon right">
-                                                                                                                <i class="fa"></i>
-                                                                                                                <h:inputText value="#{penhora.dataDaPenhora}" class="form-control date penhoradata" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                <div class="row display-hide motivo">
+                                                                                                    <div class="col-md-9">
+                                                                                                        <div class="form-group">
+                                                                                                            <label class="control-label col-md-2">Motivo</label>
+                                                                                                            <div class="col-md-10">
+                                                                                                                <div class="input-icon right">
+                                                                                                                    <i class="fa"></i>
+                                                                                                                    <h:inputText value="#{penhora.motivo}" class="form-control" autocomplete="off" />
+                                                                                                                </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            </div>
-                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')}">
+                                                                                            </ui:fragment>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                 <div class="row valor-endereco display-hide">
                                                                                                     <div class="col-md-9">
                                                                                                         <div class="form-group">
@@ -2537,8 +2543,22 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </ui:fragment>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-9">
+                                                                                                    <div class="form-group">
+                                                                                                        <label class="control-label col-md-2">Data</label>
+                                                                                                        <div class="col-md-4">
+                                                                                                            <div class="input-icon right">
+                                                                                                                <i class="fa"></i>
+                                                                                                                <h:inputText value="#{penhora.dataDaPenhora}" class="form-control date penhoradata" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                             <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')}">
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'C.R.I')}">
                                                                                                 <div class="row">
                                                                                                     <div class="col-md-9">
                                                                                                         <div class="form-group">
@@ -2558,7 +2578,8 @@
                                                                                                 </div>
                                                                                             </ui:fragment>
                                                                                             <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Indicação de Bem (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Via Oficial (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')  or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
                                                                                                 <div class="row">
                                                                                                     <div class="col-md-9">
                                                                                                         <div class="form-group">
@@ -2596,88 +2617,89 @@
                                                                                                     </div>
                                                                                                 </h:panelGroup>
                                                                                             </ui:fragment>
-                                                                                                <h:panelGroup id="bem-show">
-                                                                                                    <ui:fragment rendered="#{penhora.bemFk ne null}">
-                                                                                                        <div layout="block" class="portlet box blue-chambray">
-                                                                                                            <div class="portlet-title">
-                                                                                                                <div class="caption">
-                                                                                                                    <i class="fa fa-car"></i>#{penhora.bemFk.descricao}
-                                                                                                                </div>
+                                                                                            <h:panelGroup id="bem-show">
+                                                                                                <ui:fragment rendered="#{penhora.bemFk ne null}">
+                                                                                                    <div layout="block" class="portlet box blue-chambray">
+                                                                                                        <div class="portlet-title">
+                                                                                                            <div class="caption">
+                                                                                                                <i class="fa fa-car"></i>#{penhora.bemFk.descricao}
                                                                                                             </div>
-                                                                                                            <div class="portlet-body form">
-                                                                                                                <div class="form-body">
-                                                                                                                    <div class="row">
-                                                                                                                        <div class="col-md-8">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="control-label col-md-2">Descrição:</label>
-                                                                                                                                <div class="col-md-10">
-                                                                                                                                    <p class="form-control-bem-penhora-static">
-                                                                                                                                        #{penhora.bemFk.descricao eq null ? '-' : penhora.bemFk.descricao}
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="col-md-4">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="control-label col-md-3">Tipo:</label>
-                                                                                                                                <div class="col-md-9">
-                                                                                                                                    <p class="form-control-bem-penhora-static">
-                                                                                                                                        #{penhora.bemFk.tipoBemFk eq null ? '-' : penhora.bemFk.tipoBemFk.tipo}
-                                                                                                                                    </p>
-                                                                                                                                </div>
+                                                                                                        </div>
+                                                                                                        <div class="portlet-body form">
+                                                                                                            <div class="form-body">
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-8">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Descrição:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-bem-penhora-static">
+                                                                                                                                    #{penhora.bemFk.descricao eq null ? '-' : penhora.bemFk.descricao}
+                                                                                                                                </p>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                    <div class="row">
-                                                                                                                        <div class="col-md-8">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="control-label col-md-2">Endereço:</label>
-                                                                                                                                <div class="col-md-10">
-                                                                                                                                    <p class="form-control-bem-penhora-static">
-                                                                                                                                        #{penhora.bemFk.endereco eq null ? '-' : penhora.bemFk.endereco}
-                                                                                                                                    </p>
-                                                                                                                                </div>
-                                                                                                                            </div>
-                                                                                                                        </div>
-                                                                                                                        <div class="col-md-4">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="control-label col-md-3">Valor:</label>
-                                                                                                                                <div class="col-md-9">
-                                                                                                                                    <p class="form-control-bem-penhora-static money">
-                                                                                                                                        #{penhora.bemFk.valor eq null ? '-' : penhora.bemFk.valor}
-                                                                                                                                    </p>
-                                                                                                                                </div>
+                                                                                                                    <div class="col-md-4">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-3">Tipo:</label>
+                                                                                                                            <div class="col-md-9">
+                                                                                                                                <p class="form-control-bem-penhora-static">
+                                                                                                                                    #{penhora.bemFk.tipoBemFk eq null ? '-' : penhora.bemFk.tipoBemFk.tipo}
+                                                                                                                                </p>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
-                                                                                                                    <div class="row">
-                                                                                                                        <div class="col-md-8">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="control-label col-md-2">Aquisição:</label>
-                                                                                                                                <div class="col-md-8">
-                                                                                                                                    <p class="form-control-bem-penhora-static">
-                                                                                                                                        #{penhora.bemFk.dataDeAquisicao eq null ? '-' : penhora.bemFk.dataDeAquisicao}
-                                                                                                                                    </p>
-                                                                                                                                </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-8">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Endereço:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-bem-penhora-static">
+                                                                                                                                    #{penhora.bemFk.endereco eq null ? '-' : penhora.bemFk.endereco}
+                                                                                                                                </p>
                                                                                                                             </div>
                                                                                                                         </div>
-                                                                                                                        <div class="col-md-4">
-                                                                                                                            <div class="form-group">
-                                                                                                                                <label class="control-label col-md-3 col-md-pull-1">Extinção:</label>
-                                                                                                                                <div class="col-md-9">
-                                                                                                                                    <p class="form-control-bem-penhora-static">
-                                                                                                                                        #{penhora.bemFk.dataDeTransferenciaOuExtincao eq null ? '-' : penhora.bemFk.dataDeTransferenciaOuExtincao}
-                                                                                                                                    </p>
-                                                                                                                                </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="col-md-4">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-3">Valor:</label>
+                                                                                                                            <div class="col-md-9">
+                                                                                                                                <p class="form-control-bem-penhora-static money">
+                                                                                                                                    #{penhora.bemFk.valor eq null ? '-' : penhora.bemFk.valor}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-8">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Aquisição:</label>
+                                                                                                                            <div class="col-md-8">
+                                                                                                                                <p class="form-control-bem-penhora-static">
+                                                                                                                                    #{penhora.bemFk.dataDeAquisicao eq null ? '-' : penhora.bemFk.dataDeAquisicao}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                    <div class="col-md-4">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-3 col-md-pull-1">Extinção:</label>
+                                                                                                                            <div class="col-md-9">
+                                                                                                                                <p class="form-control-bem-penhora-static">
+                                                                                                                                    #{penhora.bemFk.dataDeTransferenciaOuExtincao eq null ? '-' : penhora.bemFk.dataDeTransferenciaOuExtincao}
+                                                                                                                                </p>
                                                                                                                             </div>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
-                                                                                                    </ui:fragment>
-                                                                                                </h:panelGroup>
-                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')}">
+                                                                                                    </div>
+                                                                                                </ui:fragment>
+                                                                                            </h:panelGroup>
+                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                 <div class="row">
                                                                                                     <div class="col-md-9">
                                                                                                         <div class="form-group">

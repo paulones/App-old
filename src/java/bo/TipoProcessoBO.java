@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class TipoProcessoBO implements Serializable{
     
-    private TipoProcessoDAO tipoProcessoDAO;
-    
-    public TipoProcessoBO(){
-        tipoProcessoDAO = new TipoProcessoDAO();
-    }
-    
-    public List<TipoProcesso> findAll(){
+    public static List<TipoProcesso> findAll(){
         try { 
+            TipoProcessoDAO tipoProcessoDAO = new TipoProcessoDAO();
             return tipoProcessoDAO.findTipoProcessoEntities();
         } catch (Exception e) {
             e.printStackTrace();

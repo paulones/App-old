@@ -18,31 +18,27 @@ import java.util.List;
  */
 public class PessoaJuridicaJuridicaHistoricoBO implements Serializable{
     
-    
-    private PessoaJuridicaJuridicaHistoricoDAO pessoaJuridicaJuridicaHistoricoDAO;
-    
-    public PessoaJuridicaJuridicaHistoricoBO(){
-        pessoaJuridicaJuridicaHistoricoDAO = new PessoaJuridicaJuridicaHistoricoDAO();
-    }
-    
-    public void create(PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistorico){
+    public static void create(PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistorico){
         try {
+            PessoaJuridicaJuridicaHistoricoDAO pessoaJuridicaJuridicaHistoricoDAO = new PessoaJuridicaJuridicaHistoricoDAO();
             pessoaJuridicaJuridicaHistoricoDAO.create(pessoaJuridicaJuridicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistorico){
+    public static void edit(PessoaJuridicaJuridicaHistorico pessoaJuridicaJuridicaHistorico){
         try {
+            PessoaJuridicaJuridicaHistoricoDAO pessoaJuridicaJuridicaHistoricoDAO = new PessoaJuridicaJuridicaHistoricoDAO();
             pessoaJuridicaJuridicaHistoricoDAO.edit(pessoaJuridicaJuridicaHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<PessoaJuridicaJuridicaHistorico> findAllByPJH(Integer id){
+    public static List<PessoaJuridicaJuridicaHistorico> findAllByPJH(Integer id){
         try { 
+            PessoaJuridicaJuridicaHistoricoDAO pessoaJuridicaJuridicaHistoricoDAO = new PessoaJuridicaJuridicaHistoricoDAO();
             return pessoaJuridicaJuridicaHistoricoDAO.findAllByPJH(id);
         } catch (Exception e) {
             e.printStackTrace();

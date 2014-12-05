@@ -16,30 +16,27 @@ import java.io.Serializable;
  */
 public class VinculoProcessualHistoricoBO implements Serializable{
     
-    private VinculoProcessualHistoricoDAO vinculoProcessualHistoricoDAO;
-    
-    public VinculoProcessualHistoricoBO(){
-        vinculoProcessualHistoricoDAO = new VinculoProcessualHistoricoDAO();
-    }
-    
-    public void create(VinculoProcessualHistorico vinculoProcessualHistorico){
+    public static void create(VinculoProcessualHistorico vinculoProcessualHistorico){
         try {
+            VinculoProcessualHistoricoDAO vinculoProcessualHistoricoDAO = new VinculoProcessualHistoricoDAO();
             vinculoProcessualHistoricoDAO.create(vinculoProcessualHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(VinculoProcessualHistorico vinculoProcessualHistorico){
+    public static void edit(VinculoProcessualHistorico vinculoProcessualHistorico){
         try {
+            VinculoProcessualHistoricoDAO vinculoProcessualHistoricoDAO = new VinculoProcessualHistoricoDAO();
             vinculoProcessualHistoricoDAO.edit(vinculoProcessualHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(VinculoProcessualHistorico vinculoProcessualHistorico){
+    public static void destroy(VinculoProcessualHistorico vinculoProcessualHistorico){
         try {
+            VinculoProcessualHistoricoDAO vinculoProcessualHistoricoDAO = new VinculoProcessualHistoricoDAO();
             vinculoProcessualHistoricoDAO.destroy(vinculoProcessualHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();

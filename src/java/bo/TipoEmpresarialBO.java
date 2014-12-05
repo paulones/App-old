@@ -17,15 +17,10 @@ import java.util.List;
  * @author Pedro
  */
 public class TipoEmpresarialBO  implements Serializable{
-    
-    private TipoEmpresarialDAO tipoEmpresarialDAO;
-    
-    public TipoEmpresarialBO (){
-        tipoEmpresarialDAO = new TipoEmpresarialDAO();
-    }
-    
-    public List<TipoEmpresarial> findAll(){
+
+    public static List<TipoEmpresarial> findAll(){
         try { 
+            TipoEmpresarialDAO tipoEmpresarialDAO = new TipoEmpresarialDAO();
             return tipoEmpresarialDAO.findTipoEmpresarialEntities();
         } catch (Exception e) {
             e.printStackTrace();

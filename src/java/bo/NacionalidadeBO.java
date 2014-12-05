@@ -18,14 +18,9 @@ import java.util.List;
  */
 public class NacionalidadeBO implements Serializable {
     
-    private NacionalidadeDAO nacionalidadeDAO;
-    
-    public NacionalidadeBO(){
-        nacionalidadeDAO = new NacionalidadeDAO();
-    }
-    
-    public List<Nacionalidade> findAll(){
+    public static List<Nacionalidade> findAll(){
         try { 
+            NacionalidadeDAO nacionalidadeDAO = new NacionalidadeDAO();
             return nacionalidadeDAO.findNacionalidadeEntities();
         } catch (Exception e) {
             e.printStackTrace();

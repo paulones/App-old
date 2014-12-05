@@ -31,15 +31,13 @@ public class BloquearTelaBean implements Serializable {
     private String senha;
     private String pagina_anterior;
     private boolean senhaCorreta;
-    private UsuarioBO usuarioBO;
 
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
-            usuarioBO = new UsuarioBO();
             senha = "";
             senhaCorreta = true;
             pagina_anterior = Cookie.getCookie("pagina_anterior");
-            usuario = usuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
+            usuario = UsuarioBO.findUsuarioByCPF(Cookie.getCookie("usuario"));
         }
     }
 

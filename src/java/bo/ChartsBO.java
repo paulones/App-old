@@ -17,19 +17,10 @@ import java.io.Serializable;
  * @author Pedro
  */
 public class ChartsBO implements Serializable{
-    
-    private PessoaFisicaDAO pessoaFisicaDAO;
-    private PessoaJuridicaDAO pessoaJuridicaDAO;
-    private ProcessoJudicialDAO processoJudicialDAO;
-    
-    public ChartsBO (){
-        pessoaFisicaDAO = new PessoaFisicaDAO();
-        pessoaJuridicaDAO = new PessoaJuridicaDAO();
-        processoJudicialDAO = new ProcessoJudicialDAO();
-    }
      
-    public Integer countPFByMonth(Integer ano, Integer mes, Instituicao instituicao){
+    public static Integer countPFByMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
+            PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO();
             return pessoaFisicaDAO.countPFByMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,8 +28,9 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Integer countPJByMonth(Integer ano, Integer mes, Instituicao instituicao){
+    public static Integer countPJByMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
+            PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO();
             return pessoaJuridicaDAO.countPJByMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,8 +38,9 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Integer countPJUDByMonth(Integer ano, Integer mes, Instituicao instituicao){
+    public static Integer countPJUDByMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.countPJUDByMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,8 +48,9 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Double sumPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
+    public static Double sumPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.sumPJUDValueBeforeMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,8 +58,9 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
+    public static Double sumPJUDArrecadacaoBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.sumPJUDArrecadacaoBeforeMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,8 +68,9 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Integer countPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
+    public static Integer countPJUDValueBeforeMonth(Integer ano, Integer mes, Instituicao instituicao){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.countPJUDValueBeforeMonth(ano, mes, instituicao);
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,8 +78,9 @@ public class ChartsBO implements Serializable{
         return null;
     }
     
-    public Integer getPJUDSituations(String situacao, Instituicao instituicao){
+    public static Integer getPJUDSituations(String situacao, Instituicao instituicao){
         try {
+            ProcessoJudicialDAO processoJudicialDAO = new ProcessoJudicialDAO();
             return processoJudicialDAO.getPJUDSituations(situacao, instituicao);
         } catch (Exception e) {
             e.printStackTrace();

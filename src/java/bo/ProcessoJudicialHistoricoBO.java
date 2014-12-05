@@ -18,38 +18,36 @@ import java.util.List;
  */
 public class ProcessoJudicialHistoricoBO implements Serializable{
     
-    private ProcessoJudicialHistoricoDAO processoJudicialHistoricoDAO;
-    
-    public ProcessoJudicialHistoricoBO(){
-        processoJudicialHistoricoDAO = new ProcessoJudicialHistoricoDAO();
-    }
-    
-    public void create(ProcessoJudicialHistorico processoJudicialHistorico){
+    public static void create(ProcessoJudicialHistorico processoJudicialHistorico){
         try {
+            ProcessoJudicialHistoricoDAO processoJudicialHistoricoDAO = new ProcessoJudicialHistoricoDAO();
             processoJudicialHistoricoDAO.create(processoJudicialHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void edit(ProcessoJudicialHistorico processoJudicialHistorico){
+    public static void edit(ProcessoJudicialHistorico processoJudicialHistorico){
         try {
+            ProcessoJudicialHistoricoDAO processoJudicialHistoricoDAO = new ProcessoJudicialHistoricoDAO();
             processoJudicialHistoricoDAO.edit(processoJudicialHistorico);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public void destroy(ProcessoJudicialHistorico processoJudicialHistorico){
+    public static void destroy(ProcessoJudicialHistorico processoJudicialHistorico){
         try {
+            ProcessoJudicialHistoricoDAO processoJudicialHistoricoDAO = new ProcessoJudicialHistoricoDAO();
             processoJudicialHistoricoDAO.destroy(processoJudicialHistorico.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
-    public List<ProcessoJudicialHistorico> findAllByPJUD(Integer id){
+    public static List<ProcessoJudicialHistorico> findAllByPJUD(Integer id){
         try { 
+            ProcessoJudicialHistoricoDAO processoJudicialHistoricoDAO = new ProcessoJudicialHistoricoDAO();
             return processoJudicialHistoricoDAO.findAllByPJUD(id);
         } catch (Exception e) {
             e.printStackTrace();
