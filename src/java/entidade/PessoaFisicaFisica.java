@@ -109,19 +109,24 @@ public class PessoaFisicaFisica implements Serializable {
         return true;
     }
     
-    public List<String> changedValues(Object obj) {
-        List<String> list = new ArrayList<>();
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         final PessoaFisicaFisica other = (PessoaFisicaFisica) obj;
         if (!Objects.equals(this.pessoaFisicaPrimariaFk, other.pessoaFisicaPrimariaFk)) {
-            list.add("pessoaFisicaPrimariaFk");
+            return false;
         }
         if (!Objects.equals(this.pessoaFisicaSecundariaFk, other.pessoaFisicaSecundariaFk)) {
-            list.add("pessoaFisicaSecundariaFk");
+            return false;
         }
         if (!Objects.equals(this.vinculoSocialFk, other.vinculoSocialFk)) {
-            list.add("vinculoSocialFk");
+            return false;
         }
-        return list;
+        return true;
     }
 
     @Override

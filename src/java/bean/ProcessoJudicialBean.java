@@ -69,6 +69,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
 import util.GeradorLog;
+import util.MetodosConvencionais;
 
 /**
  *
@@ -333,17 +334,15 @@ public class ProcessoJudicialBean implements Serializable {
         if (tipoPenhora != null) {
             Penhora penhora = new Penhora();
             penhora.setTipoPenhoraFk(tipoPenhora);
-            penhora.setCondicao('C');
+            if (edit){
+                penhora.setProcessoJudicialFk(processoJudicial);
+            }
             penhoraList.add(penhora);
         }
     }
 
     public void removerPenhora(int index) {
-        if (edit) {
-            penhoraList.get(index).setCondicao('D');
-        } else {
-            penhoraList.remove(index);
-        }
+        penhoraList.remove(index);
     }
 
     public List<Citacao> adicionarCitacoes(List<Citacao> citacaoList, Integer quantidade, String tipo) {
@@ -625,11 +624,11 @@ public class ProcessoJudicialBean implements Serializable {
                         sr.getRedirecionamento().setRedirecionado(redirecionamento);
                     }
                 }
-                boolean identicalVP = checarListasIguais("VinculoProcessual", vinculoProcessualList, (List<VinculoProcessual>) oldProcessoJudicial.getVinculoProcessualCollection());
-                boolean identicalRedirecionamento = checarListasIguais("SocioRedirecionamento", socioRedirecionamentoList, oldSocioRedirecionamentoList);
-                boolean identicalCitacao = checarListasIguais("Citacao", citacaoList, oldCitacaoList);
-                boolean identicalPenhora = checarListasIguais("Penhora", penhoraList, oldPenhoraList);
-                if (oldProcessoJudicial.equalsValues(processoJudicial)
+                boolean identicalVP = MetodosConvencionais.checarListasIguais("VinculoProcessual", vinculoProcessualList, (List<VinculoProcessual>) oldProcessoJudicial.getVinculoProcessualCollection());
+                boolean identicalRedirecionamento = MetodosConvencionais.checarListasIguais("SocioRedirecionamento", socioRedirecionamentoList, oldSocioRedirecionamentoList);
+                boolean identicalCitacao = MetodosConvencionais.checarListasIguais("Citacao", citacaoList, oldCitacaoList);
+                boolean identicalPenhora = MetodosConvencionais.checarListasIguais("Penhora", penhoraList, oldPenhoraList);
+                if (oldProcessoJudicial.equalsValues(processoJudicial) 
                         && identicalVP && identicalCitacao && identicalRedirecionamento && identicalPenhora) {
                     Cookie.addCookie("FacesMessage", "fail", 10);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
@@ -673,22 +672,11 @@ public class ProcessoJudicialBean implements Serializable {
                             RedirecionamentoBO.create(sr.getRedirecionamento());
                         }
                     }
+                    PenhoraBO.destroyByPJUD(processoJudicial.getId());
                     for (Penhora penhora : penhoraList) {
-                        if (penhora.getCondicao() == 'D') {
-                            PenhoraBO.destroy(penhora);
-                        } else {
-                            if (penhora.getSocioTipo() != null) {
-                                penhora.setSocio(penhora.getSocioTipo().substring(0, 2));
-                                penhora.setSocioFk(Integer.valueOf(penhora.getSocioTipo().substring(2)));
-                            }
-                            if (penhora.getCondicao() == 'C') {
-                                penhora.setProcessoJudicialFk(processoJudicial);
-                                PenhoraBO.create(penhora);
-                            } else {
-                                PenhoraBO.edit(penhora);
-                            }
-                        }
+                        PenhoraBO.create(penhora);
                     }
+
                     for (VinculoProcessualHistorico vph : vinculoProcessualHistoricoList) {
                         vph.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
                         VinculoProcessualHistoricoBO.create(vph);
@@ -746,31 +734,6 @@ public class ProcessoJudicialBean implements Serializable {
             mensagem += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
         }
         return mensagem;
-    }
-
-    private boolean checarListasIguais(String tipo, List<?> list, List<?> oldList) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-        boolean igual = true;
-        if (oldList.size() != list.size()) {
-            igual = false;
-        } else {
-            for (Object object : list) {
-                for (Object oldObject : oldList) {
-                    Class<?> c = Class.forName("entidade." + tipo);
-                    Method method = c.getDeclaredMethod("equalsValues", Object.class);
-                    boolean equals = (boolean) method.invoke(object, oldObject);
-                    if (equals) {
-                        igual = true;
-                        break;
-                    } else {
-                        igual = false;
-                    }
-                }
-                if (!igual) {
-                    break;
-                }
-            }
-        }
-        return igual;
     }
 
     public void prepararHistorico(ProcessoJudicial processoJudicial, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList) {

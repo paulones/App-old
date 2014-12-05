@@ -52,6 +52,7 @@ import entidade.TipoBem;
 import entidade.VinculoSocial;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
 import util.GeradorLog;
+import util.MetodosConvencionais;
 
 /**
  *
@@ -70,20 +72,16 @@ import util.GeradorLog;
  */
 @ViewScoped
 @ManagedBean(name = "pessoaFisicaBean")
-public class PessoaFisicaBean implements Serializable {
+public class PessoaFisicaBean implements Serializable{
 
     private PessoaFisica pessoaFisica;
     private PessoaFisica oldPessoaFisica;
     private Endereco endereco;
     private Endereco oldEndereco;
-    private PessoaJuridica pessoaJuridica;
-    private PessoaFisicaJuridica pessoaFisicaJuridica;
-    private PessoaFisicaFisica pessoaFisicaFisica;
     private EnderecoPessoa enderecoPessoa;
-    private EnderecoPessoa enderecoPessoaModal;
     private PessoaFisicaHistorico pessoaFisicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
-    private Bem bem;
+    private Bem bem; 
 
     private String register;
     private String redirect;
@@ -123,10 +121,7 @@ public class PessoaFisicaBean implements Serializable {
             boolean isSearchPage = FacesContext.getCurrentInstance().getViewRoot().getViewId().lastIndexOf("consultar") > -1;
 
             endereco = new Endereco();
-            pessoaJuridica = new PessoaJuridica();
             bem = new Bem();
-            pessoaFisicaJuridica = new PessoaFisicaJuridica();
-            pessoaFisicaFisica = new PessoaFisicaFisica();
             enderecoPessoa = new EnderecoPessoa();
 
             register = "";
@@ -281,7 +276,7 @@ public class PessoaFisicaBean implements Serializable {
         }
     }
 
-    public void cadastrar() throws IOException {
+    public void cadastrar() throws IOException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, IllegalArgumentException, NoSuchMethodException {
         UsuarioBO usuarioBO = new UsuarioBO();
         boolean error = false;
         PessoaFisica pfDB = PessoaFisicaBO.findByCPF(pessoaFisica.getCpf());
@@ -338,60 +333,9 @@ public class PessoaFisicaBean implements Serializable {
                 if (pessoaFisica.getEstadoFk() != null) {
                     pessoaFisica.setPaisFk(PaisBO.findBrasil());
                 }
-                boolean identicalPfj = true;
-                if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
-                    identicalPfj = false;
-                } else {
-                    for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                        for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
-                            if (pfj.changedValues(oldPfj).isEmpty()) {
-                                identicalPfj = true;
-                                break;
-                            } else {
-                                identicalPfj = false;
-                            }
-                        }
-                        if (!identicalPfj) {
-                            break;
-                        }
-                    }
-                }
-                boolean identicalPff = true;
-                if (oldPessoaFisicaFisicaList.size() != pessoaFisicaFisicaList.size()) {
-                    identicalPff = false;
-                } else {
-                    for (PessoaFisicaFisica pff : pessoaFisicaFisicaList) {
-                        for (PessoaFisicaFisica oldPff : oldPessoaFisicaFisicaList) {
-                            if (pff.changedValues(oldPff).isEmpty()) {
-                                identicalPff = true;
-                                break;
-                            } else {
-                                identicalPff = false;
-                            }
-                        }
-                        if (!identicalPff) {
-                            break;
-                        }
-                    }
-                }
-                boolean identicalBem = true;
-                if (oldBemList.size() != bemList.size()) {
-                    identicalBem = false;
-                } else {
-                    for (Bem b : bemList) {
-                        for (Bem oldb : oldBemList) {
-                            if (b.equalsValues(oldb)) {
-                                identicalBem = true;
-                                break;
-                            } else {
-                                identicalBem = false;
-                            }
-                        }
-                        if (!identicalBem) {
-                            break;
-                        }
-                    }
-                }
+                boolean identicalPfj = MetodosConvencionais.checarListasIguais("PessoaFisicaJuridica", pessoaFisicaJuridicaList, oldPessoaFisicaJuridicaList);
+                boolean identicalPff = MetodosConvencionais.checarListasIguais("PessoaFisicaFisica", pessoaFisicaFisicaList, oldPessoaFisicaFisicaList);
+                boolean identicalBem = MetodosConvencionais.checarListasIguais("Bem", bemList, oldBemList);
                 if (oldPessoaFisica.changedValues(pessoaFisica).isEmpty()
                         && oldEndereco.changedValues(endereco).isEmpty()
                         && identicalPfj && identicalPff && identicalBem) {
@@ -508,6 +452,8 @@ public class PessoaFisicaBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
+        PessoaJuridica pessoaJuridica = new PessoaJuridica();
+        PessoaFisicaJuridica pessoaFisicaJuridica = new PessoaFisicaJuridica();
         if (edit) {
             pessoaFisicaJuridica.setPessoaFisicaFk(pessoaFisica);
         }
@@ -521,11 +467,11 @@ public class PessoaFisicaBean implements Serializable {
         }
         if (!exists) {
             pessoaFisicaJuridicaList.add(pessoaFisicaJuridica);
-            pessoaFisicaJuridica = new PessoaFisicaJuridica();
         }
     }
 
     public void vincularPessoaFisica() {
+        PessoaFisicaFisica pessoaFisicaFisica = new PessoaFisicaFisica();
         if (edit) {
             pessoaFisicaFisica.setPessoaFisicaPrimariaFk(pessoaFisica);
         }
@@ -540,7 +486,6 @@ public class PessoaFisicaBean implements Serializable {
         }
         if (!exists) {
             pessoaFisicaFisicaList.add(pessoaFisicaFisica);
-            pessoaFisicaFisica = new PessoaFisicaFisica();
         }
     }
 
@@ -810,22 +755,6 @@ public class PessoaFisicaBean implements Serializable {
         this.endereco = endereco;
     }
 
-    public PessoaJuridica getPessoaJuridica() {
-        return pessoaJuridica;
-    }
-
-    public void setPessoaJuridica(PessoaJuridica pessoaJuridica) {
-        this.pessoaJuridica = pessoaJuridica;
-    }
-
-    public PessoaFisicaJuridica getPessoaFisicaJuridica() {
-        return pessoaFisicaJuridica;
-    }
-
-    public void setPessoaFisicaJuridica(PessoaFisicaJuridica pessoaFisicaJuridica) {
-        this.pessoaFisicaJuridica = pessoaFisicaJuridica;
-    }
-
     public List<EnderecoPessoaFisicaJuridicaHistorico> getEnderecoPessoaFisicaJuridicaHistoricoList() {
         return enderecoPessoaFisicaJuridicaHistoricoList;
     }
@@ -864,14 +793,6 @@ public class PessoaFisicaBean implements Serializable {
 
     public void setHistory(boolean history) {
         this.history = history;
-    }
-
-    public EnderecoPessoa getEnderecoPessoaModal() {
-        return enderecoPessoaModal;
-    }
-
-    public void setEnderecoPessoaModal(EnderecoPessoa enderecoPessoaModal) {
-        this.enderecoPessoaModal = enderecoPessoaModal;
     }
 
     public String getPfId() {

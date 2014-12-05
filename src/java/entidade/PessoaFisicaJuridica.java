@@ -146,28 +146,33 @@ public class PessoaFisicaJuridica implements Serializable {
         return true;
     }
     
-    public List<String> changedValues(Object obj) {
-        List<String> list = new ArrayList<>();
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         final PessoaFisicaJuridica other = (PessoaFisicaJuridica) obj;
         if (!Objects.equals(this.capitalDeParticipacao, other.capitalDeParticipacao)) {
-            list.add("capitalDeParticipacao");
+            return false;
         }
         if (!Objects.equals(this.dataDeInicio, other.dataDeInicio)) {
-            list.add("dataDeInicio");
+            return false;
         }
         if (!Objects.equals(this.dataDeTermino, other.dataDeTermino)) {
-            list.add("dataDeTermino");
+            return false;
         }
         if (!Objects.equals(this.funcaoFk, other.funcaoFk)) {
-            list.add("funcaoFk");
+            return false;
         }
         if (!Objects.equals(this.pessoaFisicaFk, other.pessoaFisicaFk)) {
-            list.add("pessoaFisicaFk");
+            return false;
         }
         if (!Objects.equals(this.pessoaJuridicaFk, other.pessoaJuridicaFk)) {
-            list.add("pessoaJuridicaFk");
+            return false;
         }
-        return list;
+        return true;
     }
 
     

@@ -51,6 +51,7 @@ import entidade.TipoEmpresarial;
 import entidade.Usuario;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
 import util.GeradorLog;
+import util.MetodosConvencionais;
 
 /**
  *
@@ -80,7 +82,6 @@ public class PessoaJuridicaBean implements Serializable {
     private PessoaFisicaJuridica pessoaFisicaJuridica;
     private PessoaJuridicaJuridica pessoaJuridicaJuridica;
     private EnderecoPessoa enderecoPessoa;
-    private EnderecoPessoa enderecoPessoaModal;
     private PessoaJuridicaHistorico pessoaJuridicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
     private PessoaJuridicaSucessao pessoaJuridicaSucessao;
@@ -260,7 +261,7 @@ public class PessoaJuridicaBean implements Serializable {
         tipoBemList = TipoBemBO.findAll();
     }
 
-    public void cadastrar() throws IOException {
+    public void cadastrar() throws IOException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
         UsuarioBO usuarioBO = new UsuarioBO();
         boolean error = false;
         PessoaJuridica pjDB = PessoaJuridicaBO.findDuplicates(pessoaJuridica);
@@ -307,60 +308,9 @@ public class PessoaJuridicaBean implements Serializable {
              */
             if (pjDB == null || pessoaJuridica.equals(pjDB)) {
 
-                boolean identicalpfj = true;
-                if (oldPessoaFisicaJuridicaList.size() != pessoaFisicaJuridicaList.size()) {
-                    identicalpfj = false;
-                } else {
-                    for (PessoaFisicaJuridica pfj : pessoaFisicaJuridicaList) {
-                        for (PessoaFisicaJuridica oldPfj : oldPessoaFisicaJuridicaList) {
-                            if (pfj.changedValues(oldPfj).isEmpty()) {
-                                identicalpfj = true;
-                                break;
-                            } else {
-                                identicalpfj = false;
-                            }
-                        }
-                        if (!identicalpfj) {
-                            break;
-                        }
-                    }
-                }
-                boolean identicalpjj = true;
-                if (oldPessoaJuridicaJuridicaList.size() != pessoaJuridicaJuridicaList.size()) {
-                    identicalpjj = false;
-                } else {
-                    for (PessoaJuridicaJuridica pjj : pessoaJuridicaJuridicaList) {
-                        for (PessoaJuridicaJuridica oldPjj : oldPessoaJuridicaJuridicaList) {
-                            if (pjj.changedValues(oldPjj).isEmpty()) {
-                                identicalpjj = true;
-                                break;
-                            } else {
-                                identicalpjj = false;
-                            }
-                        }
-                        if (!identicalpjj) {
-                            break;
-                        }
-                    }
-                }
-                boolean identicalBem = true;
-                if (oldBemList.size() != bemList.size()) {
-                    identicalBem = false;
-                } else {
-                    for (Bem b : bemList) {
-                        for (Bem oldb : oldBemList) {
-                            if (b.equalsValues(oldb)) {
-                                identicalBem = true;
-                                break;
-                            } else {
-                                identicalBem = false;
-                            }
-                        }
-                        if (!identicalBem) {
-                            break;
-                        }
-                    }
-                }
+                boolean identicalpfj = MetodosConvencionais.checarListasIguais("PessoaFisicaJuridica", pessoaFisicaJuridicaList, oldPessoaFisicaJuridicaList);
+                boolean identicalpjj = MetodosConvencionais.checarListasIguais("PessoaJuridicaJuridica", pessoaJuridicaJuridicaList, oldPessoaJuridicaJuridicaList);
+                boolean identicalBem = MetodosConvencionais.checarListasIguais("Bem", bemList, oldBemList);
                 if (oldPessoaJuridica.changedValues(pessoaJuridica).isEmpty()
                         && oldEndereco.changedValues(endereco).isEmpty()
                         && identicalpfj && identicalpjj && identicalBem) {
@@ -829,14 +779,6 @@ public class PessoaJuridicaBean implements Serializable {
 
     public void setEnderecoPessoa(EnderecoPessoa enderecoPessoa) {
         this.enderecoPessoa = enderecoPessoa;
-    }
-
-    public EnderecoPessoa getEnderecoPessoaModal() {
-        return enderecoPessoaModal;
-    }
-
-    public void setEnderecoPessoaModal(EnderecoPessoa enderecoPessoaModal) {
-        this.enderecoPessoaModal = enderecoPessoaModal;
     }
 
     public String getPjId() {

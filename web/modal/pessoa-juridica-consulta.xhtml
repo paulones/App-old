@@ -6,7 +6,7 @@
     xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:panelGroup id="modal-info-pj">
-        <c:if test="#{not empty templateBean.enderecoPessoa.pessoa and templateBean.tabela eq 'PJ'}">
+        <c:if test="#{not empty templateBean.enderecoPessoaJuridica.pessoa and templateBean.tabela eq 'PJ'}">
             <h:panelGroup layout="block" class="modal modal-info fade bs-modal-lg" id="largepj" p:tabindex="-1" p:role="dialog" p:aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -14,23 +14,23 @@
                             <div class="portlet box blue-chambray">
                                 <div class="portlet-title">
                                     <div class="caption">
-                                        <i class="fa fa-institution"></i>Dados de #{templateBean.enderecoPessoa.pessoa.nome}
+                                        <i class="fa fa-institution"></i>Dados de #{templateBean.enderecoPessoaJuridica.pessoa.nome}
                                     </div>
                                 </div>
                                 <div class="portlet-body form">
                                     <div class="form-body">
                                         <ul class="nav nav-tabs">
                                             <li class="active">
-                                                <a href="#tab_1_1_#{templateBean.enderecoPessoa.pessoa.cnpj}" data-toggle="tab">
+                                                <a href="#tab_1_1_#{templateBean.enderecoPessoaJuridica.pessoa.cnpj}" data-toggle="tab">
                                                     <i class="fa fa-list-ul"></i>  Informações Gerais </a>
                                             </li>
                                             <li>
-                                                <a href="#tab_1_2_#{templateBean.enderecoPessoa.pessoa.cnpj}" data-toggle="tab">
+                                                <a href="#tab_1_2_#{templateBean.enderecoPessoaJuridica.pessoa.cnpj}" data-toggle="tab">
                                                     <i class="fa fa-exchange"></i> Sucessões Empresariais </a>
                                             </li>
                                         </ul>
                                         <div class="tab-content">
-                                            <div class="tab-pane fade active in" id="tab_1_1_#{templateBean.enderecoPessoa.pessoa.cnpj}">
+                                            <div class="tab-pane fade active in" id="tab_1_1_#{templateBean.enderecoPessoaJuridica.pessoa.cnpj}">
                                                 <div layout="block" class="portlet box blue-chambray">
                                                     <div class="portlet-title">
                                                         <div class="caption">
@@ -46,7 +46,7 @@
                                                                         <label class="control-label col-md-3">Nome:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static nome">
-                                                                                #{templateBean.enderecoPessoa.pessoa.nome}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.nome}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -57,8 +57,8 @@
                                                                         <label class="control-label col-md-3">CNPJ:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static cnpj">
-                                                                                <ui:param value="#{templateBean.enderecoPessoa.pessoa.cnpj.substring(0,2)}.#{templateBean.enderecoPessoa.pessoa.cnpj.substring(2,5)}.#{templateBean.enderecoPessoa.pessoa.cnpj.substring(5,8)}/#{templateBean.enderecoPessoa.pessoa.cnpj.substring(8,12)}-#{templateBean.enderecoPessoa.pessoa.cnpj.substring(12)}" name="cnpj"/>
-                                                                                #{templateBean.enderecoPessoa.pessoa.cnpj eq null ? '-' : cnpj}
+                                                                                <ui:param value="#{templateBean.enderecoPessoaJuridica.pessoa.cnpj.substring(0,2)}.#{templateBean.enderecoPessoaJuridica.pessoa.cnpj.substring(2,5)}.#{templateBean.enderecoPessoaJuridica.pessoa.cnpj.substring(5,8)}/#{templateBean.enderecoPessoaJuridica.pessoa.cnpj.substring(8,12)}-#{templateBean.enderecoPessoaJuridica.pessoa.cnpj.substring(12)}" name="cnpj"/>
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.cnpj eq null ? '-' : cnpj}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -72,7 +72,7 @@
                                                                         <label class="control-label col-md-3">Nome Fantasia: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.nomeFantasia eq null ? '-' : templateBean.enderecoPessoa.pessoa.nomeFantasia}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.nomeFantasia eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.nomeFantasia}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -83,7 +83,7 @@
                                                                         <label class="control-label col-md-3">Tipo Empresarial: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : templateBean.enderecoPessoa.pessoa.tipoEmpresarialFk.tipo}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.tipoEmpresarialFk.tipo eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.tipoEmpresarialFk.tipo}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -97,7 +97,7 @@
                                                                         <label class="control-label col-md-3">Inscrição Estadual: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.inscricaoEstadual eq null ? '-' : templateBean.enderecoPessoa.pessoa.inscricaoEstadual}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.inscricaoEstadual eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.inscricaoEstadual}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -108,7 +108,7 @@
                                                                         <label class="control-label col-md-3">Inscrição Municipal: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.inscricaoMunicipal eq null ? '-' : templateBean.enderecoPessoa.pessoa.inscricaoMunicipal}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.inscricaoMunicipal eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.inscricaoMunicipal}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -122,7 +122,7 @@
                                                                         <label class="control-label col-md-3">Situação: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.situacao eq null ? '-' : templateBean.enderecoPessoa.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.situacao eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.situacao eq 'A' ? 'Ativo' : 'Inativo'}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -133,7 +133,7 @@
                                                                         <label class="control-label col-md-3">Motivo da Desativação: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.motivoDaDesativacao eq null ? '-' : motivoDaDesativacao}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -147,7 +147,7 @@
                                                                         <label class="control-label col-md-3">Data de Criação: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.dataDeCriacao eq null ? '-' : templateBean.enderecoPessoa.pessoa.dataDeCriacao}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.dataDeCriacao eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.dataDeCriacao}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -158,7 +158,7 @@
                                                                         <label class="control-label col-md-3">Grupo Econômico: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.grupoEconomico eq null ? '-' : templateBean.enderecoPessoa.pessoa.grupoEconomico}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.grupoEconomico eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.grupoEconomico}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -172,7 +172,7 @@
                                                                         <label class="control-label col-md-3">NIRE: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.nire eq null ? '-' : templateBean.enderecoPessoa.pessoa.nire}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.nire eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.nire}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -183,7 +183,7 @@
                                                                         <label class="control-label col-md-3">CNAE: </label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.cnae eq null ? '-' : templateBean.enderecoPessoa.pessoa.cnae}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.cnae eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.cnae}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -197,7 +197,7 @@
                                                                         <label class="control-label col-md-2">Atividade Principal:</label>
                                                                         <div class="col-md-10">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.atividadePrincipal eq null ? '-' : templateBean.enderecoPessoa.pessoa.atividadePrincipal}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.atividadePrincipal eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.atividadePrincipal}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -210,7 +210,7 @@
                                                                         <label class="control-label col-md-2">Atividades Secundárias:</label>
                                                                         <div class="col-md-10">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.pessoa.atividadeSecundaria eq null ? '-' : templateBean.enderecoPessoa.pessoa.atividadeSecundaria}
+                                                                                #{templateBean.enderecoPessoaJuridica.pessoa.atividadeSecundaria eq null ? '-' : templateBean.enderecoPessoaJuridica.pessoa.atividadeSecundaria}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -224,8 +224,8 @@
                                                                         <label class="control-label col-md-3">CEP:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                <ui:param name="cep" value="#{templateBean.enderecoPessoa.endereco.cep.substring(0,5)}-#{templateBean.enderecoPessoa.endereco.cep.substring(5,8)}" />
-                                                                                #{templateBean.enderecoPessoa.endereco.cep eq null ? '-' : cep}
+                                                                                <ui:param name="cep" value="#{templateBean.enderecoPessoaJuridica.endereco.cep.substring(0,5)}-#{templateBean.enderecoPessoaJuridica.endereco.cep.substring(5,8)}" />
+                                                                                #{templateBean.enderecoPessoaJuridica.endereco.cep eq null ? '-' : cep}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -236,7 +236,7 @@
                                                                         <label class="control-label col-md-3">Cidade/Estado:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.endereco.cidadeFk eq null ? '-' : templateBean.enderecoPessoa.endereco.cidadeFk.nome} #{templateBean.enderecoPessoa.endereco.estadoFk eq null ? '' : '/'} #{templateBean.enderecoPessoa.endereco.estadoFk eq null ? '' : templateBean.enderecoPessoa.endereco.estadoFk.uf}
+                                                                                #{templateBean.enderecoPessoaJuridica.endereco.cidadeFk eq null ? '-' : templateBean.enderecoPessoaJuridica.endereco.cidadeFk.nome} #{templateBean.enderecoPessoaJuridica.endereco.estadoFk eq null ? '' : '/'} #{templateBean.enderecoPessoaJuridica.endereco.estadoFk eq null ? '' : templateBean.enderecoPessoaJuridica.endereco.estadoFk.uf}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -249,7 +249,7 @@
                                                                         <label class="control-label col-md-3">Endereço:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.endereco.endereco eq null ? '-' : templateBean.enderecoPessoa.endereco.endereco}
+                                                                                #{templateBean.enderecoPessoaJuridica.endereco.endereco eq null ? '-' : templateBean.enderecoPessoaJuridica.endereco.endereco}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -260,7 +260,7 @@
                                                                         <label class="control-label col-md-3">Número:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.endereco.numero eq null ? '-' : templateBean.enderecoPessoa.endereco.numero}
+                                                                                #{templateBean.enderecoPessoaJuridica.endereco.numero eq null ? '-' : templateBean.enderecoPessoaJuridica.endereco.numero}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -274,7 +274,7 @@
                                                                         <label class="control-label col-md-3">Complemento:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.endereco.complemento eq null ? '-' : templateBean.enderecoPessoa.endereco.complemento}
+                                                                                #{templateBean.enderecoPessoaJuridica.endereco.complemento eq null ? '-' : templateBean.enderecoPessoaJuridica.endereco.complemento}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -285,7 +285,7 @@
                                                                         <label class="control-label col-md-3">Bairro:</label>
                                                                         <div class="col-md-9">
                                                                             <p class="form-control-static">
-                                                                                #{templateBean.enderecoPessoa.endereco.bairro eq null ? '-' : templateBean.enderecoPessoa.endereco.bairro}
+                                                                                #{templateBean.enderecoPessoaJuridica.endereco.bairro eq null ? '-' : templateBean.enderecoPessoaJuridica.endereco.bairro}
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -319,7 +319,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody class="rows">
-                                                                            <ui:repeat value="#{templateBean.enderecoPessoa.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
+                                                                            <ui:repeat value="#{templateBean.enderecoPessoaJuridica.pessoa.pessoaFisicaJuridicaCollection}" var="pessoaFisicaJuridica">
                                                                                 <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                                 <tr>
                                                                                     <td style="text-align:center">
@@ -367,7 +367,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody class="rows">
-                                                                            <ui:repeat value="#{templateBean.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
+                                                                            <ui:repeat value="#{templateBean.enderecoPessoaJuridica.pessoa.pessoaJuridicaJuridicaCollection}" var="pessoaJuridicaJuridica">
                                                                                 <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                 <tr>
                                                                                     <td style="text-align:center">
@@ -409,7 +409,7 @@
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody class="rows">
-                                                                            <ui:repeat value="#{templateBean.enderecoPessoa.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
+                                                                            <ui:repeat value="#{templateBean.enderecoPessoaJuridica.pessoa.pessoaJuridicaJuridicaCollection1}" var="pessoaJuridicaJuridica">
                                                                                 <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                 <tr>
                                                                                     <td style="text-align:center">
@@ -431,19 +431,19 @@
                                                                 </div>
                                                             </div>
                                                             <h3 class="form-section">Bens</h3>
-                                        <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{templateBean.enderecoPessoa.bemList.isEmpty()}">
+                                        <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{templateBean.enderecoPessoaJuridica.bemList.isEmpty()}">
                                             Nenhum bem registrado.
                                         </h:panelGroup>
-                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-modal-pjcon-#{templateBean.enderecoPessoa.pessoa.id}">
-                                            <ui:repeat value="#{templateBean.enderecoPessoa.bemList}" var="bem" varStatus="status">
+                                                            <h:panelGroup layout="block" class="panel-group accordion accordion-modal-pjcon-#{templateBean.enderecoPessoaJuridica.pessoa.id}">
+                                            <ui:repeat value="#{templateBean.enderecoPessoaJuridica.bemList}" var="bem" varStatus="status">
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-modal-pjcon-#{templateBean.enderecoPessoa.pessoa.id}"  href="#collapse_#{status.index}_#{templateBean.enderecoPessoa.pessoa.id}">
+                                                            <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-modal-pjcon-#{templateBean.enderecoPessoaJuridica.pessoa.id}"  href="#collapse_#{status.index}_#{templateBean.enderecoPessoaJuridica.pessoa.id}">
                                                                 #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
                                                         </h4>
                                                     </div>
-                                                    <div id="collapse_#{status.index}_#{templateBean.enderecoPessoa.pessoa.id}" class="panel-collapse collapse">
+                                                    <div id="collapse_#{status.index}_#{templateBean.enderecoPessoaJuridica.pessoa.id}" class="panel-collapse collapse">
                                                         <div class="panel-body">
                                                             <div class="row">
                                                                 <div class="col-md-8">
@@ -532,7 +532,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane fade" id="tab_1_2_#{templateBean.enderecoPessoa.pessoa.cnpj}">
+                                            <div class="tab-pane fade" id="tab_1_2_#{templateBean.enderecoPessoaJuridica.pessoa.cnpj}">
                                                 <div layout="block" class="portlet box blue-chambray">
                                                     <div class="portlet-title">
                                                         <div class="caption">

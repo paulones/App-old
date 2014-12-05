@@ -115,25 +115,30 @@ public class PessoaJuridicaJuridica implements Serializable {
         this.pessoaJuridicaSecundariaFk = pessoaJuridicaSecundariaFk;
     }
 
-    public List<String> changedValues(Object obj) {
-        List<String> list = new ArrayList<>();
+    public boolean equalsValues(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
         final PessoaJuridicaJuridica other = (PessoaJuridicaJuridica) obj;
         if (!Objects.equals(this.capitalDeParticipacao, other.capitalDeParticipacao)) {
-            list.add("capitalDeParticipacao");
+            return false;
         }
         if (!Objects.equals(this.dataDeInicio, other.dataDeInicio)) {
-            list.add("dataDeInicio");
+            return false;
         }
         if (!Objects.equals(this.dataDeTermino, other.dataDeTermino)) {
-            list.add("dataDeTermino");
+            return false;
         }
         if (!Objects.equals(this.pessoaJuridicaPrimariaFk, other.pessoaJuridicaPrimariaFk)) {
-            list.add("pessoaJuridicaPrimariaFk");
+            return false;
         }
         if (!Objects.equals(this.pessoaJuridicaSecundariaFk, other.pessoaJuridicaSecundariaFk)) {
-            list.add("pessoaJuridicaSecundariaFk");
+            return false;
         }
-        return list;
+        return true;
     }
 
     @Override
