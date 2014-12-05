@@ -56,6 +56,8 @@ import entidade.VinculoProcessual;
 import entidade.VinculoProcessualHistorico;
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -331,12 +333,17 @@ public class ProcessoJudicialBean implements Serializable {
         if (tipoPenhora != null) {
             Penhora penhora = new Penhora();
             penhora.setTipoPenhoraFk(tipoPenhora);
+            penhora.setCondicao('C');
             penhoraList.add(penhora);
         }
     }
 
     public void removerPenhora(int index) {
-        penhoraList.remove(index);
+        if (edit) {
+            penhoraList.get(index).setCondicao('D');
+        } else {
+            penhoraList.remove(index);
+        }
     }
 
     public List<Citacao> adicionarCitacoes(List<Citacao> citacaoList, Integer quantidade, String tipo) {
@@ -473,21 +480,6 @@ public class ProcessoJudicialBean implements Serializable {
         }
     }
 
-    public String loadSocio(String tipo, String id) {
-        if (tipo != null) {
-            if (tipo.equals("PF")) {
-                PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(Integer.valueOf(id));
-                String cpf = (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
-                return cpf + " - " + pf.getNome();
-            } else {
-                PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(Integer.valueOf(id));
-                String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
-                return cnpj + " - " + pj.getNome();
-            }
-        }
-        return "-";
-    }
-
     public int checkCitacaoVazia(List<Object> citacaoList, String tipo) {
         int quantidade = 0;
         for (Object citacao : citacaoList) {
@@ -542,7 +534,7 @@ public class ProcessoJudicialBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("cadastrar.xhtml");
     }
 
-    public void cadastrar() throws IOException {
+    public void cadastrar() throws IOException, NoSuchMethodException, ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         boolean error = false;
         ProcessoJudicial pjudDBCDA = ProcessoJudicialBO.findByCDA(processoJudicial);
         ProcessoJudicial pjudDBProcess = ProcessoJudicialBO.findByProcessNumber(processoJudicial.getNumeroDoProcesso());
@@ -628,91 +620,15 @@ public class ProcessoJudicialBean implements Serializable {
              Alterar Pessoa Física existente
              */
             if ((pjudDBCDA == null || processoJudicial.equals(pjudDBCDA)) && (pjudDBProcess == null || processoJudicial.equals(pjudDBProcess))) {
-                boolean identicalVP = true;
-                if (identicalVP) {
-                    if (oldProcessoJudicial.getVinculoProcessualCollection().size() != vinculoProcessualList.size()) {
-                        identicalVP = false;
-                    } else {
-                        for (VinculoProcessual vinculoProcessual : vinculoProcessualList) {
-                            for (VinculoProcessual oldVinculoProcessual : oldProcessoJudicial.getVinculoProcessualCollection()) {
-                                if (vinculoProcessual.equalsValues(oldVinculoProcessual)) {
-                                    identicalVP = true;
-                                    break;
-                                } else {
-                                    identicalVP = false;
-                                }
-                            }
-                            if (!identicalVP) {
-                                break;
-                            }
-                        }
-                    }
-                }
-                boolean identicalCitacao = true;
-                if (identicalCitacao) {
-                    if (oldCitacaoList.size() != citacaoList.size()) {
-                        identicalCitacao = false;
-                    } else {
-                        for (Citacao citacao : citacaoList) {
-                            for (Citacao oldCitacao : oldCitacaoList) {
-                                if (citacao.equalsValues(oldCitacao)) {
-                                    identicalCitacao = true;
-                                    break;
-                                } else {
-                                    identicalCitacao = false;
-                                }
-                            }
-                            if (!identicalCitacao) {
-                                break;
-                            }
-                        }
-                    }
-                }
                 if (redirecionamento != null) {
                     for (SocioRedirecionamento sr : socioRedirecionamentoList) {
                         sr.getRedirecionamento().setRedirecionado(redirecionamento);
                     }
                 }
-                boolean identicalRedirecionamento = true;
-                if (identicalRedirecionamento) {
-                    if (oldSocioRedirecionamentoList.size() != socioRedirecionamentoList.size()) {
-                        identicalRedirecionamento = false;
-                    } else {
-                        for (SocioRedirecionamento SocioRedirecionamento : socioRedirecionamentoList) {
-                            for (SocioRedirecionamento oldSocioRedirecionamento : oldSocioRedirecionamentoList) {
-                                if (SocioRedirecionamento.equalsValues(oldSocioRedirecionamento)) {
-                                    identicalRedirecionamento = true;
-                                    break;
-                                } else {
-                                    identicalRedirecionamento = false;
-                                }
-                            }
-                            if (!identicalRedirecionamento) {
-                                break;
-                            }
-                        }
-                    }
-                }
-                boolean identicalPenhora = true;
-                if (identicalPenhora) {
-                    if (oldPenhoraList.size() != penhoraList.size()) {
-                        identicalPenhora = false;
-                    } else {
-                        for (Penhora penhora : penhoraList) {
-                            for (Penhora oldPenhora : oldPenhoraList) {
-                                if (penhora.equalsValues(oldPenhora)) {
-                                    identicalPenhora = true;
-                                    break;
-                                } else {
-                                    identicalPenhora = false;
-                                }
-                            }
-                            if (!identicalPenhora) {
-                                break;
-                            }
-                        }
-                    }
-                }
+                boolean identicalVP = checarListasIguais("VinculoProcessual", vinculoProcessualList, (List<VinculoProcessual>) oldProcessoJudicial.getVinculoProcessualCollection());
+                boolean identicalRedirecionamento = checarListasIguais("SocioRedirecionamento", socioRedirecionamentoList, oldSocioRedirecionamentoList);
+                boolean identicalCitacao = checarListasIguais("Citacao", citacaoList, oldCitacaoList);
+                boolean identicalPenhora = checarListasIguais("Penhora", penhoraList, oldPenhoraList);
                 if (oldProcessoJudicial.equalsValues(processoJudicial)
                         && identicalVP && identicalCitacao && identicalRedirecionamento && identicalPenhora) {
                     Cookie.addCookie("FacesMessage", "fail", 10);
@@ -757,14 +673,21 @@ public class ProcessoJudicialBean implements Serializable {
                             RedirecionamentoBO.create(sr.getRedirecionamento());
                         }
                     }
-                    PenhoraBO.destroyByPJUD(processoJudicial.getId());
                     for (Penhora penhora : penhoraList) {
-                        if (penhora.getSocioTipo() != null) {
-                            penhora.setSocio(penhora.getSocioTipo().substring(0, 2));
-                            penhora.setSocioFk(Integer.valueOf(penhora.getSocioTipo().substring(2)));
+                        if (penhora.getCondicao() == 'D') {
+                            PenhoraBO.destroy(penhora);
+                        } else {
+                            if (penhora.getSocioTipo() != null) {
+                                penhora.setSocio(penhora.getSocioTipo().substring(0, 2));
+                                penhora.setSocioFk(Integer.valueOf(penhora.getSocioTipo().substring(2)));
+                            }
+                            if (penhora.getCondicao() == 'C') {
+                                penhora.setProcessoJudicialFk(processoJudicial);
+                                PenhoraBO.create(penhora);
+                            } else {
+                                PenhoraBO.edit(penhora);
+                            }
                         }
-                        penhora.setProcessoJudicialFk(processoJudicial);
-                        PenhoraBO.create(penhora);
                     }
                     for (VinculoProcessualHistorico vph : vinculoProcessualHistoricoList) {
                         vph.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
@@ -823,6 +746,31 @@ public class ProcessoJudicialBean implements Serializable {
             mensagem += "\nCNPJ: " + pj.getCnpj().substring(0, 3) + "." + pj.getCnpj().substring(3, 6) + "." + pj.getCnpj().substring(6, 9) + "/" + pj.getCnpj().substring(9, 13) + "-" + pj.getCnpj().substring(13);
         }
         return mensagem;
+    }
+
+    private boolean checarListasIguais(String tipo, List<?> list, List<?> oldList) throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
+        boolean igual = true;
+        if (oldList.size() != list.size()) {
+            igual = false;
+        } else {
+            for (Object object : list) {
+                for (Object oldObject : oldList) {
+                    Class<?> c = Class.forName("entidade." + tipo);
+                    Method method = c.getDeclaredMethod("equalsValues", Object.class);
+                    boolean equals = (boolean) method.invoke(object, oldObject);
+                    if (equals) {
+                        igual = true;
+                        break;
+                    } else {
+                        igual = false;
+                    }
+                }
+                if (!igual) {
+                    break;
+                }
+            }
+        }
+        return igual;
     }
 
     public void prepararHistorico(ProcessoJudicial processoJudicial, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList) {

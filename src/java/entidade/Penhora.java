@@ -78,6 +78,7 @@ public class Penhora implements Serializable {
     private TipoPenhora tipoPenhoraFk;
     private transient String socioTipo;
     private transient List<Bem> bemList;
+    private transient char condicao;
 
     public Penhora() {
     }
@@ -219,6 +220,9 @@ public class Penhora implements Serializable {
         if (!Objects.equals(this.motivo, other.motivo)) {
             return false;
         }
+        if (!Objects.equals(this.condicao, other.condicao)) {
+            return false;
+        }
         return true;
     }
 
@@ -257,6 +261,14 @@ public class Penhora implements Serializable {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public char getCondicao() {
+        return condicao;
+    }
+
+    public void setCondicao(char condicao) {
+        this.condicao = condicao;
     }
     
 }

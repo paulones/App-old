@@ -2465,6 +2465,7 @@
                                                                         </h:commandLink>
                                                                         <h:panelGroup layout="block" class="panel-group accordion" id="accordion-penhora">
                                                                             <ui:repeat value="#{processoJudicialBean.penhoraList}" var="penhora" varStatus="status">
+                                                                                <h:panelGroup rendered="#{penhora.condicao ne 'D'}">
                                                                                 <div class="panel panel-default">
                                                                                     <div class="panel-heading">
                                                                                         <h4 class="panel-title">
@@ -2730,9 +2731,11 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                    </h:panelGroup>
                                                                             </ui:repeat>
                                                                         </h:panelGroup>
-
+                                                                        <h3 class="form-section">Alienação/Aquisição de Bens</h3>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </div>
