@@ -4,7 +4,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-    <ui:define name="title">Pessoa Jurídica - #{pessoaJuridicaBean.history ? 'Histórico' :'Consulta'}</ui:define>
+    <ui:define name="title">Pessoa Jurídica - Consulta</ui:define>
     <ui:define name="metadata-components">
         <f:event type="preRenderComponent" listener="#{pessoaJuridicaBean.init()}"/>
     </ui:define>
@@ -32,7 +32,7 @@
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE e BREADCRUMB-->
                     <h3 class="page-title">
-                        Pessoa Jurídica <small>Consulta #{!pessoaJuridicaBean.history ? '':'de Histórico'}</small>
+                        Pessoa Jurídica <small>Consulta</small>
                     </h3>
                     <ul class="page-breadcrumb breadcrumb">
                         <li>
@@ -45,22 +45,9 @@
                             <a href="#">Pessoa Jurídica</a>
                             <i class="fa fa-angle-right"></i>
                         </li>
-                        <h:panelGroup rendered="#{pessoaJuridicaBean.history}">
-                            <li>
-                                <i class="fa fa-search"/>
-                                <a href="../pessoa-juridica/consultar.xhtml">Consultar</a>
-                                <i class="fa fa-angle-right"></i>
-                            </li>
-                        </h:panelGroup>
                         <li>
-                            <ui:fragment rendered="#{pessoaJuridicaBean.history}">
-                                <i class="fa fa-history"/>
-                                <a href="consultar.xhtml?id=#{pessoaJuridicaBean.pessoaJuridica.id}">Consultar Histórico</a>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
-                                <i class="fa fa-search"/>
-                                <a href="consultar.xhtml">Consultar</a>
-                            </ui:fragment>
+                            <i class="fa fa-search"/>
+                            <a href="../pessoa-juridica/consultar.xhtml">Consultar</a>
                         </li>
                     </ul>
                     <!-- END PAGE TITLE e BREADCRUMB-->
@@ -75,7 +62,7 @@
                         <div class="portlet-title">
                             <div class="caption">
                                 <i class="fa fa-globe"></i>
-                                #{!pessoaJuridicaBean.history ? 'Registro de Pessoas Jurídicas':'Histórico de '}#{!pessoaJuridicaBean.history ? '' : pessoaJuridicaBean.pessoaJuridica.nome}
+                                Registro de Pessoas Jurídicas
                             </div>
                         </div>
                         <div class="portlet-body">
@@ -91,19 +78,12 @@
                                 <button class="close" data-close="alert"></button>
                                 <h:messages layout="table" />
                             </h:panelGroup>
-                            <ui:fragment rendered="#{!pessoaJuridicaBean.history}">
-                                <span class="help-block">Para visualizar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span>.</span>
-                                <span class="help-block">Para alterar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span> e, em seguida, clique no botão de alterar.</span>
-                            </ui:fragment>
-                            <ui:fragment rendered="#{pessoaJuridicaBean.history}">
-                                <span class="help-block">Para visualizar os dados alterados de um registro anterior em relação ao atual,clique no <span class="expand-example"></span>.</span>
-                                <span class="help-block">Os campos alterados estão destacados na cor vermelha.</span>
-                            </ui:fragment>
+                            <span class="help-block">Para visualizar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span>.</span>
+                            <span class="help-block">Para alterar os dados de uma Pessoa Jurídica, clique no <span class="expand-example"></span> e, em seguida, clique no botão de alterar.</span>
                             <br/>
                             <table class="table table-striped table-bordered table-hover" id="table">
                                 <thead>
                                     <tr>  
-                                        <h:panelGroup rendered="#{!pessoaJuridicaBean.history}">
                                             <th style="width:3%"></th>
                                             <th>
                                                 Nome
@@ -120,563 +100,9 @@
                                             <th style="width:3%"></th>
                                             <th class="display-hide"></th>
                                             <th class="display-hide"></th>
-                                        </h:panelGroup>
-                                        <h:panelGroup rendered="#{pessoaJuridicaBean.history}">
-                                            <th style="width:3%"></th>
-                                            <th style="width:15%">
-                                                Registro
-                                            </th>
-                                            <th style="width:48%">
-                                                Alterações
-                                            </th>
-                                            <th style="width:40%">
-                                                Usuário Alterador
-                                            </th>
-                                            <th class="display-hide"></th>
-                                        </h:panelGroup>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- BEGIN LISTA DE HISTÓRICOS -->
-                                    <ui:repeat value="#{pessoaJuridicaBean.enderecoPessoaFisicaJuridicaHistoricoList}" var="historico" rendered="#{pessoaJuridicaBean.history}" varStatus="parentstatus">
-                                        <tr>
-                                            <td class="expand-box">
-                                                <span class="row-details row-details-close"></span>
-                                            </td>
-                                            <td class="data-de-modificacao">
-                                                <h:outputText rendered="#{empty historico.pessoaHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
-                                                <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
-                                                    <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
-                                                </h:outputText>
-                                            </td>
-                                            <td class="description">
-                                            </td>
-                                            <td>
-                                                <ui:param value="#{historico.pessoaHistorico.usuarioFk.cpf.substring(0,3)}.#{historico.pessoaHistorico.usuarioFk.cpf.substring(3,6)}.#{historico.pessoaHistorico.usuarioFk.cpf.substring(6,9)}-#{historico.pessoaHistorico.usuarioFk.cpf.substring(9)}" name="cpfUsuario"/>
-                                                #{historico.pessoaHistorico.usuarioFk.nome} | #{cpfUsuario}
-                                            </td>
-                                            <td class="detail display-hide" colspan="6">
-                                                <div class="portlet box blue-chambray">
-                                                    <div class="portlet-title">
-                                                        <div class="caption">
-                                                            <i class="fa fa-history"></i>
-                                                            Registro #{empty historico.pessoaHistorico.dataDeModificacao ? 'atual': 'do dia'}
-                                                            <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
-                                                                <f:convertDateTime pattern="dd-MM-yyyy"/>
-                                                            </h:outputText>
-                                                            #{empty historico.pessoaHistorico.dataDeModificacao ? '': ' às '}
-                                                            <h:outputText rendered="#{not empty historico.pessoaHistorico.dataDeModificacao}" value="#{historico.pessoaHistorico.dataDeModificacao}" >
-                                                                <f:convertDateTime pattern="HH:mm:ss"/>
-                                                            </h:outputText>
-                                                        </div>
-                                                    </div>
-                                                    <div class="portlet-body form">
-                                                        <!-- BEGIN LISTA CONTENT-->
-                                                        <div class="form-body">
-                                                            <h3 class="form-section">Informações Empresariais</h3>
-                                                            <h:panelGroup class="informacoes-empresariais">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Nome:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.nome}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">CNPJ:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    <ui:param value="#{historico.pessoaHistorico.cnpj.substring(0,2)}.#{historico.pessoaHistorico.cnpj.substring(2,5)}.#{historico.pessoaHistorico.cnpj.substring(5,8)}/#{historico.pessoaHistorico.cnpj.substring(8,12)}-#{historico.pessoaHistorico.cnpj.substring(12)}" name="cnpj"/>
-                                                                                    #{historico.pessoaHistorico.cnpj eq null ? '-' : cnpj}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Nome Fantasia: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.nomeFantasia eq null ? '-' : historico.pessoaHistorico.nomeFantasia}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Tipo Empresarial: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.tipoEmpresarialFk.tipo eq null ? '-' : historico.pessoaHistorico.tipoEmpresarialFk.tipo}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Inscrição Estadual: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.inscricaoEstadual eq null ? '-' : historico.pessoaHistorico.inscricaoEstadual}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Inscrição Municipal: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.inscricaoMunicipal eq null ? '-' : historico.pessoaHistorico.inscricaoMunicipal}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Situação: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.situacao eq null ? '-' : 'A' ? 'Ativo' : 'Inativo'}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Motivo da Desativação: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.motivoDaDesativacao eq null ? '-' : historico.pessoaHistorico.motivoDaDesativacao}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Data de Criação: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.dataDeCriacao eq null ? '-' : historico.pessoaHistorico.dataDeCriacao}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Grupo Econômico: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.grupoEconomico eq null ? '-' : historico.pessoaHistorico.grupoEconomico}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">NIRE: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.nire eq null ? '-' : historico.pessoaHistorico.nire}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">CNAE: </label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.cnae eq null ? '-' : historico.pessoaHistorico.cnae}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-2">Atividade Principal:</label>
-                                                                            <div class="col-md-10">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.atividadePrincipal eq null ? '-' : historico.pessoaHistorico.atividadePrincipal}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-2">Atividades Secundárias:</label>
-                                                                            <div class="col-md-10">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.pessoaHistorico.atividadeSecundaria eq null ? '-' : historico.pessoaHistorico.atividadeSecundaria}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </h:panelGroup>
-                                                            <!--/row-->
-                                                            <h3 class="form-section">Endereço</h3>
-                                                            <h:panelGroup class="endereco">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">CEP:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    <ui:param name="cep" value="#{historico.enderecoHistorico.cep.substring(0,5)}-#{historico.enderecoHistorico.cep.substring(5,8)}" />
-                                                                                    #{historico.enderecoHistorico.cep eq null ? '-' : cep}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Cidade/Estado:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.enderecoHistorico.cidadeFk eq null ? '-' : historico.enderecoHistorico.cidadeFk.nome} #{historico.enderecoHistorico.estadoFk eq null ? '' : '/'} #{historico.enderecoHistorico.estadoFk eq null ? '' : historico.enderecoHistorico.estadoFk.uf}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Endereço:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.enderecoHistorico.endereco eq null ? '-' : historico.enderecoHistorico.endereco}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Número:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.enderecoHistorico.numero eq null ? '-' : historico.enderecoHistorico.numero}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                                <!--/row-->
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Complemento:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.enderecoHistorico.complemento eq null ? '-' : historico.enderecoHistorico.complemento}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                    <div class="col-md-6">
-                                                                        <div class="form-group">
-                                                                            <label class="control-label col-md-4">Bairro:</label>
-                                                                            <div class="col-md-8">
-                                                                                <p class="form-control-static">
-                                                                                    #{historico.enderecoHistorico.bairro eq null ? '-' : historico.enderecoHistorico.bairro}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <!--/span-->
-                                                                </div>
-                                                            </h:panelGroup>
-                                                            <!--/row-->
-                                                            <h3 class="form-section">Vínculos Administrativos</h3>
-                                                            <h4 class="help-block">Pessoa Física</h4>
-                                                            <br/>
-                                                            <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <table class="table table-striped table-hover table-bordered vinculations">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    CPF
-                                                                                </th>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    Função
-                                                                                </th>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    Capital de Participação
-                                                                                </th>
-                                                                                <th style="width:18%;text-align:center">
-                                                                                    Data de Início
-                                                                                </th>
-                                                                                <th style="width:18%;text-align:center">
-                                                                                    Data de Término
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody class="rows-pfj">
-                                                                            <ui:repeat value="#{historico.pessoaFisicaJuridicaHistoricoList}" var="pessoaFisicaJuridicaHistorico">
-                                                                                <ui:param value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(0,2)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(2,5)}.#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(5,8)}-#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.cpf.substring(8)}" name="cpf"/>
-                                                                                <tr>
-                                                                                    <td style="text-align:center">
-                                                                                        <a href="javascript:;" class="pf-info">
-                                                                                            <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.id}"/>
-                                                                                            <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridicaHistorico.pessoaFisicaFk.nome}</span>
-                                                                                        </a>
-                                                                                    </td>
-                                                                                    <td style="text-align:center">
-                                                                                        #{pessoaFisicaJuridicaHistorico.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridicaHistorico.funcaoFk.funcao}
-                                                                                    </td>
-                                                                                    <td style="text-align:center">
-                                                                                        #{pessoaFisicaJuridicaHistorico.capitalDeParticipacao eq null ? '-' : pessoaFisicaJuridicaHistorico.capitalDeParticipacao}#{pessoaFisicaJuridicaHistorico.capitalDeParticipacao eq null ? '':'%'}
-                                                                                    </td>
-                                                                                    <td style="text-align:center">
-                                                                                        #{pessoaFisicaJuridicaHistorico.dataDeInicio eq null ? '-' : pessoaFisicaJuridicaHistorico.dataDeInicio}
-                                                                                    </td>
-                                                                                    <td style="text-align:center">
-                                                                                        #{pessoaFisicaJuridicaHistorico.dataDeTermino  eq null ? '-' : pessoaFisicaJuridicaHistorico.dataDeTermino}
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </ui:repeat>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                            <!--/row-->
-                                                            <br/>
-                                                            <h4 class="help-block">Pessoa Jurídica</h4>
-                                                            <br/>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <table class="table table-striped table-hover table-bordered vinculations">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    CNPJ
-                                                                                </th>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    Capital de Participação
-                                                                                </th>
-                                                                                <th style="width:18%;text-align:center">
-                                                                                    Data de Início
-                                                                                </th>
-                                                                                <th style="width:18%;text-align:center">
-                                                                                    Data de Término
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody class="rows-pjj">
-                                                                            <ui:repeat value="#{historico.pessoaHistorico.pessoaJuridicaJuridicaHistoricoCollection}" var="pessoaJuridicaJuridica">
-                                                                                <ui:fragment rendered="#{historico.pessoaHistorico.pessoaJuridicaFk.id eq pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.id}">
-                                                                                    <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(12)}" name="cnpj"/>
-                                                                                    <tr>
-                                                                                        <td style="text-align:center">
-                                                                                            <a href="javascript:;" class="pj-info">
-                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.id}"/>
-                                                                                                <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.nome}</span>
-                                                                                            </a>
-                                                                                        </td>
-                                                                                        <td style="text-align:center">
-                                                                                            #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
-                                                                                        </td>
-                                                                                        <td style="text-align:center">
-                                                                                            #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
-                                                                                        </td>
-                                                                                        <td style="text-align:center">
-                                                                                            #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </ui:fragment>
-                                                                            </ui:repeat>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                            <h3 class="form-section">Participação em outras Empresas</h3>
-                                                            <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <table class="table table-striped table-hover table-bordered vinculations">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    CNPJ
-                                                                                </th>
-                                                                                <th style="width:20%;text-align:center">
-                                                                                    Capital de Participação
-                                                                                </th>
-                                                                                <th style="width:18%;text-align:center">
-                                                                                    Data de Início
-                                                                                </th>
-                                                                                <th style="width:18%;text-align:center">
-                                                                                    Data de Término
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody class="rows-pjj-part">
-                                                                            <ui:repeat value="#{historico.pessoaHistorico.pessoaJuridicaJuridicaHistoricoCollection}" var="pessoaJuridicaJuridica">
-                                                                                <ui:fragment rendered="#{historico.pessoaHistorico.pessoaJuridicaFk.id eq pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.id}">
-                                                                                    <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(12)}" name="cnpj"/>
-                                                                                    <tr>
-                                                                                        <td style="text-align:center">
-                                                                                            <a href="javascript:;" class="pj-info">
-                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.id}"/>
-                                                                                                <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.nome}</span>
-                                                                                            </a>
-                                                                                        </td>
-                                                                                        <td style="text-align:center">
-                                                                                            #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
-                                                                                        </td>
-                                                                                        <td style="text-align:center">
-                                                                                            #{pessoaJuridicaJuridica.dataDeInicio eq null ? '-' : pessoaJuridicaJuridica.dataDeInicio}
-                                                                                        </td>
-                                                                                        <td style="text-align:center">
-                                                                                            #{pessoaJuridicaJuridica.dataDeTermino  eq null ? '-' : pessoaJuridicaJuridica.dataDeTermino}
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </ui:fragment>
-                                                                            </ui:repeat>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                            <h3 class="form-section">Bens</h3>
-                                                            <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{historico.bemHistoricoList.isEmpty()}">
-                                                                Nenhum bem registrado.
-                                                            </h:panelGroup>
-                                                            <h:panelGroup layout="block" class="panel-group accordion accordion_#{parentstatus.index}">
-                                                                <ui:repeat value="#{historico.bemHistoricoList}" var="bem" varStatus="status">
-                                                                    <div class="panel panel-default">
-                                                                        <div class="panel-heading">
-                                                                            <h4 class="panel-title">
-                                                                                <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion_#{parentstatus.index}"  href="#collapse_#{parentstatus.index}_#{status.index}">
-                                                                                    #{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao} </a>
-                                                                            </h4>
-                                                                        </div>
-                                                                        <div id="collapse_#{parentstatus.index}_#{status.index}" class="panel-collapse collapse">
-                                                                            <div class="panel-body">
-                                                                                <div class="row">
-                                                                                    <div class="col-md-8">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-2">Descrição:</label>
-                                                                                            <div class="col-md-10">
-                                                                                                <p class="form-control-bem-static">
-                                                                                                    #{bem.descricao eq null ? '-' : bem.descricao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-3">Tipo:</label>
-                                                                                            <div class="col-md-9">
-                                                                                                <p class="form-control-bem-static">
-                                                                                                    #{bem.tipoBemFk eq null ? '-' : bem.tipoBemFk.tipo}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-8">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-2">Endereço:</label>
-                                                                                            <div class="col-md-10">
-                                                                                                <p class="form-control-bem-static">
-                                                                                                    #{bem.endereco eq null ? '-' : bem.endereco}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-3">Valor:</label>
-                                                                                            <div class="col-md-9">
-                                                                                                <p class="form-control-bem-static money">
-                                                                                                    #{bem.valor eq null ? '-' : bem.valor}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-8">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-2">Aquisição:</label>
-                                                                                            <div class="col-md-8">
-                                                                                                <p class="form-control-bem-static">
-                                                                                                    #{bem.dataDeAquisicao eq null ? '-' : bem.dataDeAquisicao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-4">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-3 col-md-pull-1">Extinção:</label>
-                                                                                            <div class="col-md-9">
-                                                                                                <p class="form-control-bem-static">
-                                                                                                    #{bem.dataDeTransferenciaOuExtincao eq null ? '-' : bem.dataDeTransferenciaOuExtincao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </ui:repeat>
-                                                            </h:panelGroup>
-                                                        </div>
-                                                        <!-- END LISTA CONTENT-->
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </ui:repeat>
-                                    <!-- END LISTA DE HISTÓRICOS -->
                                 </tbody>
                             </table>
                         </div>
@@ -692,7 +118,7 @@
             <h:inputHidden id="pj-sucessao-id" value="#{pessoaJuridicaBean.pjsId}"/>
             <h:commandLink class="info-delete-sucessao" action="#{pessoaJuridicaBean.removerSucessao()}" />
             <h:commandLink class="info-history-sucessao">
-                <f:ajax execute="pj-sucessao-id" listener="#{pessoaJuridicaBean.exibirHistoricoDaSucessao()}" render=":modal-pj-sucessao"/>
+                <f:ajax execute="pj-sucessao-id" listener="#{pessoaJuridicaBean.exibirHistoricoDaSucessao()}" render=":modal-history-pj-sucessao"/>
             </h:commandLink>
             <h:panelGroup id="info" class="display-hide">
                 <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{not empty pessoaJuridicaBean.enderecoPessoa.pessoa}">
@@ -733,7 +159,10 @@
                                                     </div>
                                                     <div class="col-md-7">
                                                         <div class="col-md-offset-4 col-md-9">
-                                                            <a href="consultar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn default right"><i class="fa fa-history"></i> Histórico de Alterações</a>
+                                                            <h:commandLink class="btn default load-history">
+                                                                <f:ajax listener="#{pessoaJuridicaBean.carregarHistorico(pessoaJuridicaBean.enderecoPessoa.pessoa.id)}" render=":modal-history-pj"/>
+                                                                <i class="fa fa-history"></i> Histórico de Alterações
+                                                            </h:commandLink>
                                                             <a href="cadastrar.xhtml?id=#{pessoaJuridicaBean.enderecoPessoa.pessoa.id}" class="btn blue-chambray"><i class="fa fa-edit"></i> Alterar</a>
                                                         </div>
                                                     </div>
@@ -1367,6 +796,8 @@
         </h:form>
         <!-- END PAGE CONTENT-->
         <!-- /.modal -->
+        <a class="btn default modal-history-pj display-hide" data-toggle="modal" href="#largehistorypj"></a>
+        <ui:include src="../modal/historico/pessoa-juridica.xhtml"></ui:include>
         <a class="btn default display-hide delete-modal-activator" data-toggle="modal" href="#static"></a>
         <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
@@ -1406,162 +837,7 @@
             </div>
         </div>
         <a class="btn default display-hide show-history-modal-activator" data-toggle="modal" href="#largepjs-history"></a>
-        <h:panelGroup id="modal-pj-sucessao">
-            <h:panelGroup layout="block" id="largepjs-history" class="modal fade bs-modal-lg" p:tabindex="-1" p:role="dialog" p:aria-hidden="true" rendered="#{not empty pessoaJuridicaBean.pessoaJuridicaSucessaoHistoricoList}">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-body modal-pessoa">
-                            <div class="portlet box blue-chambray">
-                                <div class="portlet-title">
-                                    <div class="caption">
-                                        <i class="fa fa-globe"></i>
-                                        <span>Histórico de #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome}</span> <span><i class="fa fa-exchange"></i> #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}</span>
-                                    </div>
-                                </div>
-                                <div class="portlet-body">
-                                    <span class="help-block">Para visualizar os dados alterados de um registro anterior em relação ao atual,clique no <span class="expand-example"></span>.</span>
-                                    <span class="help-block">Os campos alterados estão destacados na cor vermelha.</span>
-                                    <br/>
-                                    <table class="table table-striped table-bordered table-hover" id="sucessao-table">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:3%"></th>
-                                                <th style="width:15%">
-                                                    Registro
-                                                </th>
-                                                <th style="width:48%">
-                                                    Alterações
-                                                </th>
-                                                <th style="width:40%">
-                                                    Usuário Alterador
-                                                </th>
-                                                <th class="display-hide"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ui:repeat value="#{pessoaJuridicaBean.pessoaJuridicaSucessaoHistoricoList}" var="pessoaJuridicaSucessaoHistorico">
-                                                <tr>
-                                                    <td class="expand-box">
-                                                        <span class="row-details row-details-close"></span>
-                                                    </td>
-                                                    <td class="data-de-modificacao">
-                                                        <h:outputText rendered="#{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
-                                                        <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
-                                                            <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
-                                                        </h:outputText>
-                                                    </td>
-                                                    <td class="description">
-                                                    </td>
-                                                    <td>
-                                                        <ui:param value="#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(0,3)}.#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(3,6)}.#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(6,9)}-#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(9)}" name="cpfUsuario"/>
-                                                        #{pessoaJuridicaSucessaoHistorico.usuarioFk.nome} | #{cpfUsuario}
-                                                    </td>
-                                                    <td class="detail display-hide" colspan="6">
-                                                        <div class="portlet box blue-chambray">
-                                                            <div class="portlet-title">
-                                                                <div class="caption">
-                                                                    <i class="fa fa-history"></i>
-                                                                    Registro #{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao ? 'atual': 'do dia'}
-                                                                    <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
-                                                                        <f:convertDateTime pattern="dd-MM-yyyy"/>
-                                                                    </h:outputText>
-                                                                    #{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao ? '': ' às '}
-                                                                    <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
-                                                                        <f:convertDateTime pattern="HH:mm:ss"/>
-                                                                    </h:outputText>
-                                                                </div>
-                                                            </div>
-                                                            <div class="portlet-body form">
-                                                                <!-- BEGIN LISTA CONTENT-->
-                                                                <div class="form-body">
-                                                                    <h3 class="form-section">Informações da Sucessão</h3>
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-4">Empresa Sucedida:</label>
-                                                                                <div class="col-md-8">
-                                                                                    <p class="form-control-static">
-                                                                                        #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.nome}
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!--/span-->
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-4">CNPJ:</label>
-                                                                                <div class="col-md-8">
-                                                                                    <p class="form-control-static">
-                                                                                        <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
-                                                                                        #{cnpj}
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-4">Empresa Sucessora:</label>
-                                                                                <div class="col-md-8">
-                                                                                    <p class="form-control-static">
-                                                                                        #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.nome}
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <!--/span-->
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-4">CNPJ:</label>
-                                                                                <div class="col-md-8">
-                                                                                    <p class="form-control-static">
-                                                                                        <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
-                                                                                        #{cnpj}
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-6">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-4">Data de Sucessao:</label>
-                                                                                <div class="col-md-8">
-                                                                                    <p class="form-control-static">
-                                                                                        <h:outputText value="#{pessoaJuridicaSucessaoHistorico.dataDeSucessao}"></h:outputText>
-                                                                                    </p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </ui:repeat>
-                                        </tbody>
-                                    </table>
-                                    <br/>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                        </div>
-                                        <!--/span-->
-                                        <div class="col-md-6">
-                                            <div class="col-md-offset-9 col-md-9">
-                                                <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
-                                            </div>
-                                        </div>
-                                        <!--/span-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </h:panelGroup>
-        </h:panelGroup>
+        <ui:include src="../modal/historico/pessoa-juridica-sucessao.xhtml"></ui:include>
     </ui:define>
     <ui:define name="page-scripts">
         <!-- BEGIN PAGE LEVEL PLUGINS -->

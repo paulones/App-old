@@ -106,6 +106,7 @@ var PJCon = function() {
          * Initialize DataTables, with no sorting on the 'details' column
          */
         var oTable = tableMain.dataTable({
+            destroy: true,
             "columnDefs": [{
                     "orderable": false,
                     "targets": [0, 2, 3]
@@ -164,10 +165,102 @@ var PJCon = function() {
     return {
         init: function() {
 
-            if (window.location.search != "") {
+            initTable();
+
+            var index;
+            $(document).on('click', '.button-delete-sucessao', function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                index = $('.button-delete-sucessao').index(this);
+                $('.delete-sucessao-modal-activator').click();
+            });
+
+            $('.cancel-sucessao').click(function(e) {
+                e.preventDefault();
+            });
+            $('.remove-sucessao').click(function(e) {
+                e.preventDefault();
+                $('#pj-sucessao-id').val($($('.button-delete-sucessao').get(index)).parent().parent().children('.suc-id').val());
+                $('.info-delete-sucessao').click();
+            });
+
+            $(document).on('click', '.button-history-sucessao', function(e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                if (!executing) {
+                    $('#pj-sucessao-id').val($(this).parent().parent().children('.suc-id').val());
+                    $('.info-history-sucessao').click();
+                }
+            });
+
+            $('select[name=table_length]').change(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+                $('.detailed-info').remove();
+            });
+
+            $('#table_filter label input').keypress(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+                $('.detailed-info').remove();
+            });
+
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr('class') === 'info-refresher') {
+                        getSucessoes('#pj-id', '#info', $(element), true, true);
+                    } else if ($(data.source).attr('class') === 'info-history-sucessao') {
+                        $('.show-history-modal-activator').click();
+                        var atual;
+                        initHistoryTable('#sucessao-table');
+                        $.each($('#modal-history-pj-sucessao').find('.data-de-modificacao'), function() {
+                            if ($(this).html().indexOf('Atual') !== -1) {
+                                $(this).parent().find('.form-body').addClass('current');
+                                $(this).parent().children('.description').removeClass('description');
+                                atual = $(this).parent().find('.form-body');
+                            } else {
+                                $(this).parent().find('.form-body').addClass('past');
+                            }
+                        });
+                        $.each($('#modal-history-pj-sucessao').find('.past'), function() {
+                            var description = "";
+                            var informacoes = "";
+                            $.each($(this).find('.form-control-static'), function(index) {
+                                if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                                    $(this).parent().parent().css("color", "#a94442");
+                                    informacoes = true;
+                                }
+                            });
+
+                            if (informacoes) {
+                                description += "Informa&ccedil;&otilde;es da Sucess&atilde;o, ";
+                            }
+
+                            description = description.substring(0, description.length - 2) + ".";
+                            if (description.indexOf(",") !== -1) {
+                                description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+                            } else if (description === ".") {
+                                description = "";
+                            }
+                            $(this).closest('.detail').parent().children('.description').append(description);
+                        });
+                    } else if ($(data.source).hasClass("load-history")) {
+                        $('.modal-history-pj').click();
+                        carregarHistorico();
+                    }
+                }
+            });
+
+            function carregarHistorico() {
                 var atual;
-                initHistoryTable('#table');
-                $.each($('.data-de-modificacao'), function() {
+                initHistoryTable('#pj-history-table');
+                $.each($('#modal-history-pj').find('.data-de-modificacao'), function() {
                     if ($(this).html().indexOf('Atual') !== -1) {
                         $(this).parent().find('.form-body').addClass('current');
                         $(this).parent().children('.description').removeClass('description');
@@ -176,7 +269,7 @@ var PJCon = function() {
                         $(this).parent().find('.form-body').addClass('past');
                     }
                 });
-                $.each($('.past'), function() {
+                $.each($('#modal-history-pj').find('.past'), function() {
                     var history = this;
                     var description = "";
                     var informacoes = false;
@@ -205,16 +298,14 @@ var PJCon = function() {
                         if ($(atual).find(tr).length !== $(history).find(tr).length) {
                             changed = true;
                         }
+                        $(history).find(tr).find('td').css("color", "#a94442");
                         $.each($(atual).find(tr), function() {
                             var atual = this;
                             var exists = false;
                             $.each($(history).find(tr), function() {
-                                $(this).find('td').children().css("color", "#a94442");
-                                $(this).find('td').css("color", "#a94442");
-                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().children('span').html().trim() : $(atual).find('td').eq(0).html().trim();
-                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().children('span').html().trim() : $(this).find('td').eq(0).html().trim();
+                                var cpfAtual = $(atual).find('td').eq(0).html().trim();
+                                var cpfHistorico = $(this).find('td').eq(0).html().trim();
                                 if (cpfAtual === cpfHistorico) {
-                                    $(this).find('td').children().css("color", "black");
                                     $(this).find('td').css("color", "black");
                                     exists = true;
                                     $.each($(this).find('td'), function(index) {
@@ -302,96 +393,7 @@ var PJCon = function() {
                     $(this).closest('.detail').parent().children('.description').append(description);
                 });
                 getMoneyMask(".accordion");
-            } else {
-                initTable();
-
-                var index;
-                $(document).on('click', '.button-delete-sucessao', function(e) {
-                    e.stopImmediatePropagation();
-                    e.preventDefault();
-                    index = $('.button-delete-sucessao').index(this);
-                    $('.delete-sucessao-modal-activator').click();
-                });
-
-                $('.cancel-sucessao').click(function(e) {
-                    e.preventDefault();
-                });
-                $('.remove-sucessao').click(function(e) {
-                    e.preventDefault();
-                    $('#pj-sucessao-id').val($($('.button-delete-sucessao').get(index)).parent().parent().children('.suc-id').val());
-                    $('.info-delete-sucessao').click();
-                });
-
-                $(document).on('click', '.button-history-sucessao', function(e) {
-                    e.stopImmediatePropagation();
-                    e.preventDefault();
-                    if (!executing) {
-                        $('#pj-sucessao-id').val($(this).parent().parent().children('.suc-id').val());
-                        $('.info-history-sucessao').click();
-                    }
-                });
             }
-
-            $('select[name=table_length]').change(function() {
-                $.each($('.row-details'), function() {
-                    if ($(this).hasClass("row-details-open")) {
-                        $(this).addClass("row-details-close").removeClass("row-details-open");
-                    }
-                });
-                $('.detailed-info').remove();
-            });
-
-            $('#table_filter label input').keypress(function() {
-                $.each($('.row-details'), function() {
-                    if ($(this).hasClass("row-details-open")) {
-                        $(this).addClass("row-details-close").removeClass("row-details-open");
-                    }
-                });
-                $('.detailed-info').remove();
-            });
-
-            jsf.ajax.addOnEvent(function(data) {
-                if (data.status === 'success') {
-                    if ($(data.source).attr('class') === 'info-refresher') {
-                        getSucessoes('#pj-id', '#info', $(element), true, true);
-                    } else if ($(data.source).attr('class') === 'info-history-sucessao') {
-                        $('.show-history-modal-activator').click();
-                        var atual;
-                        initHistoryTable('#sucessao-table');
-                        $.each($('.data-de-modificacao'), function() {
-                            if ($(this).html().indexOf('Atual') !== -1) {
-                                $(this).parent().find('.form-body').addClass('current');
-                                $(this).parent().children('.description').removeClass('description');
-                                atual = $(this).parent().find('.form-body');
-                            } else {
-                                $(this).parent().find('.form-body').addClass('past');
-                            }
-                        });
-                        $.each($('.past'), function() {
-                            var description = "";
-                            var informacoes = "";
-                            $.each($(this).find('.form-control-static'), function(index) {
-                                if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
-                                    $(this).parent().parent().css("color", "#a94442");
-                                    informacoes = true;
-                                }
-                            });
-
-                            if (informacoes) {
-                                description += "Informa&ccedil;&otilde;es da Sucess&atilde;o, ";
-                            }
-
-                            description = description.substring(0, description.length - 2) + ".";
-                            if (description.indexOf(",") !== -1) {
-                                description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
-                            } else if (description === ".") {
-                                description = "";
-                            }
-                            $(this).closest('.detail').parent().children('.description').append(description);
-                        });
-                    }
-                }
-            });
 
             $('.menu-pj').addClass('active open');
             $('.menu-pj a').append('<span class="selected"></span>');

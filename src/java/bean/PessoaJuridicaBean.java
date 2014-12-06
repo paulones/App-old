@@ -57,7 +57,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -79,8 +78,6 @@ public class PessoaJuridicaBean implements Serializable {
     private Endereco oldEndereco;
     private PessoaFisica pessoaFisicaVinculo;
     private PessoaJuridica pessoaJuridicaVinculo;
-    private PessoaFisicaJuridica pessoaFisicaJuridica;
-    private PessoaJuridicaJuridica pessoaJuridicaJuridica;
     private EnderecoPessoa enderecoPessoa;
     private PessoaJuridicaHistorico pessoaJuridicaHistorico;
     private EnderecoHistorico EnderecoHistorico;
@@ -90,7 +87,6 @@ public class PessoaJuridicaBean implements Serializable {
     private String register;
     private String redirect;
     private boolean edit;
-    private boolean history;
     private String pjId;
     private String pjsId;
     private String pfVId;
@@ -125,8 +121,6 @@ public class PessoaJuridicaBean implements Serializable {
 
             endereco = new Endereco();
             pessoaFisicaVinculo = new PessoaFisica();
-            pessoaFisicaJuridica = new PessoaFisicaJuridica();
-            pessoaJuridicaJuridica = new PessoaJuridicaJuridica();
             enderecoPessoa = new EnderecoPessoa();
             bem = new Bem();
 
@@ -180,76 +174,61 @@ public class PessoaJuridicaBean implements Serializable {
                     }
                 }
             } else if (isSearchPage) {
-                /*
-                 Tela consulta.xhtml. Se houver "id" na url, entra na lista de alterações nos
-                 dados da Pessoa Jurídica. Caso contrário, acessa a consulta geral 
-                 */
-                if (request.getParameter("id") == null) {   // Consulta geral
-                    pjId = "";
-                    history = false;
-                } else { // Consulta histórico
-                    try {
-                        Integer id = Integer.valueOf(request.getParameter("id"));
-                        pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(id);
-                        if (pessoaJuridica == null) {
-                            history = false;
-                            FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
-                        } else {
-                            history = true;
-                            endereco = EnderecoBO.findPJAddress(id);
-                            bemList = BemBO.findPJBens(id);
-                            pessoaFisicaJuridicaList = PessoaFisicaJuridicaBO.findAllByPJ(id);
-                            pessoaJuridicaJuridicaList = PessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
+                pjId = "";
+            }
+        }
+    }
 
-                            pessoaJuridicaHistoricoList = new ArrayList<>();
-                            enderecoHistoricoList = new ArrayList<>();
-                            bemHistoricoList = new ArrayList<>();
-                            pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
-                            pessoaJuridicaJuridicaHistoricoList = new ArrayList<>();
+    public void carregarHistorico(String idStr) {
+        Integer id = Integer.valueOf(idStr);
+        pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(id);
+        endereco = EnderecoBO.findPJAddress(id);
+        bemList = BemBO.findPJBens(id);
+        pessoaFisicaJuridicaList = PessoaFisicaJuridicaBO.findAllByPJ(id);
+        pessoaJuridicaJuridicaList = PessoaJuridicaJuridicaBO.findAllByPJAOrPJB(id);
 
-                            pessoaJuridicaHistoricoList = PessoaJuridicaHistoricoBO.findAllByPJ(id);
-                            enderecoHistoricoList = EnderecoHistoricoBO.findAllByPJ(id);
-                            bemHistoricoList = BemHistoricoBO.findAllByPJ(id);
-                            pessoaFisicaJuridicaHistoricoList = PessoaFisicaJuridicaHistoricoBO.findAllByPJ(id);
+        pessoaJuridicaHistoricoList = new ArrayList<>();
+        enderecoHistoricoList = new ArrayList<>();
+        bemHistoricoList = new ArrayList<>();
+        pessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+        pessoaJuridicaJuridicaHistoricoList = new ArrayList<>();
 
-                            enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
-                            EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
-                            enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList, bemList);
-                            enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
+        pessoaJuridicaHistoricoList = PessoaJuridicaHistoricoBO.findAllByPJ(id);
+        enderecoHistoricoList = EnderecoHistoricoBO.findAllByPJ(id);
+        bemHistoricoList = BemHistoricoBO.findAllByPJ(id);
+        pessoaFisicaJuridicaHistoricoList = PessoaFisicaJuridicaHistoricoBO.findAllByPJ(id);
 
-                            for (PessoaJuridicaHistorico pjh : pessoaJuridicaHistoricoList) {
-                                for (EnderecoHistorico eh : enderecoHistoricoList) {
-                                    if (pjh.getId() == eh.getIdFk()) {
-                                        EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pjh, eh);
-                                        List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
-                                        for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
-                                            if (pjh.getId() == pfjh.getIdFk()) {
-                                                pfjhList.add(pfjh);
-                                            }
-                                        }
-                                        List<BemHistorico> bhList = new ArrayList<>();
-                                        for (BemHistorico bh : bemHistoricoList) {
-                                            if (pjh.getId() == bh.getIdFk()) {
-                                                bhList.add(bh);
-                                            }
-                                        }
-                                        epfjh.setBemHistoricoList(bhList);
-                                        epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
-                                        enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
-                                        break;
-                                    }
-                                }
-                            }
+        enderecoPessoaFisicaJuridicaHistoricoList = new ArrayList<>();
+        EnderecoPessoaFisicaJuridicaHistorico enderecoPessoaFisicaJuridicaHistorico = new EnderecoPessoaFisicaJuridicaHistorico();
+        enderecoPessoaFisicaJuridicaHistorico = prepararRegistroAtual(pessoaJuridica, endereco, pessoaFisicaJuridicaList, pessoaJuridicaJuridicaList, bemList);
+        enderecoPessoaFisicaJuridicaHistoricoList.add(enderecoPessoaFisicaJuridicaHistorico);
 
+        for (PessoaJuridicaHistorico pjh : pessoaJuridicaHistoricoList) {
+            for (EnderecoHistorico eh : enderecoHistoricoList) {
+                if (pjh.getId() == eh.getIdFk()) {
+                    EnderecoPessoaFisicaJuridicaHistorico epfjh = new EnderecoPessoaFisicaJuridicaHistorico(pjh, eh);
+                    List<PessoaFisicaJuridicaHistorico> pfjhList = new ArrayList<>();
+                    for (PessoaFisicaJuridicaHistorico pfjh : pessoaFisicaJuridicaHistoricoList) {
+                        if (pjh.getId() == pfjh.getIdFk()) {
+                            pfjhList.add(pfjh);
                         }
-                    } catch (Exception e) {
-                        history = false;
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                     }
+                    List<BemHistorico> bhList = new ArrayList<>();
+                    for (BemHistorico bh : bemHistoricoList) {
+                        if (pjh.getId() == bh.getIdFk()) {
+                            bhList.add(bh);
+                        }
+                    }
+                    epfjh.setBemHistoricoList(bhList);
+                    epfjh.setPessoaFisicaJuridicaHistoricoList(pfjhList);
+                    enderecoPessoaFisicaJuridicaHistoricoList.add(epfjh);
+                    break;
                 }
             }
         }
     }
+
+    
 
     public void carregarFormulario() {
         estadoList = EstadoBO.findAll();
@@ -382,6 +361,7 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void vincularPessoaFisica() {
+        PessoaFisicaJuridica pessoaFisicaJuridica = new PessoaFisicaJuridica();
         if (edit) {
             pessoaFisicaJuridica.setPessoaJuridicaFk(pessoaJuridica);
         }
@@ -400,6 +380,7 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void vincularPessoaJuridica() {
+        PessoaJuridicaJuridica pessoaJuridicaJuridica = new PessoaJuridicaJuridica();
         boolean exists = false;
         if (edit) {
             pessoaJuridicaJuridica.setPessoaJuridicaPrimariaFk(pessoaJuridica);
@@ -486,19 +467,17 @@ public class PessoaJuridicaBean implements Serializable {
     }
 
     public void exibirHistoricoDaSucessao() {
-        PessoaJuridicaSucessaoHistoricoBO pessoaJuridicaSucessaoHistoricoBO = new PessoaJuridicaSucessaoHistoricoBO();
-        PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
         PessoaJuridicaSucessaoHistorico pessoaJuridicaSucessaoHistorico = new PessoaJuridicaSucessaoHistorico();
         pessoaJuridicaSucessaoHistoricoList = new ArrayList<>();
 
-        pessoaJuridicaSucessao = pessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(pjsId));
+        pessoaJuridicaSucessao = PessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(Integer.valueOf(pjsId));
         pessoaJuridicaSucessaoHistorico.setDataDeSucessao(pessoaJuridicaSucessao.getDataDeSucessao());
         pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucedidaFk(pessoaJuridicaSucessao.getPessoaJuridicaSucedidaFk());
         pessoaJuridicaSucessaoHistorico.setPessoaJuridicaSucessoraFk(pessoaJuridicaSucessao.getPessoaJuridicaSucessoraFk());
         pessoaJuridicaSucessaoHistorico.setUsuarioFk(pessoaJuridicaSucessao.getUsuarioFk());
 
         pessoaJuridicaSucessaoHistoricoList.add(pessoaJuridicaSucessaoHistorico);
-        pessoaJuridicaSucessaoHistoricoList.addAll(pessoaJuridicaSucessaoHistoricoBO.findByPJS(Integer.valueOf(pjsId)));
+        pessoaJuridicaSucessaoHistoricoList.addAll(PessoaJuridicaSucessaoHistoricoBO.findByPJS(Integer.valueOf(pjsId)));
 
     }
 
@@ -717,14 +696,6 @@ public class PessoaJuridicaBean implements Serializable {
         this.pessoaFisicaList = pessoaFisicaList;
     }
 
-    public PessoaFisicaJuridica getPessoaFisicaJuridica() {
-        return pessoaFisicaJuridica;
-    }
-
-    public void setPessoaFisicaJuridica(PessoaFisicaJuridica pessoaFisicaJuridica) {
-        this.pessoaFisicaJuridica = pessoaFisicaJuridica;
-    }
-
     public String getRegister() {
         return register;
     }
@@ -747,14 +718,6 @@ public class PessoaJuridicaBean implements Serializable {
 
     public void setRedirect(String redirect) {
         this.redirect = redirect;
-    }
-
-    public boolean isHistory() {
-        return history;
-    }
-
-    public void setHistory(boolean history) {
-        this.history = history;
     }
 
     public List<EnderecoPessoaFisicaJuridicaHistorico> getEnderecoPessoaFisicaJuridicaHistoricoList() {

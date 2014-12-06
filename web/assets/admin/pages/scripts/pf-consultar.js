@@ -88,10 +88,11 @@ var PFCon = function() {
     }
 
     var initHistoryTable = function() {
-        var table = $('#table');
+        var table = $('#pf-history-table');
         var tableDetails = $('.vinculations');
 
         var oTable2 = tableDetails.dataTable({
+            destroy: true,
             paginate: false,
             lengthMenu: false,
             info: false,
@@ -107,6 +108,7 @@ var PFCon = function() {
          * Initialize DataTables, with no sorting on the 'details' column
          */
         var oTable = table.dataTable({
+            destroy: true,
             "columnDefs": [{
                     "orderable": false,
                     "targets": [0, 2, 3]
@@ -130,7 +132,7 @@ var PFCon = function() {
             // set the initial value
             "pageLength": 10,
         });
-        var tableWrapper = $('#table_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
+        var tableWrapper = $('#pf-history-table_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
 
         tableWrapper.find('.dataTables_length select').select2(); // initialize select2 dropdown
 
@@ -158,7 +160,54 @@ var PFCon = function() {
     return {
         init: function() {
 
-            if (window.location.search != "") {
+            initTable();
+
+            $('select[name=table_length]').change(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+                $('.detailed-info').remove();
+            });
+
+            $('#table_filter label input').keypress(function() {
+                $.each($('.row-details'), function() {
+                    if ($(this).hasClass("row-details-open")) {
+                        $(this).addClass("row-details-close").removeClass("row-details-open");
+                    }
+                });
+                $('.detailed-info').remove();
+            });
+
+            jsf.ajax.addOnEvent(function(data) {
+                if (data.status === 'success') {
+                    if ($(data.source).attr('class') === 'info-refresher') {
+                        $(element).addClass("row-details-open").removeClass("row-details-close");
+                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
+                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
+                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
+                        $(element).parent().parent().next().find('table').dataTable({
+                            paginate: false,
+                            lengthMenu: false,
+                            info: false,
+                            filter: false,
+                            // set the initial value
+                            "pageLength": 10,
+                            "language": {
+                                "emptyTable": "Sem V&iacute;nculos."
+                            },
+                            "ordering": false
+                        });
+                        getMoneyMask($(element).parent().parent().next().find(".accordion-pfcon"));
+                    } else if ($(data.source).hasClass("load-history")) {
+                        $('.modal-history-pf').click();
+                        carregarHistorico();
+                    }
+                }
+            });
+
+            function carregarHistorico() {
                 var atual;
                 initHistoryTable();
                 $.each($('.data-de-modificacao'), function() {
@@ -201,16 +250,14 @@ var PFCon = function() {
                         if ($(atual).find(tr).length !== $(history).find(tr).length) {
                             changed = true;
                         }
+                        $(history).find(tr).find('td').css("color", "#a94442");
                         $.each($(atual).find(tr), function() {
                             var atual = this;
                             var exists = false;
                             $.each($(history).find(tr), function() {
-                                $(this).find('td').children().css("color", "#a94442");
-                                $(this).find('td').css("color", "#a94442");
-                                var cpfAtual = $(atual).find('td').eq(0).children().length > 0 ? $(atual).find('td').eq(0).children().children('span').html().trim() : $(atual).find('td').eq(0).html().trim();
-                                var cpfHistorico = $(this).find('td').eq(0).children().length > 0 ? $(this).find('td').eq(0).children().children('span').html().trim() : $(this).find('td').eq(0).html().trim();
+                                var cpfAtual = $(atual).find('td').eq(0).html().trim();
+                                var cpfHistorico = $(this).find('td').eq(0).html().trim();
                                 if (cpfAtual === cpfHistorico) {
-                                    $(this).find('td').children().css("color", "black");
                                     $(this).find('td').css("color", "black");
                                     exists = true;
                                     $.each($(this).find('td'), function(index) {
@@ -236,6 +283,7 @@ var PFCon = function() {
                             return false;
                         }
                     }
+
 
                     function checkChangesBens(label, tab) {
                         var changed = false;
@@ -301,51 +349,7 @@ var PFCon = function() {
                     $(this).closest('.detail').parent().children('.description').append(description);
                 });
                 getMoneyMask(".accordion");
-            } else {
-                initTable();
             }
-
-            $('select[name=table_length]').change(function() {
-                $.each($('.row-details'), function() {
-                    if ($(this).hasClass("row-details-open")) {
-                        $(this).addClass("row-details-close").removeClass("row-details-open");
-                    }
-                });
-                $('.detailed-info').remove();
-            });
-
-            $('#table_filter label input').keypress(function() {
-                $.each($('.row-details'), function() {
-                    if ($(this).hasClass("row-details-open")) {
-                        $(this).addClass("row-details-close").removeClass("row-details-open");
-                    }
-                });
-                $('.detailed-info').remove();
-            });
-
-            jsf.ajax.addOnEvent(function(data) {
-                if (data.status === 'success') {
-                    if ($(data.source).attr('class') === 'info-refresher') {
-                        $(element).addClass("row-details-open").removeClass("row-details-close");
-                        $("<tr class='detailed-info'><td class='detail' colspan='6'></td></tr>").insertAfter($(element).parent().parent());
-                        $('#info').children().clone().appendTo($(element).parent().parent().next().children());
-                        $(element).parent().parent().children(".detail").appendTo($(element).parent().parent().next());
-                        $(element).parent().parent().next().find('table').dataTable({
-                            paginate: false,
-                            lengthMenu: false,
-                            info: false,
-                            filter: false,
-                            // set the initial value
-                            "pageLength": 10,
-                            "language": {
-                                "emptyTable": "Sem V&iacute;nculos."
-                            },
-                            "ordering": false
-                        });
-                        getMoneyMask($(element).parent().parent().next().find(".accordion-pfcon"));
-                    }
-                }
-            });
 
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');

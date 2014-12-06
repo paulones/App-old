@@ -1,0 +1,166 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:panelGroup id="modal-history-pj-sucessao">
+        <c:if test="#{not empty pessoaJuridicaBean.pessoaJuridicaSucessaoHistoricoList}">
+                <h:panelGroup layout="block" id="largepjs-history" class="modal fade bs-modal-lg" p:tabindex="-1" p:role="dialog" p:aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body modal-pessoa">
+                                <div class="portlet box blue-chambray">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-globe"></i>
+                                            <span>Histórico de #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucedidaFk.nome}</span> <span><i class="fa fa-exchange"></i> #{pessoaJuridicaBean.pessoaJuridicaSucessao.pessoaJuridicaSucessoraFk.nome}</span>
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body">
+                                        <span class="help-block">Para visualizar os dados alterados de um registro anterior em relação ao atual,clique no <span class="expand-example"></span>.</span>
+                                        <span class="help-block">Os campos alterados estão destacados na cor vermelha.</span>
+                                        <br/>
+                                        <table class="table table-striped table-bordered table-hover" id="sucessao-table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="width:3%"></th>
+                                                    <th style="width:15%">
+                                                        Registro
+                                                    </th>
+                                                    <th style="width:48%">
+                                                        Alterações
+                                                    </th>
+                                                    <th style="width:40%">
+                                                        Usuário Alterador
+                                                    </th>
+                                                    <th class="display-hide"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <ui:repeat value="#{pessoaJuridicaBean.pessoaJuridicaSucessaoHistoricoList}" var="pessoaJuridicaSucessaoHistorico">
+                                                    <tr>
+                                                        <td class="expand-box">
+                                                            <span class="row-details row-details-close"></span>
+                                                        </td>
+                                                        <td class="data-de-modificacao">
+                                                            <h:outputText rendered="#{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
+                                                            <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
+                                                                <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
+                                                            </h:outputText>
+                                                        </td>
+                                                        <td class="description">
+                                                        </td>
+                                                        <td>
+                                                            <ui:param value="#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(0,3)}.#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(3,6)}.#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(6,9)}-#{pessoaJuridicaSucessaoHistorico.usuarioFk.cpf.substring(9)}" name="cpfUsuario"/>
+                                                            #{pessoaJuridicaSucessaoHistorico.usuarioFk.nome} | #{cpfUsuario}
+                                                        </td>
+                                                        <td class="detail display-hide" colspan="6">
+                                                            <div class="portlet box blue-chambray">
+                                                                <div class="portlet-title">
+                                                                    <div class="caption">
+                                                                        <i class="fa fa-history"></i>
+                                                                        Registro #{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao ? 'atual': 'do dia'}
+                                                                        <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
+                                                                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                                                        </h:outputText>
+                                                                        #{empty pessoaJuridicaSucessaoHistorico.dataDeModificacao ? '': ' às '}
+                                                                        <h:outputText rendered="#{not empty pessoaJuridicaSucessaoHistorico.dataDeModificacao}" value="#{pessoaJuridicaSucessaoHistorico.dataDeModificacao}" >
+                                                                            <f:convertDateTime pattern="HH:mm:ss"/>
+                                                                        </h:outputText>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="portlet-body form">
+                                                                    <!-- BEGIN LISTA CONTENT-->
+                                                                    <div class="form-body">
+                                                                        <h3 class="form-section">Informações da Sucessão</h3>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-4">Empresa Sucedida:</label>
+                                                                                    <div class="col-md-8">
+                                                                                        <p class="form-control-static">
+                                                                                            #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.nome}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--/span-->
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-4">CNPJ:</label>
+                                                                                    <div class="col-md-8">
+                                                                                        <p class="form-control-static">
+                                                                                            <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucedidaFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                            #{cnpj}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-4">Empresa Sucessora:</label>
+                                                                                    <div class="col-md-8">
+                                                                                        <p class="form-control-static">
+                                                                                            #{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.nome}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <!--/span-->
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-4">CNPJ:</label>
+                                                                                    <div class="col-md-8">
+                                                                                        <p class="form-control-static">
+                                                                                            <ui:param value="#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(0,2)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(2,5)}.#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(5,8)}/#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(8,12)}-#{pessoaJuridicaSucessaoHistorico.pessoaJuridicaSucessoraFk.cnpj.substring(12)}" name="cnpj"/>
+                                                                                            #{cnpj}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-4">Data de Sucessao:</label>
+                                                                                    <div class="col-md-8">
+                                                                                        <p class="form-control-static">
+                                                                                            <h:outputText value="#{pessoaJuridicaSucessaoHistorico.dataDeSucessao}"></h:outputText>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                            </div>
+                                            <!--/span-->
+                                            <div class="col-md-6">
+                                                <div class="col-md-offset-9 col-md-9">
+                                                    <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                                </div>
+                                            </div>
+                                            <!--/span-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:panelGroup>
+        </c:if>
+    </h:panelGroup>
+</ui:composition>
