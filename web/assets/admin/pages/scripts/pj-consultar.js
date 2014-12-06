@@ -215,7 +215,7 @@ var PJCon = function() {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
                         getSucessoes('#pj-id', '#info', $(element), true, true);
-                    } else if ($(data.source).attr('class') === 'info-history-sucessao') {
+                    } else if ($(data.source).hasClass('info-history-sucessao')) {
                         $('.show-history-modal-activator').click();
                         var atual;
                         initHistoryTable('#sucessao-table');

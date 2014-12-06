@@ -773,19 +773,19 @@
                                                                                                     <tbody>
                                                                                                         <ui:repeat value="#{processoJudicialBean.executadoProcessoJudicialList}" var="processoJudicial" varStatus="status">
                                                                                                             <tr>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{status.index + 1}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{processoJudicial.numeroDoProcesso}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{processoJudicial.numeroDaCda}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{processoJudicial.comarca}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Andamento'}"><span class="label label-sm label-warning">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
                                                                                                                     <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Arquivado'}"><span class="label label-sm label-info">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
                                                                                                                     <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Extinto'}"><span class="label label-sm label-default">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
@@ -1415,19 +1415,19 @@
                                                                                                     <tbody>
                                                                                                         <ui:repeat value="#{processoJudicialBean.executadoProcessoJudicialList}" var="processoJudicial" varStatus="status">
                                                                                                             <tr>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{status.index + 1}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{processoJudicial.numeroDoProcesso}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{processoJudicial.numeroDaCda}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     #{processoJudicial.comarca}
                                                                                                                 </td>
-                                                                                                                <td>
+                                                                                                                <td style="width:20%">
                                                                                                                     <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Andamento'}"><span class="label label-sm label-warning">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
                                                                                                                     <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Arquivado'}"><span class="label label-sm label-info">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>
                                                                                                                     <ui:fragment rendered="#{processoJudicial.situacaoFk.situacao eq 'Extinto'}"><span class="label label-sm label-default">#{processoJudicial.situacaoFk.situacao}</span></ui:fragment>

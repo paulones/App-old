@@ -1,5 +1,7 @@
 /*general*/
 .breadcrumb-jsf{margin-left:3px}
+#loading{position:fixed;top:50%;left:50%}
+#loading-text{background-color:#2c3e50;color:#fff;border-radius:10px;padding:10px 25px;font-size:14px;position:fixed;top:65%;left:34%;font-weight: 400}
 /*login-soft*/
 .login-title{color:#EEEEEE}
 /*index*/

@@ -524,6 +524,10 @@
         <ui:include src="../modal/cadastro/pessoa-fisica.xhtml"></ui:include>
         <a class="btn default modal-new-bem display-hide" data-toggle="modal" href="#largenewbem"></a>
         <ui:include src="../modal/cadastro/bem.xhtml"></ui:include>
+
+        <span id="loading"></span>
+        <div id="loading-text" class="caption display-hide"><i class="fa fa-spin fa-refresh"></i> Pode demorar um pouco. Aguarde alguns instantes... <i class="fa fa-spin fa-refresh"></i></div>
+
         <a class="btn default display-hide modal-activator" data-toggle="modal" href="#static"></a>
         <div id="static" class="modal fade" tabindex="-1" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog">
@@ -655,7 +659,7 @@
             $(document).on('click', '.bem-new', function() {
                 if (!executing) {
                     bemPanel = {
-                        panel : $(this).closest('.panel-collapse').attr('id')
+                        panel: $(this).closest('.panel-collapse').attr('id')
                     };
                     $('#id-modal').val($(this).find('.object-id').html().trim());
                     $('#tabela-modal').val('BEM');
@@ -699,9 +703,34 @@
                 }
             }
 
+            var spinner;
             jsf.ajax.addOnEvent(function(data) {
                 switch (data.status) {
                     case "begin":
+                        if ($(data.source).hasClass("load-history")) {
+                            var opts = {
+                                lines: 13, // The number of lines to draw
+                                length: 20, // The length of each line
+                                width: 10, // The line thickness
+                                radius: 30, // The radius of the inner circle
+                                corners: 1, // Corner roundness (0..1)
+                                rotate: 0, // The rotation offset
+                                direction: 1, // 1: clockwise, -1: counterclockwise
+                                color: '#2c3e50', // #rgb or #rrggbb or array of colors
+                                speed: 1, // Rounds per second
+                                trail: 60, // Afterglow percentage
+                                shadow: false, // Whether to render a shadow
+                                hwaccel: false, // Whether to use hardware acceleration
+                                className: 'spinner', // The CSS class to assign to the spinner
+                                zIndex: 2e9, // The z-index (defaults to 2000000000)
+                                top: '50%', // Top position relative to parent
+                                left: '50%' // Left position relative to parent
+                            };
+                            var target = document.getElementById('loading');
+                            spinner = new Spinner(opts).spin(target);
+                            target.appendChild(spinner.el);
+                            $('#loading-text').show();
+                        }
                         setCursors(data.status);
                         executing = true;
                         break;
@@ -711,7 +740,10 @@
                 }
                 if (data.status === 'success') {
                     setCursors(data.status);
-                    if ($(data.source).attr("class") === "show-info-modal") {
+                    if ($(data.source).hasClass('load-history')) {
+                        $('#loading-text').hide();
+                        spinner.stop();
+                    } else if ($(data.source).attr("class") === "show-info-modal") {
                         if ($('#tabela-modal').val() === "PF") {
                             getMoneyMask(".accordion-modal-pfcon");
                             $('.modal-info-pf').click();

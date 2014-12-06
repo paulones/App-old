@@ -180,6 +180,7 @@ var PFCon = function() {
                 $('.detailed-info').remove();
             });
 
+
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === 'success') {
                     if ($(data.source).attr('class') === 'info-refresher') {
