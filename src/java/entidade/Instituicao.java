@@ -44,6 +44,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Instituicao.findByUltimoLogin", query = "SELECT i FROM Instituicao i WHERE i.ultimoLogin = :ultimoLogin"),
     @NamedQuery(name = "Instituicao.findByRazaoSocial", query = "SELECT i FROM Instituicao i WHERE i.razaoSocial = :razaoSocial")})
 public class Instituicao implements Serializable {
+    @OneToMany(mappedBy = "instituicaoFk")
+    private Collection<Perfil> perfilCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituicaoFk")
     private Collection<Log> logCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "instituicaoFk")
@@ -220,6 +222,15 @@ public class Instituicao implements Serializable {
 
     public void setLogCollection(Collection<Log> logCollection) {
         this.logCollection = logCollection;
+    }
+
+    @XmlTransient
+    public Collection<Perfil> getPerfilCollection() {
+        return perfilCollection;
+    }
+
+    public void setPerfilCollection(Collection<Perfil> perfilCollection) {
+        this.perfilCollection = perfilCollection;
     }
     
 }

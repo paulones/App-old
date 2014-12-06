@@ -9,6 +9,7 @@ import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
 import entidade.EnderecoHistorico;
+import entidade.Perfil;
 import entidade.PessoaFisica;
 import entidade.PessoaFisicaHistorico;
 import entidade.PessoaFisicaJuridicaHistorico;
@@ -82,6 +83,11 @@ public class UsuarioDAO implements Serializable {
                 recuperarSenha = em.getReference(recuperarSenha.getClass(), recuperarSenha.getId());
                 usuario.setRecuperarSenha(recuperarSenha);
             }
+            Perfil perfil = usuario.getPerfil();
+            if (perfil != null) {
+                perfil = em.getReference(perfil.getClass(), perfil.getId());
+                usuario.setPerfil(perfil);
+            }
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollection = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach : usuario.getPessoaFisicaHistoricoCollection()) {
                 pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionPessoaFisicaHistoricoToAttach.getId());
@@ -139,6 +145,10 @@ public class UsuarioDAO implements Serializable {
                 }
                 recuperarSenha.setUsuario(usuario);
                 recuperarSenha = em.merge(recuperarSenha);
+            }
+            if (perfil != null) {
+                perfil.getUsuarioCollection().add(usuario);
+                perfil = em.merge(perfil);
             }
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionPessoaFisicaHistorico : usuario.getPessoaFisicaHistoricoCollection()) {
                 Usuario oldUsuarioFkOfPessoaFisicaHistoricoCollectionPessoaFisicaHistorico = pessoaFisicaHistoricoCollectionPessoaFisicaHistorico.getUsuarioFk();
@@ -235,6 +245,8 @@ public class UsuarioDAO implements Serializable {
             Usuario persistentUsuario = em.find(Usuario.class, usuario.getId());
             RecuperarSenha recuperarSenhaOld = persistentUsuario.getRecuperarSenha();
             RecuperarSenha recuperarSenhaNew = usuario.getRecuperarSenha();
+            Perfil perfilOld = persistentUsuario.getPerfil();
+            Perfil perfilNew = usuario.getPerfil();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionOld = persistentUsuario.getPessoaFisicaHistoricoCollection();
             Collection<PessoaFisicaHistorico> pessoaFisicaHistoricoCollectionNew = usuario.getPessoaFisicaHistoricoCollection();
             Collection<PessoaJuridicaHistorico> pessoaJuridicaHistoricoCollectionOld = persistentUsuario.getPessoaJuridicaHistoricoCollection();
@@ -329,6 +341,10 @@ public class UsuarioDAO implements Serializable {
                 recuperarSenhaNew = em.getReference(recuperarSenhaNew.getClass(), recuperarSenhaNew.getId());
                 usuario.setRecuperarSenha(recuperarSenhaNew);
             }
+            if (perfilNew != null) {
+                perfilNew = em.getReference(perfilNew.getClass(), perfilNew.getId());
+                usuario.setPerfil(perfilNew);
+            }
             Collection<PessoaFisicaHistorico> attachedPessoaFisicaHistoricoCollectionNew = new ArrayList<PessoaFisicaHistorico>();
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach : pessoaFisicaHistoricoCollectionNew) {
                 pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach = em.getReference(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getClass(), pessoaFisicaHistoricoCollectionNewPessoaFisicaHistoricoToAttach.getId());
@@ -394,6 +410,14 @@ public class UsuarioDAO implements Serializable {
                 }
                 recuperarSenhaNew.setUsuario(usuario);
                 recuperarSenhaNew = em.merge(recuperarSenhaNew);
+            }
+            if (perfilOld != null && !perfilOld.equals(perfilNew)) {
+                perfilOld.getUsuarioCollection().remove(usuario);
+                perfilOld = em.merge(perfilOld);
+            }
+            if (perfilNew != null && !perfilNew.equals(perfilOld)) {
+                perfilNew.getUsuarioCollection().add(usuario);
+                perfilNew = em.merge(perfilNew);
             }
             for (PessoaFisicaHistorico pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico : pessoaFisicaHistoricoCollectionNew) {
                 if (!pessoaFisicaHistoricoCollectionOld.contains(pessoaFisicaHistoricoCollectionNewPessoaFisicaHistorico)) {
@@ -583,6 +607,11 @@ public class UsuarioDAO implements Serializable {
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
+            }
+            Perfil perfil = usuario.getPerfil();
+            if (perfil != null) {
+                perfil.getUsuarioCollection().remove(usuario);
+                perfil = em.merge(perfil);
             }
             em.remove(usuario);
             em.getTransaction().commit();

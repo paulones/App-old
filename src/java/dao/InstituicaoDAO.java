@@ -14,6 +14,7 @@ import entidade.Cidade;
 import entidade.Estado;
 import entidade.Instituicao;
 import entidade.Log;
+import entidade.Perfil;
 import entidade.PessoaFisica;
 import entidade.PessoaJuridica;
 import entidade.ProcessoJudicial;
@@ -60,6 +61,9 @@ public class InstituicaoDAO implements Serializable {
         if (instituicao.getLogCollection() == null) {
             instituicao.setLogCollection(new ArrayList<Log>());
         }
+        if (instituicao.getPerfilCollection() == null) {
+            instituicao.setPerfilCollection(new ArrayList<Perfil>());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -104,6 +108,12 @@ public class InstituicaoDAO implements Serializable {
                 attachedLogCollection.add(logCollectionLogToAttach);
             }
             instituicao.setLogCollection(attachedLogCollection);
+            Collection<Perfil> attachedPerfilCollection = new ArrayList<Perfil>();
+            for (Perfil perfilCollectionPerfilToAttach : instituicao.getPerfilCollection()) {
+                perfilCollectionPerfilToAttach = em.getReference(perfilCollectionPerfilToAttach.getClass(), perfilCollectionPerfilToAttach.getId());
+                attachedPerfilCollection.add(perfilCollectionPerfilToAttach);
+            }
+            instituicao.setPerfilCollection(attachedPerfilCollection);
             em.persist(instituicao);
             if (estadoFk != null) {
                 estadoFk.getInstituicaoCollection().add(instituicao);
@@ -158,6 +168,15 @@ public class InstituicaoDAO implements Serializable {
                     oldInstituicaoFkOfLogCollectionLog = em.merge(oldInstituicaoFkOfLogCollectionLog);
                 }
             }
+            for (Perfil perfilCollectionPerfil : instituicao.getPerfilCollection()) {
+                Instituicao oldInstituicaoFkOfPerfilCollectionPerfil = perfilCollectionPerfil.getInstituicaoFk();
+                perfilCollectionPerfil.setInstituicaoFk(instituicao);
+                perfilCollectionPerfil = em.merge(perfilCollectionPerfil);
+                if (oldInstituicaoFkOfPerfilCollectionPerfil != null) {
+                    oldInstituicaoFkOfPerfilCollectionPerfil.getPerfilCollection().remove(perfilCollectionPerfil);
+                    oldInstituicaoFkOfPerfilCollectionPerfil = em.merge(oldInstituicaoFkOfPerfilCollectionPerfil);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -193,6 +212,8 @@ public class InstituicaoDAO implements Serializable {
             Collection<ProcessoJudicial> processoJudicialCollectionNew = instituicao.getProcessoJudicialCollection();
             Collection<Log> logCollectionOld = persistentInstituicao.getLogCollection();
             Collection<Log> logCollectionNew = instituicao.getLogCollection();
+            Collection<Perfil> perfilCollectionOld = persistentInstituicao.getPerfilCollection();
+            Collection<Perfil> perfilCollectionNew = instituicao.getPerfilCollection();
             List<String> illegalOrphanMessages = null;
             for (Autorizacao autorizacaoCollectionOldAutorizacao : autorizacaoCollectionOld) {
                 if (!autorizacaoCollectionNew.contains(autorizacaoCollectionOldAutorizacao)) {
@@ -280,6 +301,13 @@ public class InstituicaoDAO implements Serializable {
             }
             logCollectionNew = attachedLogCollectionNew;
             instituicao.setLogCollection(logCollectionNew);
+            Collection<Perfil> attachedPerfilCollectionNew = new ArrayList<Perfil>();
+            for (Perfil perfilCollectionNewPerfilToAttach : perfilCollectionNew) {
+                perfilCollectionNewPerfilToAttach = em.getReference(perfilCollectionNewPerfilToAttach.getClass(), perfilCollectionNewPerfilToAttach.getId());
+                attachedPerfilCollectionNew.add(perfilCollectionNewPerfilToAttach);
+            }
+            perfilCollectionNew = attachedPerfilCollectionNew;
+            instituicao.setPerfilCollection(perfilCollectionNew);
             instituicao = em.merge(instituicao);
             if (estadoFkOld != null && !estadoFkOld.equals(estadoFkNew)) {
                 estadoFkOld.getInstituicaoCollection().remove(instituicao);
@@ -349,6 +377,23 @@ public class InstituicaoDAO implements Serializable {
                     if (oldInstituicaoFkOfLogCollectionNewLog != null && !oldInstituicaoFkOfLogCollectionNewLog.equals(instituicao)) {
                         oldInstituicaoFkOfLogCollectionNewLog.getLogCollection().remove(logCollectionNewLog);
                         oldInstituicaoFkOfLogCollectionNewLog = em.merge(oldInstituicaoFkOfLogCollectionNewLog);
+                    }
+                }
+            }
+            for (Perfil perfilCollectionOldPerfil : perfilCollectionOld) {
+                if (!perfilCollectionNew.contains(perfilCollectionOldPerfil)) {
+                    perfilCollectionOldPerfil.setInstituicaoFk(null);
+                    perfilCollectionOldPerfil = em.merge(perfilCollectionOldPerfil);
+                }
+            }
+            for (Perfil perfilCollectionNewPerfil : perfilCollectionNew) {
+                if (!perfilCollectionOld.contains(perfilCollectionNewPerfil)) {
+                    Instituicao oldInstituicaoFkOfPerfilCollectionNewPerfil = perfilCollectionNewPerfil.getInstituicaoFk();
+                    perfilCollectionNewPerfil.setInstituicaoFk(instituicao);
+                    perfilCollectionNewPerfil = em.merge(perfilCollectionNewPerfil);
+                    if (oldInstituicaoFkOfPerfilCollectionNewPerfil != null && !oldInstituicaoFkOfPerfilCollectionNewPerfil.equals(instituicao)) {
+                        oldInstituicaoFkOfPerfilCollectionNewPerfil.getPerfilCollection().remove(perfilCollectionNewPerfil);
+                        oldInstituicaoFkOfPerfilCollectionNewPerfil = em.merge(oldInstituicaoFkOfPerfilCollectionNewPerfil);
                     }
                 }
             }
@@ -434,6 +479,11 @@ public class InstituicaoDAO implements Serializable {
             if (cidadeFk != null) {
                 cidadeFk.getInstituicaoCollection().remove(instituicao);
                 cidadeFk = em.merge(cidadeFk);
+            }
+            Collection<Perfil> perfilCollection = instituicao.getPerfilCollection();
+            for (Perfil perfilCollectionPerfil : perfilCollection) {
+                perfilCollectionPerfil.setInstituicaoFk(null);
+                perfilCollectionPerfil = em.merge(perfilCollectionPerfil);
             }
             em.remove(instituicao);
             em.getTransaction().commit();
