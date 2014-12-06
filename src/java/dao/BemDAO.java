@@ -5,8 +5,11 @@
  */
 package dao;
 
+import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
+import entidade.AquisicaoBem;
+import entidade.AquisicaoBemHistorico;
 import entidade.Bem;
 import entidade.Penhora;
 import entidade.PenhoraHistorico;
@@ -46,10 +49,15 @@ public class BemDAO implements Serializable {
         if (bem.getPenhoraCollection() == null) {
             bem.setPenhoraCollection(new ArrayList<Penhora>());
         }
+        if (bem.getAquisicaoBemCollection() == null) {
+            bem.setAquisicaoBemCollection(new ArrayList<AquisicaoBem>());
+        }
+        if (bem.getAquisicaoBemHistoricoCollection() == null) {
+            bem.setAquisicaoBemHistoricoCollection(new ArrayList<AquisicaoBemHistorico>());
+        }
         EntityManager em = null;
         try {
-            em = getEntityManager();
-            em.getTransaction().begin();
+            em = getEntityManager();em.getTransaction().begin();
             TipoBem tipoBemFk = bem.getTipoBemFk();
             if (tipoBemFk != null) {
                 tipoBemFk = em.getReference(tipoBemFk.getClass(), tipoBemFk.getId());
@@ -67,6 +75,18 @@ public class BemDAO implements Serializable {
                 attachedPenhoraCollection.add(penhoraCollectionPenhoraToAttach);
             }
             bem.setPenhoraCollection(attachedPenhoraCollection);
+            Collection<AquisicaoBem> attachedAquisicaoBemCollection = new ArrayList<AquisicaoBem>();
+            for (AquisicaoBem aquisicaoBemCollectionAquisicaoBemToAttach : bem.getAquisicaoBemCollection()) {
+                aquisicaoBemCollectionAquisicaoBemToAttach = em.getReference(aquisicaoBemCollectionAquisicaoBemToAttach.getClass(), aquisicaoBemCollectionAquisicaoBemToAttach.getId());
+                attachedAquisicaoBemCollection.add(aquisicaoBemCollectionAquisicaoBemToAttach);
+            }
+            bem.setAquisicaoBemCollection(attachedAquisicaoBemCollection);
+            Collection<AquisicaoBemHistorico> attachedAquisicaoBemHistoricoCollection = new ArrayList<AquisicaoBemHistorico>();
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach : bem.getAquisicaoBemHistoricoCollection()) {
+                aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach = em.getReference(aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach.getClass(), aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach.getId());
+                attachedAquisicaoBemHistoricoCollection.add(aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach);
+            }
+            bem.setAquisicaoBemHistoricoCollection(attachedAquisicaoBemHistoricoCollection);
             em.persist(bem);
             if (tipoBemFk != null) {
                 tipoBemFk.getBemCollection().add(bem);
@@ -90,6 +110,24 @@ public class BemDAO implements Serializable {
                     oldBemFkOfPenhoraCollectionPenhora = em.merge(oldBemFkOfPenhoraCollectionPenhora);
                 }
             }
+            for (AquisicaoBem aquisicaoBemCollectionAquisicaoBem : bem.getAquisicaoBemCollection()) {
+                Bem oldBemFkOfAquisicaoBemCollectionAquisicaoBem = aquisicaoBemCollectionAquisicaoBem.getBemFk();
+                aquisicaoBemCollectionAquisicaoBem.setBemFk(bem);
+                aquisicaoBemCollectionAquisicaoBem = em.merge(aquisicaoBemCollectionAquisicaoBem);
+                if (oldBemFkOfAquisicaoBemCollectionAquisicaoBem != null) {
+                    oldBemFkOfAquisicaoBemCollectionAquisicaoBem.getAquisicaoBemCollection().remove(aquisicaoBemCollectionAquisicaoBem);
+                    oldBemFkOfAquisicaoBemCollectionAquisicaoBem = em.merge(oldBemFkOfAquisicaoBemCollectionAquisicaoBem);
+                }
+            }
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionAquisicaoBemHistorico : bem.getAquisicaoBemHistoricoCollection()) {
+                Bem oldBemFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico = aquisicaoBemHistoricoCollectionAquisicaoBemHistorico.getBemFk();
+                aquisicaoBemHistoricoCollectionAquisicaoBemHistorico.setBemFk(bem);
+                aquisicaoBemHistoricoCollectionAquisicaoBemHistorico = em.merge(aquisicaoBemHistoricoCollectionAquisicaoBemHistorico);
+                if (oldBemFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico != null) {
+                    oldBemFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico.getAquisicaoBemHistoricoCollection().remove(aquisicaoBemHistoricoCollectionAquisicaoBemHistorico);
+                    oldBemFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico = em.merge(oldBemFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -105,7 +143,7 @@ public class BemDAO implements Serializable {
         }
     }
 
-    public void edit(Bem bem) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Bem bem) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -116,6 +154,30 @@ public class BemDAO implements Serializable {
             Collection<PenhoraHistorico> penhoraHistoricoCollectionNew = bem.getPenhoraHistoricoCollection();
             Collection<Penhora> penhoraCollectionOld = persistentBem.getPenhoraCollection();
             Collection<Penhora> penhoraCollectionNew = bem.getPenhoraCollection();
+            Collection<AquisicaoBem> aquisicaoBemCollectionOld = persistentBem.getAquisicaoBemCollection();
+            Collection<AquisicaoBem> aquisicaoBemCollectionNew = bem.getAquisicaoBemCollection();
+            Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollectionOld = persistentBem.getAquisicaoBemHistoricoCollection();
+            Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollectionNew = bem.getAquisicaoBemHistoricoCollection();
+            List<String> illegalOrphanMessages = null;
+            for (AquisicaoBem aquisicaoBemCollectionOldAquisicaoBem : aquisicaoBemCollectionOld) {
+                if (!aquisicaoBemCollectionNew.contains(aquisicaoBemCollectionOldAquisicaoBem)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain AquisicaoBem " + aquisicaoBemCollectionOldAquisicaoBem + " since its bemFk field is not nullable.");
+                }
+            }
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionOldAquisicaoBemHistorico : aquisicaoBemHistoricoCollectionOld) {
+                if (!aquisicaoBemHistoricoCollectionNew.contains(aquisicaoBemHistoricoCollectionOldAquisicaoBemHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain AquisicaoBemHistorico " + aquisicaoBemHistoricoCollectionOldAquisicaoBemHistorico + " since its bemFk field is not nullable.");
+                }
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
+            }
             if (tipoBemFkNew != null) {
                 tipoBemFkNew = em.getReference(tipoBemFkNew.getClass(), tipoBemFkNew.getId());
                 bem.setTipoBemFk(tipoBemFkNew);
@@ -134,6 +196,20 @@ public class BemDAO implements Serializable {
             }
             penhoraCollectionNew = attachedPenhoraCollectionNew;
             bem.setPenhoraCollection(penhoraCollectionNew);
+            Collection<AquisicaoBem> attachedAquisicaoBemCollectionNew = new ArrayList<AquisicaoBem>();
+            for (AquisicaoBem aquisicaoBemCollectionNewAquisicaoBemToAttach : aquisicaoBemCollectionNew) {
+                aquisicaoBemCollectionNewAquisicaoBemToAttach = em.getReference(aquisicaoBemCollectionNewAquisicaoBemToAttach.getClass(), aquisicaoBemCollectionNewAquisicaoBemToAttach.getId());
+                attachedAquisicaoBemCollectionNew.add(aquisicaoBemCollectionNewAquisicaoBemToAttach);
+            }
+            aquisicaoBemCollectionNew = attachedAquisicaoBemCollectionNew;
+            bem.setAquisicaoBemCollection(aquisicaoBemCollectionNew);
+            Collection<AquisicaoBemHistorico> attachedAquisicaoBemHistoricoCollectionNew = new ArrayList<AquisicaoBemHistorico>();
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach : aquisicaoBemHistoricoCollectionNew) {
+                aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach = em.getReference(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach.getClass(), aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach.getId());
+                attachedAquisicaoBemHistoricoCollectionNew.add(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach);
+            }
+            aquisicaoBemHistoricoCollectionNew = attachedAquisicaoBemHistoricoCollectionNew;
+            bem.setAquisicaoBemHistoricoCollection(aquisicaoBemHistoricoCollectionNew);
             bem = em.merge(bem);
             if (tipoBemFkOld != null && !tipoBemFkOld.equals(tipoBemFkNew)) {
                 tipoBemFkOld.getBemCollection().remove(bem);
@@ -177,6 +253,28 @@ public class BemDAO implements Serializable {
                     }
                 }
             }
+            for (AquisicaoBem aquisicaoBemCollectionNewAquisicaoBem : aquisicaoBemCollectionNew) {
+                if (!aquisicaoBemCollectionOld.contains(aquisicaoBemCollectionNewAquisicaoBem)) {
+                    Bem oldBemFkOfAquisicaoBemCollectionNewAquisicaoBem = aquisicaoBemCollectionNewAquisicaoBem.getBemFk();
+                    aquisicaoBemCollectionNewAquisicaoBem.setBemFk(bem);
+                    aquisicaoBemCollectionNewAquisicaoBem = em.merge(aquisicaoBemCollectionNewAquisicaoBem);
+                    if (oldBemFkOfAquisicaoBemCollectionNewAquisicaoBem != null && !oldBemFkOfAquisicaoBemCollectionNewAquisicaoBem.equals(bem)) {
+                        oldBemFkOfAquisicaoBemCollectionNewAquisicaoBem.getAquisicaoBemCollection().remove(aquisicaoBemCollectionNewAquisicaoBem);
+                        oldBemFkOfAquisicaoBemCollectionNewAquisicaoBem = em.merge(oldBemFkOfAquisicaoBemCollectionNewAquisicaoBem);
+                    }
+                }
+            }
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico : aquisicaoBemHistoricoCollectionNew) {
+                if (!aquisicaoBemHistoricoCollectionOld.contains(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico)) {
+                    Bem oldBemFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico = aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.getBemFk();
+                    aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.setBemFk(bem);
+                    aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico = em.merge(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico);
+                    if (oldBemFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico != null && !oldBemFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.equals(bem)) {
+                        oldBemFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.getAquisicaoBemHistoricoCollection().remove(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico);
+                        oldBemFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico = em.merge(oldBemFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -199,7 +297,7 @@ public class BemDAO implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = null;
         try {
             em = getEntityManager();em.getTransaction().begin();
@@ -209,6 +307,24 @@ public class BemDAO implements Serializable {
                 bem.getId();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The bem with id " + id + " no longer exists.", enfe);
+            }
+            List<String> illegalOrphanMessages = null;
+            Collection<AquisicaoBem> aquisicaoBemCollectionOrphanCheck = bem.getAquisicaoBemCollection();
+            for (AquisicaoBem aquisicaoBemCollectionOrphanCheckAquisicaoBem : aquisicaoBemCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Bem (" + bem + ") cannot be destroyed since the AquisicaoBem " + aquisicaoBemCollectionOrphanCheckAquisicaoBem + " in its aquisicaoBemCollection field has a non-nullable bemFk field.");
+            }
+            Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollectionOrphanCheck = bem.getAquisicaoBemHistoricoCollection();
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionOrphanCheckAquisicaoBemHistorico : aquisicaoBemHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This Bem (" + bem + ") cannot be destroyed since the AquisicaoBemHistorico " + aquisicaoBemHistoricoCollectionOrphanCheckAquisicaoBemHistorico + " in its aquisicaoBemHistoricoCollection field has a non-nullable bemFk field.");
+            }
+            if (illegalOrphanMessages != null) {
+                throw new IllegalOrphanException(illegalOrphanMessages);
             }
             TipoBem tipoBemFk = bem.getTipoBemFk();
             if (tipoBemFk != null) {

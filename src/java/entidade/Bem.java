@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Objects;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -49,6 +50,10 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Bem implements Serializable {
     @Column(name = "valor")
     private BigDecimal valor;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bemFk")
+    private Collection<AquisicaoBem> aquisicaoBemCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bemFk")
+    private Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollection;
     @OneToMany(mappedBy = "bemFk")
     private Collection<PenhoraHistorico> penhoraHistoricoCollection;
     @OneToMany(mappedBy = "bemFk")
@@ -230,13 +235,6 @@ public class Bem implements Serializable {
         return "entidade.Bem[ id=" + id + " ]";
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 
     @XmlTransient
     public Collection<PenhoraHistorico> getPenhoraHistoricoCollection() {
@@ -254,6 +252,32 @@ public class Bem implements Serializable {
 
     public void setPenhoraCollection(Collection<Penhora> penhoraCollection) {
         this.penhoraCollection = penhoraCollection;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    @XmlTransient
+    public Collection<AquisicaoBem> getAquisicaoBemCollection() {
+        return aquisicaoBemCollection;
+    }
+
+    public void setAquisicaoBemCollection(Collection<AquisicaoBem> aquisicaoBemCollection) {
+        this.aquisicaoBemCollection = aquisicaoBemCollection;
+    }
+
+    @XmlTransient
+    public Collection<AquisicaoBemHistorico> getAquisicaoBemHistoricoCollection() {
+        return aquisicaoBemHistoricoCollection;
+    }
+
+    public void setAquisicaoBemHistoricoCollection(Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollection) {
+        this.aquisicaoBemHistoricoCollection = aquisicaoBemHistoricoCollection;
     }
     
 }

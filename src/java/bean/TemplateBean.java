@@ -68,7 +68,7 @@ import util.GeradorLog;
  * @author ipti004
  */
 @ManagedBean(name = "templateBean")
-@SessionScoped
+@ViewScoped
 public class TemplateBean implements Serializable {
 
     private Usuario usuario;

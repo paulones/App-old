@@ -12,8 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import util.Cookie;
@@ -24,7 +23,7 @@ import util.GeradorMD5;
  * @author Paulo
  */
 @ManagedBean(name = "bloquearTelaBean")
-@SessionScoped
+@ViewScoped
 public class BloquearTelaBean implements Serializable {
 
     private Usuario usuario;

@@ -15,6 +15,7 @@ import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.mail.EmailException;
@@ -27,7 +28,7 @@ import util.GeradorMD5;
  * @author PRCC
  */
 @ManagedBean(name = "loginBean")
-@SessionScoped
+@ViewScoped
 public class LoginBean implements Serializable {
 
     private String mensagem;
