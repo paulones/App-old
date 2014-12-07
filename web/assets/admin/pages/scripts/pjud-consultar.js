@@ -293,6 +293,7 @@ var PjudCon = function() {
 
             function carregarHistoricoProcesso() {
                 initHistoryTable();
+                getMoneyMask(".tab-processo");
                 getMoneyMask(".accordion");
                 getHistorico("Processo");
             }
@@ -304,9 +305,6 @@ var PjudCon = function() {
             }
 
             function getHistorico(tipo) {
-                $.each($('.tab2'), function() {
-                    getMoneyMask($(this));
-                });
                 var atual;
                 $.each($('.data-de-modificacao'), function() {
                     if ($(this).html().indexOf('Atual') !== -1) {
@@ -320,66 +318,98 @@ var PjudCon = function() {
                 $.each($('.past'), function() {
                     var history = this;
                     var description = "";
-                    var processo = false;
-                    var executado = false;
-                    var atoProcessual = false;
-
-                    $.each($(this).find('.form-control-static'), function(index) {
-                        if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
-                            $(this).parent().parent().css("color", "#a94442");
-                            if ($(this).parents('.tab1').length > 0) {
+                    if (tipo === "Executado") {
+                        var executado = false;
+                        $.each($(this).find('.form-control-static'), function(index) {
+                            if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                                $(this).parent().parent().css("color", "#a94442");
                                 executado = true;
                                 $(history).find('.tab-pj-info').css("color", "#a94442");
-                            } else if ($(this).parents('.tab2').length > 0) {
+                            }
+                        });
+                        if ($(atual).find('.form-control-executado-static').length !== $(history).find('.form-control-executado-static').length) {
+                            $(history).find('.form-control-executado-static').parent().parent().css("color", "#a94442");
+                            $(history).find('td').css("color", "#a94442");
+                            $(history).find('th').css("color", "#a94442");
+                            $(history).find('td').children().css("color", "#a94442");
+                            $(history).find('.tab-pj-info').css("color", "#a94442");
+                            executado = true;
+                        } else {
+                            $.each($(this).find('.form-control-executado-static'), function(index) {
+                                if ($(atual).find('.form-control-executado-static').eq(index).html().trim() !== $(this).html().trim()) {
+                                    $(this).parent().parent().css("color", "#a94442");
+                                    $(history).find('.tab-pj-info').css("color", "#a94442");
+                                    executado = true;
+                                }
+
+                            });
+                        }
+                        var checkSucedidasChanges = checkSucessoes('.sucedidas');
+                        var checkSucessorasChanges = checkSucessoes('.sucessoras');
+                        var checkPffChanges = checkChangesTableVinculos('.rows-pff tr')
+                        var checkPfjChanges = checkChangesTableVinculos('.rows-pfj tr');
+                        var checkPjjChanges = checkChangesTableVinculos('.rows-pjj tr');
+                        var checkPjjPartChanges = checkChangesTableVinculos('.rows-pjj-part tr');
+                        var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.main');
+                        executado = (!executado) ? checkBensChanges : true;
+                        executado = (!executado) ? checkSucedidasChanges : true;
+                        executado = (!executado) ? checkSucessorasChanges : true;
+                        executado = (!executado) ? checkPffChanges : true;
+                        executado = (!executado) ? checkPfjChanges : true;
+                        executado = (!executado) ? checkPjjChanges : true;
+                        executado = (!executado) ? checkPjjPartChanges : true;
+
+                        if (executado) {
+                            $(this).find('.executado-tab').css("color", "#a94442");
+                            description += "Executado, ";
+                        }
+                    } else if (tipo === "Processo") {
+                        var processo = false;
+                        $.each($(this).find('.form-control-static'), function(index) {
+                            if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                                $(this).parent().parent().css("color", "#a94442");
                                 processo = true;
-                            } else if ($(this).parents('.tab3').length > 0) {
+                            }
+                        });
+
+                        var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.main');
+                        processo = (!processo) ? checkProcessoChanges : true;
+
+                        if (processo) {
+                            $(this).find('.processo-tab').css("color", "#a94442");
+                            description += "Processo, ";
+                        }
+                    } else if (tipo === "AtoProcessual") {
+                        var atoProcessual = false;
+                        $.each($(this).find('.form-control-static'), function(index) {
+                            if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                                $(this).parent().parent().css("color", "#a94442");
                                 atoProcessual = true;
                             }
-                        }
-                    });
-
-                    if ($(atual).find('.form-control-executado-static').length !== $(history).find('.form-control-executado-static').length) {
-                        $(history).find('.form-control-executado-static').parent().parent().css("color", "#a94442");
-                        $(history).find('td').css("color", "#a94442");
-                        $(history).find('th').css("color", "#a94442");
-                        $(history).find('td').children().css("color", "#a94442");
-                        $(history).find('.tab-pj-info').css("color", "#a94442");
-                        executado = true;
-                    } else {
-                        $.each($(this).find('.form-control-executado-static'), function(index) {
-                            if ($(atual).find('.form-control-executado-static').eq(index).html().trim() !== $(this).html().trim()) {
-                                $(this).parent().parent().css("color", "#a94442");
-                                $(history).find('.tab-pj-info').css("color", "#a94442");
-                                executado = true;
-                            }
-
                         });
+
+                        var checkCitacoesChanges = checkChangesCitacoes('.accordion-citacao');
+                        var checkRedirecionamentoLabelChange = checkChangesLabel('.form-control-redirecionamento-static', '.main');
+                        var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr');
+                        var checkPenhoraChanges = checkChangesPenhoras('.accordion-penhora');
+                        atoProcessual = (!atoProcessual) ? checkCitacoesChanges : true;
+                        atoProcessual = (!atoProcessual) ? checkRedirecionamentoLabelChange : true;
+                        atoProcessual = (!atoProcessual) ? checkRedirecionamentoChanges : true;
+                        atoProcessual = (!atoProcessual) ? checkPenhoraChanges : true;
+
+                        if (atoProcessual) {
+                            $(this).find('.atoprocessual-tab').css("color", "#a94442");
+                            description += "Ato Processual, ";
+                        }
                     }
 
-                    var checkSucedidasChanges = checkSucessoes('.sucedidas');
-                    var checkSucessorasChanges = checkSucessoes('.sucessoras');
-                    var checkPffChanges = checkChangesTableVinculos('.rows-pff tr')
-                    var checkPfjChanges = checkChangesTableVinculos('.rows-pfj tr');
-                    var checkPjjChanges = checkChangesTableVinculos('.rows-pjj tr');
-                    var checkPjjPartChanges = checkChangesTableVinculos('.rows-pjj-part tr');
-                    var checkBensChanges = checkChangesLabel('.form-control-bem-static', '.tab1');
-                    var checkProcessoChanges = checkChangesLabel('.form-control-vinculo-static', '.tab2');
-                    var checkCitacoesChanges = checkChangesCitacoes('.accordion-citacao');
-                    var checkRedirecionamentoLabelChange = checkChangesLabel('.form-control-redirecionamento-static', '.tab3');
-                    var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr');
-                    var checkPenhoraChanges = checkChangesPenhoras('.accordion-penhora');
-                    processo = (!processo) ? checkProcessoChanges : true;
-                    executado = (!executado) ? checkBensChanges : true;
-                    executado = (!executado) ? checkSucedidasChanges : true;
-                    executado = (!executado) ? checkSucessorasChanges : true;
-                    executado = (!executado) ? checkPffChanges : true;
-                    executado = (!executado) ? checkPfjChanges : true;
-                    executado = (!executado) ? checkPjjChanges : true;
-                    executado = (!executado) ? checkPjjPartChanges : true;
-                    atoProcessual = (!atoProcessual) ? checkCitacoesChanges : true;
-                    atoProcessual = (!atoProcessual) ? checkRedirecionamentoLabelChange : true;
-                    atoProcessual = (!atoProcessual) ? checkRedirecionamentoChanges : true;
-                    atoProcessual = (!atoProcessual) ? checkPenhoraChanges : true;
+                    description = description.substring(0, description.length - 2) + ".";
+                    if (description.indexOf(",") !== -1) {
+                        description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+                    } else if (description === ".") {
+                        description = "";
+                    }
+                    $(this).closest('.detail').parent().children('.description').append(description);
 
                     function checkChangesTableVinculos(tr) {
                         var changed = false;
@@ -658,26 +688,6 @@ var PjudCon = function() {
                             return false;
                         }
                     }
-
-                    if (processo) {
-                        $(this).find('.processo-tab').css("color", "#a94442");
-                        description += "Processo, ";
-                    }
-                    if (executado) {
-                        $(this).find('.executado-tab').css("color", "#a94442");
-                        description += "Executado, ";
-                    }
-                    if (atoProcessual) {
-                        $(this).find('.atoprocessual-tab').css("color", "#a94442");
-                        description += "Ato Processual, "
-                    }
-                    description = description.substring(0, description.length - 2) + ".";
-                    if (description.indexOf(",") !== -1) {
-                        description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
-                    } else if (description === ".") {
-                        description = "";
-                    }
-                    $(this).closest('.detail').parent().children('.description').append(description);
                 });
             }
 

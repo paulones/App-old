@@ -124,6 +124,7 @@ public class ProcessoJudicialBean implements Serializable {
     private String redirect;
     private String pjudId;
     private boolean edit;
+    private String history;
     private Integer ars;
     private Integer oficiais;
     private Integer editais;
@@ -244,7 +245,7 @@ public class ProcessoJudicialBean implements Serializable {
         }
     }
 
-    public void carregarHistorico(String idStr) {
+    public void carregarHistorico(String idStr, String tipo) {
         Integer id = Integer.valueOf(idStr);
         processoJudicial = ProcessoJudicialBO.findProcessoJudicial(id);
         executadoHistoricoList = new ArrayList<>();
@@ -273,6 +274,7 @@ public class ProcessoJudicialBean implements Serializable {
             }
             executadoHistoricoList.add(executadoHistorico);
         }
+        history = tipo;
     }
 
     private void carregarFormulario() { // Carregar listas do formulário
@@ -1199,6 +1201,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setBemList(List<Bem> bemList) {
         this.bemList = bemList;
+    }
+
+    public String getHistory() {
+        return history;
+    }
+
+    public void setHistory(String history) {
+        this.history = history;
     }
 
 }

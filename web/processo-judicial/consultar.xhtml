@@ -165,7 +165,7 @@
                                                         <div class="col-md-7">
                                                             <div class="col-md-offset-4 col-md-9">
                                                                 <h:commandLink class="btn default load-history load-history-executado">
-                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id)}" render=":modal-history-pjud-executado"/>
+                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'executado')}" render=":modal-history-pjud-executado :modal-history-pjud-processo :modal-history-pjud-atoprocessual"/>
                                                                     <i class="fa fa-history"></i> Histórico de Alterações
                                                                 </h:commandLink>
                                                             </div>
@@ -713,7 +713,7 @@
                                                         <div class="col-md-7">
                                                             <div class="col-md-offset-4 col-md-9">
                                                                 <h:commandLink class="btn default load-history load-history-executado">
-                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id)}" render=":modal-history-pjud-executado"/>
+                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'executado')}" render=":modal-history-pjud-executado :modal-history-pjud-processo :modal-history-pjud-atoprocessual"/>
                                                                     <i class="fa fa-history"></i> Histórico de Alterações
                                                                 </h:commandLink>
                                                             </div>
@@ -1298,7 +1298,7 @@
                                                         <div class="col-md-7">
                                                             <div class="col-md-offset-4 col-md-9">
                                                                 <h:commandLink class="btn default load-history load-history-processo">
-                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id)}" render=":modal-history-pjud-processo"/>
+                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'processo')}" render=":modal-history-pjud-processo  :modal-history-pjud-executado :modal-history-pjud-atoprocessual"/>
                                                                     <i class="fa fa-history"></i> Histórico de Alterações
                                                                 </h:commandLink>
                                                             </div>
@@ -1688,7 +1688,7 @@
                                                         <div class="col-md-7">
                                                             <div class="col-md-offset-4 col-md-9">
                                                                 <h:commandLink class="btn default load-history load-history-atoprocessual">
-                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id)}" render=":modal-history-pjud-atoprocessual"/>
+                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'atoprocessual')}" render=":modal-history-pjud-atoprocessual :modal-history-pjud-processo :modal-history-pjud-executado"/>
                                                                     <i class="fa fa-history"></i> Histórico de Alterações
                                                                 </h:commandLink>
                                                             </div>
