@@ -26,7 +26,7 @@
                                         <thead>
                                             <tr>  
                                                 <th style="width:3%"></th>
-                                                <th style="width:15%">
+                                                <th style="width:17%">
                                                     Registro
                                                 </th>
                                                 <th style="width:48%">
@@ -45,7 +45,7 @@
                                                     <td class="expand-box" style="width:3%">
                                                         <span class="row-details row-details-close"></span>
                                                     </td>
-                                                    <td class="data-de-modificacao" style="width:15%">
+                                                    <td class="data-de-modificacao" style="width:17%">
                                                         <h:outputText rendered="#{empty executadoHistorico.processoJudicialHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
                                                         <h:outputText rendered="#{not empty executadoHistorico.processoJudicialHistorico.dataDeModificacao}" value="#{executadoHistorico.processoJudicialHistorico.dataDeModificacao}" >
                                                             <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
@@ -75,7 +75,7 @@
                                                             </div>
                                                             <div class="portlet-body form">
                                                                 <div class="form-body main">
-                                                                    <h:panelGroup layout="block" class="portlet box blue-chambray" rendered="#{executadoHistorico.processoJudicialHistorico.executado eq 'PF'}">
+                                                                    <h:panelGroup layout="block" class="portlet box blue-chambray pf-tab" rendered="#{executadoHistorico.processoJudicialHistorico.executado eq 'PF'}">
                                                                         <div class="portlet-title">
                                                                             <div class="caption">
                                                                                 <i class="fa fa-user"></i>Pessoa Física
@@ -85,6 +85,7 @@
                                                                             <!-- BEGIN LISTA CONTENT-->
                                                                             <div class="form-body">
                                                                                 <h3 class="form-section">Informações Pessoais</h3>
+                                                                                <h:panelGroup class="informacoesgerais">
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <div class="form-group">
@@ -263,8 +264,10 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                </h:panelGroup>
                                                                                 <!--/row-->
                                                                                 <h3 class="form-section">Domicílio Eleitoral</h3>
+                                                                                <h:panelGroup class="domicilioeleitoral">
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <div class="form-group">
@@ -327,8 +330,10 @@
                                                                                     </div>
                                                                                     <!--/span-->
                                                                                 </div>
+                                                                                </h:panelGroup>
                                                                                 <!-- row/-->
                                                                                 <h3 class="form-section">Endereço</h3>
+                                                                                <h:panelGroup class="endereco">
                                                                                 <div class="row">
                                                                                     <div class="col-md-6">
                                                                                         <div class="form-group">
@@ -403,8 +408,8 @@
                                                                                     </div>
                                                                                     <!--/span-->
                                                                                 </div>
+                                                                                </h:panelGroup>
                                                                                 <h3 class="form-section">Vínculos Empresariais</h3>
-                                                                                <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <table class="table table-striped table-hover table-bordered vinculations">
@@ -432,10 +437,7 @@
                                                                                                     <ui:param value="#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(0,2)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(2,5)}.#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(5,8)}/#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(8,12)}-#{pessoaFisicaJuridica.pessoaJuridicaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <a href="javascript:;" class="pj-info">
-                                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaJuridicaFk.id}"/>
-                                                                                                                <span>#{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}</span>
-                                                                                                            </a>
+                                                                                                                #{cnpj}<br/>#{pessoaFisicaJuridica.pessoaJuridicaFk.nome}
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -456,7 +458,6 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <h3 class="form-section">Vínculos Sociais</h3>
-                                                                                <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
                                                                                 <div class="row">
                                                                                     <div class="col-md-12">
                                                                                         <table class="table table-striped table-hover table-bordered vinculations">
@@ -475,10 +476,7 @@
                                                                                                     <ui:param value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.cpf.substring(9)}" name="cpf"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <a href="javascript:;" class="pf-info">
-                                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.id}"/>
-                                                                                                                <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.nome}</span>
-                                                                                                            </a>
+                                                                                                                #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaPrimariaFk.nome}
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{templateBean.setInversao(pessoaFisicaFisica.vinculoSocialFk.vinculo)}
@@ -489,10 +487,7 @@
                                                                                                     <ui:param value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(0,3)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(3,6)}.#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(6,9)}-#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.cpf.substring(9)}" name="cpf"/>
                                                                                                     <tr>
                                                                                                         <td style="text-align:center">
-                                                                                                            <a href="javascript:;" class="pf-info">
-                                                                                                                <h:inputText class="object-id display-hide" value="#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.id}"/>
-                                                                                                                <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}</span>
-                                                                                                            </a>
+                                                                                                                #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaFisica.pessoaFisicaSecundariaFk.nome}
                                                                                                         </td>
                                                                                                         <td style="text-align:center">
                                                                                                             #{pessoaFisicaFisica.vinculoSocialFk.vinculo}
@@ -590,6 +585,7 @@
                                                                                     </ui:repeat>
                                                                                 </h:panelGroup>
                                                                                 <h3 class="form-section"></h3>
+                                                                                <h:panelGroup class="outrasinformacoes">
                                                                                 <div class="row">
                                                                                     <div class="col-md-10">
                                                                                         <div class="form-group">
@@ -602,6 +598,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
+                                                                                </h:panelGroup>
                                                                             </div>
                                                                             <!-- END LISTA CONTENT-->
                                                                         </div>
@@ -640,6 +637,7 @@
                                                                                                     <!-- BEGIN LISTA CONTENT-->
                                                                                                     <div class="form-body">
                                                                                                         <h3 class="form-section">Informações Empresariais</h3>
+                                                                                                        <h:panelGroup class="informacoesgerais">
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-6">
                                                                                                                 <div class="form-group">
@@ -816,8 +814,10 @@
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
+                                                                                                        </h:panelGroup>
                                                                                                         <!--/row-->
                                                                                                         <h3 class="form-section">Endereço</h3>
+                                                                                                        <h:panelGroup class="endereco">
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-6">
                                                                                                                 <div class="form-group">
@@ -892,11 +892,11 @@
                                                                                                             </div>
                                                                                                             <!--/span-->
                                                                                                         </div>
+                                                                                                        </h:panelGroup>
                                                                                                         <!--/row-->
                                                                                                         <h3 class="form-section">Vínculos Administrativos</h3>
                                                                                                         <h4 class="help-block">Pessoa Física</h4>
                                                                                                         <br/>
-                                                                                                        <span class="help-block">Clique no CPF para visualizar os dados da Pessoa Física vinculada.</span>
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-12">
                                                                                                                 <table class="table table-striped table-hover table-bordered vinculations">
@@ -924,10 +924,7 @@
                                                                                                                             <ui:param value="#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(0,3)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(3,6)}.#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(6,9)}-#{pessoaFisicaJuridica.pessoaFisicaFk.cpf.substring(9)}" name="cpf"/>
                                                                                                                             <tr>
                                                                                                                                 <td style="text-align:center">
-                                                                                                                                    <a href="javascript:;" class="pf-info">
-                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaFisicaJuridica.pessoaFisicaFk.id}"/>
-                                                                                                                                        <span>#{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}</span>
-                                                                                                                                    </a>
+                                                                                                                                        #{cpf eq '..-' ? '-' : cpf}<br/>#{pessoaFisicaJuridica.pessoaFisicaFk.nome}
                                                                                                                                 </td>
                                                                                                                                 <td style="text-align:center">
                                                                                                                                     #{pessoaFisicaJuridica.funcaoFk.funcao  eq null ? '-': pessoaFisicaJuridica.funcaoFk.funcao}
@@ -974,10 +971,7 @@
                                                                                                                             <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                                             <tr>
                                                                                                                                 <td style="text-align:center">
-                                                                                                                                    <a href="javascript:;" class="pj-info">
-                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.id}"/>
-                                                                                                                                        <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.nome}</span>
-                                                                                                                                    </a>
+                                                                                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaSecundariaFk.nome}
                                                                                                                                 </td>
                                                                                                                                 <td style="text-align:center">
                                                                                                                                     #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -995,7 +989,6 @@
                                                                                                             </div>
                                                                                                         </div>
                                                                                                         <h3 class="form-section">Participação em outras Empresas</h3>
-                                                                                                        <span class="help-block">Clique no CNPJ para visualizar os dados da Pessoa Jurídica vinculada.</span>
                                                                                                         <div class="row">
                                                                                                             <div class="col-md-12">
                                                                                                                 <table class="table table-striped table-hover table-bordered vinculations">
@@ -1020,10 +1013,7 @@
                                                                                                                             <ui:param value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(0,2)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(2,5)}.#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(5,8)}/#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(8,12)}-#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.cnpj.substring(12)}" name="cnpj"/>
                                                                                                                             <tr>
                                                                                                                                 <td style="text-align:center">
-                                                                                                                                    <a href="javascript:;" class="pj-info">
-                                                                                                                                        <h:inputText class="object-id display-hide" value="#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.id}"/>
-                                                                                                                                        <span>#{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.nome}</span>
-                                                                                                                                    </a>
+                                                                                                                                        #{cnpj}<br/>#{pessoaJuridicaJuridica.pessoaJuridicaPrimariaFk.nome}
                                                                                                                                 </td>
                                                                                                                                 <td style="text-align:center">
                                                                                                                                     #{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '-' : pessoaJuridicaJuridica.capitalDeParticipacao}#{pessoaJuridicaJuridica.capitalDeParticipacao eq null ? '':'%'}
@@ -1127,18 +1117,20 @@
                                                                                                             </ui:repeat>
                                                                                                         </h:panelGroup>
                                                                                                         <h3 class="form-section"></h3>
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-md-10">
-                                                                                                                <div class="form-group">
-                                                                                                                    <label class="control-label col-md-3">Outras Informações:</label>
-                                                                                                                    <div class="col-md-9">
-                                                                                                                        <p class="form-control-static text-justify">
-                                                                                                                            #{executadoHistorico.processoJudicialHistorico.outrasInformacoesExecutado eq null ? '-' : executadoHistorico.processoJudicialHistorico.outrasInformacoesExecutado}
-                                                                                                                        </p>
+                                                                                                        <h:panelGroup class="outrasinformacoes">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-3">Outras Informações:</label>
+                                                                                                                        <div class="col-md-9">
+                                                                                                                            <p class="form-control-static text-justify">
+                                                                                                                                #{executadoHistorico.processoJudicialHistorico.outrasInformacoesExecutado eq null ? '-' : executadoHistorico.processoJudicialHistorico.outrasInformacoesExecutado}
+                                                                                                                            </p>
+                                                                                                                        </div>
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                        </div>
+                                                                                                        </h:panelGroup>
                                                                                                     </div>
                                                                                                     <!-- END LISTA CONTENT-->
                                                                                                 </div>
@@ -1185,6 +1177,18 @@
                                             <!-- END LISTA DE HISTÓRICOS -->
                                         </tbody>
                                     </table>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <!--/span-->
+                                        <div class="col-md-6">
+                                            <div class="col-md-offset-9 col-md-9">
+                                                <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                            </div>
+                                        </div>
+                                        <!--/span-->
+                                    </div>
                                 </div>
                             </div>
                         </div>

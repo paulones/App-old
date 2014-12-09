@@ -26,7 +26,7 @@
                                         <thead>
                                             <tr>  
                                                 <th style="width:3%"></th>
-                                                <th style="width:15%">
+                                                <th style="width:17%">
                                                     Registro
                                                 </th>
                                                 <th style="width:48%">
@@ -45,7 +45,7 @@
                                                     <td class="expand-box" style="width:3%">
                                                         <span class="row-details row-details-close"></span>
                                                     </td>
-                                                    <td class="data-de-modificacao" style="width:15%">
+                                                    <td class="data-de-modificacao" style="width:17%">
                                                         <h:outputText rendered="#{empty executadoHistorico.processoJudicialHistorico.dataDeModificacao}" value="Atual" ></h:outputText>
                                                         <h:outputText rendered="#{not empty executadoHistorico.processoJudicialHistorico.dataDeModificacao}" value="#{executadoHistorico.processoJudicialHistorico.dataDeModificacao}" >
                                                             <f:convertDateTime pattern="dd-MM-yyyy: HH:mm:ss"/>
@@ -84,187 +84,15 @@
                                                                         <div class="portlet-body form">
                                                                             <!-- BEGIN LISTA CONTENT-->
                                                                             <div class="form-body">
-                                                                                <h3 class="form-section">Identificação do Processo Judicial</h3>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Nº do Processo:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.numeroDoProcesso}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Nº do Processo Anterior:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.numeroDoProcessoAnterior eq null ? '-' : executadoHistorico.processoJudicialHistorico.numeroDoProcessoAnterior}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Comarca:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.comarca}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Situação:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.situacaoFk.situacao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Vara:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.vara eq null ? '-' : executadoHistorico.processoJudicialHistorico.vara}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Vara Anterior:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.varaAnterior eq null ? '-' : executadoHistorico.processoJudicialHistorico.varaAnterior}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Nº do Recurso:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.recurso eq null ? '-' : executadoHistorico.processoJudicialHistorico.recurso}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Tipo do Recurso:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.tipoDeRecursoFk eq null ? '-' : executadoHistorico.processoJudicialHistorico.tipoDeRecursoFk.tipo}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Grupo de Especialização:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.grupoDeEspecializacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.grupoDeEspecializacao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Procurador:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.procuradorFk eq null ? '-' : executadoHistorico.processoJudicialHistorico.procuradorFk.nome}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Distribuição:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.distribuicao eq null ? '-' : executadoHistorico.processoJudicialHistorico.distribuicao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Data do Ato:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.distribuicaoDataDoAto eq null ? '-' : executadoHistorico.processoJudicialHistorico.distribuicaoDataDoAto}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Despacho Inicial:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.despachoInicial eq null ? '-' : executadoHistorico.processoJudicialHistorico.despachoInicial}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Data do Ato:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.despachoInicialDataDoAto eq null ? '-' : executadoHistorico.processoJudicialHistorico.despachoInicialDataDoAto}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <h3 class="form-section">Identificação dos Vínculos Processuais</h3>
-                                                                                <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{executadoHistorico.processoJudicialHistorico.vinculoProcessualHistoricoCollection.isEmpty()}">
-                                                                                    Nenhum processo vinculado.
-                                                                                </h:panelGroup>
-                                                                                <ui:repeat var="vinculoProcessualHistorico" value="#{executadoHistorico.processoJudicialHistorico.vinculoProcessualHistoricoCollection}">
+                                                                                <h:panelGroup class="processo">
+                                                                                    <h3 class="form-section">Identificação do Processo Judicial</h3>
                                                                                     <div class="row">
                                                                                         <div class="col-md-6">
                                                                                             <div class="form-group">
-                                                                                                <label class="control-label col-md-5">Nº do Processo Vinculado:</label>
+                                                                                                <label class="control-label col-md-5">Nº do Processo:</label>
                                                                                                 <div class="col-md-7">
-                                                                                                    <p class="form-control-vinculo-static">
-                                                                                                        #{vinculoProcessualHistorico.processo}
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.numeroDoProcesso}
                                                                                                     </p>
                                                                                                 </div>
                                                                                             </div>
@@ -272,179 +100,359 @@
                                                                                         <!--/span-->
                                                                                         <div class="col-md-6">
                                                                                             <div class="form-group">
-                                                                                                <label class="control-label col-md-5">Tipo do Processo Vinculado:</label>
+                                                                                                <label class="control-label col-md-5">Nº do Processo Anterior:</label>
                                                                                                 <div class="col-md-7">
-                                                                                                    <p class="form-control-vinculo-static ">
-                                                                                                        #{vinculoProcessualHistorico.tipoDeProcessoFk.tipo}
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.numeroDoProcessoAnterior eq null ? '-' : executadoHistorico.processoJudicialHistorico.numeroDoProcessoAnterior}
                                                                                                     </p>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </ui:repeat>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Comarca:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.comarca}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Situação:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.situacaoFk.situacao}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Vara:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.vara eq null ? '-' : executadoHistorico.processoJudicialHistorico.vara}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Vara Anterior:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.varaAnterior eq null ? '-' : executadoHistorico.processoJudicialHistorico.varaAnterior}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Nº do Recurso:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.recurso eq null ? '-' : executadoHistorico.processoJudicialHistorico.recurso}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Tipo do Recurso:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.tipoDeRecursoFk eq null ? '-' : executadoHistorico.processoJudicialHistorico.tipoDeRecursoFk.tipo}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Grupo de Especialização:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.grupoDeEspecializacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.grupoDeEspecializacao}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Procurador:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.procuradorFk eq null ? '-' : executadoHistorico.processoJudicialHistorico.procuradorFk.nome}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Distribuição:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.distribuicao eq null ? '-' : executadoHistorico.processoJudicialHistorico.distribuicao}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Data do Ato:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.distribuicaoDataDoAto eq null ? '-' : executadoHistorico.processoJudicialHistorico.distribuicaoDataDoAto}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Despacho Inicial:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.despachoInicial eq null ? '-' : executadoHistorico.processoJudicialHistorico.despachoInicial}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Data do Ato:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.despachoInicialDataDoAto eq null ? '-' : executadoHistorico.processoJudicialHistorico.despachoInicialDataDoAto}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </h:panelGroup>
+                                                                                <!--/row-->
+                                                                                <h:panelGroup class="vinculos">
+                                                                                    <h3 class="form-section">Identificação dos Vínculos Processuais</h3>
+                                                                                    <h:panelGroup layout="block" class="alert alert-warning"  rendered="#{executadoHistorico.processoJudicialHistorico.vinculoProcessualHistoricoCollection.isEmpty()}">
+                                                                                        Nenhum processo vinculado.
+                                                                                    </h:panelGroup>
+                                                                                    <ui:repeat var="vinculoProcessualHistorico" value="#{executadoHistorico.processoJudicialHistorico.vinculoProcessualHistoricoCollection}">
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="control-label col-md-5">Nº do Processo Vinculado:</label>
+                                                                                                    <div class="col-md-7">
+                                                                                                        <p class="form-control-vinculo-static">
+                                                                                                            #{vinculoProcessualHistorico.processo}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <!--/span-->
+                                                                                            <div class="col-md-6">
+                                                                                                <div class="form-group">
+                                                                                                    <label class="control-label col-md-5">Tipo do Processo Vinculado:</label>
+                                                                                                    <div class="col-md-7">
+                                                                                                        <p class="form-control-vinculo-static ">
+                                                                                                            #{vinculoProcessualHistorico.tipoDeProcessoFk.tipo}
+                                                                                                        </p>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </ui:repeat>
+                                                                                </h:panelGroup>
                                                                                 <h3 class="form-section">Identificação do Crédito Fiscal</h3>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Nº da CDA:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.numeroDaCda}
-                                                                                                </p>
+                                                                                <h:panelGroup class="creditofiscal">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Nº da CDA:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.numeroDaCda}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Data de Inscrição:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.dataDeInscricao eq null ? '-' : executadoHistorico.processoJudicialHistorico.dataDeInscricao}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Data de Inscrição:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.dataDeInscricao eq null ? '-' : executadoHistorico.processoJudicialHistorico.dataDeInscricao}
-                                                                                                </p>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Discriminação do Crédito/Imposto:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static money">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoImposto eq null ? '-' : executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoImposto}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Discriminação do Crédito/Multa:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static money">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoMulta eq null ? '-' : executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoMulta}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Discriminação do Crédito/Imposto:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static money">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoImposto eq null ? '-' : executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoImposto}
-                                                                                                </p>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Valor da Causa:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static money">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.valorDaCausa eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorDaCausa}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Valor Atualizado:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static money">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.valorAtualizado eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorAtualizado}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Discriminação do Crédito/Multa:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static money">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoMulta eq null ? '-' : executadoHistorico.processoJudicialHistorico.discriminacaoDoCreditoMulta}
-                                                                                                </p>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Fundamentação:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.fundamentacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.fundamentacao}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Fatos Geradores:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.fatosGeradores eq null ? '-' : executadoHistorico.processoJudicialHistorico.fatosGeradores.replaceAll(',', '; ')}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Valor da Causa:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static money">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.valorDaCausa eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorDaCausa}
-                                                                                                </p>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Valor Arrecadado:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static money">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.valorArrecadado eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorArrecadado}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-10">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Fonte da Arrecadação:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static money">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.fonteDaArrecadacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.fonteDaArrecadacao}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Valor Atualizado:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static money">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.valorAtualizado eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorAtualizado}
-                                                                                                </p>
+                                                                                    <!--/row-->
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Notificação Administrativa:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.notificacaoAdministrativa eq null ? '-' : executadoHistorico.processoJudicialHistorico.notificacaoAdministrativa}
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <!--/span-->
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-5">Data do Ato:</label>
+                                                                                                <div class="col-md-7">
+                                                                                                    <p class="form-control-static ">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.notificacaoAdministrativaDataDoAto eq null ? '-' : executadoHistorico.processoJudicialHistorico.notificacaoAdministrativaDataDoAto}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Fundamentação:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.fundamentacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.fundamentacao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Fatos Geradores:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.fatosGeradores eq null ? '-' : executadoHistorico.processoJudicialHistorico.fatosGeradores.replaceAll(',', '; ')}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Valor Arrecadado:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static money">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.valorArrecadado eq null ? '-' : executadoHistorico.processoJudicialHistorico.valorArrecadado}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-10">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-3">Fonte da Arrecadação:</label>
-                                                                                            <div class="col-md-9">
-                                                                                                <p class="form-control-static money">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.fonteDaArrecadacao eq null ? '-' : executadoHistorico.processoJudicialHistorico.fonteDaArrecadacao}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <!--/row-->
-                                                                                <div class="row">
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Notificação Administrativa:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.notificacaoAdministrativa eq null ? '-' : executadoHistorico.processoJudicialHistorico.notificacaoAdministrativa}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <!--/span-->
-                                                                                    <div class="col-md-6">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-5">Data do Ato:</label>
-                                                                                            <div class="col-md-7">
-                                                                                                <p class="form-control-static ">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.notificacaoAdministrativaDataDoAto eq null ? '-' : executadoHistorico.processoJudicialHistorico.notificacaoAdministrativaDataDoAto}
-                                                                                                </p>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                                </h:panelGroup>
                                                                                 <!--/row-->
                                                                                 <h3 class="form-section"></h3>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-10">
-                                                                                        <div class="form-group">
-                                                                                            <label class="control-label col-md-3">Outras Informações:</label>
-                                                                                            <div class="col-md-9">
-                                                                                                <p class="form-control-static text-justify">
-                                                                                                    #{executadoHistorico.processoJudicialHistorico.outrasInformacoesProcesso eq null ? '-' : executadoHistorico.processoJudicialHistorico.outrasInformacoesProcesso}
-                                                                                                </p>
+                                                                                <h:panelGroup class="outrasinformacoes">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-10">
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Outras Informações:</label>
+                                                                                                <div class="col-md-9">
+                                                                                                    <p class="form-control-static text-justify">
+                                                                                                        #{executadoHistorico.processoJudicialHistorico.outrasInformacoesProcesso eq null ? '-' : executadoHistorico.processoJudicialHistorico.outrasInformacoesProcesso}
+                                                                                                    </p>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
+                                                                                </h:panelGroup>
                                                                                 <!--/row-->
                                                                             </div>
                                                                         </div>
@@ -458,6 +466,18 @@
                                             <!-- END LISTA DE HISTÓRICOS -->
                                         </tbody>
                                     </table>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                        </div>
+                                        <!--/span-->
+                                        <div class="col-md-6">
+                                            <div class="col-md-offset-9 col-md-9">
+                                                <button type="button" class="btn blue-chambray" data-dismiss="modal">Fechar</button>
+                                            </div>
+                                        </div>
+                                        <!--/span-->
+                                    </div>
                                 </div>
                             </div>
                         </div>

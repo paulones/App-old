@@ -2,6 +2,10 @@
 .breadcrumb-jsf{margin-left:3px}
 #loading{position:fixed;top:50%;left:50%}
 #loading-text{background-color:#2c3e50;color:#fff;border-radius:10px;padding:10px 25px;font-size:14px;position:fixed;top:65%;left:50%;margin-left:-220px;text-align:center;font-weight: 400}
+.width-expand{width:3%}
+.width-data{width:16%}
+.width-descricao{width:47%}
+.width-usuario{width:40%}
 /*login-soft*/
 .login-title{color:#EEEEEE}
 /*index*/

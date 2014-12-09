@@ -109,13 +109,21 @@ var PFCon = function() {
          */
         var oTable = table.dataTable({
             destroy: true,
-            "columnDefs": [{
-                    "orderable": false,
-                    "targets": [0, 2, 3]
-                }],
+            paginate: false,
+            "ordering": false,
             "order": [
             ],
-            "orderClasses": false,
+            "drawCallback": function(settings){
+                carregarHistorico();
+            },
+            "deferRender": true,
+            "columns": [
+                {"class": "width-expand expand-box"},
+                {"class": "width-data data-de-modificacao"},
+                {"class": "width-descricao description"},
+                {"class": "width-usuario"},
+                {"class": "detail display-hide"},
+            ],
             "language": {
                 "emptyTable": "Nenhum hist&oacute;rico registrado.",
                 "zeroRecords": "Nenhum hist&oacute;rico encontrado.",
@@ -125,12 +133,7 @@ var PFCon = function() {
                 "search": "Procurar:",
                 "lengthMenu": " Exibir _MENU_",
             },
-            "lengthMenu": [
-                [10, 15, 20, 50, -1],
-                [10, 15, 20, 50, "Todos"] // change per page values here
-            ],
-            // set the initial value
-            "pageLength": 10,
+            lengthMenu: false,
         });
         var tableWrapper = $('#pf-history-table_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
 
@@ -151,11 +154,159 @@ var PFCon = function() {
                 /* Open this row */
                 $(this).addClass("row-details-open").removeClass("row-details-close");
                 $('<tr>').insertAfter($(this).parent().parent());
+                $(this).parent().parent().children(".detail").attr("colspan", "6");
                 $(this).parent().parent().children(".detail").appendTo($(this).parent().parent().next());
                 $(this).parent().parent().next().children(".detail").show();
             }
         });
     }
+
+    function carregarHistorico() {
+        var atual;
+        $.each($('.data-de-modificacao'), function() {
+            if ($(this).html().indexOf('Atual') !== -1) {
+                $(this).parent().find('.form-body').addClass('current');
+                $(this).parent().children('.description').removeClass('description');
+                atual = $(this).parent().find('.form-body');
+            } else {
+                $(this).parent().find('.form-body').addClass('past');
+            }
+        });
+        $.each($('.past'), function() {
+            var history = this;
+            var description = "";
+            var informacoes = false;
+            var endereco = false;
+            var vinculoEmp = false;
+            var vinculoSoc = false;
+            var elector = false;
+            var bens = false;
+            $.each($(this).find('.form-control-static'), function(index) {
+                if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
+                    $(this).parent().parent().css("color", "#a94442");
+                    if ($(this).parents('.informacoes-pessoais').length > 0) {
+                        informacoes = true;
+                    } else if ($(this).parents('.endereco').length > 0) {
+                        endereco = true;
+                    } else if ($(this).parents('.domicilio-eleitoral').length > 0) {
+                        elector = true;
+                    }
+                }
+            });
+
+            vinculoEmp = checkChanges('.rows-pfj tr');
+            vinculoSoc = checkChanges('.rows-pff tr');
+            bens = checkChangesBens('.form-control-bem-static', '.accordion');
+
+            function checkChanges(tr) {
+                var changed = false;
+                if ($(atual).find(tr).length !== $(history).find(tr).length) {
+                    changed = true;
+                }
+                $(history).find(tr).find('td').css("color", "#a94442");
+                $.each($(atual).find(tr), function() {
+                    var atual = this;
+                    var exists = false;
+                    $.each($(history).find(tr), function() {
+                        var cpfAtual = $(atual).find('td').eq(0).html().trim();
+                        var cpfHistorico = $(this).find('td').eq(0).html().trim();
+                        if (cpfAtual === cpfHistorico) {
+                            $(this).find('td').css("color", "black");
+                            exists = true;
+                            $.each($(this).find('td'), function(index) {
+                                if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
+                                    $(this).css("color", "#a94442");
+                                    $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
+                                    changed = true;
+                                }
+                            })
+                        } else {
+                            if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
+                                changed = true;
+                            }
+                        }
+                    });
+                    if (!exists) {
+                        changed = true;
+                    }
+                });
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+            function checkChangesBens(label, tab) {
+                var changed = false;
+                if ($(atual).find(label).length !== $(history).find(label).length) {
+                    changed = true;
+                    if ($(history).find(label).length === 0) {
+                        $(history).find('.alert').css("color", "#a94442");
+                    } else if ($(atual).find(label).length === 0) {
+                        $(label).parent().parent().css("color", "#a94442");
+                    }
+                }
+                $(history).find(label).parent().parent().css("color", "#a94442");
+                $.each($(atual).find(label), function() {
+                    var atual = this;
+                    var exists = false;
+                    $.each($(history).find(label), function() {
+                        if ($(atual).text().trim() === $(this).text().trim()) {
+                            $(this).parent().parent().css("color", "black");
+                            exists = true;
+                        } else {
+                        }
+                    });
+                    if (!exists) {
+                        changed = true;
+                    }
+                });
+                $.each($(history).find(label), function() {
+                    if ($(this).css("color") !== "rgb(0, 0, 0)") {
+                        $(this).closest(".panel-default").removeClass("panel-default").addClass("panel-danger")
+                    }
+                });
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            if (informacoes) {
+                description += "Informa&ccedil;&otilde;es Pessoais, ";
+            }
+            if (elector) {
+                description += "Domic&iacute;lio Eleitoral, "
+            }
+            if (endereco) {
+                description += "Endere&ccedil;o, ";
+            }
+            if (vinculoEmp) {
+                description += "V&iacute;nculos Empresariais, ";
+            }
+            if (vinculoSoc) {
+                description += "V&iacute;nculos Sociais, ";
+            }
+            if (bens) {
+                description += "Bens, ";
+            }
+            description = description.substring(0, description.length - 2) + ".";
+            if (description.indexOf(",") !== -1) {
+                description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
+            } else if (description === ".") {
+                description = "";
+            }
+            $(this).closest('.detail').parent().children('.description').append(description);
+        });
+        getMoneyMask(".accordion");
+    }
+
+    $(document).on('hide.bs.modal', '.modal', function() {
+        $('.modal').remove();
+    });
 
     return {
         init: function() {
@@ -203,154 +354,10 @@ var PFCon = function() {
                         getMoneyMask($(element).parent().parent().next().find(".accordion-pfcon"));
                     } else if ($(data.source).hasClass("load-history")) {
                         $('.modal-history-pf').click();
-                        carregarHistorico();
+                        initHistoryTable();
                     }
                 }
             });
-
-            function carregarHistorico() {
-                var atual;
-                initHistoryTable();
-                $.each($('.data-de-modificacao'), function() {
-                    if ($(this).html().indexOf('Atual') !== -1) {
-                        $(this).parent().find('.form-body').addClass('current');
-                        $(this).parent().children('.description').removeClass('description');
-                        atual = $(this).parent().find('.form-body');
-                    } else {
-                        $(this).parent().find('.form-body').addClass('past');
-                    }
-                });
-                $.each($('.past'), function() {
-                    var history = this;
-                    var description = "";
-                    var informacoes = false;
-                    var endereco = false;
-                    var vinculoEmp = false;
-                    var vinculoSoc = false;
-                    var elector = false;
-                    var bens = false;
-                    $.each($(this).find('.form-control-static'), function(index) {
-                        if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
-                            $(this).parent().parent().css("color", "#a94442");
-                            if ($(this).parents('.informacoes-pessoais').length > 0) {
-                                informacoes = true;
-                            } else if ($(this).parents('.endereco').length > 0) {
-                                endereco = true;
-                            } else if ($(this).parents('.domicilio-eleitoral').length > 0) {
-                                elector = true;
-                            }
-                        }
-                    });
-
-                    vinculoEmp = checkChanges('.rows-pfj tr');
-                    vinculoSoc = checkChanges('.rows-pff tr');
-                    bens = checkChangesBens('.form-control-bem-static', '.accordion');
-
-                    function checkChanges(tr) {
-                        var changed = false;
-                        if ($(atual).find(tr).length !== $(history).find(tr).length) {
-                            changed = true;
-                        }
-                        $(history).find(tr).find('td').css("color", "#a94442");
-                        $.each($(atual).find(tr), function() {
-                            var atual = this;
-                            var exists = false;
-                            $.each($(history).find(tr), function() {
-                                var cpfAtual = $(atual).find('td').eq(0).html().trim();
-                                var cpfHistorico = $(this).find('td').eq(0).html().trim();
-                                if (cpfAtual === cpfHistorico) {
-                                    $(this).find('td').css("color", "black");
-                                    exists = true;
-                                    $.each($(this).find('td'), function(index) {
-                                        if (index !== 0 && $(atual).find('td').eq(index).html().trim() !== $(this).html().trim()) {
-                                            $(this).css("color", "#a94442");
-                                            $(this).parent().parent().parent().children('thead').children().children('th').eq(index).css('color', '#a94442');
-                                            changed = true;
-                                        }
-                                    })
-                                } else {
-                                    if (($(atual).find('td').length > 1 && $(this).find('td').length === 1) || ($(this).find('td').length > 1 && $(atual).find('td').length === 1)) {
-                                        changed = true;
-                                    }
-                                }
-                            });
-                            if (!exists) {
-                                changed = true;
-                            }
-                        });
-                        if (changed) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-
-
-                    function checkChangesBens(label, tab) {
-                        var changed = false;
-                        if ($(atual).find(label).length !== $(history).find(label).length) {
-                            changed = true;
-                            if ($(history).find(label).length === 0) {
-                                $(history).find('.alert').css("color", "#a94442");
-                            } else if ($(atual).find(label).length === 0) {
-                                $(label).parent().parent().css("color", "#a94442");
-                            }
-                        }
-                        $(history).find(label).parent().parent().css("color", "#a94442");
-                        $.each($(atual).find(label), function() {
-                            var atual = this;
-                            var exists = false;
-                            $.each($(history).find(label), function() {
-                                if ($(atual).text().trim() === $(this).text().trim()) {
-                                    $(this).parent().parent().css("color", "black");
-                                    exists = true;
-                                } else {
-                                }
-                            });
-                            if (!exists) {
-                                changed = true;
-                            }
-                        });
-                        $.each($(history).find(label), function() {
-                            if ($(this).css("color") !== "rgb(0, 0, 0)") {
-                                $(this).closest(".panel-default").removeClass("panel-default").addClass("panel-danger")
-                            }
-                        });
-                        if (changed) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-
-                    if (informacoes) {
-                        description += "Informa&ccedil;&otilde;es Pessoais, ";
-                    }
-                    if (elector) {
-                        description += "Domic&iacute;lio Eleitoral, "
-                    }
-                    if (endereco) {
-                        description += "Endere&ccedil;o, ";
-                    }
-                    if (vinculoEmp) {
-                        description += "V&iacute;nculos Empresariais, ";
-                    }
-                    if (vinculoSoc) {
-                        description += "V&iacute;nculos Sociais, ";
-                    }
-                    if (bens) {
-                        description += "Bens, ";
-                    }
-                    description = description.substring(0, description.length - 2) + ".";
-                    if (description.indexOf(",") !== -1) {
-                        description = description.substring(0, description.lastIndexOf(",")) + " e" + description.substring(description.lastIndexOf(",") + 1, description.length);
-                    } else if (description === ".") {
-                        description = "";
-                    }
-                    $(this).closest('.detail').parent().children('.description').append(description);
-                });
-                getMoneyMask(".accordion");
-            }
 
             $('.menu-pf').addClass('active open');
             $('.menu-pf a').append('<span class="selected"></span>');
