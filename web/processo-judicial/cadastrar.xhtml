@@ -2474,75 +2474,77 @@
                                                                                     </div>
                                                                                     <div id="collapse_penhora_#{status.index}" class="panel-collapse collapse">
                                                                                         <div class="panel-body">
-                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
-                                                                                                <div class="row">
-                                                                                                    <div class="col-md-9">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="control-label col-md-2">Situacao</label>
-                                                                                                            <div class="col-md-10">
-                                                                                                                <div class="radio-list">
-                                                                                                                    <h:selectOneRadio styleClass="uniformization situacao-penhora" value="#{penhora.situacao}">
-                                                                                                                        <f:selectItem itemLabel="Deferido" itemValue="D"/>
-                                                                                                                        <f:selectItem itemLabel="Indeferido" itemValue="I"/>
-                                                                                                                    </h:selectOneRadio>
+                                                                                            <h:panelGroup class="condicao-campos">
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Renajud') or (penhora.tipoPenhoraFk.tipo eq 'Renajud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'C.R.I') or (penhora.tipoPenhoraFk.tipo eq 'C.R.I (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Situacao</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <div class="radio-list">
+                                                                                                                        <h:selectOneRadio styleClass="uniformization situacao-penhora" value="#{penhora.situacao}">
+                                                                                                                            <f:selectItem itemLabel="Deferido" itemValue="D"/>
+                                                                                                                            <f:selectItem itemLabel="Indeferido" itemValue="I"/>
+                                                                                                                        </h:selectOneRadio>
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                                <div class="row display-hide motivo">
-                                                                                                    <div class="col-md-9">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="control-label col-md-2">Motivo</label>
-                                                                                                            <div class="col-md-10">
-                                                                                                                <div class="input-icon right">
-                                                                                                                    <i class="fa"></i>
-                                                                                                                    <h:inputText value="#{penhora.motivo}" class="form-control" autocomplete="off" />
+                                                                                                    <div class="row display-hide motivo">
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Motivo</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <div class="input-icon right">
+                                                                                                                        <i class="fa"></i>
+                                                                                                                        <h:inputText value="#{penhora.motivo}" class="form-control" autocomplete="off" />
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                            </ui:fragment>
-                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
-                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
-                                                                                                <div class="row valor-endereco display-hide">
-                                                                                                    <div class="col-md-9">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="control-label col-md-2">Valor</label>
-                                                                                                            <div class="col-md-6">
-                                                                                                                <div class="input-icon right">
-                                                                                                                    <i class="fa"></i>
-                                                                                                                    <h:inputText value="#{penhora.valor}" class="form-control money" autocomplete="off" converter="maskMoneyConverter" />
+                                                                                                </ui:fragment>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud') or (penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') 
+                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
+                                                                                                    <div class="row valor-endereco display-hide">
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Valor</label>
+                                                                                                                <div class="col-md-6">
+                                                                                                                    <div class="input-icon right">
+                                                                                                                        <i class="fa"></i>
+                                                                                                                        <h:inputText value="#{penhora.valor}" class="form-control money" autocomplete="off" converter="maskMoneyConverter" />
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                            </ui:fragment>
-                                                                                            <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
-                                                                                                <div class="row valor-endereco display-hide">
-                                                                                                    <div class="col-md-9">
-                                                                                                        <div class="form-group">
-                                                                                                            <label class="control-label col-md-2">Endereço</label>
-                                                                                                            <div class="col-md-10">
-                                                                                                                <div class="input-icon right">
-                                                                                                                    <i class="fa"></i>
-                                                                                                                    <h:inputText value="#{penhora.endereco}" class="form-control" autocomplete="off" />
+                                                                                                </ui:fragment>
+                                                                                                <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Infojud') or (penhora.tipoPenhoraFk.tipo eq 'Infojud (Sócio)')}">
+                                                                                                    <div class="row valor-endereco display-hide">
+                                                                                                        <div class="col-md-9">
+                                                                                                            <div class="form-group">
+                                                                                                                <label class="control-label col-md-2">Endereço</label>
+                                                                                                                <div class="col-md-10">
+                                                                                                                    <div class="input-icon right">
+                                                                                                                        <i class="fa"></i>
+                                                                                                                        <h:inputText value="#{penhora.endereco}" class="form-control" autocomplete="off" />
+                                                                                                                    </div>
                                                                                                                 </div>
                                                                                                             </div>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                </div>
-                                                                                            </ui:fragment>
+                                                                                                </ui:fragment>
+                                                                                            </h:panelGroup>
                                                                                             <div class="row">
                                                                                                 <div class="col-md-9">
                                                                                                     <div class="form-group">
@@ -2565,7 +2567,7 @@
                                                                                                             <label class="control-label col-md-2">Bem</label>
                                                                                                             <div class="col-md-10">
                                                                                                                 <h:selectOneMenu class="select2_category select2me form-control bemVinculate" p:placeholder="Selecione..." tabindex="1" value="#{penhora.bemFk}" converter="entityConverter" >
-                                                                                                                    <f:ajax event="change" execute="@this" render="bem-show" />
+                                                                                                                    <f:ajax event="change" execute="@this :submit_form:aquisicao-bem" render="bem-show :submit_form:aquisicao-bem" listener="#{processoJudicialBean.checkAquisicoes(penhora.bemFk)}"/>
                                                                                                                     <f:selectItem itemLabel="" itemValue=""/>
                                                                                                                     <f:selectItems value="#{processoJudicialBean.bemList}" var="bem" itemLabel="#{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao}" itemValue="#{bem}"/>
                                                                                                                 </h:selectOneMenu>
@@ -2604,7 +2606,7 @@
                                                                                                                 <label class="control-label col-md-2">Bem</label>
                                                                                                                 <div class="col-md-10">
                                                                                                                     <h:selectOneMenu class="select2_category select2me form-control indicacao-bem bemVinculate" p:placeholder="Selecione..." tabindex="1" value="#{penhora.bemFk}" converter="entityConverter" >
-                                                                                                                        <f:ajax event="change" execute="@this" render="bem-show" />
+                                                                                                                        <f:ajax event="change" execute="@this :submit_form:aquisicao-bem" render="bem-show :submit_form:aquisicao-bem" listener="#{processoJudicialBean.checkAquisicoes(penhora.bemFk)}"/>
                                                                                                                         <f:selectItem itemLabel="" itemValue=""/>
                                                                                                                         <f:selectItems value="#{penhora.bemList}" var="bem" itemLabel="#{bem.descricao eq null ? 'Bem sem descrição' : bem.descricao}" itemValue="#{bem}"/>
                                                                                                                     </h:selectOneMenu>
@@ -2721,7 +2723,7 @@
                                                                                                 <div class="col-md-7">
                                                                                                     <div class="col-md-8 col-md-offset-1">
                                                                                                         <h:commandLink class="btn blue-chambray delete-penhora">
-                                                                                                            <f:ajax execute="@this" listener="#{processoJudicialBean.removerPenhora(status.index)}"/>
+                                                                                                            <f:ajax execute="@this :submit_form:aquisicao-bem" listener="#{processoJudicialBean.removerPenhora(status.index)}" render=":submit_form:aquisicao-bem"/>
                                                                                                             <i class="glyphicon glyphicon-remove"/> Remover Penhora
                                                                                                         </h:commandLink>
                                                                                                     </div>
@@ -2733,7 +2735,106 @@
                                                                             </ui:repeat>
                                                                         </h:panelGroup>
                                                                         <h3 class="form-section">Alienação/Aquisição de Bens</h3>
-                                                                        
+                                                                        <h:panelGroup id="aquisicao-bem">
+                                                                            <ui:fragment rendered="#{processoJudicialBean.listOfAquisicaoBemList.isEmpty()}">
+                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                    Nenhum bem penhorado.
+                                                                                </h:panelGroup>
+                                                                            </ui:fragment>
+                                                                            <ui:fragment rendered="#{!processoJudicialBean.listOfAquisicaoBemList.isEmpty()}">
+                                                                                <h:panelGroup layout="block" class="panel-group accordion accordion-aquisicao" id="accordion-aquisicao" >
+                                                                                    <ui:repeat value="#{processoJudicialBean.listOfAquisicaoBemList}" var="aquisicaoBemList" varStatus="status">
+                                                                                        <div class="panel panel-info">
+                                                                                            <div class="panel-heading">
+                                                                                                <h4 class="panel-title">
+                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent="#accordion-aquisicao"  href="#collapse_aquisicao_#{status.index}">
+                                                                                                        #{aquisicaoBemList.get(0).bemFk.descricao} </a>
+                                                                                                </h4>
+                                                                                            </div>
+                                                                                            <div id="collapse_aquisicao_#{status.index}" class="panel-collapse collapse">
+                                                                                                <div class="panel-body">
+                                                                                                    <br/>
+                                                                                                    <ui:repeat value="#{aquisicaoBemList}" var="aquisicaoBem">
+                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'HP'}">
+                                                                                                            <h4 class="help-block">Hasta Pública</h4>
+                                                                                                        </ui:fragment>
+                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'AD'}">
+                                                                                                            <h4 class="help-block">Adjudicação</h4>
+                                                                                                        </ui:fragment>
+                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'RE'}">
+                                                                                                            <h4 class="help-block">Remoção</h4>
+                                                                                                        </ui:fragment>
+                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'LE'}">
+                                                                                                            <h4 class="help-block">Leilão</h4>
+                                                                                                        </ui:fragment>
+                                                                                                        <br/>
+                                                                                                        <h:panelGroup class="condicao-campos">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-9">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Êxito</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <div class="radio-list">
+                                                                                                                                <h:selectOneRadio styleClass="uniformization exito-aquisicao" value="#{aquisicaoBem.exito}">
+                                                                                                                                    <f:selectItem itemLabel="Sim" itemValue="S"/>
+                                                                                                                                    <f:selectItem itemLabel="Não" itemValue="N"/>
+                                                                                                                                </h:selectOneRadio>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="row display-hide motivo">
+                                                                                                                <div class="col-md-9">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Motivo</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <div class="input-icon right">
+                                                                                                                                <i class="fa"></i>
+                                                                                                                                <h:inputText value="#{aquisicaoBem.motivo}" class="form-control" autocomplete="off" />
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <ui:fragment rendered="#{(aquisicaoBem.tipo eq 'HP') or (aquisicaoBem.tipo eq 'LE')}">
+                                                                                                                <div class="row valor-endereco display-hide">
+                                                                                                                    <div class="col-md-9">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Valor</label>
+                                                                                                                            <div class="col-md-6">
+                                                                                                                                <div class="input-icon right">
+                                                                                                                                    <i class="fa"></i>
+                                                                                                                                    <h:inputText value="#{aquisicaoBem.valor}" class="form-control money" autocomplete="off" converter="maskMoneyConverter" />
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </ui:fragment>
+                                                                                                        </h:panelGroup>
+                                                                                                        <div class="row">
+                                                                                                            <div class="col-md-9">
+                                                                                                                <div class="form-group">
+                                                                                                                    <label class="control-label col-md-2">Data</label>
+                                                                                                                    <div class="col-md-4">
+                                                                                                                        <div class="input-icon right">
+                                                                                                                            <i class="fa"></i>
+                                                                                                                            <h:inputText value="#{aquisicaoBem.dataDaAquisicao}" class="form-control date aquisicaoData" p:placeholder="dd/mm/aaaa" autocomplete="off" />
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </ui:repeat>
+                                                                                                    <br/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </ui:repeat>
+                                                                                </h:panelGroup>
+                                                                            </ui:fragment>
+                                                                        </h:panelGroup>
                                                                     </div>
                                                                 </div>
                                                             </div>

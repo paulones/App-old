@@ -5,6 +5,7 @@
  */
 package bean;
 
+import bo.AquisicaoBemBO;
 import bo.BemBO;
 import bo.CidadeBO;
 import bo.CitacaoBO;
@@ -383,10 +384,10 @@ public class TemplateBean implements Serializable {
             ProcessoJudicial pjud = ProcessoJudicialBO.findProcessoJudicial(Integer.valueOf(idfk));
             if (pjud.getExecutado().equals("PF")) {
                 PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pf, EnderecoBO.findPFAddress(pf.getId()), BemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), PenhoraBO.findByPJUD(pjud.getId()));
+                executado = new Executado(pjud, new EnderecoPessoa(pf, EnderecoBO.findPFAddress(pf.getId()), BemBO.findPFBens(pf.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), PenhoraBO.findByPJUD(pjud.getId()), AquisicaoBemBO.findByPJUD(pjud.getId()));
             } else {
                 PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                executado = new Executado(pjud, new EnderecoPessoa(pj, EnderecoBO.findPFAddress(pj.getId()), BemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), PenhoraBO.findByPJUD(pjud.getId()));
+                executado = new Executado(pjud, new EnderecoPessoa(pj, EnderecoBO.findPFAddress(pj.getId()), BemBO.findPJBens(pj.getId())), citacaoBO.findByPJUD(pjud.getId()), carregarSocioRedirecionamento(redirecionamentoBO.findByPJUD(pjud.getId())), PenhoraBO.findByPJUD(pjud.getId()), AquisicaoBemBO.findByPJUD(pjud.getId()));
             }
             pessoaJuridicaSucessao = new PessoaJuridicaSucessao();
         } else if (tabela.equals("PJS")) {

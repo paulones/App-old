@@ -279,5 +279,5 @@ public class Bem implements Serializable {
     public void setAquisicaoBemHistoricoCollection(Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollection) {
         this.aquisicaoBemHistoricoCollection = aquisicaoBemHistoricoCollection;
     }
-    
-}
+
+    }

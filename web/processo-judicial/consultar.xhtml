@@ -1292,19 +1292,19 @@
                                         </div>
                                         <div class="portlet-body form">
                                             <div class="form-actions top">
-                                                    <div class="row">
-                                                        <div class="col-md-5">
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <div class="col-md-offset-4 col-md-9">
-                                                                <h:commandLink class="btn default load-history load-history-processo">
-                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'processo')}" render=":modal-history-pjud-processo  :modal-history-pjud-executado :modal-history-pjud-atoprocessual"/>
-                                                                    <i class="fa fa-history"></i> Histórico de Alterações
-                                                                </h:commandLink>
-                                                            </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                            <h:commandLink class="btn default load-history load-history-processo">
+                                                                <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'processo')}" render=":modal-history-pjud-processo  :modal-history-pjud-executado :modal-history-pjud-atoprocessual"/>
+                                                                <i class="fa fa-history"></i> Histórico de Alterações
+                                                            </h:commandLink>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
                                             <!-- BEGIN LISTA CONTENT-->
                                             <div class="form-body">
                                                 <h3 class="form-section">Identificação do Processo Judicial</h3>
@@ -1682,19 +1682,19 @@
                                         </div>
                                         <div class="portlet-body form">
                                             <div class="form-actions top">
-                                                    <div class="row">
-                                                        <div class="col-md-5">
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <div class="col-md-offset-4 col-md-9">
-                                                                <h:commandLink class="btn default load-history load-history-atoprocessual">
-                                                                    <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'atoprocessual')}" render=":modal-history-pjud-atoprocessual :modal-history-pjud-processo :modal-history-pjud-executado"/>
-                                                                    <i class="fa fa-history"></i> Histórico de Alterações
-                                                                </h:commandLink>
-                                                            </div>
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                            <h:commandLink class="btn default load-history load-history-atoprocessual">
+                                                                <f:ajax listener="#{processoJudicialBean.carregarHistorico(processoJudicialBean.executado.processoJudicial.id, 'atoprocessual')}" render=":modal-history-pjud-atoprocessual :modal-history-pjud-processo :modal-history-pjud-executado"/>
+                                                                <i class="fa fa-history"></i> Histórico de Alterações
+                                                            </h:commandLink>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
                                             <div class="form-body">
                                                 <h3 class="form-section">Identificação dos Atos Processuais</h3>
                                                 <div class="row">
@@ -2351,6 +2351,100 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </ui:repeat>
+                                                                            </h:panelGroup>
+                                                                            <h3 class="form-section">Alienação/Aquisição de Bens</h3>
+                                                                            <h:panelGroup id="aquisicao-bem">
+                                                                                <ui:fragment rendered="#{processoJudicialBean.executado.listOfAquisicaoBemList.isEmpty()}">
+                                                                                    <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                        Nenhum bem penhorado.
+                                                                                    </h:panelGroup>
+                                                                                </ui:fragment>
+                                                                                <ui:fragment rendered="#{!processoJudicialBean.executado.listOfAquisicaoBemList.isEmpty()}">
+                                                                                    <h:panelGroup layout="block" class="panel-group accordion accordion-aquisicao-#{processoJudicialBean.executado.processoJudicial.id}">
+                                                                                        <ui:repeat value="#{processoJudicialBean.executado.listOfAquisicaoBemList}" var="aquisicaoBemList" varStatus="status">
+                                                                                            <div class="panel panel-info">
+                                                                                                <div class="panel-heading">
+                                                                                                    <h4 class="panel-title">
+                                                                                                        <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".accordion-aquisicao-#{processoJudicialBean.executado.processoJudicial.id}"  href="#collapse_aquisicao_#{processoJudicialBean.executado.processoJudicial.id}_#{status.index}">
+                                                                                                            #{aquisicaoBemList.get(0).bemFk.descricao} </a>
+                                                                                                    </h4>
+                                                                                                </div>
+                                                                                                <div id="collapse_aquisicao_#{processoJudicialBean.executado.processoJudicial.id}_#{status.index}" class="panel-collapse collapse">
+                                                                                                    <div class="panel-body">
+                                                                                                        <br/>
+                                                                                                        <ui:repeat value="#{aquisicaoBemList}" var="aquisicaoBem">
+                                                                                                            <ui:fragment rendered="#{aquisicaoBem.tipo eq 'HP'}">
+                                                                                                                <h4 class="help-block">Hasta Pública</h4>
+                                                                                                            </ui:fragment>
+                                                                                                            <ui:fragment rendered="#{aquisicaoBem.tipo eq 'AD'}">
+                                                                                                                <h4 class="help-block">Adjudicação</h4>
+                                                                                                            </ui:fragment>
+                                                                                                            <ui:fragment rendered="#{aquisicaoBem.tipo eq 'RE'}">
+                                                                                                                <h4 class="help-block">Remoção</h4>
+                                                                                                            </ui:fragment>
+                                                                                                            <ui:fragment rendered="#{aquisicaoBem.tipo eq 'LE'}">
+                                                                                                                <h4 class="help-block">Leilão</h4>
+                                                                                                            </ui:fragment>
+                                                                                                            <br/>
+                                                                                                                <div class="row">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Êxito:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-aquisicao-static">
+                                                                                                                                    #{aquisicaoBem.exito eq null ? '-' : aquisicaoBem.exito eq 'S' ? 'Sim' : 'Não'}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <h:panelGroup layout="block" class="row" rendered="#{aquisicaoBem.exito eq 'N'}">
+                                                                                                                    <div class="col-md-12">
+                                                                                                                        <div class="form-group">
+                                                                                                                            <label class="control-label col-md-2">Motivo:</label>
+                                                                                                                            <div class="col-md-10">
+                                                                                                                                <p class="form-control-aquisicao-static">
+                                                                                                                                    #{aquisicaoBem.motivo eq null ? '-' : aquisicaoBem.motivo}
+                                                                                                                                </p>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </h:panelGroup>
+                                                                                                                <ui:fragment rendered="#{(aquisicaoBem.tipo eq 'HP') or (aquisicaoBem.tipo eq 'LE')}">
+                                                                                                                    <h:panelGroup layout="block" class="row" rendered="#{aquisicaoBem.exito eq 'S'}">
+                                                                                                                        <div class="col-md-12">
+                                                                                                                            <div class="form-group">
+                                                                                                                                <label class="control-label col-md-2">Valor:</label>
+                                                                                                                                <div class="col-md-10">
+                                                                                                                                    <p class="form-control-aquisicao-static money">
+                                                                                                                                        #{aquisicaoBem.valor eq null ? '-' : aquisicaoBem.valor}
+                                                                                                                                    </p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </h:panelGroup>
+                                                                                                                </ui:fragment>
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-12">
+                                                                                                                    <div class="form-group">
+                                                                                                                        <label class="control-label col-md-2">Data:</label>
+                                                                                                                        <div class="col-md-10">
+                                                                                                                            <p class="form-control-aquisicao-static">
+                                                                                                                                #{aquisicaoBem.dataDaAquisicao eq null ? '-' : aquisicaoBem.dataDaAquisicao}
+                                                                                                                            </p>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <br/>
+                                                                                                        </ui:repeat>
+                                                                                                        <br/>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </ui:repeat>
+                                                                                    </h:panelGroup>
+                                                                                </ui:fragment>
                                                                             </h:panelGroup>
                                                                         </div>
                                                                     </div>

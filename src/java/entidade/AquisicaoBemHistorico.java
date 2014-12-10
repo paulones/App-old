@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -38,6 +39,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "AquisicaoBemHistorico.findByDataDaAquisicao", query = "SELECT a FROM AquisicaoBemHistorico a WHERE a.dataDaAquisicao = :dataDaAquisicao"),
     @NamedQuery(name = "AquisicaoBemHistorico.findByValor", query = "SELECT a FROM AquisicaoBemHistorico a WHERE a.valor = :valor")})
 public class AquisicaoBemHistorico implements Serializable {
+    @Column(name = "valor")
+    private BigDecimal valor;
+    @JoinColumn(name = "processo_judicial_historico_fk", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private ProcessoJudicialHistorico processoJudicialHistoricoFk;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 2)
+    @Column(name = "tipo")
+    private String tipo;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,14 +63,9 @@ public class AquisicaoBemHistorico implements Serializable {
     @Size(max = 10)
     @Column(name = "data_da_aquisicao")
     private String dataDaAquisicao;
-    @Column(name = "valor")
-    private BigDecimal valor;
     @JoinColumn(name = "bem_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Bem bemFk;
-    @JoinColumn(name = "tipo_aquisicao_bem_fk", referencedColumnName = "id")
-    @ManyToOne(optional = false)
-    private TipoAquisicaoBem tipoAquisicaoBemFk;
 
     public AquisicaoBemHistorico() {
     }
@@ -100,13 +106,6 @@ public class AquisicaoBemHistorico implements Serializable {
         this.dataDaAquisicao = dataDaAquisicao;
     }
 
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 
     public Bem getBemFk() {
         return bemFk;
@@ -114,14 +113,6 @@ public class AquisicaoBemHistorico implements Serializable {
 
     public void setBemFk(Bem bemFk) {
         this.bemFk = bemFk;
-    }
-
-    public TipoAquisicaoBem getTipoAquisicaoBemFk() {
-        return tipoAquisicaoBemFk;
-    }
-
-    public void setTipoAquisicaoBemFk(TipoAquisicaoBem tipoAquisicaoBemFk) {
-        this.tipoAquisicaoBemFk = tipoAquisicaoBemFk;
     }
 
     @Override
@@ -147,6 +138,31 @@ public class AquisicaoBemHistorico implements Serializable {
     @Override
     public String toString() {
         return "entidade.AquisicaoBemHistorico[ id=" + id + " ]";
+    }
+
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public ProcessoJudicialHistorico getProcessoJudicialHistoricoFk() {
+        return processoJudicialHistoricoFk;
+    }
+
+    public void setProcessoJudicialHistoricoFk(ProcessoJudicialHistorico processoJudicialHistoricoFk) {
+        this.processoJudicialHistoricoFk = processoJudicialHistoricoFk;
     }
     
 }

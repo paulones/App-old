@@ -5,6 +5,8 @@
  */
 package bean;
 
+import bo.AquisicaoBemBO;
+import bo.AquisicaoBemHistoricoBO;
 import bo.BemBO;
 import bo.CitacaoBO;
 import bo.CitacaoHistoricoBO;
@@ -28,6 +30,8 @@ import bo.UsuarioBO;
 import bo.UtilBO;
 import bo.VinculoProcessualBO;
 import bo.VinculoProcessualHistoricoBO;
+import entidade.AquisicaoBem;
+import entidade.AquisicaoBemHistorico;
 import entidade.Bem;
 import entidade.Citacao;
 import entidade.CitacaoHistorico;
@@ -116,6 +120,10 @@ public class ProcessoJudicialBean implements Serializable {
     private List<PenhoraHistorico> penhoraHistoricoList;
     private List<Penhora> oldPenhoraList;
     private List<Bem> bemList;
+    private List<List<AquisicaoBem>> listOfAquisicaoBemList;
+    private List<AquisicaoBem> oldAquisicaoBemList;
+    private List<AquisicaoBemHistorico> aquisicaoBemHistoricoList;
+    private List<List<AquisicaoBemHistorico>> listOfAquisicaoBemHistoricoList;;
 
     private Integer vinculos;
     private String executadoPF;
@@ -131,6 +139,7 @@ public class ProcessoJudicialBean implements Serializable {
     private Integer enderecosSocios;
     private Character redirecionamento;
     private boolean initialLoad;
+    private int aquisicoes;
 
     public void init() throws IOException {
         if (!FacesContext.getCurrentInstance().isPostback()) {
@@ -150,6 +159,7 @@ public class ProcessoJudicialBean implements Serializable {
             oficiais = 0;
             editais = 0;
             enderecosSocios = 0;
+            aquisicoes = 0;
             executadoPF = null;
             executadoPJ = null;
             register = "";
@@ -164,6 +174,7 @@ public class ProcessoJudicialBean implements Serializable {
             socioList = new ArrayList<>();
             socioRedirecionamentoList = new ArrayList<>();
             penhoraList = new ArrayList<>();
+            listOfAquisicaoBemList = new ArrayList<>();
 
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             if (isRegisterPage) {
@@ -228,11 +239,24 @@ public class ProcessoJudicialBean implements Serializable {
                                     penhora.setSocioTipo(penhora.getSocio() + penhora.getSocioFk());
                                 }
                             }
+                            List<AquisicaoBem> aquisicaoBemList = AquisicaoBemBO.findByPJUD(id);
+                            int i = 0;
+                            List<AquisicaoBem> aquisicaoBemListTemp = new ArrayList<>();
+                            while (i < aquisicaoBemList.size()) {
+                                aquisicaoBemListTemp.add(aquisicaoBemList.get(i));
+                                if ((i + 1) % 4 == 0) {
+                                    listOfAquisicaoBemList.add(aquisicaoBemListTemp);
+                                    aquisicaoBemListTemp = new ArrayList<>();
+                                }
+                                i++;
+                            }
+                            aquisicoes = listOfAquisicaoBemList.size();
+                            oldAquisicaoBemList = AquisicaoBemBO.findByPJUD(id);
                             oldSocioRedirecionamentoList = new ArrayList<>();
                             oldSocioRedirecionamentoList = carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(id));
                             oldProcessoJudicial = ProcessoJudicialBO.findProcessoJudicial(id);
 
-                            prepararHistorico(processoJudicial, citacaoList, socioRedirecionamentoList, oldPenhoraList);
+                            prepararHistorico(processoJudicial, citacaoList, socioRedirecionamentoList, oldPenhoraList, aquisicaoBemList);
 
                             carregarFormulario();
                         }
@@ -258,7 +282,7 @@ public class ProcessoJudicialBean implements Serializable {
             PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
             enderecoPessoa = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
         }
-        executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()));
+        executadoHistorico = prepararRegistroAtual(processoJudicial, enderecoPessoa, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()), AquisicaoBemBO.findByPJUD(processoJudicial.getId()));
         executadoHistoricoList.add(executadoHistorico);
         // Inserção dos históricos
         List<ProcessoJudicialHistorico> processoJudicialHistoricoList = ProcessoJudicialHistoricoBO.findAllByPJUD(id);
@@ -266,11 +290,11 @@ public class ProcessoJudicialBean implements Serializable {
             if (pjh.getExecutado().equals("PF")) {
                 PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(pjh.getExecutadoFk());
                 enderecoPessoa = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
-                executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null, CitacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(RedirecionamentoHistoricoBO.findByPJUD(pjh.getId())), PenhoraHistoricoBO.findByPJUD(pjh.getId()));
+                executadoHistorico = new ExecutadoHistorico(pjh, enderecoPessoa, null, CitacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(RedirecionamentoHistoricoBO.findByPJUD(pjh.getId())), PenhoraHistoricoBO.findByPJUD(pjh.getId()), AquisicaoBemHistoricoBO.findByPJUD(pjh.getId()));
             } else if (pjh.getExecutado().equals("PJ")) {
                 PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(pjh.getExecutadoFk());
                 enderecoPessoa = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
-                executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa, CitacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(RedirecionamentoHistoricoBO.findByPJUD(pjh.getId())), PenhoraHistoricoBO.findByPJUD(pjh.getId()));
+                executadoHistorico = new ExecutadoHistorico(pjh, null, enderecoPessoa, CitacaoHistoricoBO.findByPJUD(pjh.getId()), carregarSocioRedirecionamentoHistorico(RedirecionamentoHistoricoBO.findByPJUD(pjh.getId())), PenhoraHistoricoBO.findByPJUD(pjh.getId()), AquisicaoBemHistoricoBO.findByPJUD(pjh.getId()));
             }
             executadoHistoricoList.add(executadoHistorico);
         }
@@ -327,6 +351,7 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void removerPenhora(int index) {
         penhoraList.remove(index);
+        checkAquisicoes(null);
     }
 
     public List<Citacao> adicionarCitacoes(List<Citacao> citacaoList, Integer quantidade, String tipo) {
@@ -375,6 +400,54 @@ public class ProcessoJudicialBean implements Serializable {
                 }
             }
         }
+    }
+
+    public void checkAquisicoes(Bem bem) {
+        if (aquisicoes == 0) {
+            Iterator<List<AquisicaoBem>> it = listOfAquisicaoBemList.iterator();
+            boolean add = true;
+            while (it.hasNext()) {
+                boolean exists = false;
+                List<AquisicaoBem> aquisicaoBemList = it.next();
+                for (Penhora penhora : penhoraList) {
+                    if (aquisicaoBemList.get(0).getBemFk().equalsValues(penhora.getBemFk())) {
+                        exists = true;
+                    }
+                }
+                if (!exists) {
+                    it.remove();
+                }
+                if (aquisicaoBemList.get(0).getBemFk().equalsValues(bem)) {
+                    add = false;
+                }
+            }
+            List<AquisicaoBem> aquisicaoBemList = new ArrayList<>();
+            if (bem != null) {
+                if (add) {
+                    int i = 0;
+                    while (i < 4) {
+                        AquisicaoBem aquisicaoBem = new AquisicaoBem();
+                        aquisicaoBem.setBemFk(bem);
+                        if (edit) {
+                            aquisicaoBem.setProcessoJudicialFk(processoJudicial);
+                        }
+                        if (i == 0) {
+                            aquisicaoBem.setTipo("HP");
+                        } else if (i == 1) {
+                            aquisicaoBem.setTipo("AD");
+                        } else if (i == 2) {
+                            aquisicaoBem.setTipo("RE");
+                        } else {
+                            aquisicaoBem.setTipo("LE");
+                        }
+                        aquisicaoBemList.add(aquisicaoBem);
+                        i++;
+                    }
+                    listOfAquisicaoBemList.add(aquisicaoBemList);
+                }
+            }
+        }
+        aquisicoes = (edit && aquisicoes != 0) ? aquisicoes - 1 : aquisicoes;
     }
 
     public void listarSocios(String tipo) {
@@ -455,11 +528,11 @@ public class ProcessoJudicialBean implements Serializable {
         if (processoJudicial.getExecutado().equals("PF")) {
             PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));
-            executado = new Executado(processoJudicial, enderecoPessoaFisica, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()));
+            executado = new Executado(processoJudicial, enderecoPessoaFisica, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()), AquisicaoBemBO.findByPJUD(processoJudicial.getId()));
         } else {
             PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findPessoaJuridica(processoJudicial.getExecutadoFk());
             enderecoPessoaJuridica = new EnderecoPessoa(pessoaJuridica, EnderecoBO.findPJAddress(pessoaJuridica.getId()), BemBO.findPJBens(pessoaJuridica.getId()));
-            executado = new Executado(processoJudicial, enderecoPessoaJuridica, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()));
+            executado = new Executado(processoJudicial, enderecoPessoaJuridica, CitacaoBO.findByPJUD(processoJudicial.getId()), carregarSocioRedirecionamento(RedirecionamentoBO.findByPJUD(processoJudicial.getId())), PenhoraBO.findByPJUD(processoJudicial.getId()), AquisicaoBemBO.findByPJUD(processoJudicial.getId()));
         }
     }
 
@@ -575,6 +648,12 @@ public class ProcessoJudicialBean implements Serializable {
                     penhora.setProcessoJudicialFk(processoJudicial);
                     PenhoraBO.create(penhora);
                 }
+                for (List<AquisicaoBem> aquisicaoBemList : listOfAquisicaoBemList) {
+                    for (AquisicaoBem aquisicaoBem : aquisicaoBemList) {
+                        aquisicaoBem.setProcessoJudicialFk(processoJudicial);
+                        AquisicaoBemBO.create(aquisicaoBem);
+                    }
+                }
                 register = "success";
                 GeradorLog.criar(processoJudicial.getId(), "PJUD", 'C');
                 processoJudicial = new ProcessoJudicial();
@@ -586,6 +665,7 @@ public class ProcessoJudicialBean implements Serializable {
                 oficialList = new ArrayList<>();
                 editalList = new ArrayList<>();
                 enderecoSocioList = new ArrayList<>();
+                listOfAquisicaoBemList = new ArrayList<>();
                 penhoraList = new ArrayList<>();
                 tipoPenhora = new TipoPenhora();
                 ars = 0;
@@ -608,12 +688,17 @@ public class ProcessoJudicialBean implements Serializable {
                         sr.getRedirecionamento().setRedirecionado(redirecionamento);
                     }
                 }
+                List<AquisicaoBem> aquisicaoBemListTemp = new ArrayList<>();
+                for (List<AquisicaoBem> aquisicaoBemList : listOfAquisicaoBemList) {
+                    aquisicaoBemListTemp.addAll(aquisicaoBemList);
+                }
                 boolean identicalVP = MetodosConvencionais.checarListasIguais("VinculoProcessual", vinculoProcessualList, (List<VinculoProcessual>) oldProcessoJudicial.getVinculoProcessualCollection());
                 boolean identicalRedirecionamento = MetodosConvencionais.checarListasIguais("SocioRedirecionamento", socioRedirecionamentoList, oldSocioRedirecionamentoList);
                 boolean identicalCitacao = MetodosConvencionais.checarListasIguais("Citacao", citacaoList, oldCitacaoList);
                 boolean identicalPenhora = MetodosConvencionais.checarListasIguais("Penhora", penhoraList, oldPenhoraList);
+                boolean identicalAquisicao = MetodosConvencionais.checarListasIguais("AquisicaoBem", aquisicaoBemListTemp, oldAquisicaoBemList);
                 if (oldProcessoJudicial.equalsValues(processoJudicial)
-                        && identicalVP && identicalCitacao && identicalRedirecionamento && identicalPenhora) {
+                        && identicalVP && identicalCitacao && identicalRedirecionamento && identicalPenhora && identicalAquisicao) {
                     Cookie.addCookie("FacesMessage", "fail", 10);
                     FacesContext.getCurrentInstance().getExternalContext().redirect("consultar.xhtml");
                 } else {
@@ -660,7 +745,15 @@ public class ProcessoJudicialBean implements Serializable {
                     for (Penhora penhora : penhoraList) {
                         PenhoraBO.create(penhora);
                     }
-
+                    AquisicaoBemBO.destroyByPJUD(processoJudicial.getId());
+                    for (AquisicaoBem aquisicaoBem : aquisicaoBemListTemp) {
+                        AquisicaoBemBO.create(aquisicaoBem);
+                    }
+                    
+                    for (AquisicaoBemHistorico abh : aquisicaoBemHistoricoList) {
+                        abh.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
+                        AquisicaoBemHistoricoBO.create(abh);
+                    }
                     for (VinculoProcessualHistorico vph : vinculoProcessualHistoricoList) {
                         vph.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
                         VinculoProcessualHistoricoBO.create(vph);
@@ -720,7 +813,7 @@ public class ProcessoJudicialBean implements Serializable {
         return mensagem;
     }
 
-    public void prepararHistorico(ProcessoJudicial processoJudicial, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList) {
+    public void prepararHistorico(ProcessoJudicial processoJudicial, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList, List<AquisicaoBem> aquisicaoBemList) {
         /*
          Montar entidades dos históricos de alteração 
          */
@@ -729,6 +822,7 @@ public class ProcessoJudicialBean implements Serializable {
         citacaoHistoricoList = new ArrayList<>();
         redirecionamentoHistoricoList = new ArrayList<>();
         penhoraHistoricoList = new ArrayList<>();
+        aquisicaoBemHistoricoList = new ArrayList<>();
 
         processoJudicialHistorico.setComarca(processoJudicial.getComarca());
         processoJudicialHistorico.setDataDeInscricao(processoJudicial.getDataDeInscricao());
@@ -805,9 +899,20 @@ public class ProcessoJudicialBean implements Serializable {
             ph.setValor(penhora.getValor());
             penhoraHistoricoList.add(ph);
         }
+        
+        for (AquisicaoBem aquisicaoBem : aquisicaoBemList){
+            AquisicaoBemHistorico abh = new AquisicaoBemHistorico();
+            abh.setBemFk(aquisicaoBem.getBemFk());
+            abh.setDataDaAquisicao(aquisicaoBem.getDataDaAquisicao());
+            abh.setExito(aquisicaoBem.getExito());
+            abh.setMotivo(aquisicaoBem.getMotivo());
+            abh.setTipo(aquisicaoBem.getTipo());
+            abh.setValor(aquisicaoBem.getValor());
+            aquisicaoBemHistoricoList.add(abh);
+        }
     }
 
-    private ExecutadoHistorico prepararRegistroAtual(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList) {
+    private ExecutadoHistorico prepararRegistroAtual(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList, List<AquisicaoBem> aquisicaoBemList) {
         /*
          Montar registro atual como uma entidade de histórico para facilitar o ui:repeat do form
          */
@@ -817,6 +922,7 @@ public class ProcessoJudicialBean implements Serializable {
         citacaoHistoricoList = new ArrayList<>();
         List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList = new ArrayList<>();
         penhoraHistoricoList = new ArrayList<>();
+        aquisicaoBemHistoricoList = new ArrayList<>();
 
         processoJudicialHistorico.setComarca(processoJudicial.getComarca());
         processoJudicialHistorico.setDataDeInscricao(processoJudicial.getDataDeInscricao());
@@ -894,6 +1000,17 @@ public class ProcessoJudicialBean implements Serializable {
             ph.setValor(penhora.getValor());
             penhoraHistoricoList.add(ph);
         }
+        
+        for (AquisicaoBem aquisicaoBem : aquisicaoBemList){
+            AquisicaoBemHistorico abh = new AquisicaoBemHistorico();
+            abh.setBemFk(aquisicaoBem.getBemFk());
+            abh.setDataDaAquisicao(aquisicaoBem.getDataDaAquisicao());
+            abh.setExito(aquisicaoBem.getExito());
+            abh.setMotivo(aquisicaoBem.getMotivo());
+            abh.setTipo(aquisicaoBem.getTipo());
+            abh.setValor(aquisicaoBem.getValor());
+            aquisicaoBemHistoricoList.add(abh);
+        }
 
         executadoHistorico.setProcessoJudicialHistorico(processoJudicialHistorico);
         if (processoJudicial.getExecutado().equals("PF")) {
@@ -901,6 +1018,18 @@ public class ProcessoJudicialBean implements Serializable {
         } else {
             executadoHistorico.setEnderecoPessoaJuridica(enderecoPessoa);
         }
+        listOfAquisicaoBemHistoricoList = new ArrayList<>();
+        int i = 0;
+        List<AquisicaoBemHistorico> aquisicaoBemHistoricoListTemp = new ArrayList<>();
+        while (i < aquisicaoBemHistoricoList.size()) {
+            aquisicaoBemHistoricoListTemp.add(aquisicaoBemHistoricoList.get(i));
+            if ((i + 1) % 4 == 0) {
+                listOfAquisicaoBemHistoricoList.add(aquisicaoBemHistoricoListTemp);
+                aquisicaoBemHistoricoListTemp = new ArrayList<>();
+            }
+            i++;
+        }
+        executadoHistorico.setListOfAquisicaoBemHistoricoList(listOfAquisicaoBemHistoricoList);
         executadoHistorico.setPenhoraHistoricoList(penhoraHistoricoList);
         executadoHistorico.setCitacaoHistoricoList(citacaoHistoricoList);
         executadoHistorico.setSocioRedirecionamentoHistoricoList(socioRedirecionamentoHistoricoList);
@@ -1209,6 +1338,14 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setHistory(String history) {
         this.history = history;
+    }
+
+    public List<List<AquisicaoBem>> getListOfAquisicaoBemList() {
+        return listOfAquisicaoBemList;
+    }
+
+    public void setListOfAquisicaoBemList(List<List<AquisicaoBem>> listOfAquisicaoBemList) {
+        this.listOfAquisicaoBemList = listOfAquisicaoBemList;
     }
 
 }

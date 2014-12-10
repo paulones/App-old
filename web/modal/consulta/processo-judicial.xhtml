@@ -2174,7 +2174,7 @@
                                                                                                                 </ui:fragment>
                                                                                                             </h:panelGroup>
                                                                                                             <ui:fragment rendered="#{(penhora.tipoPenhoraFk.tipo eq 'Bacenjud (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Faturamento (Sócio)')
-                                                                                                                         or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
+                                                                                                                                     or (penhora.tipoPenhoraFk.tipo eq 'Sobre Cartão de Crédito (Sócio)') or (penhora.tipoPenhoraFk.tipo eq 'Sobre Fundo de Investimento (Sócio)')}">
                                                                                                                 <div class="row">
                                                                                                                     <div class="col-md-12">
                                                                                                                         <div class="form-group">
@@ -2192,6 +2192,100 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </ui:repeat>
+                                                                                        </h:panelGroup>
+                                                                                        <h3 class="form-section">Alienação/Aquisição de Bens</h3>
+                                                                                        <h:panelGroup id="aquisicao-bem">
+                                                                                            <ui:fragment rendered="#{templateBean.executado.listOfAquisicaoBemList.isEmpty()}">
+                                                                                                <h:panelGroup layout="block" class="alert alert-warning">
+                                                                                                    Nenhum bem penhorado.
+                                                                                                </h:panelGroup>
+                                                                                            </ui:fragment>
+                                                                                            <ui:fragment rendered="#{!templateBean.executado.listOfAquisicaoBemList.isEmpty()}">
+                                                                                                <h:panelGroup layout="block" class="panel-group accordion modal_pjud_accordion-aquisicao-#{templateBean.executado.processoJudicial.id}">
+                                                                                                    <ui:repeat value="#{templateBean.executado.listOfAquisicaoBemList}" var="aquisicaoBemList" varStatus="status">
+                                                                                                        <div class="panel panel-info">
+                                                                                                            <div class="panel-heading">
+                                                                                                                <h4 class="panel-title">
+                                                                                                                    <a class="accordion-toggle accordion-toggle-styled collapsed" data-toggle="collapse" data-parent=".modal_pjud_accordion-aquisicao-#{templateBean.executado.processoJudicial.id}"  href="#modal_pjud_collapse_aquisicao_#{templateBean.executado.processoJudicial.id}_#{status.index}">
+                                                                                                                        #{aquisicaoBemList.get(0).bemFk.descricao} </a>
+                                                                                                                </h4>
+                                                                                                            </div>
+                                                                                                            <div id="modal_pjud_collapse_aquisicao_#{templateBean.executado.processoJudicial.id}_#{status.index}" class="panel-collapse collapse">
+                                                                                                                <div class="panel-body">
+                                                                                                                    <br/>
+                                                                                                                    <ui:repeat value="#{aquisicaoBemList}" var="aquisicaoBem">
+                                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'HP'}">
+                                                                                                                            <h4 class="help-block">Hasta Pública</h4>
+                                                                                                                        </ui:fragment>
+                                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'AD'}">
+                                                                                                                            <h4 class="help-block">Adjudicação</h4>
+                                                                                                                        </ui:fragment>
+                                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'RE'}">
+                                                                                                                            <h4 class="help-block">Remoção</h4>
+                                                                                                                        </ui:fragment>
+                                                                                                                        <ui:fragment rendered="#{aquisicaoBem.tipo eq 'LE'}">
+                                                                                                                            <h4 class="help-block">Leilão</h4>
+                                                                                                                        </ui:fragment>
+                                                                                                                        <br/>
+                                                                                                                        <div class="row">
+                                                                                                                            <div class="col-md-12">
+                                                                                                                                <div class="form-group">
+                                                                                                                                    <label class="control-label col-md-2">Êxito:</label>
+                                                                                                                                    <div class="col-md-10">
+                                                                                                                                        <p class="form-control-aquisicao-static">
+                                                                                                                                            #{aquisicaoBem.exito eq null ? '-' : aquisicaoBem.exito eq 'S' ? 'Sim' : 'Não'}
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <h:panelGroup layout="block" class="row" rendered="#{aquisicaoBem.exito eq 'N'}">
+                                                                                                                            <div class="col-md-12">
+                                                                                                                                <div class="form-group">
+                                                                                                                                    <label class="control-label col-md-2">Motivo:</label>
+                                                                                                                                    <div class="col-md-10">
+                                                                                                                                        <p class="form-control-aquisicao-static">
+                                                                                                                                            #{aquisicaoBem.motivo eq null ? '-' : aquisicaoBem.motivo}
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </h:panelGroup>
+                                                                                                                        <ui:fragment rendered="#{(aquisicaoBem.tipo eq 'HP') or (aquisicaoBem.tipo eq 'LE')}">
+                                                                                                                            <h:panelGroup layout="block" class="row" rendered="#{aquisicaoBem.exito eq 'S'}">
+                                                                                                                                <div class="col-md-12">
+                                                                                                                                    <div class="form-group">
+                                                                                                                                        <label class="control-label col-md-2">Valor:</label>
+                                                                                                                                        <div class="col-md-10">
+                                                                                                                                            <p class="form-control-aquisicao-static money">
+                                                                                                                                                #{aquisicaoBem.valor eq null ? '-' : aquisicaoBem.valor}
+                                                                                                                                            </p>
+                                                                                                                                        </div>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </h:panelGroup>
+                                                                                                                        </ui:fragment>
+                                                                                                                        <div class="row">
+                                                                                                                            <div class="col-md-12">
+                                                                                                                                <div class="form-group">
+                                                                                                                                    <label class="control-label col-md-2">Data:</label>
+                                                                                                                                    <div class="col-md-10">
+                                                                                                                                        <p class="form-control-aquisicao-static">
+                                                                                                                                            #{aquisicaoBem.dataDaAquisicao eq null ? '-' : aquisicaoBem.dataDaAquisicao}
+                                                                                                                                        </p>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                        <br/>
+                                                                                                                    </ui:repeat>
+                                                                                                                    <br/>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                    </ui:repeat>
+                                                                                                </h:panelGroup>
+                                                                                            </ui:fragment>
                                                                                         </h:panelGroup>
                                                                                     </div>
                                                                                 </div>

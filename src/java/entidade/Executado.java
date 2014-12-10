@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -14,23 +14,35 @@ import java.util.Objects;
  *
  * @author paulones
  */
-public class Executado implements Serializable{
-    
+public class Executado implements Serializable {
+
     private ProcessoJudicial processoJudicial;
     private EnderecoPessoa enderecoPessoa;
     private List<Citacao> citacaoList;
     private List<SocioRedirecionamento> socioRedirecionamentoList;
     private List<Penhora> penhoraList;
+    private List<List<AquisicaoBem>> listOfAquisicaoBemList;
 
     public Executado() {
     }
 
-    public Executado(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList) {
+    public Executado(ProcessoJudicial processoJudicial, EnderecoPessoa enderecoPessoa, List<Citacao> citacaoList, List<SocioRedirecionamento> socioRedirecionamentoList, List<Penhora> penhoraList, List<AquisicaoBem> aquisicaoBemList) {
         this.processoJudicial = processoJudicial;
         this.enderecoPessoa = enderecoPessoa;
         this.citacaoList = citacaoList;
         this.socioRedirecionamentoList = socioRedirecionamentoList;
         this.penhoraList = penhoraList;
+        listOfAquisicaoBemList = new ArrayList<>();
+        int i = 0;
+        List<AquisicaoBem> aquisicaoBemListTemp = new ArrayList<>();
+        while (i < aquisicaoBemList.size()) {
+            aquisicaoBemListTemp.add(aquisicaoBemList.get(i));
+            if ((i + 1) % 4 == 0) {
+                listOfAquisicaoBemList.add(aquisicaoBemListTemp);
+                aquisicaoBemListTemp = new ArrayList<>();
+            }
+            i++;
+        }
     }
 
     public ProcessoJudicial getProcessoJudicial() {
@@ -73,6 +85,14 @@ public class Executado implements Serializable{
         this.penhoraList = penhoraList;
     }
 
+    public List<List<AquisicaoBem>> getListOfAquisicaoBemList() {
+        return listOfAquisicaoBemList;
+    }
+
+    public void setListOfAquisicaoBemList(List<List<AquisicaoBem>> listOfAquisicaoBemList) {
+        this.listOfAquisicaoBemList = listOfAquisicaoBemList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -81,6 +101,7 @@ public class Executado implements Serializable{
         hash = 11 * hash + Objects.hashCode(this.citacaoList);
         hash = 11 * hash + Objects.hashCode(this.socioRedirecionamentoList);
         hash = 11 * hash + Objects.hashCode(this.penhoraList);
+        hash = 11 * hash + Objects.hashCode(this.listOfAquisicaoBemList);
         return hash;
     }
 
@@ -101,6 +122,5 @@ public class Executado implements Serializable{
         }
         return true;
     }
-            
-    
+
 }

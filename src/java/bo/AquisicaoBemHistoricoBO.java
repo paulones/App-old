@@ -10,6 +10,8 @@ import dao.AquisicaoBemDAO;
 import dao.AquisicaoBemHistoricoDAO;
 import entidade.AquisicaoBemHistorico;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -42,5 +44,15 @@ public class AquisicaoBemHistoricoBO implements Serializable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static List<AquisicaoBemHistorico> findByPJUD(Integer id){
+        try { 
+            AquisicaoBemHistoricoDAO aquisicaoBemHistoricoDAO = new AquisicaoBemHistoricoDAO();
+            return aquisicaoBemHistoricoDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<AquisicaoBemHistorico>();
     }
 }

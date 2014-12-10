@@ -410,6 +410,7 @@ var PjudCon = function() {
                 var citacoes = false;
                 var redirecionamento = false;
                 var penhora = false;
+                var aquisicao = false;
                 $.each($(this).find('.form-control-static'), function(index) {
                     if ($(atual).find('.form-control-static').eq(index).html().trim() !== $(this).html().trim()) {
                         $(this).parent().parent().css("color", "#a94442");
@@ -421,10 +422,12 @@ var PjudCon = function() {
                 var checkRedirecionamentoLabelChange = checkChangesLabel('.form-control-redirecionamento-static', '.main');
                 var checkRedirecionamentoChanges = checkChangesTableRedirecionamento('.rows-redirecionamento tr');
                 var checkPenhoraChanges = checkChangesPenhoras('.accordion-penhora');
+                var checkAquisicaoChanges = checkChangesAquisicao('.accordion-aquisicao');
                 citacoes = checkCitacoesChanges;
                 redirecionamento = checkRedirecionamentoLabelChange;
                 redirecionamento = (!redirecionamento) ? checkRedirecionamentoChanges : true;
                 penhora = checkPenhoraChanges;
+                aquisicao = checkAquisicaoChanges;
 
                 if (citacoes) {
                     description += "Cita&ccedil;&atilde;o, ";
@@ -434,6 +437,9 @@ var PjudCon = function() {
                 }
                 if (penhora) {
                     description += "Penhora, ";
+                }
+                if (aquisicao) {
+                    description += "Aquisi&ccedil;&atilde;o de Bens, ";
                 }
                 if (outrasInformacoesAto) {
                     description += "Outras Informa&ccedil;&otilde;es, "
@@ -626,6 +632,54 @@ var PjudCon = function() {
                         if ($(this).hasClass('bem-penhorado')) {
                             $(this).closest('.panel').find('.bem-penhorado-info').find('.form-group').css("color", "#a94442")
                         }
+                    }
+                });
+                if (changed) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            function checkChangesAquisicao(accordion) {
+                var changed = false;
+                $.each($(atual).find(accordion), function() {
+                    var accordion_atual = this;
+                    $.each($(history).find(accordion), function(index) {
+                        if ($(accordion_atual).find('.panel').length > 0 && $(this).find('.panel').length === 0) {
+                            $(this).parent().find('.alert-aquisicao').css('color', '#a94442');
+                            changed = true;
+                            $(this).closest('.portlet_ato_processual').find('.tab_2').css("color", "red");
+                        }
+                        if ($(accordion_atual).find('.panel').length !== $(this).find('.panel').length) {
+                            changed = true;
+                            $(this).closest('.portlet_ato_processual').find('.tab_2').css("color", "red");
+                        }
+                        var accordion_history = this;
+                        $(this).find('.panel').addClass('panel-danger').removeClass('panel-info');
+                        $(this).find('.form-control-aquisicao-static').closest('.form-group').css('color', '#a94442');
+                        $.each($(accordion_atual).find('.panel'), function() {
+                            var panel_atual = this;
+                            $.each($(accordion_history).find('.panel'), function() {
+                                var panel_history = this;
+                                $.each($(panel_atual).find('.form-control-aquisicao-static'), function() {
+                                    var atual = this;
+                                    $.each($(panel_history).find('.form-control-aquisicao-static'), function() {
+                                        if ($(atual).text().trim() === $(this).text().trim()) {
+                                            $(this).parent().parent().css("color", "black");
+                                            $(this).closest('.panel').addClass('panel-info').removeClass('panel-danger');
+                                        }
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+                $.each($(history).find('.form-control-aquisicao-static'), function() {
+                    if ($(this).css("color") === "rgb(169, 68, 66)") {
+                        changed = true;
+                        $(this).closest('.portlet_ato_processual').find('.tab_2').css("color", "red");
+                        $(this).closest('.panel').removeClass('panel-info').addClass('panel-danger');
                     }
                 });
                 if (changed) {

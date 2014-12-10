@@ -7,6 +7,7 @@
 package entidade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,17 +22,29 @@ public class ExecutadoHistorico implements Serializable {
     private List<CitacaoHistorico> citacaoHistoricoList;
     private List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList;
     private List<PenhoraHistorico> penhoraHistoricoList;
+    private List<List<AquisicaoBemHistorico>> listOfAquisicaoBemHistoricoList;
 
     public ExecutadoHistorico() {
     }
 
-    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica, List<CitacaoHistorico> citacaoHistoricoList, List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList, List<PenhoraHistorico> penhoraHistoricoList) {
+    public ExecutadoHistorico(ProcessoJudicialHistorico processoJudicialHistorico, EnderecoPessoa enderecoPessoaFisica, EnderecoPessoa enderecoPessoaJuridica, List<CitacaoHistorico> citacaoHistoricoList, List<SocioRedirecionamentoHistorico> socioRedirecionamentoHistoricoList, List<PenhoraHistorico> penhoraHistoricoList, List<AquisicaoBemHistorico> aquisicaoBemHistoricoList) {
         this.processoJudicialHistorico = processoJudicialHistorico;
         this.enderecoPessoaFisica = enderecoPessoaFisica;
         this.enderecoPessoaJuridica = enderecoPessoaJuridica;
         this.citacaoHistoricoList = citacaoHistoricoList;
         this.socioRedirecionamentoHistoricoList = socioRedirecionamentoHistoricoList;
         this.penhoraHistoricoList = penhoraHistoricoList;
+        listOfAquisicaoBemHistoricoList = new ArrayList<>();
+        int i = 0;
+        List<AquisicaoBemHistorico> aquisicaoBemHistoricoListTemp = new ArrayList<>();
+        while (i < aquisicaoBemHistoricoList.size()) {
+            aquisicaoBemHistoricoListTemp.add(aquisicaoBemHistoricoList.get(i));
+            if ((i + 1) % 4 == 0) {
+                listOfAquisicaoBemHistoricoList.add(aquisicaoBemHistoricoListTemp);
+                aquisicaoBemHistoricoListTemp = new ArrayList<>();
+            }
+            i++;
+        }
     }   
     
     public ProcessoJudicialHistorico getProcessoJudicialHistorico() {
@@ -80,6 +93,14 @@ public class ExecutadoHistorico implements Serializable {
 
     public void setPenhoraHistoricoList(List<PenhoraHistorico> penhoraHistoricoList) {
         this.penhoraHistoricoList = penhoraHistoricoList;
+    }
+
+    public List<List<AquisicaoBemHistorico>> getListOfAquisicaoBemHistoricoList() {
+        return listOfAquisicaoBemHistoricoList;
+    }
+
+    public void setListOfAquisicaoBemHistoricoList(List<List<AquisicaoBemHistorico>> listOfAquisicaoBemHistoricoList) {
+        this.listOfAquisicaoBemHistoricoList = listOfAquisicaoBemHistoricoList;
     }
 
 }

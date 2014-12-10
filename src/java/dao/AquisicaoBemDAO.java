@@ -15,10 +15,11 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entidade.Bem;
-import entidade.TipoAquisicaoBem;
+import entidade.ProcessoJudicial;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 /**
@@ -44,19 +45,19 @@ public class AquisicaoBemDAO implements Serializable {
                 bemFk = em.getReference(bemFk.getClass(), bemFk.getId());
                 aquisicaoBem.setBemFk(bemFk);
             }
-            TipoAquisicaoBem tipoAquisicaoBemFk = aquisicaoBem.getTipoAquisicaoBemFk();
-            if (tipoAquisicaoBemFk != null) {
-                tipoAquisicaoBemFk = em.getReference(tipoAquisicaoBemFk.getClass(), tipoAquisicaoBemFk.getId());
-                aquisicaoBem.setTipoAquisicaoBemFk(tipoAquisicaoBemFk);
+            ProcessoJudicial processoJudicialFk = aquisicaoBem.getProcessoJudicialFk();
+            if (processoJudicialFk != null) {
+                processoJudicialFk = em.getReference(processoJudicialFk.getClass(), processoJudicialFk.getId());
+                aquisicaoBem.setProcessoJudicialFk(processoJudicialFk);
             }
             em.persist(aquisicaoBem);
             if (bemFk != null) {
                 bemFk.getAquisicaoBemCollection().add(aquisicaoBem);
                 bemFk = em.merge(bemFk);
             }
-            if (tipoAquisicaoBemFk != null) {
-                tipoAquisicaoBemFk.getAquisicaoBemCollection().add(aquisicaoBem);
-                tipoAquisicaoBemFk = em.merge(tipoAquisicaoBemFk);
+            if (processoJudicialFk != null) {
+                processoJudicialFk.getAquisicaoBemCollection().add(aquisicaoBem);
+                processoJudicialFk = em.merge(processoJudicialFk);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -80,15 +81,15 @@ public class AquisicaoBemDAO implements Serializable {
             AquisicaoBem persistentAquisicaoBem = em.find(AquisicaoBem.class, aquisicaoBem.getId());
             Bem bemFkOld = persistentAquisicaoBem.getBemFk();
             Bem bemFkNew = aquisicaoBem.getBemFk();
-            TipoAquisicaoBem tipoAquisicaoBemFkOld = persistentAquisicaoBem.getTipoAquisicaoBemFk();
-            TipoAquisicaoBem tipoAquisicaoBemFkNew = aquisicaoBem.getTipoAquisicaoBemFk();
+            ProcessoJudicial processoJudicialFkOld = persistentAquisicaoBem.getProcessoJudicialFk();
+            ProcessoJudicial processoJudicialFkNew = aquisicaoBem.getProcessoJudicialFk();
             if (bemFkNew != null) {
                 bemFkNew = em.getReference(bemFkNew.getClass(), bemFkNew.getId());
                 aquisicaoBem.setBemFk(bemFkNew);
             }
-            if (tipoAquisicaoBemFkNew != null) {
-                tipoAquisicaoBemFkNew = em.getReference(tipoAquisicaoBemFkNew.getClass(), tipoAquisicaoBemFkNew.getId());
-                aquisicaoBem.setTipoAquisicaoBemFk(tipoAquisicaoBemFkNew);
+            if (processoJudicialFkNew != null) {
+                processoJudicialFkNew = em.getReference(processoJudicialFkNew.getClass(), processoJudicialFkNew.getId());
+                aquisicaoBem.setProcessoJudicialFk(processoJudicialFkNew);
             }
             aquisicaoBem = em.merge(aquisicaoBem);
             if (bemFkOld != null && !bemFkOld.equals(bemFkNew)) {
@@ -99,13 +100,13 @@ public class AquisicaoBemDAO implements Serializable {
                 bemFkNew.getAquisicaoBemCollection().add(aquisicaoBem);
                 bemFkNew = em.merge(bemFkNew);
             }
-            if (tipoAquisicaoBemFkOld != null && !tipoAquisicaoBemFkOld.equals(tipoAquisicaoBemFkNew)) {
-                tipoAquisicaoBemFkOld.getAquisicaoBemCollection().remove(aquisicaoBem);
-                tipoAquisicaoBemFkOld = em.merge(tipoAquisicaoBemFkOld);
+            if (processoJudicialFkOld != null && !processoJudicialFkOld.equals(processoJudicialFkNew)) {
+                processoJudicialFkOld.getAquisicaoBemCollection().remove(aquisicaoBem);
+                processoJudicialFkOld = em.merge(processoJudicialFkOld);
             }
-            if (tipoAquisicaoBemFkNew != null && !tipoAquisicaoBemFkNew.equals(tipoAquisicaoBemFkOld)) {
-                tipoAquisicaoBemFkNew.getAquisicaoBemCollection().add(aquisicaoBem);
-                tipoAquisicaoBemFkNew = em.merge(tipoAquisicaoBemFkNew);
+            if (processoJudicialFkNew != null && !processoJudicialFkNew.equals(processoJudicialFkOld)) {
+                processoJudicialFkNew.getAquisicaoBemCollection().add(aquisicaoBem);
+                processoJudicialFkNew = em.merge(processoJudicialFkNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
@@ -145,10 +146,10 @@ public class AquisicaoBemDAO implements Serializable {
                 bemFk.getAquisicaoBemCollection().remove(aquisicaoBem);
                 bemFk = em.merge(bemFk);
             }
-            TipoAquisicaoBem tipoAquisicaoBemFk = aquisicaoBem.getTipoAquisicaoBemFk();
-            if (tipoAquisicaoBemFk != null) {
-                tipoAquisicaoBemFk.getAquisicaoBemCollection().remove(aquisicaoBem);
-                tipoAquisicaoBemFk = em.merge(tipoAquisicaoBemFk);
+            ProcessoJudicial processoJudicialFk = aquisicaoBem.getProcessoJudicialFk();
+            if (processoJudicialFk != null) {
+                processoJudicialFk.getAquisicaoBemCollection().remove(aquisicaoBem);
+                processoJudicialFk = em.merge(processoJudicialFk);
             }
             em.remove(aquisicaoBem);
             em.getTransaction().commit();
@@ -212,4 +213,29 @@ public class AquisicaoBemDAO implements Serializable {
         }
     }
     
+    public List<AquisicaoBem> findByPJUD(Integer id){
+        EntityManager em = getEntityManager();
+        try {
+            List<AquisicaoBem> aquisicaoBem = (List<AquisicaoBem>) em.createNativeQuery("select * from aquisicao_bem "
+                    + "where processo_judicial_fk = '"+id+"'", AquisicaoBem.class).getResultList();
+            return aquisicaoBem;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+    
+    public void destroyByPJUD(Integer idPjud) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.createNativeQuery("delete from aquisicao_bem "
+                    + "where processo_judicial_fk = '" + idPjud + "'").executeUpdate();
+            em.getTransaction().commit();
+        } catch (NoResultException e) {
+        } finally {
+            em.close();
+        }
+    }
 }

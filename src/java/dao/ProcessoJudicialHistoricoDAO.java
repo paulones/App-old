@@ -9,6 +9,7 @@ package dao;
 import dao.exceptions.IllegalOrphanException;
 import dao.exceptions.NonexistentEntityException;
 import dao.exceptions.RollbackFailureException;
+import entidade.AquisicaoBemHistorico;
 import entidade.BemHistorico;
 import entidade.CitacaoHistorico;
 import entidade.PenhoraHistorico;
@@ -59,6 +60,9 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
         }
         if (processoJudicialHistorico.getPenhoraHistoricoCollection() == null) {
             processoJudicialHistorico.setPenhoraHistoricoCollection(new ArrayList<PenhoraHistorico>());
+        }
+        if (processoJudicialHistorico.getAquisicaoBemHistoricoCollection() == null) {
+            processoJudicialHistorico.setAquisicaoBemHistoricoCollection(new ArrayList<AquisicaoBemHistorico>());
         }
         EntityManager em = null;
         try {
@@ -112,6 +116,12 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                 attachedPenhoraHistoricoCollection.add(penhoraHistoricoCollectionPenhoraHistoricoToAttach);
             }
             processoJudicialHistorico.setPenhoraHistoricoCollection(attachedPenhoraHistoricoCollection);
+            Collection<AquisicaoBemHistorico> attachedAquisicaoBemHistoricoCollection = new ArrayList<AquisicaoBemHistorico>();
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach : processoJudicialHistorico.getAquisicaoBemHistoricoCollection()) {
+                aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach = em.getReference(aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach.getClass(), aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach.getId());
+                attachedAquisicaoBemHistoricoCollection.add(aquisicaoBemHistoricoCollectionAquisicaoBemHistoricoToAttach);
+            }
+            processoJudicialHistorico.setAquisicaoBemHistoricoCollection(attachedAquisicaoBemHistoricoCollection);
             em.persist(processoJudicialHistorico);
             if (processoJudicialFk != null) {
                 processoJudicialFk.getProcessoJudicialHistoricoCollection().add(processoJudicialHistorico);
@@ -169,6 +179,15 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                     oldProcessoJudicialHistoricoFkOfPenhoraHistoricoCollectionPenhoraHistorico = em.merge(oldProcessoJudicialHistoricoFkOfPenhoraHistoricoCollectionPenhoraHistorico);
                 }
             }
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionAquisicaoBemHistorico : processoJudicialHistorico.getAquisicaoBemHistoricoCollection()) {
+                ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico = aquisicaoBemHistoricoCollectionAquisicaoBemHistorico.getProcessoJudicialHistoricoFk();
+                aquisicaoBemHistoricoCollectionAquisicaoBemHistorico.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
+                aquisicaoBemHistoricoCollectionAquisicaoBemHistorico = em.merge(aquisicaoBemHistoricoCollectionAquisicaoBemHistorico);
+                if (oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico != null) {
+                    oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico.getAquisicaoBemHistoricoCollection().remove(aquisicaoBemHistoricoCollectionAquisicaoBemHistorico);
+                    oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico = em.merge(oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionAquisicaoBemHistorico);
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -207,6 +226,8 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             Collection<RedirecionamentoHistorico> redirecionamentoHistoricoCollectionNew = processoJudicialHistorico.getRedirecionamentoHistoricoCollection();
             Collection<PenhoraHistorico> penhoraHistoricoCollectionOld = persistentProcessoJudicialHistorico.getPenhoraHistoricoCollection();
             Collection<PenhoraHistorico> penhoraHistoricoCollectionNew = processoJudicialHistorico.getPenhoraHistoricoCollection();
+            Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollectionOld = persistentProcessoJudicialHistorico.getAquisicaoBemHistoricoCollection();
+            Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollectionNew = processoJudicialHistorico.getAquisicaoBemHistoricoCollection();
             List<String> illegalOrphanMessages = null;
             for (VinculoProcessualHistorico vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico : vinculoProcessualHistoricoCollectionOld) {
                 if (!vinculoProcessualHistoricoCollectionNew.contains(vinculoProcessualHistoricoCollectionOldVinculoProcessualHistorico)) {
@@ -238,6 +259,14 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
                     illegalOrphanMessages.add("You must retain PenhoraHistorico " + penhoraHistoricoCollectionOldPenhoraHistorico + " since its processoJudicialHistoricoFk field is not nullable.");
+                }
+            }
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionOldAquisicaoBemHistorico : aquisicaoBemHistoricoCollectionOld) {
+                if (!aquisicaoBemHistoricoCollectionNew.contains(aquisicaoBemHistoricoCollectionOldAquisicaoBemHistorico)) {
+                    if (illegalOrphanMessages == null) {
+                        illegalOrphanMessages = new ArrayList<String>();
+                    }
+                    illegalOrphanMessages.add("You must retain AquisicaoBemHistorico " + aquisicaoBemHistoricoCollectionOldAquisicaoBemHistorico + " since its processoJudicialHistoricoFk field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
@@ -291,6 +320,13 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
             }
             penhoraHistoricoCollectionNew = attachedPenhoraHistoricoCollectionNew;
             processoJudicialHistorico.setPenhoraHistoricoCollection(penhoraHistoricoCollectionNew);
+            Collection<AquisicaoBemHistorico> attachedAquisicaoBemHistoricoCollectionNew = new ArrayList<AquisicaoBemHistorico>();
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach : aquisicaoBemHistoricoCollectionNew) {
+                aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach = em.getReference(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach.getClass(), aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach.getId());
+                attachedAquisicaoBemHistoricoCollectionNew.add(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistoricoToAttach);
+            }
+            aquisicaoBemHistoricoCollectionNew = attachedAquisicaoBemHistoricoCollectionNew;
+            processoJudicialHistorico.setAquisicaoBemHistoricoCollection(aquisicaoBemHistoricoCollectionNew);
             processoJudicialHistorico = em.merge(processoJudicialHistorico);
             if (processoJudicialFkOld != null && !processoJudicialFkOld.equals(processoJudicialFkNew)) {
                 processoJudicialFkOld.getProcessoJudicialHistoricoCollection().remove(processoJudicialHistorico);
@@ -376,6 +412,17 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                     }
                 }
             }
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico : aquisicaoBemHistoricoCollectionNew) {
+                if (!aquisicaoBemHistoricoCollectionOld.contains(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico)) {
+                    ProcessoJudicialHistorico oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico = aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.getProcessoJudicialHistoricoFk();
+                    aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.setProcessoJudicialHistoricoFk(processoJudicialHistorico);
+                    aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico = em.merge(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico);
+                    if (oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico != null && !oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.equals(processoJudicialHistorico)) {
+                        oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico.getAquisicaoBemHistoricoCollection().remove(aquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico);
+                        oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico = em.merge(oldProcessoJudicialHistoricoFkOfAquisicaoBemHistoricoCollectionNewAquisicaoBemHistorico);
+                    }
+                }
+            }
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -437,6 +484,13 @@ public class ProcessoJudicialHistoricoDAO implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("This ProcessoJudicialHistorico (" + processoJudicialHistorico + ") cannot be destroyed since the PenhoraHistorico " + penhoraHistoricoCollectionOrphanCheckPenhoraHistorico + " in its penhoraHistoricoCollection field has a non-nullable processoJudicialHistoricoFk field.");
+            }
+            Collection<AquisicaoBemHistorico> aquisicaoBemHistoricoCollectionOrphanCheck = processoJudicialHistorico.getAquisicaoBemHistoricoCollection();
+            for (AquisicaoBemHistorico aquisicaoBemHistoricoCollectionOrphanCheckAquisicaoBemHistorico : aquisicaoBemHistoricoCollectionOrphanCheck) {
+                if (illegalOrphanMessages == null) {
+                    illegalOrphanMessages = new ArrayList<String>();
+                }
+                illegalOrphanMessages.add("This ProcessoJudicialHistorico (" + processoJudicialHistorico + ") cannot be destroyed since the AquisicaoBemHistorico " + aquisicaoBemHistoricoCollectionOrphanCheckAquisicaoBemHistorico + " in its aquisicaoBemHistoricoCollection field has a non-nullable processoJudicialHistoricoFk field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

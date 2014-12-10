@@ -9,6 +9,8 @@ package bo;
 import dao.AquisicaoBemDAO;
 import entidade.AquisicaoBem;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -38,6 +40,25 @@ public class AquisicaoBemBO implements Serializable{
         try {
             AquisicaoBemDAO aquisicaoBemDAO = new AquisicaoBemDAO();
             aquisicaoBemDAO.destroy(aquisicaoBem.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static List<AquisicaoBem> findByPJUD(Integer id){
+        try { 
+            AquisicaoBemDAO aquisicaoBemDAO = new AquisicaoBemDAO();
+            return aquisicaoBemDAO.findByPJUD(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<AquisicaoBem>();
+    }
+    
+    public static void destroyByPJUD(Integer idPjud){
+        try {
+            AquisicaoBemDAO aquisicaoBemDAO = new AquisicaoBemDAO();
+            aquisicaoBemDAO.destroyByPJUD(idPjud);
         } catch (Exception e) {
             e.printStackTrace();
         }

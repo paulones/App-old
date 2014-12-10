@@ -79,6 +79,8 @@ public class ProcessoJudicial implements Serializable {
     @Column(name = "valor_arrecadado")
     private BigDecimal valorArrecadado;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
+    private Collection<AquisicaoBem> aquisicaoBemCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
     private Collection<Penhora> penhoraCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "processoJudicialFk")
     private Collection<Citacao> citacaoCollection;
@@ -666,6 +668,15 @@ public class ProcessoJudicial implements Serializable {
 
     public void setPenhoraCollection(Collection<Penhora> penhoraCollection) {
         this.penhoraCollection = penhoraCollection;
+    }
+
+    @XmlTransient
+    public Collection<AquisicaoBem> getAquisicaoBemCollection() {
+        return aquisicaoBemCollection;
+    }
+
+    public void setAquisicaoBemCollection(Collection<AquisicaoBem> aquisicaoBemCollection) {
+        this.aquisicaoBemCollection = aquisicaoBemCollection;
     }
 
 }
