@@ -335,12 +335,12 @@ var PjudCon = function() {
                     description += "Tipo do executado, ";
                 } else {
                     if (informacoesgerais) {
-                        if ($(this).children().hasClass('pf-tab')){
+                        if ($(this).children().hasClass('pf-tab')) {
                             description += "Informa&ccedil;&otilde;es Pessoais, ";
                         } else {
                             description += "Informa&ccedil;&otilde;es Empresariais, ";
                         }
-                        
+
                     }
                     if (domicilioeleitoral) {
                         description += "Domic&iacute;lio Eleitoral, ";
@@ -349,12 +349,12 @@ var PjudCon = function() {
                         description += "Endere&ccedil;o, ";
                     }
                     if (vinculosadministrativos) {
-                        if ($(this).children().hasClass('pf-tab')){
+                        if ($(this).children().hasClass('pf-tab')) {
                             description += "V&iacute;nculos Empresariais, ";
                         } else {
                             description += "V&iacute;nculos Administrativos, ";
                         }
-                        
+
                     }
                     if (vinculossociais) {
                         description += "V&iacute;nculos Sociais, ";
@@ -640,7 +640,7 @@ var PjudCon = function() {
                     return false;
                 }
             }
-            
+
             function checkChangesAquisicao(accordion) {
                 var changed = false;
                 $.each($(atual).find(accordion), function() {
@@ -662,12 +662,20 @@ var PjudCon = function() {
                             var panel_atual = this;
                             $.each($(accordion_history).find('.panel'), function() {
                                 var panel_history = this;
-                                $.each($(panel_atual).find('.form-control-aquisicao-static'), function() {
-                                    var atual = this;
-                                    $.each($(panel_history).find('.form-control-aquisicao-static'), function() {
-                                        if ($(atual).text().trim() === $(this).text().trim()) {
-                                            $(this).parent().parent().css("color", "black");
-                                            $(this).closest('.panel').addClass('panel-info').removeClass('panel-danger');
+                                $.each($(panel_atual).find('.panel-body').children('span'), function() {
+                                    var sub_atual = this;
+                                    $.each($(panel_history).find('.panel-body').children('span'), function() {
+                                        var sub_history = this;
+                                        if ($(sub_atual).attr("class") === $(sub_history).attr("class")) {
+                                            $.each($(sub_atual).find('.form-control-aquisicao-static'), function() {
+                                                var atual = this;
+                                                $.each($(sub_history).find('.form-control-aquisicao-static'), function() {
+                                                    if ($(atual).text().trim() === $(this).text().trim()) {
+                                                        $(this).parent().parent().css("color", "black");
+                                                        $(this).closest('.panel').addClass('panel-info').removeClass('panel-danger');
+                                                    }
+                                                });
+                                            });
                                         }
                                     });
                                 });
