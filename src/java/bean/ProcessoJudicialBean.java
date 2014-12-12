@@ -525,6 +525,10 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void exibirInfo() {
         processoJudicial = ProcessoJudicialBO.findProcessoJudicial(Integer.valueOf(pjudId));
+        for (VinculoProcessual vp : processoJudicial.getVinculoProcessualCollection()){
+            ProcessoJudicial processoJudicialVinculado = ProcessoJudicialBO.findByProcessNumber(vp.getProcesso());
+            vp.setProcessoJudicialTransientId((processoJudicialVinculado != null) ? processoJudicialVinculado.getId() : null);
+        }
         if (processoJudicial.getExecutado().equals("PF")) {
             PessoaFisica pessoaFisica = PessoaFisicaBO.findPessoaFisica(processoJudicial.getExecutadoFk());
             enderecoPessoaFisica = new EnderecoPessoa(pessoaFisica, EnderecoBO.findPFAddress(pessoaFisica.getId()), BemBO.findPFBens(pessoaFisica.getId()));

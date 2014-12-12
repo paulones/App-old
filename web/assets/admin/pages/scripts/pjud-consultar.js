@@ -397,7 +397,7 @@ var PjudCon = function() {
                     description += "Processo, ";
                 }
                 if (vinculos) {
-                    description += "V&iacute;nculos, ";
+                    description += "V&iacute;nculos Processuais, ";
                 }
                 if (creditofiscal) {
                     description += "Cr&eacute;dito Fiscal, ";
@@ -702,8 +702,8 @@ var PjudCon = function() {
                 if ($(atual).find(label).length !== $(history).find(label).length) {
                     changed = true;
                     if ($(history).find(label).length === 0) {
-                        $(history).find(tab).find('.alert').css("color", "#a94442");
-                    } else if ($(atual).find(label).length === 0) {
+                        $(history).parent().find(tab).find('.alert').css("color", "#a94442");
+           ''         } else if ($(atual).find(label).length === 0) {
                         $(label).parent().parent().css("color", "#a94442");
                     }
                 }

@@ -51,6 +51,7 @@ public class VinculoProcessual implements Serializable {
     @JoinColumn(name = "tipo_de_processo_fk", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private TipoProcesso tipoDeProcessoFk;
+    private transient Integer processoJudicialTransientId;
 
     public VinculoProcessual() {
     }
@@ -94,6 +95,14 @@ public class VinculoProcessual implements Serializable {
 
     public void setTipoDeProcessoFk(TipoProcesso tipoDeProcessoFk) {
         this.tipoDeProcessoFk = tipoDeProcessoFk;
+    }
+
+    public Integer getProcessoJudicialTransientId() {
+        return processoJudicialTransientId;
+    }
+
+    public void setProcessoJudicialTransientId(Integer processoJudicialTransientId) {
+        this.processoJudicialTransientId = processoJudicialTransientId;
     }
 
     @Override

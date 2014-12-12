@@ -664,6 +664,7 @@ var PjudCad = function() {
                         $.each($('.penhora-socio'), function() {
                             exibirBens($(this));
                         });
+                        $('.uniformization input[type=radio]').uniform();
                         $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
                     } else if ($(data.source).hasClass("carregar_socios_pf")) {
                         $('.penhora-socio').trigger("change");
@@ -671,6 +672,7 @@ var PjudCad = function() {
                         $('select.tipoPenhora').select2({allowClear: true});
                         $('.number-tentativas').mask("99");
                         $('select.socios').select2({allowClear: true});
+                        $('.uniformization input[type=radio]').uniform();
                         $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
                     } else if ($(data.source).hasClass("add-penhora") || $(data.source).hasClass("penhora-refresher")) {
                         $('.date').mask("99/99/9999");
