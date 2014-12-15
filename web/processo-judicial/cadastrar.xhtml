@@ -2461,7 +2461,7 @@
                                                                             <f:ajax execute="accordion-penhora" render="accordion-penhora"/>
                                                                         </h:commandLink>
                                                                         <h:commandLink class="bem-refresher">
-                                                                            <f:ajax execute="accordion-penhora" listener="#{processoJudicialBean.refreshListaDeBens(null)}" render="accordion-penhora"/>
+                                                                            <f:ajax execute="accordion-penhora cpf cnpj" listener="#{processoJudicialBean.refreshListaDeBens(null)}" render="accordion-penhora"/>
                                                                         </h:commandLink>
                                                                         <h:panelGroup layout="block" class="panel-group accordion" id="accordion-penhora">
                                                                             <ui:repeat value="#{processoJudicialBean.penhoraList}" var="penhora" varStatus="status">

@@ -702,7 +702,11 @@ var PjudCon = function() {
                 if ($(atual).find(label).length !== $(history).find(label).length) {
                     changed = true;
                     if ($(history).find(label).length === 0) {
-                        $(history).parent().find(tab).find('.alert').css("color", "#a94442");
+                        if (label === ".form-control-redirecionamento-static"){
+                            $(history).parent().find(tab).find('.alert-redirecionamento').css("color", "#a94442");
+                        } else {
+                            $(history).parent().find(tab).find('.alert').css("color", "#a94442");
+                        }
            ''         } else if ($(atual).find(label).length === 0) {
                         $(label).parent().parent().css("color", "#a94442");
                     }

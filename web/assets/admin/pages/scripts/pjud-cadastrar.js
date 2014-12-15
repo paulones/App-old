@@ -481,6 +481,9 @@ var PjudCad = function() {
                 }
             }
 
+            $.each($('#accordion-penhora').find('.penhora-socio'), function() {
+                exibirBens($(this));
+            });
             function exibirBens(element) {
                 if ($(element).val() !== "") {
                     $(element).closest(".panel").find('.socio-bem').show();
@@ -489,13 +492,14 @@ var PjudCad = function() {
                 }
             }
 
+            $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
             $(document).on('change', '.situacao-penhora, .exito-aquisicao', exibirCamposInvisiveis);
             function exibirCamposInvisiveis(event) {
                 if ($(this).find("input[type=radio]:checked").val() === 'D' || $(this).find("input[type=radio]:checked").val() === 'S') {
                     $(this).parents('.condicao-campos').find('.valor-endereco').show();
                     $(this).parents('.condicao-campos').find('.motivo').hide();
                     $(this).parents('.condicao-campos').find('.motivo').find('input').val("");
-                } else if ($(this).find("input[type=radio]:checked").val() === 'I' || $(this).find("input[type=radio]:checked").val() === 'N'){
+                } else if ($(this).find("input[type=radio]:checked").val() === 'I' || $(this).find("input[type=radio]:checked").val() === 'N') {
                     $(this).parents('.condicao-campos').find('.valor-endereco').hide();
                     $(this).parents('.condicao-campos').find('.valor-endereco').find('input').val('');
                     $(this).parents('.condicao-campos').find('.motivo').show();
@@ -516,6 +520,14 @@ var PjudCad = function() {
                 }
             }
 
+            $.each($('.redirecionado'), redirecionado);
+            $.each($('.socio-data'), function() {
+                if ($(this).find(".data_redirecionamento").val() !== "") {
+                    $(this).parent().find('.checkboxes-socios').prop('checked', 'checked');
+                    $(this).parent().find('.checkboxes-socios').parent().addClass('checked');
+                    $(".checkboxes-socios").trigger("change");
+                }
+            });
             $(document).on('change', '.redirecionado', redirecionado);
             function redirecionado(event) {
                 if ($(this).find("input[type=radio]:checked").val() === 'D' || $(this).find("input[type=radio]:checked").val() === 'I') {
@@ -566,11 +578,10 @@ var PjudCad = function() {
                             allowClear: true,
                         });
                     });
-            if ($('#cnpj').val() !== "") {
-                $('.carregar_socios_pj').click();
-            }
             $('#cnpj').change(function() {
-                $('.carregar_socios_pj').click();
+                if ($('#cnpj').val() !== "") {
+                    $('.carregar_socios_pj').click();
+                }
             })
 
             $.ajax({
@@ -614,19 +625,15 @@ var PjudCad = function() {
                             allowClear: true,
                         });
                     });
-            if ($('#cpf').val() !== "") {
-                $('.carregar_socios_pf').click();
-            }
             $('#cpf').change(function() {
-                $('.carregar_socios_pf').click();
+                if ($('#cpf').val() !== "") {
+                    $('.carregar_socios_pf').click();
+                }
             });
 
             jsf.ajax.addOnEvent(function(data) {
                 if (data.status === "success") {
                     if ($(data.source).hasClass("vinculos")) {
-                        $('.vinculotipo').select2({
-                            allowClear: true,
-                        });
                         $('.vinculotipo').change(validaVinculosProcessuais);
                         $('.vinculo').keypress(numeroDoProcesso);
                     } else if ($(data.source).hasClass("button-pessoa-fisica")) {
@@ -640,45 +647,20 @@ var PjudCad = function() {
                         initTable();
                     } else if ($(data.source).hasClass("tentativas")) {
                         $.each($('.citado'), citado);
-                        $('select.socios').select2({allowClear: true});
-                        $('select.tipoPenhora').select2({allowClear: true});
-                        $('.uniformization input[type=radio]').uniform();
-                        $('.date').mask("99/99/9999");
                     } else if ($(data.source).hasClass("carregar_socios_pj")) {
                         $('.penhora-socio').trigger("change");
                         initTable();
                         $.each($('.citado'), citado);
                         $.each($('.redirecionado'), redirecionado);
-                        $('select.socios').select2({allowClear: true});
-                        $('select.tipoPenhora').select2({allowClear: true});
-                        $('.number-tentativas').mask("99");
-                        $(".checkbox-table").find("input[type=checkbox]").uniform();
-                        $.each($('.socio-data'), function() {
-                            if ($(this).find(".data_redirecionamento").val() !== "") {
-                                $(this).parent().find('.checkboxes-socios').prop('checked', 'checked');
-                                $(this).parent().find('.checkboxes-socios').parent().addClass('checked');
-                                $(".checkboxes-socios").trigger("change");
-                            }
-                        });
-                        $('select.socios').select2({allowClear: true});
                         $.each($('.penhora-socio'), function() {
                             exibirBens($(this));
                         });
-                        $('.uniformization input[type=radio]').uniform();
                         $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
                     } else if ($(data.source).hasClass("carregar_socios_pf")) {
-                        $('.penhora-socio').trigger("change");
+                        $('.bemVinculate').trigger("change");
                         $.each($('.citado'), citado);
-                        $('select.tipoPenhora').select2({allowClear: true});
-                        $('.number-tentativas').mask("99");
-                        $('select.socios').select2({allowClear: true});
-                        $('.uniformization input[type=radio]').uniform();
                         $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
                     } else if ($(data.source).hasClass("add-penhora") || $(data.source).hasClass("penhora-refresher")) {
-                        $('.date').mask("99/99/9999");
-                        $('select.bemVinculate').select2({allowClear: true});
-                        $('select.socios').select2({allowClear: true});
-                        $('.uniformization input[type=radio]').uniform();
                         if ($(data.source).hasClass("add-penhora")) {
                             $('#accordion-penhora').find('.panel').last().find(".collapsed").removeClass("collapsed");
                             $('#accordion-penhora').find('.panel').last().find(".panel-collapse").addClass("in");
@@ -686,7 +668,6 @@ var PjudCad = function() {
                         $.each($('#accordion-penhora').find('.penhora-socio'), function() {
                             exibirBens($(this));
                         });
-                        maskMoney();
                         $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
                     } else if ($(data.source).hasClass("delete-penhora")) {
                         $('.penhora-refresher').click();
@@ -694,27 +675,24 @@ var PjudCad = function() {
                         $('#' + bemPanel.panel).addClass("in");
                         $('#' + bemPanel.panel).parent().find(".collapsed").removeClass("collapsed");
                         $('#' + bemPanel.panel).find('.bemVinculate').val($('#modal_bem_id').val());
-                        $('.date').mask("99/99/9999");
                         $.each($('#accordion-penhora').find('.penhora-socio'), function() {
                             exibirBens($(this));
                         });
-                        maskMoney();
-                        $('select.bemVinculate').select2({allowClear: true});
-                        $('select.socios').select2({allowClear: true});
-                        $('.uniformization input[type=radio]').uniform();
                         $.each($('.situacao-penhora, .exito-aquisicao'), exibirCamposInvisiveis);
                         $('.bemVinculate').trigger("change");
                     } else if ($(data.source).hasClass("penhora-socio")) {
                         exibirBens($(data.source));
                         $(data.source).closest(".panel-body").find(".bemVinculate").val($(data.source).closest(".panel-body").find(".bem-penhorado").html().trim());
                         $('.bemVinculate').trigger("change");
-                        $('select.bemVinculate').select2({allowClear: true});
                     } else if ($(data.source).hasClass("bemVinculate")) {
-                        $('.uniformization input[type=radio]').uniform();
                         $.each($('.exito-aquisicao'), exibirCamposInvisiveis);
-                        $('.date').mask("99/99/9999");
-                        maskMoney();
                     }
+                    $('.number-tentativas').mask("99");
+                    $(".checkbox-table").find("input[type=checkbox]").uniform();
+                    $('.uniformization input[type=radio]').uniform();
+                    $('.date').mask("99/99/9999");
+                    $('select.select2me').select2({allowClear: true});
+                    maskMoney();
                 }
             });
 
