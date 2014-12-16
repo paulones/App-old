@@ -95,8 +95,6 @@ public class ProcessoJudicialBean implements Serializable {
     private ExecutadoHistorico executadoHistorico;
     private TipoPenhora tipoPenhora;
 
-    private List<PessoaFisica> pessoaFisicaList;
-    private List<PessoaJuridica> pessoaJuridicaList;
     private List<TipoRecurso> tipoDeRecursoList;
     private List<TipoProcesso> tipoDoProcessoList;
     private List<VinculoProcessual> vinculoProcessualList;
@@ -303,10 +301,6 @@ public class ProcessoJudicialBean implements Serializable {
     }
 
     private void carregarFormulario() { // Carregar listas do formulário
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
-        pessoaFisicaList = PessoaFisicaBO.findAllActive(instituicao);
-        pessoaJuridicaList = PessoaJuridicaBO.findAllActive(instituicao);
         tipoDeRecursoList = TipoRecursoBO.findAll();
         tipoDoProcessoList = TipoProcessoBO.findAll();
         situacaoList = SituacaoBO.findAll();
@@ -1052,22 +1046,6 @@ public class ProcessoJudicialBean implements Serializable {
 
     public void setExecutado(Executado executado) {
         this.executado = executado;
-    }
-
-    public List<PessoaFisica> getPessoaFisicaList() {
-        return pessoaFisicaList;
-    }
-
-    public void setPessoaFisicaList(List<PessoaFisica> pessoaFisicaList) {
-        this.pessoaFisicaList = pessoaFisicaList;
-    }
-
-    public List<PessoaJuridica> getPessoaJuridicaList() {
-        return pessoaJuridicaList;
-    }
-
-    public void setPessoaJuridicaList(List<PessoaJuridica> pessoaJuridicaList) {
-        this.pessoaJuridicaList = pessoaJuridicaList;
     }
 
     public List<VinculoProcessual> getVinculoProcessualList() {

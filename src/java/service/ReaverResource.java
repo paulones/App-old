@@ -5,6 +5,7 @@
  */
 package service;
 
+import bo.AquisicaoBemBO;
 import bo.BemBO;
 import bo.ChartsBO;
 import bo.CitacaoBO;
@@ -16,6 +17,7 @@ import bo.PessoaJuridicaSucessaoBO;
 import bo.ProcessoJudicialBO;
 import bo.RedirecionamentoBO;
 import bo.UsuarioBO;
+import entidade.AquisicaoBem;
 import entidade.Bem;
 import entidade.Citacao;
 import entidade.Endereco;
@@ -94,11 +96,9 @@ public class ReaverResource {
     @Path("/getPessoasFisicas")
     @Produces("application/json")
     public String getPessoasFisicas(@QueryParam("usuario") String usuario) {
-        PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
         JSONArray jsonArray = new JSONArray();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
-        List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive(instituicao);
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        List<PessoaFisica> pessoaFisicaList = PessoaFisicaBO.findAllActive(instituicao);
         for (PessoaFisica pf : pessoaFisicaList) {
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             JSONObject jsonObject = new JSONObject();
@@ -113,11 +113,9 @@ public class ReaverResource {
     @Path("/getPessoasJuridicas")
     @Produces("application/json")
     public String getPessoasJuridicas(@QueryParam("usuario") String usuario) {
-        PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
+        List<PessoaJuridica> pessoaJuridicaList = PessoaJuridicaBO.findAllActive(instituicao);
         for (PessoaJuridica pj : pessoaJuridicaList) {
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             JSONObject jsonObject = new JSONObject();
@@ -132,16 +130,12 @@ public class ReaverResource {
     @Path("/getPessoasFisicasTable")
     @Produces("application/json")
     public String getPessoasFisicasTable(@QueryParam("usuario") String usuario) {
-        PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
-        EnderecoBO enderecoBO = new EnderecoBO();
-        BemBO bemBO = new BemBO();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
-        List<PessoaFisica> pessoaFisicaList = pessoaFisicaBO.findAllActive(instituicao);
+        List<PessoaFisica> pessoaFisicaList = PessoaFisicaBO.findAllActive(instituicao);
         for (PessoaFisica pf : pessoaFisicaList) {
-            Endereco end = enderecoBO.findPFAddress(pf.getId());
-            List<Bem> bemList = bemBO.findPFBens(pf.getId());
+            Endereco end = EnderecoBO.findPFAddress(pf.getId());
+            List<Bem> bemList = BemBO.findPFBens(pf.getId());
             String sexo = pf.getSexo() == null ? "-" : "M".equals(pf.getSexo().toString()) ? "Masculino" : "Feminino";
             String cpf = pf.getCpf() == null ? "-" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             String rg = pf.getRg() == null ? "-" : pf.getRg();
@@ -197,16 +191,12 @@ public class ReaverResource {
     @Path("/getPessoasJuridicasTable")
     @Produces("application/json")
     public String getPessoasJuridicasTable(@QueryParam("usuario") String usuario) {
-        PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
-        EnderecoBO enderecoBO = new EnderecoBO();
-        BemBO bemBO = new BemBO();
         JSONArray jsonArray = new JSONArray();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
-        List<PessoaJuridica> pessoaJuridicaList = pessoaJuridicaBO.findAllActive(instituicao);
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        List<PessoaJuridica> pessoaJuridicaList = PessoaJuridicaBO.findAllActive(instituicao);
         for (PessoaJuridica pj : pessoaJuridicaList) {
-            Endereco end = enderecoBO.findPJAddress(pj.getId());
-            List<Bem> bemList = bemBO.findPJBens(pj.getId());
+            Endereco end = EnderecoBO.findPJAddress(pj.getId());
+            List<Bem> bemList = BemBO.findPJBens(pj.getId());
             String cnpj = pj.getCnpj() == null ? "-" : pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             String nomeFantasia = pj.getNomeFantasia() == null ? "-" : pj.getNomeFantasia();
             String tipoEmpresarial = pj.getTipoEmpresarialFk() == null ? "-" : pj.getTipoEmpresarialFk().getTipo();
@@ -257,28 +247,22 @@ public class ReaverResource {
     @Path("/getProcessosJudiciaisTable")
     @Produces("application/json")
     public String getProcessosJudiciaisTable() {
-        PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
-        PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
-        EnderecoBO enderecoBO = new EnderecoBO();
-        BemBO bemBO = new BemBO();
-        CitacaoBO citacaoBO = new CitacaoBO();
-        RedirecionamentoBO redirecionamentoBO = new RedirecionamentoBO();
-        ProcessoJudicialBO processoJudicialBO = new ProcessoJudicialBO();
         JSONArray jsonArray = new JSONArray();
-        List<ProcessoJudicial> processoJudicialList = processoJudicialBO.findAllActive();
+        List<ProcessoJudicial> processoJudicialList = ProcessoJudicialBO.findAllActive();
         for (ProcessoJudicial pjud : processoJudicialList) {
             Endereco end = new Endereco();
             List<Bem> bemList = new ArrayList<>();
-            List<Citacao> citacaoList = citacaoBO.findByPJUD(pjud.getId());
-            List<Redirecionamento> redirecionamentoList = redirecionamentoBO.findByPJUD(pjud.getId());
+            List<Citacao> citacaoList = CitacaoBO.findByPJUD(pjud.getId());
+            List<Redirecionamento> redirecionamentoList = RedirecionamentoBO.findByPJUD(pjud.getId());
+            List<AquisicaoBem> aquisicaoBemList = AquisicaoBemBO.findByPJUD(pjud.getId());
             PessoaFisica pf = new PessoaFisica();
             PessoaJuridica pj = new PessoaJuridica();
             String detalhes = "";
             String executado = "";
             if (pjud.getExecutado().equals("PF")) {
-                pf = pessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
-                end = enderecoBO.findPFAddress(pf.getId());
-                bemList = bemBO.findPFBens(pf.getId());
+                pf = PessoaFisicaBO.findPessoaFisica(pjud.getExecutadoFk());
+                end = EnderecoBO.findPFAddress(pf.getId());
+                bemList = BemBO.findPFBens(pf.getId());
                 executado = pf.getNome() + " - " + (pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9));
                 detalhes += (pf.getSexo() == null ? "" : "M".equals(pf.getSexo().toString()) ? "Masculino" : "Feminino") + " " + pf.getApelido() + " " + pf.getTituloDeEleitor() + " " + pf.getInss() + " "
                         + pf.getNomeDoPai() + " " + pf.getNomeDaMae() + " " + pf.getNomeDoConjuge() + " " + pf.getRg() + " " + pf.getRgOrgaoEmissor() + " " + (pf.getRgUfFk() == null ? "" : pf.getRgUfFk().getUf()) + " "
@@ -305,9 +289,9 @@ public class ReaverResource {
                     detalhes += " " + bem.getDataDeAquisicao() + " " + bem.getDataDeTransferenciaOuExtincao() + " " + bem.getDescricao() + " " + bem.getEndereco() + " " + bem.getValor() + " " + (bem.getTipoBemFk() == null ? "" : bem.getTipoBemFk().getTipo());
                 }
             } else {
-                pj = pessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
-                end = enderecoBO.findPJAddress(pj.getId());
-                bemList = bemBO.findPJBens(pj.getId());
+                pj = PessoaJuridicaBO.findPessoaJuridica(pjud.getExecutadoFk());
+                end = EnderecoBO.findPJAddress(pj.getId());
+                bemList = BemBO.findPJBens(pj.getId());
                 executado = pj.getNome() + " - " + pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
                 detalhes += pj.getNomeFantasia() + " " + (pj.getTipoEmpresarialFk() == null ? "" : pj.getTipoEmpresarialFk().getTipo()) + " " + pj.getInscricaoEstadual() + " " + pj.getInscricaoMunicipal() + " "
                         + (pj.getSituacao() == null ? "" : "A".equals(pj.getSituacao().toString()) ? "Ativo" : "Inativo") + " " + pj.getMotivoDaDesativacao() + " "
@@ -348,6 +332,9 @@ public class ReaverResource {
             for (Redirecionamento r : redirecionamentoList){
                 detalhes += " " + r.getDataDeRedirecionamento();
             }
+            for (AquisicaoBem ab : aquisicaoBemList){
+                detalhes += " " + ab.getDataDaAquisicao() + " " + ab.getMotivo() + " " + (ab.getBemFk() == null ? "" : ab.getBemFk().getDescricao()) + " " + ab.getExito() + " " + ab.getValor();
+            }
            
             detalhes = detalhes.replace("null", "");
 
@@ -371,19 +358,17 @@ public class ReaverResource {
     @Path("/getMovimentacao")
     @Produces("application/json")
     public String getMovimentacao(@QueryParam("ano") Integer ano, @QueryParam("usuario") String usuario) {
-        ChartsBO chartsBO = new ChartsBO();
         JSONArray jsonArray = new JSONArray();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pf" + i, chartsBO.countPFByMonth(ano, i, instituicao));
+            jsonObject.put("pf" + i, ChartsBO.countPFByMonth(ano, i, instituicao));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pj" + i, chartsBO.countPJByMonth(ano, i, instituicao));
+            jsonObject.put("pj" + i, ChartsBO.countPJByMonth(ano, i, instituicao));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("pjud" + i, chartsBO.countPJUDByMonth(ano, i, instituicao));
+            jsonObject.put("pjud" + i, ChartsBO.countPJUDByMonth(ano, i, instituicao));
         }
         jsonArray.put(jsonObject);
 
@@ -394,8 +379,7 @@ public class ReaverResource {
     @Path("/checkCNPJ")
     @Produces("application/json")
     public String checkCNPJ(@QueryParam("cnpj") String cnpj) {
-        PessoaJuridicaBO pessoaJuridicaBO = new PessoaJuridicaBO();
-        PessoaJuridica pessoaJuridica = pessoaJuridicaBO.findByCNPJ(cnpj);
+        PessoaJuridica pessoaJuridica = PessoaJuridicaBO.findByCNPJ(cnpj);
         if (pessoaJuridica == null) {
             return "true";
         } else {
@@ -407,8 +391,7 @@ public class ReaverResource {
     @Path("/checkCPF")
     @Produces("application/json")
     public String checkCPF(@QueryParam("cpf") String cpf) {
-        PessoaFisicaBO pessoaFisicaBO = new PessoaFisicaBO();
-        PessoaFisica pessoaFisica = pessoaFisicaBO.findByCPF(cpf);
+        PessoaFisica pessoaFisica = PessoaFisicaBO.findByCPF(cpf);
         if (pessoaFisica == null) {
             return "true";
         } else {
@@ -420,18 +403,16 @@ public class ReaverResource {
     @Path("/getArrecadacao")
     @Produces("application/json")
     public String getArrecadacao(@QueryParam("ano") Integer ano, @QueryParam("usuario") String usuario) {
-        ChartsBO chartsBO = new ChartsBO();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("value" + i, chartsBO.sumPJUDValueBeforeMonth(ano, i, instituicao));
+            jsonObject.put("value" + i, ChartsBO.sumPJUDValueBeforeMonth(ano, i, instituicao));
         }
         for (Integer i = 1; i <= 12; i++) {
-            jsonObject.put("arrecadacao" + i, chartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i, instituicao));
+            jsonObject.put("arrecadacao" + i, ChartsBO.sumPJUDArrecadacaoBeforeMonth(ano, i, instituicao));
         }
-        jsonObject.put("count", chartsBO.countPJUDValueBeforeMonth(ano, 12, instituicao));
+        jsonObject.put("count", ChartsBO.countPJUDValueBeforeMonth(ano, 12, instituicao));
         jsonArray.put(jsonObject);
 
         return jsonArray.toString();
@@ -441,16 +422,14 @@ public class ReaverResource {
     @Path("/getPizza")
     @Produces("application/json")
     public String getPizza(@QueryParam("usuario") String usuario) {
-        ChartsBO chartsBO = new ChartsBO();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("Andamento", chartsBO.getPJUDSituations("Andamento", instituicao));
-        jsonObject.put("Arquivado", chartsBO.getPJUDSituations("Arquivado", instituicao));
-        jsonObject.put("Extinto", chartsBO.getPJUDSituations("Extinto", instituicao));
-        jsonObject.put("Julgado", chartsBO.getPJUDSituations("Julgado", instituicao));
-        jsonObject.put("Suspenso", chartsBO.getPJUDSituations("Suspenso", instituicao));
+        jsonObject.put("Andamento", ChartsBO.getPJUDSituations("Andamento", instituicao));
+        jsonObject.put("Arquivado", ChartsBO.getPJUDSituations("Arquivado", instituicao));
+        jsonObject.put("Extinto", ChartsBO.getPJUDSituations("Extinto", instituicao));
+        jsonObject.put("Julgado", ChartsBO.getPJUDSituations("Julgado", instituicao));
+        jsonObject.put("Suspenso", ChartsBO.getPJUDSituations("Suspenso", instituicao));
         jsonArray.put(jsonObject);
 
         return jsonArray.toString();
@@ -461,11 +440,9 @@ public class ReaverResource {
     @Produces("application/json")
     public String getLogs(@QueryParam("quantidade") Integer quantidade, 
             @QueryParam("indice") Integer indice, @QueryParam("usuario") String usuario) {
-        LogBO logBO = new LogBO();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
+        Instituicao instituicao = UsuarioBO.findAutorizacaoByCPF(usuario).getInstituicaoFk();
         //List<Log> logList = logBO.findLogEntities(quantidade, indice);
-        List<Log> logList = logBO.findLogByInstituicao(quantidade, instituicao);
+        List<Log> logList = LogBO.findLogByInstituicao(quantidade, instituicao);
         JSONArray jsonArray = new JSONArray();
 
         for (int i = 0; i < logList.size(); i++) {
@@ -483,33 +460,29 @@ public class ReaverResource {
     }
 
     private String loadMessage(Log log) {
-        PessoaFisicaBO pfBO = new PessoaFisicaBO();
-        PessoaJuridicaBO pjBO = new PessoaJuridicaBO();
-        ProcessoJudicialBO pjudBO = new ProcessoJudicialBO();
-        PessoaJuridicaSucessaoBO pjsBO = new PessoaJuridicaSucessaoBO();
         String tabela = "";
         String operacao = "";
         String detalhes = "";
         if (log.getTabela().equals("PF")) {
-            PessoaFisica pf = pfBO.findPessoaFisica(log.getIdFk());
+            PessoaFisica pf = PessoaFisicaBO.findPessoaFisica(log.getIdFk());
             String cpf = pf.getCpf() == null ? "Sem CPF" : pf.getCpf().substring(0, 3) + "." + pf.getCpf().substring(3, 6) + "." + pf.getCpf().substring(6, 9) + "-" + pf.getCpf().substring(9);
             tabela += "<span class='feed-label'>Pessoa Física ";
             String info = pf.getNome() + " - " + cpf;
             info = info.length() >= 35 ? info.substring(0, 32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         } else if (log.getTabela().equals("PJ")) {
-            PessoaJuridica pj = pjBO.findPessoaJuridica(log.getIdFk());
+            PessoaJuridica pj = PessoaJuridicaBO.findPessoaJuridica(log.getIdFk());
             String cnpj = pj.getCnpj().substring(0, 2) + "." + pj.getCnpj().substring(2, 5) + "." + pj.getCnpj().substring(5, 8) + "/" + pj.getCnpj().substring(8, 12) + "-" + pj.getCnpj().substring(12);
             tabela += "<span class='feed-label'>Pessoa Juridica ";
             String info = pj.getNome() + " - " + cnpj;
             info = info.length() >= 35 ? info.substring(0, 32) + "..." : info;
             detalhes += "<strong>" + info + "</strong>";
         } else if (log.getTabela().equals("PJUD")) {
-            ProcessoJudicial pjud = pjudBO.findProcessoJudicial(log.getIdFk());
+            ProcessoJudicial pjud = ProcessoJudicialBO.findProcessoJudicial(log.getIdFk());
             tabela += "<span class='feed-label'>Processo Judicial ";
             detalhes += "<strong>" + pjud.getNumeroDoProcesso() + "</strong>";
         } else if (log.getTabela().equals("PJS")) {
-            PessoaJuridicaSucessao pjs = pjsBO.findPessoaJuridicaSucessao(log.getIdFk());
+            PessoaJuridicaSucessao pjs = PessoaJuridicaSucessaoBO.findPessoaJuridicaSucessao(log.getIdFk());
             tabela += "<span class='feed-label'>Sucessão Empresarial ";
             String info = pjs.getPessoaJuridicaSucedidaFk().getNome() + " -> " + pjs.getPessoaJuridicaSucessoraFk().getNome();
             info = info.length() >= 35 ? info.substring(0, 32) + "..." : info;
@@ -530,10 +503,9 @@ public class ReaverResource {
     @Path("/getSucessoes")
     @Produces("application/json")
     public String getSucessoes(@QueryParam("id") Integer id) {
-        PessoaJuridicaSucessaoBO pessoaJuridicaSucessaoBO = new PessoaJuridicaSucessaoBO();
         List<PessoaJuridicaSucessao> pessoaJuridicaSucessaoList = new ArrayList<>();
-        pessoaJuridicaSucessaoList.addAll(pessoaJuridicaSucessaoBO.findSucedidas(id));
-        pessoaJuridicaSucessaoList.addAll(pessoaJuridicaSucessaoBO.findSucessoras(id));
+        pessoaJuridicaSucessaoList.addAll(PessoaJuridicaSucessaoBO.findSucedidas(id));
+        pessoaJuridicaSucessaoList.addAll(PessoaJuridicaSucessaoBO.findSucessoras(id));
         JSONArray jsonArray = new JSONArray();
         for (PessoaJuridicaSucessao pjs : pessoaJuridicaSucessaoList) {
             JSONObject jsonObject = new JSONObject();

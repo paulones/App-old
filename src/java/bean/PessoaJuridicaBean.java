@@ -95,7 +95,6 @@ public class PessoaJuridicaBean implements Serializable {
     private List<TipoEmpresarial> tipoEmpresarialList;
     private List<Estado> estadoList;
     private List<Cidade> cidadeEndList;
-    private List<PessoaFisica> pessoaFisicaList;
     private List<Funcao> funcaoList;
     private List<Bem> bemList;
     private List<Bem> oldBemList;
@@ -233,9 +232,6 @@ public class PessoaJuridicaBean implements Serializable {
     public void carregarFormulario() {
         estadoList = EstadoBO.findAll();
         tipoEmpresarialList = TipoEmpresarialBO.findAll();
-        UsuarioBO usuarioBO = new UsuarioBO();
-        Instituicao instituicao = usuarioBO.findAutorizacaoByCPF(Cookie.getCookie("usuario")).getInstituicaoFk();
-        pessoaFisicaList = PessoaFisicaBO.findAllActive(instituicao);
         funcaoList = FuncaoBO.findAll();
         tipoBemList = TipoBemBO.findAll();
     }
@@ -686,14 +682,6 @@ public class PessoaJuridicaBean implements Serializable {
 
     public void setFuncaoList(List<Funcao> funcaoList) {
         this.funcaoList = funcaoList;
-    }
-
-    public List<PessoaFisica> getPessoaFisicaList() {
-        return pessoaFisicaList;
-    }
-
-    public void setPessoaFisicaList(List<PessoaFisica> pessoaFisicaList) {
-        this.pessoaFisicaList = pessoaFisicaList;
     }
 
     public String getRegister() {
